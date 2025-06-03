@@ -1,0 +1,16 @@
+I0603 10:44:54.756724     893 load.go:37] Reloading schema and connectors...
+I0603 10:44:54.909725     893 control.go:73] [/emulator/studio 06f5] UpdateResources(): done
+Schema: sources: schema/schema.gql [2088B] 
+Connector "default": sources: connector/mutations.gql [1233B] connector/queries.gql [1802B] 
+I0603 10:44:55.052971     893 collector.go:107] schema extensions wrote into "/home/user/studio/dataconnect/.dataconnect/schema"
+Generated sources: prelude.gql [71531B] 
+I0603 10:44:55.055120     893 load.go:115] Finished reloading
+I0603 10:44:55.060898     893 dev.go:95] Listening on address (HTTP + gRPC): 127.0.0.1:50001
+I0603 10:44:55.247513     893 engine.go:170] [/emulator/studio 06f5] ExecuteGraphqlRead IntrospectionQuery: succeeded. 
+I0603 10:49:51.335266     893 load.go:37] Reloading schema and connectors...
+I0603 10:49:51.408104     893 codegen.go:82] [connector "default" kotlinSdk] Generating sources into "/home/user/studio/dataconnect/.dataconnect/dataconnect-generated/kotlin/connectors/default"
+I0603 10:49:51.426935     893 collector.go:107] schema extensions wrote into "/home/user/studio/dataconnect/.dataconnect/schema"
+Generated sources: prelude.gql [71531B] 
+I0603 10:49:51.435385     893 collector.go:107] connector "default" kotlinSdk wrote into "/home/user/studio/dataconnect/.dataconnect/dataconnect-generated/kotlin/connectors/default"
+Generated sources: DefaultConnector.kt [8301B] DefaultConnectorKeys.kt [799B] DefaultConnectorEnums.kt [797B] 
+I0603 10:49:51.435448     893 load.go:115] Finished reloading
