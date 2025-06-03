@@ -4,7 +4,7 @@
 import Link from 'next/link';
 import Navbar from '@/components/layout/navbar';
 import { Button } from '@/components/ui/button';
-import { Crown, Gem, ShieldCheck, Coins, Gift } from 'lucide-react';
+import { Crown, Gem, ShieldCheck, Coins, Gift, DollarSign } from 'lucide-react';
 import Image from 'next/image';
 
 export default function LandingPage() {
@@ -23,16 +23,16 @@ export default function LandingPage() {
             <p className="text-2xl text-silver mb-8">
               Your ultimate destination for exclusive social gaming thrills and fortune!
             </p>
-            <div className="mb-10 p-4 bg-gold/10 border border-gold rounded-lg inline-block shadow-xl">
+            <div className="mb-10 p-6 bg-gold/10 border border-gold rounded-lg inline-block shadow-xl">
                 <h2 className="text-3xl font-headline text-gold flex items-center justify-center">
-                    <Gift className="h-10 w-10 mr-3 text-gold" /> New Player Bonus!
+                    <DollarSign className="h-10 w-10 mr-3 text-gold" /> New Player Offer!
                 </h2>
-                <p className="text-xl text-silver mt-2">Sign Up Today & Get <span className="font-bold text-gold">1,000 Free Credits</span> to Start!</p>
+                <p className="text-xl text-silver mt-2">Double Your First Credit Purchase <span className="font-bold text-gold">Up To $20!</span></p>
             </div>
             <div className="space-x-4">
               <Link href="/signup">
                 <Button size="lg" className="bg-gold text-deep-purple hover:bg-gold/90 font-semibold px-8 py-3 text-lg">
-                  Claim Your Bonus & Sign Up
+                  Sign Up & Claim Offer
                 </Button>
               </Link>
               <Link href="/login">
