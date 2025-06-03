@@ -3,17 +3,16 @@
 import { initializeApp, getApps, type FirebaseApp } from "firebase/app";
 import { getAuth, type Auth } from "firebase/auth";
 
-// TODO: Replace with your actual Firebase project configuration
-// It's highly recommended to use environment variables for these
-// For example, process.env.NEXT_PUBLIC_FIREBASE_API_KEY
+// IMPORTANT: Replace these placeholder values with your actual Firebase project configuration.
+// You can find these in your Firebase project settings under "General" -> "Your apps" -> Web app config.
 const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_AUTH_DOMAIN",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_STORAGE_BUCKET",
-  messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-  appId: "YOUR_APP_ID",
-  measurementId: "YOUR_MEASUREMENT_ID" // Optional
+  apiKey: "REPLACE_WITH_YOUR_API_KEY",
+  authDomain: "REPLACE_WITH_YOUR_AUTH_DOMAIN",
+  projectId: "REPLACE_WITH_YOUR_PROJECT_ID",
+  storageBucket: "REPLACE_WITH_YOUR_STORAGE_BUCKET",
+  messagingSenderId: "REPLACE_WITH_YOUR_MESSAGING_SENDER_ID",
+  appId: "REPLACE_WITH_YOUR_APP_ID",
+  measurementId: "REPLACE_WITH_YOUR_MEASUREMENT_ID" // Optional, but recommended for Analytics
 };
 
 let app: FirebaseApp;
