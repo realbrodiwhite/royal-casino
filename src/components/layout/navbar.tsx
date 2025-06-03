@@ -14,7 +14,7 @@ interface NavLinkProps {
 
 const NavLink: React.FC<NavLinkProps> = ({ href, children, icon }) => {
   const pathname = usePathname();
-  const isActive = pathname === href;
+  const isActive = pathname === href || (href === "/lobby" && pathname.startsWith("/lobby/")); // Highlight Lobby for sub-game pages
 
   return (
     <Link href={href} legacyBehavior>
@@ -45,7 +45,7 @@ export default function Navbar() {
             </a>
           </Link>
           <div className="hidden md:flex items-center space-x-2">
-            <NavLink href="/games" icon={<Gamepad2 />}>Games</NavLink>
+            <NavLink href="/lobby" icon={<Gamepad2 />}>Lobby</NavLink>
             <NavLink href="/profile" icon={<UserCircle />}>Profile</NavLink>
             <NavLink href="/leaderboards" icon={<BarChart3 />}>Leaderboards</NavLink>
             <NavLink href="/admin" icon={<Shield />}>Admin</NavLink>

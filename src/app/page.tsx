@@ -86,7 +86,7 @@ export default function LandingPage() {
             <p className="text-xl text-silver mb-8">
               Join thousands of players and climb the leaderboards!
             </p>
-            <Link href="/games">
+            <Link href="/lobby">
               <Button size="lg" className="bg-gold text-deep-purple hover:bg-gold/90 font-semibold px-10 py-4 text-lg">
                 Explore Games
               </Button>

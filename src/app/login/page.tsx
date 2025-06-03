@@ -41,7 +41,7 @@ export default function LoginPage() {
     if (email === 'admin@royalcasino.dev') {
       router.push('/admin');
     } else {
-      router.push('/games');
+      router.push('/lobby'); // Updated to /lobby
     }
   };
 
