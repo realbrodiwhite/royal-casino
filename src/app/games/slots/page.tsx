@@ -18,7 +18,7 @@ import GoldCoinSymbol from '@/components/game/symbols/GoldCoinSymbol';
 import BellSymbol from '@/components/game/symbols/BellSymbol';
 
 import { classicSlotsTheme } from '@/game-themes/classic-slots.theme';
-import { megaSlotsTheme } from '@/game-themes/mega-slots.theme';
+import { vegasAdventureTheme } from '@/game-themes/vegas-adventure.theme';
 import type { SlotGameThemeConfig } from '@/types/game-theme';
 
 // Maps symbol string identifiers from the theme config to actual React components.
@@ -256,7 +256,7 @@ export default function SlotsPage() {
 
   const toggleTheme = () => {
     setActiveThemeConfig(prevTheme => 
-      prevTheme.themeId === classicSlotsTheme.themeId ? megaSlotsTheme : classicSlotsTheme
+      prevTheme.themeId === classicSlotsTheme.themeId ? vegasAdventureTheme : classicSlotsTheme
     );
      // Reset autospin when theme changes
     setIsAutospin(false);
@@ -276,7 +276,7 @@ export default function SlotsPage() {
         <CreditDisplay initialCredits={credits} />
         
         <Button onClick={toggleTheme} variant="outline" className="border-gold text-gold hover:bg-gold/10">
-          Switch to {activeThemeConfig.themeId === classicSlotsTheme.themeId ? megaSlotsTheme.displayName : classicSlotsTheme.displayName}
+          Switch to {activeThemeConfig.themeId === classicSlotsTheme.themeId ? vegasAdventureTheme.displayName : classicSlotsTheme.displayName}
         </Button>
 
         {availableSymbolsWithData.length > 0 ? (
