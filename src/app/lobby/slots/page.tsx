@@ -10,7 +10,7 @@ import SpinButton from '@/components/game/SpinButton';
 import ResultsDisplay from '@/components/game/ResultsDisplay';
 import WinAnimation from '@/components/game/WinAnimation';
 import Navbar from '@/components/layout/navbar';
-import { PlayCircle, PauseCircle } from 'lucide-react';
+import { PlayCircle, PauseCircle, Star } from 'lucide-react'; // Added Star for XP
 
 import CherrySymbol from '@/components/game/symbols/CherrySymbol';
 import DiamondSymbol from '@/components/game/symbols/DiamondSymbol';
@@ -20,6 +20,7 @@ import BellSymbol from '@/components/game/symbols/BellSymbol';
 import { classicSlotsTheme } from '@/game-themes/classic-slots.theme';
 import { vegasAdventureTheme } from '@/game-themes/vegas-adventure.theme';
 import type { SlotGameThemeConfig } from '@/types/game-theme';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 // Maps symbol string identifiers from the theme config to actual React components.
 const allSymbolComponents: Record<string, React.FC<React.SVGProps<SVGSVGElement>>> = {
@@ -77,7 +78,6 @@ export default function SlotsPage() {
       }
       random -= symbol.weight;
     }
-    // Should not be reached if weights are positive and totalWeight > 0, but as a fallback:
     const lastSymbol = availableSymbolsWithData[availableSymbolsWithData.length - 1];
     return {id: lastSymbol.id, component: lastSymbol.component};
   }, [availableSymbolsWithData]);
@@ -92,13 +92,14 @@ export default function SlotsPage() {
   const [reels, setReels] = useState<SymbolData[][]>(() => initialReels(rows, cols));
   const [spinning, setSpinning] = useState(false);
   const [credits, setCredits] = useState(1000);
+  const [experiencePoints, setExperiencePoints] = useState(0); // XP state
   const [isAutospin, setIsAutospin] = useState(false);
   const [resultsMessage, setResultsMessage] = useState<string | null>(null);
   const [isWin, setIsWin] = useState<boolean | null>(null);
   const [winAmount, setWinAmount] = useState(0);
   const [showWinAnimation, setShowWinAnimation] = useState(false);
 
-  const spinCost = 10; // This is the total bet for the spin
+  const spinCost = 10; 
 
   useEffect(() => {
     setReels(initialReels(rows, cols));
@@ -124,31 +125,30 @@ export default function SlotsPage() {
           symbolsOnPayline.push(finalReels[r][c]);
         } else {
           console.error(\`Invalid coordinate [\${r},\${c}] in payline \${paylineIndex} for current grid dimensions.\`);
-          return; // Skip this payline if coordinates are out of bounds
+          return; 
         }
       }
 
       if (symbolsOnPayline.length === 0) return;
 
       const firstSymbolId = symbolsOnPayline[0].id;
-      if (firstSymbolId === FALLBACK_SYMBOL.id) return; // Cannot win with fallback symbols
+      if (firstSymbolId === FALLBACK_SYMBOL.id) return; 
 
       let matchCount = 0;
       for (const symbolData of symbolsOnPayline) {
         if (symbolData.id === firstSymbolId) {
           matchCount++;
         } else {
-          break; // Streak broken (matches must be from left)
+          break; 
         }
       }
 
       if (matchCount > 0) {
         const symbolPaytableInfo = theme.paytable[firstSymbolId];
         if (symbolPaytableInfo) {
-          // Pay for the longest match found
           let actualPayoutMultiplier = 0;
           let paidMatchCount = 0;
-          for (let count = matchCount; count >=1; count--) { // Check from longest possible match downwards
+          for (let count = matchCount; count >=1; count--) { 
             if (symbolPaytableInfo[count]) {
               actualPayoutMultiplier = symbolPaytableInfo[count];
               paidMatchCount = count;
@@ -190,6 +190,7 @@ export default function SlotsPage() {
 
     setSpinning(true);
     setCredits((prev) => prev - spinCost);
+    setExperiencePoints((prevXp) => prevXp + spinCost); // Add XP
     setResultsMessage(null);
     setIsWin(null);
     setShowWinAnimation(false);
@@ -199,7 +200,7 @@ export default function SlotsPage() {
     const visualSpinInterval = setInterval(() => {
       setReels(currentReels => currentReels.map(row => row.map(() => getRandomSymbolData())));
       spinCycles++;
-      if (spinCycles >= 10) { // Spin visually for ~1 second
+      if (spinCycles >= 10) { 
         clearInterval(visualSpinInterval);
         
         const finalReelsResult = initialReels(rows, cols);
@@ -228,7 +229,7 @@ export default function SlotsPage() {
   useEffect(() => {
     let autoSpinTimeout: NodeJS.Timeout;
     if (isAutospin && !spinning && credits >= spinCost && availableSymbolsWithData.length > 0) {
-      autoSpinTimeout = setTimeout(handleSpin, 2000); // Increased delay for autospin
+      autoSpinTimeout = setTimeout(handleSpin, 2000); 
     }
     return () => clearTimeout(autoSpinTimeout);
   }, [isAutospin, spinning, credits, handleSpin, availableSymbolsWithData.length]);
@@ -245,7 +246,7 @@ export default function SlotsPage() {
         return;
     }
     setIsAutospin(!isAutospin);
-    if (isAutospin) { // If stopping autospin
+    if (isAutospin) { 
         setResultsMessage(null);
     }
   };
@@ -258,7 +259,6 @@ export default function SlotsPage() {
     setActiveThemeConfig(prevTheme => 
       prevTheme.themeId === classicSlotsTheme.themeId ? vegasAdventureTheme : classicSlotsTheme
     );
-     // Reset autospin when theme changes
     setIsAutospin(false);
     setResultsMessage(null);
     setIsWin(null);
@@ -273,7 +273,25 @@ export default function SlotsPage() {
       </header>
 
       <main className="flex flex-col items-center gap-6 w-full max-w-2xl">
-        <CreditDisplay initialCredits={credits} />
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full">
+            <CreditDisplay initialCredits={credits} />
+            <Card className="bg-opacity-50 backdrop-blur-md border-gold shadow-lg">
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                    <CardTitle className="text-sm font-medium text-gold">
+                    Experience Points
+                    </CardTitle>
+                    <Star className="h-5 w-5 text-gold" />
+                </CardHeader>
+                <CardContent>
+                    <div className="text-2xl font-bold text-silver">
+                    {experiencePoints.toLocaleString()}
+                    </div>
+                    <p className="text-xs text-muted-foreground">
+                    XP earned this session
+                    </p>
+                </CardContent>
+            </Card>
+        </div>
         
         <Button onClick={toggleTheme} variant="outline" className="border-gold text-gold hover:bg-gold/10">
           Switch to {activeThemeConfig.themeId === classicSlotsTheme.themeId ? vegasAdventureTheme.displayName : classicSlotsTheme.displayName}
@@ -332,3 +350,4 @@ export default function SlotsPage() {
     </div>
   );
 }
+
