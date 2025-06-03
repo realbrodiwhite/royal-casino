@@ -2,7 +2,7 @@
 export interface SlotSymbolConfig {
   id: string; // e.g., 'cherry', 'diamond'
   componentName: string; // e.g., 'CherrySymbol', 'DiamondSymbol'
-  weight?: number; // For weighted random generation, optional
+  // weight?: number; // For weighted random generation, optional - This was a previous thought, now weight is in SlotGameThemeConfig
 }
 
 export interface SlotGameThemeConfig {
@@ -16,8 +16,11 @@ export interface SlotGameThemeConfig {
     /** Number of columns for the slot machine grid (min: 3, max: 6) */
     cols: 3 | 4 | 5 | 6;
   };
-  /** Array of symbol identifiers available in this theme. These should map to component names. */
-  symbols: string[];
+  /** Array of symbols with their identifiers and weights for this theme. */
+  symbols: Array<{
+    id: string; // Identifier for the symbol, maps to allSymbolComponents
+    weight: number; // Higher weight means more frequent appearance
+  }>;
   backgroundAsset?: string; // Path or identifier for background
   soundAssets?: {
     spin?: string;
@@ -55,3 +58,4 @@ export type GameThemeConfig =
   | PokerGameThemeConfig
   | BingoGameThemeConfig;
 // Add other game theme types to the union as they are defined
+

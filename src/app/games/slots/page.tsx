@@ -34,28 +34,47 @@ const allSymbolComponents: Record<string, React.FC<React.SVGProps<SVGSVGElement>
 };
 // --- End Symbol Component Mapping ---
 
-
 export default function SlotsPage() {
-  // TODO: Implement theme selection logic. For now, defaults to classicSlotsTheme.
-  // const [currentTheme, setCurrentTheme] = useState<SlotGameThemeConfig>(classicSlotsTheme);
-  // For demonstration, let's allow switching between two themes (this would typically be more sophisticated)
   const [activeThemeConfig, setActiveThemeConfig] = useState<SlotGameThemeConfig>(classicSlotsTheme);
 
   const rows = activeThemeConfig.grid.rows;
   const cols = activeThemeConfig.grid.cols;
 
-  // Filter and map symbols based on the active theme's configuration
-  const themeSymbols = activeThemeConfig.symbols
-    .map(symbolId => allSymbolComponents[symbolId])
-    .filter((component): component is React.FC<React.SVGProps<SVGSVGElement>> => Boolean(component));
+  // Derived state: The actual symbol components available for the current theme
+  const [availableSymbols, setAvailableSymbols] = useState<Array<{ component: React.FC<React.SVGProps<SVGSVGElement>>, weight: number }>>([]);
+
+  useEffect(() => {
+    const currentSymbols = activeThemeConfig.symbols
+      .map(themeSymbol => {
+        const component = allSymbolComponents[themeSymbol.id];
+        if (component) {
+          return { component, weight: themeSymbol.weight };
+        }
+        return null;
+      })
+      .filter((item): item is { component: React.FC<React.SVGProps<SVGSVGElement>>, weight: number } => Boolean(item));
+    setAvailableSymbols(currentSymbols);
+  }, [activeThemeConfig]);
+
 
   const getRandomSymbol = useCallback(() => {
-    if (themeSymbols.length === 0) {
-      // Fallback or error handling if no symbols are available for the theme
+    if (availableSymbols.length === 0) {
+      // Fallback or error handling if no symbols are available
       return (props: React.SVGProps<SVGSVGElement>) => <svg viewBox="0 0 100 100" {...props}><text x="10" y="50">?</text></svg>;
     }
-    return themeSymbols[Math.floor(Math.random() * themeSymbols.length)];
-  }, [themeSymbols]);
+
+    const totalWeight = availableSymbols.reduce((sum, symbol) => sum + symbol.weight, 0);
+    let random = Math.random() * totalWeight;
+
+    for (const symbol of availableSymbols) {
+      if (random < symbol.weight) {
+        return symbol.component;
+      }
+      random -= symbol.weight;
+    }
+    // Should not be reached if weights are positive and totalWeight > 0
+    return availableSymbols[availableSymbols.length - 1].component;
+  }, [availableSymbols]);
 
   const initialReels = useCallback((r: number, c: number) =>
     Array(r)
@@ -75,10 +94,10 @@ export default function SlotsPage() {
 
   const spinCost = 10;
 
-  // Effect to re-initialize reels when theme (and thus rows/cols) changes
+  // Effect to re-initialize reels when theme (and thus rows/cols or symbols) changes
   useEffect(() => {
     setReels(initialReels(rows, cols));
-  }, [rows, cols, initialReels]);
+  }, [rows, cols, initialReels, activeThemeConfig]); // Added activeThemeConfig dependency
 
 
   const handleSpin = useCallback(() => {
@@ -88,22 +107,27 @@ export default function SlotsPage() {
       setIsAutospin(false);
       return;
     }
+     if (availableSymbols.length === 0) {
+      setResultsMessage("No symbols available for this theme.");
+      setIsWin(false);
+      return;
+    }
+
 
     setSpinning(true);
     setCredits((prev) => prev - spinCost);
     setResultsMessage(null);
     setIsWin(null);
 
-    const newReelsVisual = initialReels(rows, cols);
-    setReels(newReelsVisual);
-
-    let spinIntervals = 0;
-    const interval = setInterval(() => {
+    // Visual spin animation part
+    let spinCycles = 0;
+    const visualSpinInterval = setInterval(() => {
       setReels(currentReels => currentReels.map(row => row.map(() => getRandomSymbol())));
-      spinIntervals++;
-      if (spinIntervals >= 10) { // Spin for 1 second
-        clearInterval(interval);
+      spinCycles++;
+      if (spinCycles >= 10) { // Spin visually for ~1 second (10 * 100ms)
+        clearInterval(visualSpinInterval);
         
+        // Determine final reels after visual spin
         const finalReels = initialReels(rows, cols);
         setReels(finalReels);
         setSpinning(false);
@@ -114,20 +138,21 @@ export default function SlotsPage() {
         
         if (middleRowSymbols && middleRowSymbols.length > 0) {
             const firstSymbolComponent = middleRowSymbols[0];
+            // Check if all symbols in the middle row are instances of the same component
             const isWinningRow = middleRowSymbols.every(
-            (symbolComponent) => symbolComponent === firstSymbolComponent
+              (symbolComponent) => symbolComponent === firstSymbolComponent
             );
 
             if (isWinningRow) {
-            const currentWinAmount = 100; // Example win amount
-            setResultsMessage(\`You won \${currentWinAmount} credits!\`);
-            setIsWin(true);
-            setCredits((prev) => prev + currentWinAmount);
-            setWinAmount(currentWinAmount);
-            setShowWinAnimation(true);
+              const currentWinAmount = 100; // Example win amount
+              setResultsMessage(\`You won \${currentWinAmount} credits!\`);
+              setIsWin(true);
+              setCredits((prev) => prev + currentWinAmount);
+              setWinAmount(currentWinAmount);
+              setShowWinAnimation(true);
             } else {
-            setResultsMessage("No win this time. Try again!");
-            setIsWin(false);
+              setResultsMessage("No win this time. Try again!");
+              setIsWin(false);
             }
         } else {
             setResultsMessage("Error determining outcome.");
@@ -135,15 +160,15 @@ export default function SlotsPage() {
         }
       }
     }, 100);
-  }, [credits, rows, cols, initialReels, getRandomSymbol]);
+  }, [credits, rows, cols, initialReels, getRandomSymbol, availableSymbols.length]);
 
   useEffect(() => {
     let autoSpinTimeout: NodeJS.Timeout;
-    if (isAutospin && !spinning && credits >= spinCost) {
+    if (isAutospin && !spinning && credits >= spinCost && availableSymbols.length > 0) {
       autoSpinTimeout = setTimeout(handleSpin, 1500);
     }
     return () => clearTimeout(autoSpinTimeout);
-  }, [isAutospin, spinning, credits, handleSpin]);
+  }, [isAutospin, spinning, credits, handleSpin, availableSymbols.length]);
 
   const handleToggleAutospin = () => {
     if (!isAutospin && credits < spinCost) {
@@ -151,8 +176,13 @@ export default function SlotsPage() {
         setIsWin(false);
         return;
     }
+    if (availableSymbols.length === 0 && !isAutospin) {
+        setResultsMessage("Cannot start autospin: No symbols available for this theme.");
+        setIsWin(false);
+        return;
+    }
     setIsAutospin(!isAutospin);
-    if (isAutospin) {
+    if (isAutospin) { // If stopping autospin
         setResultsMessage(null);
     }
   };
@@ -179,12 +209,11 @@ export default function SlotsPage() {
       <main className="flex flex-col items-center gap-6 w-full max-w-2xl">
         <CreditDisplay initialCredits={credits} />
         
-        {/* Button to toggle theme for demonstration */}
         <Button onClick={toggleTheme} variant="outline" className="border-gold text-gold hover:bg-gold/10">
           Switch to {activeThemeConfig.themeId === classicSlotsTheme.themeId ? megaSlotsTheme.displayName : classicSlotsTheme.displayName}
         </Button>
 
-        {themeSymbols.length > 0 ? (
+        {availableSymbols.length > 0 ? (
             <GameGrid rows={rows} cols={cols} className={activeThemeConfig.backgroundAsset}>
             {reels.flat().map((SymbolComponent, index) => (
                 <GridBox
@@ -196,9 +225,9 @@ export default function SlotsPage() {
             ))}
             </GameGrid>
         ) : (
-            <div className="text-center text-red-400 p-4 border border-red-400 rounded-md">
-                <p>Error: No symbols configured for the current theme.</p>
-                <p>Please check the theme configuration: <code className="bg-black/20 px-1 rounded">{activeThemeConfig.themeId}</code></p>
+            <div className="text-center text-red-400 p-4 border border-red-400 rounded-md bg-black/30">
+                <p>Error: No symbols configured or available for the current theme: <code className="bg-black/50 px-1 rounded">{activeThemeConfig.themeId}</code>.</p>
+                <p>Please check the theme configuration and ensure symbols are correctly mapped.</p>
             </div>
         )}
 
@@ -212,14 +241,18 @@ export default function SlotsPage() {
         />
 
         <div className="flex flex-col sm:flex-row items-center gap-4 w-full md:w-auto">
-          <SpinButton onClick={handleSpin} isLoading={spinning} disabled={spinning || (isAutospin && credits < spinCost) || themeSymbols.length === 0}>
+          <SpinButton 
+            onClick={handleSpin} 
+            isLoading={spinning} 
+            disabled={spinning || (isAutospin && credits < spinCost) || availableSymbols.length === 0}
+          >
             {spinning ? 'Spinning...' : 'Spin'}
           </SpinButton>
           <Button 
             variant="outline" 
             className="border-gold text-gold hover:bg-gold/10 w-full md:w-auto"
             onClick={handleToggleAutospin}
-            disabled={(spinning && isAutospin) || themeSymbols.length === 0}
+            disabled={(spinning && isAutospin) || (availableSymbols.length === 0 && !isAutospin)}
           >
             {isAutospin ? <PauseCircle className="mr-2"/> : <PlayCircle className="mr-2"/>}
             {isAutospin ? 'Stop Auto' : 'Autospin'}

@@ -11,12 +11,13 @@ export const megaSlotsTheme: SlotGameThemeConfig = {
     cols: 6,
   },
   symbols: [
-    'CherrySymbol',
-    'DiamondSymbol',
-    'GoldCoinSymbol',
-    'BellSymbol',
-    // 'SevenSymbol', // Placeholder for more symbols
-    // 'BarSymbol',   // Placeholder for more symbols
+    { id: 'CherrySymbol', weight: 50 },
+    { id: 'BellSymbol', weight: 25 },
+    { id: 'GoldCoinSymbol', weight: 15 },
+    { id: 'DiamondSymbol', weight: 10 },
+    // Example: Add more symbols with different weights if 'SevenSymbol' or 'BarSymbol' were defined
+    // { id: 'SevenSymbol', weight: 5 },
+    // { id: 'BarSymbol', weight: 20 },
   ],
   backgroundAsset: 'bg-mega-slots-background', // Example: a CSS class
   soundAssets: {
