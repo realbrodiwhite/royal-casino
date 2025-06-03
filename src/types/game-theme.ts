@@ -1,8 +1,7 @@
 
 export interface SlotSymbolConfig {
   id: string; // e.g., 'cherry', 'diamond'
-  componentName: string; // e.g., 'CherrySymbol', 'DiamondSymbol'
-  // weight?: number; // For weighted random generation, optional - This was a previous thought, now weight is in SlotGameThemeConfig
+  // componentName is not directly used; id maps to allSymbolComponents in the page
 }
 
 export interface SlotGameThemeConfig {
@@ -21,6 +20,10 @@ export interface SlotGameThemeConfig {
     id: string; // Identifier for the symbol, maps to allSymbolComponents
     weight: number; // Higher weight means more frequent appearance
   }>;
+  /** Defines the paylines. Each inner array represents a payline as a list of [row, col] coordinates. */
+  paylines: Array<Array<[number, number]>>;
+  /** Defines the payouts. Key is symbolId, inner key is count of symbols, value is payout multiplier. */
+  paytable: Record<string, Record<number, number>>; // e.g. { "CherrySymbol": { 3: 5, 2: 1 } } means 3 cherries pay 5x bet, 2 cherries pay 1x bet.
   backgroundAsset?: string; // Path or identifier for background
   soundAssets?: {
     spin?: string;
@@ -58,4 +61,3 @@ export type GameThemeConfig =
   | PokerGameThemeConfig
   | BingoGameThemeConfig;
 // Add other game theme types to the union as they are defined
-
