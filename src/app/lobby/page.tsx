@@ -15,28 +15,29 @@ interface GameCardProps {
   icon: React.ReactNode;
   href: string;
   imageUrl?: string;
-  themeColor?: string; // e.g., 'bg-red-500'
+  dataAiHint?: string; 
   disabled?: boolean;
 }
 
-const GameCard: React.FC<GameCardProps> = ({ title, description, icon, href, imageUrl, themeColor = 'bg-silver/10', disabled = false }) => {
+const GameCard: React.FC<GameCardProps> = ({ title, description, icon, href, imageUrl, dataAiHint, disabled = false }) => {
   return (
-    <Card className={`${themeColor} border-gold shadow-xl hover:shadow-gold/50 transition-all duration-300 flex flex-col`}>
+    <Card className="bg-card border-border shadow-xl hover:shadow-primary/50 transition-all duration-300 flex flex-col">
       <CardHeader className="items-center text-center">
         {imageUrl ? (
-          <Image src={imageUrl} alt={title} width={150} height={100} className="rounded-md mb-4 object-cover h-32 w-full" data-ai-hint={`${title.toLowerCase()} game`} />
+          <Image src={imageUrl} alt={title} width={150} height={100} className="rounded-md mb-4 object-cover h-32 w-full" data-ai-hint={dataAiHint || `${title.toLowerCase()} game`} />
         ) : (
-          <div className="p-4 bg-gold/20 rounded-full mb-4 inline-block">
-            {React.cloneElement(icon as React.ReactElement, { className: "h-10 w-10 text-gold" })}
+          <div className="p-4 bg-primary/20 rounded-full mb-4 inline-block">
+            {React.cloneElement(icon as React.ReactElement, { className: "h-10 w-10 text-primary" })}
           </div>
         )}
-        <CardTitle className="text-2xl font-headline text-gold">{title}</CardTitle>
-        <CardDescription className="text-silver/80 h-12 overflow-hidden text-ellipsis">{description}</CardDescription>
+        <CardTitle className="text-2xl font-headline text-primary">{title}</CardTitle>
+        <CardDescription className="text-muted-foreground h-12 overflow-hidden text-ellipsis">{description}</CardDescription>
       </CardHeader>
       <CardContent className="flex-grow flex flex-col justify-end">
         <Link href={disabled ? '#' : href} passHref>
           <Button
-            className={`w-full mt-4 ${disabled ? 'bg-muted text-muted-foreground cursor-not-allowed' : 'bg-gold text-deep-purple hover:bg-gold/90'}`}
+            variant="default"
+            className="w-full mt-4"
             disabled={disabled}
           >
             {disabled ? 'Coming Soon' : 'Play Now'}
@@ -57,12 +58,12 @@ export default function LobbyPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-deep-purple text-silver flex flex-col">
+    <div className="min-h-screen text-foreground flex flex-col">
       <Navbar />
       <main className="flex-grow container mx-auto px-4 py-12">
         <header className="mb-12 text-center">
-          <h1 className="text-5xl font-bold font-headline text-gold">Game Lobby</h1>
-          <p className="text-xl text-silver mt-2">Choose your game and let the fun begin!</p>
+          <h1 className="text-5xl font-bold font-headline text-primary">Game Lobby</h1>
+          <p className="text-xl text-muted-foreground mt-2">Choose your game and let the fun begin!</p>
         </header>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -74,12 +75,13 @@ export default function LobbyPage() {
               icon={game.icon}
               href={game.href}
               imageUrl={game.imageUrl}
+              dataAiHint={game.dataAiHint}
               disabled={game.disabled}
             />
           ))}
         </div>
       </main>
-      <footer className="text-center py-6 text-sm text-silver/70 border-t border-gold/20">
+      <footer className="text-center py-6 text-sm text-muted-foreground border-t border-border">
         <p>&copy; {new Date().getFullYear()} Royal Casino. All rights reserved.</p>
       </footer>
     </div>

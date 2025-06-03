@@ -12,8 +12,8 @@ const GridBox: React.FC<GridBoxProps> = ({ children, className, onClick }) => {
   return (
     <div
       className={cn(
-        "flex items-center justify-center rounded-md bg-deep-purple/50 border border-gold/50 aspect-square shadow-inner overflow-hidden",
-        onClick ? "cursor-pointer hover:bg-deep-purple/70" : "",
+        "flex items-center justify-center rounded-md bg-background/30 border border-border/50 aspect-square shadow-inner overflow-hidden",
+        onClick ? "cursor-pointer hover:bg-accent/20" : "",
         className
       )}
       onClick={onClick}

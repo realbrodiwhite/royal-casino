@@ -41,9 +41,9 @@ export default function SignupPage() {
       await createUserWithEmailAndPassword(auth, email, password);
       toast({
         title: "Signup Successful",
-        description: `Welcome, ${email}! Your account has been created.`,
+        description: \`Welcome, \${email}! Your account has been created.\`,
       });
-      router.push('/lobby'); // Redirect to game lobby after signup
+      router.push('/lobby'); 
     } catch (error: any) {
       let errorMessage = "An unexpected error occurred. Please try again.";
       if (error.code === 'auth/email-already-in-use') {
@@ -65,21 +65,21 @@ export default function SignupPage() {
   };
 
   return (
-    <div className="min-h-screen bg-deep-purple text-silver flex flex-col">
+    <div className="min-h-screen text-foreground flex flex-col">
       <Navbar />
       <main className="flex-grow container mx-auto px-4 py-16 flex flex-col items-center justify-center">
-        <Card className="w-full max-w-md bg-silver/10 border-gold shadow-xl">
+        <Card className="w-full max-w-md bg-card border-border shadow-xl">
           <CardHeader className="text-center">
-            <UserPlus className="mx-auto h-16 w-16 text-gold mb-4" />
-            <CardTitle className="text-4xl font-headline text-gold">Create Your Account</CardTitle>
-            <CardDescription className="text-silver/80">
+            <UserPlus className="mx-auto h-16 w-16 text-primary mb-4" />
+            <CardTitle className="text-4xl font-headline text-primary">Create Your Account</CardTitle>
+            <CardDescription className="text-muted-foreground">
               Join Royal Casino today and start your winning journey!
             </CardDescription>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSignup} className="space-y-6">
               <div className="space-y-2">
-                <Label htmlFor="email" className="text-silver">Email</Label>
+                <Label htmlFor="email" className="text-foreground">Email</Label>
                 <Input
                   id="email"
                   name="email"
@@ -89,11 +89,11 @@ export default function SignupPage() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   disabled={isLoading}
-                  className="bg-deep-purple/50 border-gold text-silver placeholder:text-silver/60 focus:ring-gold"
+                  className="bg-input border-border text-foreground placeholder:text-muted-foreground focus:ring-ring"
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="password" className="text-silver">Password</Label>
+                <Label htmlFor="password" className="text-foreground">Password</Label>
                 <Input
                   id="password"
                   name="password"
@@ -103,11 +103,11 @@ export default function SignupPage() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   disabled={isLoading}
-                  className="bg-deep-purple/50 border-gold text-silver placeholder:text-silver/60 focus:ring-gold"
+                  className="bg-input border-border text-foreground placeholder:text-muted-foreground focus:ring-ring"
                 />
               </div>
                <div className="space-y-2">
-                <Label htmlFor="confirm-password" className="text-silver">Confirm Password</Label>
+                <Label htmlFor="confirm-password" className="text-foreground">Confirm Password</Label>
                 <Input
                   id="confirm-password"
                   name="confirm-password"
@@ -117,26 +117,26 @@ export default function SignupPage() {
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   disabled={isLoading}
-                  className="bg-deep-purple/50 border-gold text-silver placeholder:text-silver/60 focus:ring-gold"
+                  className="bg-input border-border text-foreground placeholder:text-muted-foreground focus:ring-ring"
                 />
               </div>
-              <Button type="submit" className="w-full bg-gold text-deep-purple hover:bg-gold/90 font-semibold py-3" disabled={isLoading}>
+              <Button type="submit" variant="default" className="w-full font-semibold py-3" disabled={isLoading}>
                 {isLoading ? <RotateCw className="mr-2 h-4 w-4 animate-spin" /> : null}
                 {isLoading ? 'Signing Up...' : 'Sign Up'}
               </Button>
             </form>
           </CardContent>
           <CardFooter className="flex flex-col items-center">
-            <p className="text-sm text-silver/80">
+            <p className="text-sm text-muted-foreground">
               Already have an account?{' '}
-              <Link href="/login" className="font-semibold text-gold hover:underline">
+              <Link href="/login" className="font-semibold text-primary hover:underline">
                 Login
               </Link>
             </p>
           </CardFooter>
         </Card>
       </main>
-      <footer className="text-center py-6 text-sm text-silver/70 border-t border-gold/20">
+      <footer className="text-center py-6 text-sm text-muted-foreground border-t border-border">
         <p>&copy; {new Date().getFullYear()} Royal Casino. Play Responsibly.</p>
       </footer>
     </div>

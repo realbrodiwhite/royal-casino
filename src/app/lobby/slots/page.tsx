@@ -4,13 +4,14 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Button } from '@/components/ui/button';
 import CreditDisplay from '@/components/game/CreditDisplay';
+import XpDisplay from '@/components/game/XpDisplay'; // Import XpDisplay
 import GameGrid from '@/components/game/GameGrid';
 import GridBox from '@/components/game/GridBox';
 import SpinButton from '@/components/game/SpinButton';
 import ResultsDisplay from '@/components/game/ResultsDisplay';
 import WinAnimation from '@/components/game/WinAnimation';
 import Navbar from '@/components/layout/navbar';
-import { PlayCircle, PauseCircle, Star } from 'lucide-react'; // Added Star for XP
+import { PlayCircle, PauseCircle } from 'lucide-react';
 
 import CherrySymbol from '@/components/game/symbols/CherrySymbol';
 import DiamondSymbol from '@/components/game/symbols/DiamondSymbol';
@@ -20,15 +21,12 @@ import BellSymbol from '@/components/game/symbols/BellSymbol';
 import { classicSlotsTheme } from '@/game-themes/classic-slots.theme';
 import { vegasAdventureTheme } from '@/game-themes/vegas-adventure.theme';
 import type { SlotGameThemeConfig } from '@/types/game-theme';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
-// Maps symbol string identifiers from the theme config to actual React components.
 const allSymbolComponents: Record<string, React.FC<React.SVGProps<SVGSVGElement>>> = {
   CherrySymbol: CherrySymbol,
   DiamondSymbol: DiamondSymbol,
   GoldCoinSymbol: GoldCoinSymbol,
   BellSymbol: BellSymbol,
-  // Add other symbols here as they are created and imported
 };
 
 interface SymbolData {
@@ -92,7 +90,7 @@ export default function SlotsPage() {
   const [reels, setReels] = useState<SymbolData[][]>(() => initialReels(rows, cols));
   const [spinning, setSpinning] = useState(false);
   const [credits, setCredits] = useState(1000);
-  const [experiencePoints, setExperiencePoints] = useState(0); // XP state
+  const [experiencePoints, setExperiencePoints] = useState(0);
   const [isAutospin, setIsAutospin] = useState(false);
   const [resultsMessage, setResultsMessage] = useState<string | null>(null);
   const [isWin, setIsWin] = useState<boolean | null>(null);
@@ -190,7 +188,7 @@ export default function SlotsPage() {
 
     setSpinning(true);
     setCredits((prev) => prev - spinCost);
-    setExperiencePoints((prevXp) => prevXp + spinCost); // Add XP
+    setExperiencePoints((prevXp) => prevXp + spinCost);
     setResultsMessage(null);
     setIsWin(null);
     setShowWinAnimation(false);
@@ -265,35 +263,20 @@ export default function SlotsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-deep-purple text-silver flex flex-col items-center p-4">
+    <div className="min-h-screen text-foreground flex flex-col items-center p-4">
       <Navbar />
       <header className="my-8 text-center">
-        <h1 className="text-5xl font-bold font-headline text-gold">{activeThemeConfig.displayName}</h1>
-        <p className="text-xl text-silver mt-2">{activeThemeConfig.description}</p>
+        <h1 className="text-5xl font-bold font-headline text-primary">{activeThemeConfig.displayName}</h1>
+        <p className="text-xl text-muted-foreground mt-2">{activeThemeConfig.description}</p>
       </header>
 
       <main className="flex flex-col items-center gap-6 w-full max-w-2xl">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full">
             <CreditDisplay initialCredits={credits} />
-            <Card className="bg-opacity-50 backdrop-blur-md border-gold shadow-lg">
-                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-sm font-medium text-gold">
-                    Experience Points
-                    </CardTitle>
-                    <Star className="h-5 w-5 text-gold" />
-                </CardHeader>
-                <CardContent>
-                    <div className="text-2xl font-bold text-silver">
-                    {experiencePoints.toLocaleString()}
-                    </div>
-                    <p className="text-xs text-muted-foreground">
-                    XP earned this session
-                    </p>
-                </CardContent>
-            </Card>
+            <XpDisplay experiencePoints={experiencePoints} />
         </div>
         
-        <Button onClick={toggleTheme} variant="outline" className="border-gold text-gold hover:bg-gold/10">
+        <Button onClick={toggleTheme} variant="outline">
           Switch to {activeThemeConfig.themeId === classicSlotsTheme.themeId ? vegasAdventureTheme.displayName : classicSlotsTheme.displayName}
         </Button>
 
@@ -309,8 +292,8 @@ export default function SlotsPage() {
             ))}
           </GameGrid>
         ) : (
-          <div className="text-center text-red-400 p-4 border border-red-400 rounded-md bg-black/30">
-            <p>Error: No symbols configured or available for the current theme: <code className="bg-black/50 px-1 rounded">{activeThemeConfig.themeId}</code>.</p>
+          <div className="text-center text-destructive p-4 border border-destructive rounded-md bg-destructive/10">
+            <p>Error: No symbols configured or available for the current theme: <code className="bg-destructive/20 px-1 rounded">{activeThemeConfig.themeId}</code>.</p>
             <p>Please check the theme configuration and ensure symbols are correctly mapped and weighted.</p>
           </div>
         )}
@@ -333,7 +316,7 @@ export default function SlotsPage() {
           </SpinButton>
           <Button 
             variant="outline" 
-            className="border-gold text-gold hover:bg-gold/10 w-full md:w-auto"
+            className="w-full md:w-auto"
             onClick={handleToggleAutospin}
             disabled={(spinning && isAutospin) || (availableSymbolsWithData.length === 0 && !isAutospin)}
           >
@@ -343,11 +326,10 @@ export default function SlotsPage() {
         </div>
       </main>
 
-      <footer className="mt-12 text-center text-sm">
+      <footer className="mt-12 text-center text-sm text-muted-foreground">
         <p>&copy; {new Date().getFullYear()} Royal Casino. All rights reserved.</p>
         <p>Games are for entertainment purposes only. Play responsibly.</p>
       </footer>
     </div>
   );
 }
-

@@ -12,14 +12,17 @@ interface GameGridProps {
 const GameGrid: React.FC<GameGridProps> = ({ rows, cols, children, className }) => {
   const gridStyle: React.CSSProperties = {
     display: 'grid',
-    gridTemplateRows: `repeat(${rows}, minmax(0, 1fr))`,
-    gridTemplateColumns: `repeat(${cols}, minmax(0, 1fr))`,
-    gap: '0.5rem', // Adjust gap as needed
+    gridTemplateRows: \`repeat(\${rows}, minmax(0, 1fr))\`,
+    gridTemplateColumns: \`repeat(\${cols}, minmax(0, 1fr))\`,
+    gap: '0.5rem', 
   };
 
   return (
     <div
-      className={cn("aspect-video w-full max-w-md rounded-lg border-2 border-gold p-2 shadow-xl bg-black/30 backdrop-blur-sm", className)}
+      className={cn(
+        "aspect-video w-full max-w-md rounded-lg border-2 border-border p-2 shadow-xl bg-card/50 backdrop-blur-sm", 
+        className
+      )}
       style={gridStyle}
     >
       {children}
