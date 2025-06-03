@@ -10,13 +10,14 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { LogIn, UserPlus, ShieldAlert } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
 import React from 'react';
+import { useRouter } from 'next/navigation';
 
 export default function LoginPage() {
   const { toast } = useToast();
+  const router = useRouter();
 
   const handleLogin = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    // Basic login logic (mock)
     const formData = new FormData(event.currentTarget);
     const email = formData.get('email') as string;
     const password = formData.get('password') as string;
@@ -30,12 +31,18 @@ export default function LoginPage() {
       return;
     }
 
-    // Mock login success
+    // Mock login success & role check
     toast({
       title: "Login Successful",
       description: `Welcome back! (Mock login for ${email})`,
     });
-    // In a real app, you'd redirect or set auth state here
+
+    // Redirect based on role (using mock emails)
+    if (email === 'admin@royalcasino.dev') {
+      router.push('/admin');
+    } else {
+      router.push('/games');
+    }
   };
 
   return (
