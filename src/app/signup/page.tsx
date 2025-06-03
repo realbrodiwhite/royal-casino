@@ -8,27 +8,60 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { UserPlus } from 'lucide-react';
+import { UserPlus, RotateCw } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
-import React from 'react';
+import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '@/lib/firebase'; // Import Firebase auth instance
 
 export default function SignupPage() {
   const { toast } = useToast();
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
 
-  const handleSignup = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSignup = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    // In a real app, you would handle form submission, validation, and API calls here.
-    // For now, we'll just show a success toast and redirect.
-    const formData = new FormData(event.currentTarget);
-    const email = formData.get('email') as string;
+    setIsLoading(true);
 
-    toast({
-      title: "Signup Successful (Mock)",
-      description: `Welcome, ${email}! Your account has been created.`,
-    });
-    router.push('/lobby'); // Redirect to game lobby after mock signup
+    if (password !== confirmPassword) {
+      toast({
+        title: "Signup Error",
+        description: "Passwords do not match.",
+        variant: "destructive",
+      });
+      setIsLoading(false);
+      return;
+    }
+
+    try {
+      await createUserWithEmailAndPassword(auth, email, password);
+      toast({
+        title: "Signup Successful",
+        description: `Welcome, ${email}! Your account has been created.`,
+      });
+      router.push('/lobby'); // Redirect to game lobby after signup
+    } catch (error: any) {
+      let errorMessage = "An unexpected error occurred. Please try again.";
+      if (error.code === 'auth/email-already-in-use') {
+        errorMessage = 'This email address is already in use.';
+      } else if (error.code === 'auth/weak-password') {
+        errorMessage = 'The password is too weak. Please choose a stronger password.';
+      } else if (error.code === 'auth/invalid-email') {
+        errorMessage = 'The email address is not valid.';
+      }
+      console.error("Firebase Signup Error:", error);
+      toast({
+        title: "Signup Error",
+        description: errorMessage,
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -53,6 +86,9 @@ export default function SignupPage() {
                   type="email"
                   placeholder="you@example.com"
                   required
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  disabled={isLoading}
                   className="bg-deep-purple/50 border-gold text-silver placeholder:text-silver/60 focus:ring-gold"
                 />
               </div>
@@ -64,6 +100,9 @@ export default function SignupPage() {
                   type="password"
                   placeholder="••••••••"
                   required
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  disabled={isLoading}
                   className="bg-deep-purple/50 border-gold text-silver placeholder:text-silver/60 focus:ring-gold"
                 />
               </div>
@@ -75,11 +114,15 @@ export default function SignupPage() {
                   type="password"
                   placeholder="••••••••"
                   required
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  disabled={isLoading}
                   className="bg-deep-purple/50 border-gold text-silver placeholder:text-silver/60 focus:ring-gold"
                 />
               </div>
-              <Button type="submit" className="w-full bg-gold text-deep-purple hover:bg-gold/90 font-semibold py-3">
-                Sign Up
+              <Button type="submit" className="w-full bg-gold text-deep-purple hover:bg-gold/90 font-semibold py-3" disabled={isLoading}>
+                {isLoading ? <RotateCw className="mr-2 h-4 w-4 animate-spin" /> : null}
+                {isLoading ? 'Signing Up...' : 'Sign Up'}
               </Button>
             </form>
           </CardContent>
