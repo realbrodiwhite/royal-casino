@@ -45,7 +45,7 @@ export default function Navbar() {
             </a>
           </Link>
           <div className="hidden md:flex items-center space-x-2">
-            <NavLink href="/lobby" icon={<Gamepad2 />}>Lobby</NavLink>
+            <NavLink href="/lobby" icon={<Gamepad2 />}>Game Lobby</NavLink>
             <NavLink href="/profile" icon={<UserCircle />}>Profile</NavLink>
             <NavLink href="/leaderboards" icon={<BarChart3 />}>Leaderboards</NavLink>
             <NavLink href="/admin" icon={<Shield />}>Admin</NavLink>
