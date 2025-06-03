@@ -30,13 +30,13 @@ export default function LandingPage() {
                 </h2>
                 <p className="text-lg md:text-xl text-silver mt-2">Double Your First Credit Purchase <span className="font-bold text-gold">Up To $20!</span></p>
             </div>
-            <div className="space-y-4 sm:space-y-0 sm:space-x-4">
-              <Link href="/signup">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-8">
+              <Link href="/signup" passHref>
                 <Button size="lg" className="bg-gold text-deep-purple hover:bg-gold/90 font-semibold px-8 py-3 text-lg w-full sm:w-auto">
                   Sign Up & Claim Offer
                 </Button>
               </Link>
-              <Link href="/login">
+              <Link href="/login" passHref>
                 <Button variant="outline" size="lg" className="border-gold text-gold hover:bg-gold/10 font-semibold px-8 py-3 text-lg w-full sm:w-auto">
                   Login
                 </Button>
@@ -118,7 +118,7 @@ export default function LandingPage() {
             <p className="text-xl text-silver mb-8 max-w-2xl mx-auto">
               Join thousands of players, compete on the leaderboards, and discover your new favorite games!
             </p>
-            <Link href="/lobby">
+            <Link href="/lobby" passHref>
               <Button size="lg" className="bg-gold text-deep-purple hover:bg-gold/90 font-semibold px-10 py-4 text-lg">
                 Explore the Game Lobby
               </Button>
