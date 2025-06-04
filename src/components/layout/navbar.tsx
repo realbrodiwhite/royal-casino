@@ -40,8 +40,8 @@ export default function Navbar() {
         <div className="flex items-center justify-between h-14">
           <Link href="/" legacyBehavior>
             <a className="flex items-center text-primary hover:text-primary/90 transition-colors">
-              <div className="bg-primary rounded-full p-0.5 mr-1.5 flex items-center justify-center shadow-sm">
-                <Crown className="h-4 w-4 text-primary-foreground" />
+              <div className="border border-primary rounded-full p-0.5 mr-1 flex items-center justify-center bg-transparent">
+                <Crown className="h-4 w-4 text-primary" />
               </div>
               <span className="text-base font-headline font-bold">Royal Casino</span>
             </a>
