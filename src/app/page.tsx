@@ -4,7 +4,7 @@
 import Link from 'next/link';
 import Navbar from '@/components/layout/navbar';
 import { Button } from '@/components/ui/button';
-import { Crown, Gem, ShieldCheck, Coins, DollarSign, Sparkles } from 'lucide-react';
+import { Crown, Gem, ShieldCheck, Coins, DollarSign, Sparkles, Globe } from 'lucide-react';
 import Image from 'next/image';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import LuxuryExperienceIcon from '@/components/game/category-icons/LuxuryExperienceIcon';
@@ -82,6 +82,7 @@ export default function LandingPage() {
 
         <section className="py-12 sm:py-16 bg-background">
           <div className="container mx-auto px-4">
+            <Globe className="mx-auto h-12 w-12 sm:h-16 sm:w-16 text-primary mb-4 sm:mb-6" />
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold font-headline text-primary mb-10 sm:mb-12 text-center">Step Into Our World of Games</h2>
             <p className="text-lg sm:text-xl text-muted-foreground mb-8 sm:mb-10 text-center max-w-lg sm:max-w-xl md:max-w-2xl mx-auto px-2">
               From the fast-paced thrill of the slots to the strategic depths of table games, your next favorite game awaits.
