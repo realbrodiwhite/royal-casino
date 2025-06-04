@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Crown, Gem, ShieldCheck, Coins, DollarSign, Dice5, Rows, Puzzle, Sparkles } from 'lucide-react';
 import Image from 'next/image';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import LuxuryExperienceIcon from '@/components/game/category-icons/LuxuryExperienceIcon';
 
 export default function LandingPage() {
   return (
@@ -66,7 +67,7 @@ export default function LandingPage() {
                 description="Boost your play with daily free credits, exciting promotions, and loyalty bonuses."
               />
               <FeatureCard
-                image={{ src: "/images/general-art/casino-lounge.svg", alt: "Luxury Casino Experience" }}
+                icon={<LuxuryExperienceIcon />}
                 title="Luxury Experience"
                 description="Immerse yourself in our opulent casino atmosphere, designed for premium entertainment."
               />
@@ -144,7 +145,7 @@ const FeatureCard: React.FC<FeatureCardProps> = ({ icon, image, title, descripti
       <Image
         src={image.src}
         alt={image.alt}
-        width={300} 
+        width={300}
         height={200}
         className="rounded-md mb-3 sm:mb-4 object-cover w-full h-32 sm:h-40"
       />
