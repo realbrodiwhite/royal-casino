@@ -8,7 +8,8 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { useToast } from "@/hooks/use-toast";
-import { Coins, UserCog, BarChart2, Brain, Settings2, UsersRound, Percent, Search } from 'lucide-react';
+import { Coins, UserCog, BarChart2, Brain, Settings, UsersRound, Percent, Search, BarChartHorizontalBig, LineChart } from 'lucide-react';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 import {
   SidebarProvider,
@@ -21,7 +22,7 @@ import {
   SidebarMenuButton,
 } from '@/components/ui/sidebar';
 
-type AdminView = 'userManagement' | 'gameSettingsRTP' | 'gameAnalytics' | 'userAnalytics' | 'aiTools';
+type AdminView = 'userManagement' | 'analytics' | 'settings' | 'aiTools';
 
 interface GameSetting {
   id: string;
@@ -40,7 +41,7 @@ const initialGameSettings: GameSetting[] = [
 ];
 
 export default function AdminDashboardPage() {
-  const [activeView, setActiveView] = useState<AdminView>('userManagement');
+  const [activeView, setActiveView] = useState<AdminView>('analytics');
   const [userId, setUserId] = useState('');
   const [creditAmount, setCreditAmount] = useState('');
   const { toast } = useToast();
@@ -114,49 +115,131 @@ export default function AdminDashboardPage() {
     switch (activeView) {
       case 'userManagement':
         return (
-          <Card className="bg-card border-border">
-            <CardHeader>
-              <CardTitle className="text-primary flex items-center text-xl sm:text-2xl">
-                <UserCog className="mr-2 h-5 w-5 sm:h-6 sm:w-6" /> User Credit Management
-              </CardTitle>
-              <CardDescription className="text-muted-foreground text-sm sm:text-base">
-                Add or set credits for a user.
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="userId" className="text-foreground">User ID</Label>
-                <Input
-                  id="userId" type="text" placeholder="Enter user ID" value={userId}
-                  onChange={(e) => setUserId(e.target.value)}
-                  className="bg-input border-border text-foreground placeholder:text-muted-foreground"
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="creditAmount" className="text-foreground">Credit Amount</Label>
-                <Input
-                  id="creditAmount" type="number" placeholder="Enter amount" value={creditAmount}
-                  onChange={(e) => setCreditAmount(e.target.value)}
-                  className="bg-input border-border text-foreground placeholder:text-muted-foreground"
-                />
-              </div>
-            </CardContent>
-            <CardFooter className="flex flex-col sm:flex-row justify-end gap-2">
-              <Button onClick={handleAddCredits} variant="outline" className="w-full sm:w-auto">
-                <Coins className="mr-2 h-4 w-4"/> Add Credits
-              </Button>
-              <Button onClick={handleSetCredits} variant="default" className="w-full sm:w-auto">
-                Set Credits
-              </Button>
-            </CardFooter>
-          </Card>
+            <Tabs defaultValue="creditManagement" className="w-full">
+              <TabsList className="grid w-full grid-cols-2 mb-4 sm:mb-6">
+                <TabsTrigger value="creditManagement">Credit Management</TabsTrigger>
+                <TabsTrigger value="accountActions">Account Actions</TabsTrigger>
+              </TabsList>
+              <TabsContent value="creditManagement">
+                <Card className="bg-card border-border">
+                  <CardHeader>
+                    <CardTitle className="text-primary flex items-center text-xl sm:text-2xl">
+                      <UserCog className="mr-2 h-5 w-5 sm:h-6 sm:w-6" /> User Credit Management
+                    </CardTitle>
+                    <CardDescription className="text-muted-foreground text-sm sm:text-base">
+                      Add or set credits for a user.
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="userId" className="text-foreground">User ID</Label>
+                      <Input
+                        id="userId" type="text" placeholder="Enter user ID" value={userId}
+                        onChange={(e) => setUserId(e.target.value)}
+                        className="bg-input border-border text-foreground placeholder:text-muted-foreground"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="creditAmount" className="text-foreground">Credit Amount</Label>
+                      <Input
+                        id="creditAmount" type="number" placeholder="Enter amount" value={creditAmount}
+                        onChange={(e) => setCreditAmount(e.target.value)}
+                        className="bg-input border-border text-foreground placeholder:text-muted-foreground"
+                      />
+                    </div>
+                  </CardContent>
+                  <CardFooter className="flex flex-col sm:flex-row justify-end gap-2">
+                    <Button onClick={handleAddCredits} variant="outline" className="w-full sm:w-auto">
+                      <Coins className="mr-2 h-4 w-4"/> Add Credits
+                    </Button>
+                    <Button onClick={handleSetCredits} variant="default" className="w-full sm:w-auto">
+                      Set Credits
+                    </Button>
+                  </CardFooter>
+                </Card>
+              </TabsContent>
+              <TabsContent value="accountActions">
+                <Card className="bg-card border-border">
+                  <CardHeader>
+                    <CardTitle className="text-primary flex items-center text-xl sm:text-2xl">
+                      <UserCog className="mr-2 h-5 w-5 sm:h-6 sm:w-6" /> User Account Actions
+                    </CardTitle>
+                    <CardDescription className="text-muted-foreground text-sm sm:text-base">
+                      Manage user accounts (e.g., view details, ban, etc.). (Coming Soon)
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <p className="text-foreground">Functionality to view user details, ban users, reset passwords (if applicable), etc., will be available here.</p>
+                    <div className="flex items-center gap-2">
+                        <Input type="text" placeholder="Search User ID or Email..." className="bg-input border-border text-foreground placeholder:text-muted-foreground"/>
+                        <Button variant="outline"><Search className="h-4 w-4"/></Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              </TabsContent>
+            </Tabs>
         );
-      case 'gameSettingsRTP':
+      case 'analytics':
         return (
           <Card className="bg-card border-border">
             <CardHeader>
               <CardTitle className="text-primary flex items-center text-xl sm:text-2xl">
-                <Settings2 className="mr-2 h-5 w-5 sm:h-6 sm:w-6" /> Game Settings & RTP
+                <LineChart className="mr-2 h-5 w-5 sm:h-6 sm:w-6" /> Analytics Dashboard
+              </CardTitle>
+              <CardDescription className="text-muted-foreground text-sm sm:text-base">
+                Explore game and user performance metrics.
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <Tabs defaultValue="gameAnalytics" className="w-full">
+                <TabsList className="grid w-full grid-cols-2 mb-4">
+                  <TabsTrigger value="gameAnalytics">Game Analytics</TabsTrigger>
+                  <TabsTrigger value="userAnalytics">User Analytics</TabsTrigger>
+                </TabsList>
+                <TabsContent value="gameAnalytics" className="mt-2">
+                  <Card className="bg-card border-border/50">
+                    <CardHeader>
+                      <CardTitle className="text-primary flex items-center text-lg sm:text-xl">
+                        <BarChart2 className="mr-2 h-4 w-4 sm:h-5 sm:w-5" /> Game Performance
+                      </CardTitle>
+                      <CardDescription className="text-muted-foreground text-xs sm:text-sm">
+                        View game performance, popularity, and detailed statistics. (Coming Soon)
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="text-foreground">Detailed game analytics, charts, and reports will be available here.</p>
+                    </CardContent>
+                  </Card>
+                </TabsContent>
+                <TabsContent value="userAnalytics" className="mt-2">
+                   <Card className="bg-card border-border/50">
+                    <CardHeader>
+                      <CardTitle className="text-primary flex items-center text-lg sm:text-xl">
+                        <UsersRound className="mr-2 h-4 w-4 sm:h-5 sm:w-5" /> User Insights
+                      </CardTitle>
+                      <CardDescription className="text-muted-foreground text-xs sm:text-sm">
+                        Analyze user behavior, demographics, and engagement. (Coming Soon)
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                        <div className="flex items-center gap-2">
+                            <Input type="text" placeholder="Search User ID or Email..." className="bg-input border-border text-foreground placeholder:text-muted-foreground"/>
+                            <Button variant="outline"><Search className="h-4 w-4"/></Button>
+                        </div>
+                      <p className="text-foreground">Detailed user statistics, search functionality, and behavioral analytics will be integrated here.</p>
+                    </CardContent>
+                  </Card>
+                </TabsContent>
+              </Tabs>
+            </CardContent>
+          </Card>
+        );
+      case 'settings':
+        return (
+          <Card className="bg-card border-border">
+            <CardHeader>
+              <CardTitle className="text-primary flex items-center text-xl sm:text-2xl">
+                <Settings className="mr-2 h-5 w-5 sm:h-6 sm:w-6" /> Game Settings & RTP
               </CardTitle>
               <CardDescription className="text-muted-foreground text-sm sm:text-base">
                 Modify the Return-To-Player (RTP) for each game.
@@ -195,43 +278,6 @@ export default function AdminDashboardPage() {
             </CardFooter>
           </Card>
         );
-      case 'gameAnalytics':
-        return (
-          <Card className="bg-card border-border">
-            <CardHeader>
-              <CardTitle className="text-primary flex items-center text-xl sm:text-2xl">
-                <BarChart2 className="mr-2 h-5 w-5 sm:h-6 sm:w-6" /> Game Analytics
-              </CardTitle>
-              <CardDescription className="text-muted-foreground text-sm sm:text-base">
-                View game performance, popularity, and detailed statistics. (Coming Soon)
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <p className="text-foreground">Detailed game analytics, charts, and reports will be available here. Use 'Game Settings' to adjust RTP.</p>
-              {/* Placeholder for future charts or data tables */}
-            </CardContent>
-          </Card>
-        );
-      case 'userAnalytics':
-        return (
-          <Card className="bg-card border-border">
-            <CardHeader>
-              <CardTitle className="text-primary flex items-center text-xl sm:text-2xl">
-                <UsersRound className="mr-2 h-5 w-5 sm:h-6 sm:w-6" /> User Analytics
-              </CardTitle>
-              <CardDescription className="text-muted-foreground text-sm sm:text-base">
-                Analyze user behavior, demographics, and engagement. (Coming Soon)
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-                <div className="flex items-center gap-2">
-                    <Input type="text" placeholder="Search User ID or Email..." className="bg-input border-border text-foreground placeholder:text-muted-foreground"/>
-                    <Button variant="outline"><Search className="h-4 w-4"/></Button>
-                </div>
-              <p className="text-foreground">Detailed user statistics, search functionality, and behavioral analytics will be integrated here.</p>
-            </CardContent>
-          </Card>
-        );
       case 'aiTools':
         return (
           <Card className="bg-card border-border">
@@ -262,44 +308,34 @@ export default function AdminDashboardPage() {
           <Sidebar collapsible="icon" variant="sidebar" className="border-r border-sidebar-border bg-sidebar text-sidebar-foreground">
             <SidebarContent className="p-2">
               <SidebarMenu>
+                 <SidebarMenuItem>
+                  <SidebarMenuButton
+                    isActive={activeView === 'analytics'}
+                    onClick={() => setActiveView('analytics')}
+                    tooltip="Analytics Dashboard"
+                  >
+                    <LineChart />
+                    <span>Analytics</span>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
                 <SidebarMenuItem>
                   <SidebarMenuButton
                     isActive={activeView === 'userManagement'}
                     onClick={() => setActiveView('userManagement')}
-                    tooltip="User Credit Management"
+                    tooltip="User Management"
                   >
                     <UserCog />
-                    <span>User Credits</span>
+                    <span>User Management</span>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
                 <SidebarMenuItem>
                   <SidebarMenuButton
-                    isActive={activeView === 'gameSettingsRTP'}
-                    onClick={() => setActiveView('gameSettingsRTP')}
+                    isActive={activeView === 'settings'}
+                    onClick={() => setActiveView('settings')}
                     tooltip="Game Settings & RTP"
                   >
-                    <Settings2 />
-                    <span>Game Settings</span>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-                <SidebarMenuItem>
-                  <SidebarMenuButton
-                    isActive={activeView === 'gameAnalytics'}
-                    onClick={() => setActiveView('gameAnalytics')}
-                    tooltip="Game Analytics"
-                  >
-                    <BarChart2 />
-                    <span>Game Analytics</span>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-                 <SidebarMenuItem>
-                  <SidebarMenuButton
-                    isActive={activeView === 'userAnalytics'}
-                    onClick={() => setActiveView('userAnalytics')}
-                    tooltip="User Analytics"
-                  >
-                    <UsersRound />
-                    <span>User Analytics</span>
+                    <Settings />
+                    <span>Settings</span>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
                 <SidebarMenuItem>
