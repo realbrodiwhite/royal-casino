@@ -61,6 +61,8 @@ const themeImagePaths: Record<string, string> = {
   'horrific-halloween': '/images/theme-art/horrific-halloween-theme.svg',
 };
 
+type CellCoordinate = [number, number];
+
 export default function SlotsPage() {
   const [selectedTheme, setSelectedTheme] = useState<SlotGameThemeConfig | null>(null);
   
@@ -127,12 +129,14 @@ export default function SlotsPage() {
   const [isWin, setIsWin] = useState<boolean | null>(null);
   const [winAmount, setWinAmount] = useState(0);
   const [showWinAnimation, setShowWinAnimation] = useState(false);
+  const [highlightedWinningCells, setHighlightedWinningCells] = useState<CellCoordinate[]>([]);
 
   const spinCost = 10;
 
   useEffect(() => {
     if (selectedTheme) {
       setReels(initialReels(selectedTheme.grid.rows, selectedTheme.grid.cols));
+      setHighlightedWinningCells([]);
     }
   }, [selectedTheme, initialReels]);
 
@@ -140,9 +144,9 @@ export default function SlotsPage() {
     finalReels: SymbolData[][],
     theme: SlotGameThemeConfig,
     betAmount: number
-  ): { totalWinAmount: number; winDetails: Array<{ paylineIndex: number; symbolId: string; count: number; amount: number; line: Array<[number,number]> }> } => {
+  ): { totalWinAmount: number; winDetails: Array<{ paylineIndex: number; symbolId: string; count: number; amount: number; line: Array<CellCoordinate> }> } => {
     let totalWinAmount = 0;
-    const winDetails: Array<{ paylineIndex: number; symbolId: string; count: number; amount: number; line: Array<[number,number]> }> = [];
+    const winDetails: Array<{ paylineIndex: number; symbolId: string; count: number; amount: number; line: Array<CellCoordinate> }> = [];
 
     if (!theme.paylines || !theme.paytable) {
       console.warn("Paylines or paytable not defined for the theme.");
@@ -195,7 +199,7 @@ export default function SlotsPage() {
               symbolId: firstSymbolId,
               count: paidMatchCount,
               amount: winAmountForPayline,
-              line: payline
+              line: payline.slice(0, paidMatchCount) as CellCoordinate[] // Only highlight the matched part of the line
             });
           }
         }
@@ -208,6 +212,7 @@ export default function SlotsPage() {
 
   const handleSpin = useCallback(() => {
     setShowWinAnimation(false); 
+    setHighlightedWinningCells([]);
 
     if (!selectedTheme) return;
 
@@ -253,9 +258,21 @@ export default function SlotsPage() {
           setCredits((prev) => prev + totalWinAmount);
           setWinAmount(totalWinAmount);
           setShowWinAnimation(true);
+
+          const allWinningCells: CellCoordinate[] = [];
+          winDetails.forEach(detail => {
+            detail.line.forEach(coord => {
+              if (!allWinningCells.find(c => c[0] === coord[0] && c[1] === coord[1])) {
+                allWinningCells.push(coord);
+              }
+            });
+          });
+          setHighlightedWinningCells(allWinningCells);
+
         } else {
           setResultsMessage("No win this time. Try again!");
           setIsWin(false);
+          setHighlightedWinningCells([]);
         }
       }
     }, 100);
@@ -289,6 +306,7 @@ export default function SlotsPage() {
 
   const handleWinAnimationComplete = () => {
     setShowWinAnimation(false);
+    setHighlightedWinningCells([]);
   };
 
   const handleThemeSelect = (theme: SlotGameThemeConfig) => {
@@ -298,6 +316,7 @@ export default function SlotsPage() {
     setIsWin(null);
     setShowWinAnimation(false);
     setWinAmount(0);
+    setHighlightedWinningCells([]);
     // Reels will be re-initialized by the useEffect watching selectedTheme
   };
 
@@ -363,14 +382,22 @@ export default function SlotsPage() {
 
         {availableSymbolsWithData.length > 0 ? (
           <GameGrid rows={rows} cols={cols} className={selectedTheme.backgroundAsset}>
-            {reels.flat().map((symbolData, index) => (
-              <GridBox
-                key={index}
-                className={spinning ? 'animate-pulse' : ''}
-              >
-                <symbolData.component className="w-12 h-12 xs:w-14 xs:h-14 sm:w-16 sm:h-16 md:w-20 md:h-20 p-1" />
-              </GridBox>
-            ))}
+            {reels.flat().map((symbolData, index) => {
+              const rowIndex = Math.floor(index / cols);
+              const colIndex = index % cols;
+              const isWinning = showWinAnimation && highlightedWinningCells.some(
+                cell => cell[0] === rowIndex && cell[1] === colIndex
+              );
+              return (
+                <GridBox
+                  key={index}
+                  className={spinning ? 'animate-pulse' : ''}
+                  isWinningCell={isWinning}
+                >
+                  <symbolData.component className="w-12 h-12 xs:w-14 xs:h-14 sm:w-16 sm:h-16 md:w-20 md:h-20 p-1" />
+                </GridBox>
+              );
+            })}
           </GameGrid>
         ) : (
           <div className="text-center text-destructive p-4 border border-destructive rounded-md bg-destructive/10">
@@ -415,3 +442,4 @@ export default function SlotsPage() {
     </div>
   );
 }
+
