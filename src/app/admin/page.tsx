@@ -1,14 +1,14 @@
 
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Navbar from '@/components/layout/navbar';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { useToast } from "@/hooks/use-toast";
-import { Coins, UserCog, BarChart2, Brain } from 'lucide-react';
+import { Coins, UserCog, BarChart2, Brain, Settings2, UsersRound, Percent, Search } from 'lucide-react';
 
 import {
   SidebarProvider,
@@ -21,7 +21,23 @@ import {
   SidebarMenuButton,
 } from '@/components/ui/sidebar';
 
-type AdminView = 'userManagement' | 'gameStats' | 'aiTools';
+type AdminView = 'userManagement' | 'gameSettingsRTP' | 'gameAnalytics' | 'userAnalytics' | 'aiTools';
+
+interface GameSetting {
+  id: string;
+  name: string;
+  currentRTP: number;
+}
+
+const initialGameSettings: GameSetting[] = [
+  { id: 'classic-slots', name: 'Classic Fruit Slots', currentRTP: 96.5 },
+  { id: 'vegas-adventure', name: 'Vegas Adventure Slots', currentRTP: 95.8 },
+  { id: 'horrific-halloween', name: 'Horrific Halloween Slots', currentRTP: 96.1 },
+  { id: 'video-poker', name: 'Video Poker', currentRTP: 97.2 },
+  { id: 'bingo', name: 'Bingo', currentRTP: 90.0 },
+  { id: 'coin-flip', name: 'Coin Flip', currentRTP: 99.0 },
+  { id: 'scratchers', name: 'Scratchers', currentRTP: 85.0 },
+];
 
 export default function AdminDashboardPage() {
   const [activeView, setActiveView] = useState<AdminView>('userManagement');
@@ -29,59 +45,70 @@ export default function AdminDashboardPage() {
   const [creditAmount, setCreditAmount] = useState('');
   const { toast } = useToast();
 
+  const [gameSettings, setGameSettings] = useState<GameSetting[]>(initialGameSettings);
+  const [rtpInputs, setRtpInputs] = useState<Record<string, string>>({});
+
+  useEffect(() => {
+    const initialRtpInputs: Record<string, string> = {};
+    gameSettings.forEach(game => {
+      initialRtpInputs[game.id] = game.currentRTP.toString();
+    });
+    setRtpInputs(initialRtpInputs);
+  }, [gameSettings]);
+
   const handleAddCredits = () => {
     if (!userId || !creditAmount) {
-      toast({
-        title: "Error",
-        description: "Please enter both User ID and Credit Amount.",
-        variant: "destructive",
-      });
+      toast({ title: "Error", description: "Please enter User ID and Credit Amount.", variant: "destructive" });
       return;
     }
     const amount = parseInt(creditAmount);
     if (isNaN(amount) || amount <= 0) {
-      toast({
-        title: "Error",
-        description: "Please enter a valid positive credit amount.",
-        variant: "destructive",
-      });
+      toast({ title: "Error", description: "Please enter a valid positive credit amount.", variant: "destructive" });
       return;
     }
     console.log(`Adding ${amount} credits to user ${userId}`);
-    toast({
-      title: "Success",
-      description: `Successfully added ${amount} credits to user ${userId}. (Mock Action)`,
-    });
+    toast({ title: "Success", description: `Successfully added ${amount} credits to user ${userId}. (Mock Action)` });
     setUserId('');
     setCreditAmount('');
   };
 
   const handleSetCredits = () => {
     if (!userId || creditAmount === '') {
-      toast({
-        title: "Error",
-        description: "Please enter both User ID and Credit Amount.",
-        variant: "destructive",
-      });
+      toast({ title: "Error", description: "Please enter User ID and Credit Amount.", variant: "destructive" });
       return;
     }
     const amount = parseInt(creditAmount);
     if (isNaN(amount) || amount < 0) {
-      toast({
-        title: "Error",
-        description: "Please enter a valid non-negative credit amount.",
-        variant: "destructive",
-      });
+      toast({ title: "Error", description: "Please enter a valid non-negative credit amount.", variant: "destructive" });
       return;
     }
     console.log(`Setting credits for user ${userId} to ${amount}`);
-    toast({
-      title: "Success",
-      description: `Successfully set credits for user ${userId} to ${amount}. (Mock Action)`,
-    });
+    toast({ title: "Success", description: `Successfully set credits for user ${userId} to ${amount}. (Mock Action)` });
     setUserId('');
     setCreditAmount('');
   };
+
+  const handleRtpInputChange = (gameId: string, value: string) => {
+    setRtpInputs(prev => ({ ...prev, [gameId]: value }));
+  };
+
+  const handleUpdateRtp = (gameId: string) => {
+    const newRtpString = rtpInputs[gameId];
+    const newRtp = parseFloat(newRtpString);
+
+    if (isNaN(newRtp) || newRtp < 0 || newRtp > 100) {
+      toast({ title: "Error", description: "Please enter a valid RTP between 0 and 100.", variant: "destructive" });
+      return;
+    }
+
+    setGameSettings(prevSettings =>
+      prevSettings.map(game =>
+        game.id === gameId ? { ...game, currentRTP: newRtp } : game
+      )
+    );
+    toast({ title: "RTP Updated (Mock)", description: `RTP for game ${gameSettings.find(g => g.id === gameId)?.name} set to ${newRtp}%.` });
+  };
+
 
   const renderContent = () => {
     switch (activeView) {
@@ -100,10 +127,7 @@ export default function AdminDashboardPage() {
               <div className="space-y-2">
                 <Label htmlFor="userId" className="text-foreground">User ID</Label>
                 <Input
-                  id="userId"
-                  type="text"
-                  placeholder="Enter user ID"
-                  value={userId}
+                  id="userId" type="text" placeholder="Enter user ID" value={userId}
                   onChange={(e) => setUserId(e.target.value)}
                   className="bg-input border-border text-foreground placeholder:text-muted-foreground"
                 />
@@ -111,10 +135,7 @@ export default function AdminDashboardPage() {
               <div className="space-y-2">
                 <Label htmlFor="creditAmount" className="text-foreground">Credit Amount</Label>
                 <Input
-                  id="creditAmount"
-                  type="number"
-                  placeholder="Enter amount"
-                  value={creditAmount}
+                  id="creditAmount" type="number" placeholder="Enter amount" value={creditAmount}
                   onChange={(e) => setCreditAmount(e.target.value)}
                   className="bg-input border-border text-foreground placeholder:text-muted-foreground"
                 />
@@ -130,17 +151,84 @@ export default function AdminDashboardPage() {
             </CardFooter>
           </Card>
         );
-      case 'gameStats':
+      case 'gameSettingsRTP':
         return (
           <Card className="bg-card border-border">
             <CardHeader>
-              <CardTitle className="text-primary flex items-center text-xl sm:text-2xl"><BarChart2 className="mr-2 h-5 w-5 sm:h-6 sm:w-6" />Game Stats Analysis</CardTitle>
+              <CardTitle className="text-primary flex items-center text-xl sm:text-2xl">
+                <Settings2 className="mr-2 h-5 w-5 sm:h-6 sm:w-6" /> Game Settings & RTP
+              </CardTitle>
               <CardDescription className="text-muted-foreground text-sm sm:text-base">
-                View game performance and RTP. (Coming Soon)
+                Modify the Return-To-Player (RTP) for each game.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              {gameSettings.map(game => (
+                <div key={game.id} className="p-4 border border-border/50 rounded-md bg-background/30">
+                  <h3 className="text-lg font-semibold text-primary mb-2">{game.name}</h3>
+                  <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
+                    <div className="flex-1 space-y-1">
+                      <Label htmlFor={`rtp-${game.id}`} className="text-foreground">Current RTP: {game.currentRTP}%</Label>
+                      <div className="flex items-center">
+                        <Input
+                          id={`rtp-${game.id}`}
+                          type="number"
+                          step="0.1"
+                          min="0"
+                          max="100"
+                          value={rtpInputs[game.id] || ''}
+                          onChange={(e) => handleRtpInputChange(game.id, e.target.value)}
+                          className="bg-input border-border text-foreground placeholder:text-muted-foreground w-32"
+                        />
+                        <Percent className="ml-2 h-4 w-4 text-muted-foreground" />
+                      </div>
+                    </div>
+                    <Button onClick={() => handleUpdateRtp(game.id)} variant="secondary" size="sm" className="mt-2 sm:mt-0 self-start sm:self-center">
+                      Update RTP
+                    </Button>
+                  </div>
+                </div>
+              ))}
+            </CardContent>
+             <CardFooter>
+                <p className="text-xs text-muted-foreground">Changes are mock and not persisted.</p>
+            </CardFooter>
+          </Card>
+        );
+      case 'gameAnalytics':
+        return (
+          <Card className="bg-card border-border">
+            <CardHeader>
+              <CardTitle className="text-primary flex items-center text-xl sm:text-2xl">
+                <BarChart2 className="mr-2 h-5 w-5 sm:h-6 sm:w-6" /> Game Analytics
+              </CardTitle>
+              <CardDescription className="text-muted-foreground text-sm sm:text-base">
+                View game performance, popularity, and detailed statistics. (Coming Soon)
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <p className="text-foreground">Detailed game analytics will be available here.</p>
+              <p className="text-foreground">Detailed game analytics, charts, and reports will be available here. Use 'Game Settings' to adjust RTP.</p>
+              {/* Placeholder for future charts or data tables */}
+            </CardContent>
+          </Card>
+        );
+      case 'userAnalytics':
+        return (
+          <Card className="bg-card border-border">
+            <CardHeader>
+              <CardTitle className="text-primary flex items-center text-xl sm:text-2xl">
+                <UsersRound className="mr-2 h-5 w-5 sm:h-6 sm:w-6" /> User Analytics
+              </CardTitle>
+              <CardDescription className="text-muted-foreground text-sm sm:text-base">
+                Analyze user behavior, demographics, and engagement. (Coming Soon)
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+                <div className="flex items-center gap-2">
+                    <Input type="text" placeholder="Search User ID or Email..." className="bg-input border-border text-foreground placeholder:text-muted-foreground"/>
+                    <Button variant="outline"><Search className="h-4 w-4"/></Button>
+                </div>
+              <p className="text-foreground">Detailed user statistics, search functionality, and behavioral analytics will be integrated here.</p>
             </CardContent>
           </Card>
         );
@@ -148,13 +236,16 @@ export default function AdminDashboardPage() {
         return (
           <Card className="bg-card border-border">
             <CardHeader>
-              <CardTitle className="text-primary flex items-center text-xl sm:text-2xl"><Brain className="mr-2 h-5 w-5 sm:h-6 sm:w-6" />AI Pattern Recognition</CardTitle>
+              <CardTitle className="text-primary flex items-center text-xl sm:text-2xl">
+                <Brain className="mr-2 h-5 w-5 sm:h-6 sm:w-6" /> AI Pattern Recognition
+              </CardTitle>
               <CardDescription className="text-muted-foreground text-sm sm:text-base">
-                Analyze player patterns. (Coming Soon)
+                Analyze player patterns using AI to enhance game profitability and enjoyment. (Coming Soon)
               </CardDescription>
             </CardHeader>
-            <CardContent>
-              <p className="text-foreground">AI tools for analyzing game data will be integrated here.</p>
+            <CardContent className="space-y-4">
+              <p className="text-foreground">AI tools for analyzing game data and player behavior will be integrated here.</p>
+              <Button variant="default" disabled>Run Player Pattern Analysis (Mock)</Button>
             </CardContent>
           </Card>
         );
@@ -175,20 +266,40 @@ export default function AdminDashboardPage() {
                   <SidebarMenuButton
                     isActive={activeView === 'userManagement'}
                     onClick={() => setActiveView('userManagement')}
-                    tooltip="User Management"
+                    tooltip="User Credit Management"
                   >
                     <UserCog />
-                    <span>User Management</span>
+                    <span>User Credits</span>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
                 <SidebarMenuItem>
                   <SidebarMenuButton
-                    isActive={activeView === 'gameStats'}
-                    onClick={() => setActiveView('gameStats')}
-                    tooltip="Game Stats"
+                    isActive={activeView === 'gameSettingsRTP'}
+                    onClick={() => setActiveView('gameSettingsRTP')}
+                    tooltip="Game Settings & RTP"
+                  >
+                    <Settings2 />
+                    <span>Game Settings</span>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+                <SidebarMenuItem>
+                  <SidebarMenuButton
+                    isActive={activeView === 'gameAnalytics'}
+                    onClick={() => setActiveView('gameAnalytics')}
+                    tooltip="Game Analytics"
                   >
                     <BarChart2 />
-                    <span>Game Stats</span>
+                    <span>Game Analytics</span>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+                 <SidebarMenuItem>
+                  <SidebarMenuButton
+                    isActive={activeView === 'userAnalytics'}
+                    onClick={() => setActiveView('userAnalytics')}
+                    tooltip="User Analytics"
+                  >
+                    <UsersRound />
+                    <span>User Analytics</span>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
                 <SidebarMenuItem>
