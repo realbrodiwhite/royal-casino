@@ -153,9 +153,9 @@ const PokerPage: React.FC = () => {
       <Navbar />
       <main className="flex-grow container mx-auto px-2 sm:px-4 py-8 sm:py-12 flex flex-col items-center">
         <header className="mb-8 sm:mb-10 text-center">
-          <Hand className="h-16 w-16 sm:h-20 sm:w-20 text-primary mx-auto mb-3 sm:mb-4" />
-          <h1 className="text-4xl sm:text-5xl font-bold font-headline text-primary">Video Poker</h1>
-          <p className="text-lg sm:text-xl text-muted-foreground mt-2 px-2">Jacks or Better - Get the best hand!</p>
+          <Hand className="h-12 w-12 sm:h-16 sm:w-16 text-primary mx-auto mb-3 sm:mb-4" />
+          <h1 className="text-3xl sm:text-4xl font-bold font-headline text-primary">Video Poker</h1>
+          <p className="text-md sm:text-lg text-muted-foreground mt-2 px-2">Jacks or Better - Get the best hand!</p>
         </header>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 w-full max-w-3xl mb-6 sm:mb-8">
