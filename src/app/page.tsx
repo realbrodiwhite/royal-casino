@@ -67,7 +67,7 @@ export default function LandingPage() {
                 description="Boost your play with daily free credits, exciting promotions, and loyalty bonuses."
               />
               <FeatureCard
-                icon={<LuxuryExperienceIcon />}
+                icon={<LuxuryExperienceIcon className="h-10 w-10 sm:h-12 sm:w-12 text-primary" />}
                 title="Luxury Experience"
                 description="Immerse yourself in our opulent casino atmosphere, designed for premium entertainment."
               />
@@ -183,3 +183,4 @@ const GameTypeCard: React.FC<GameTypeCardProps> = ({ icon, title, description, h
     </CardContent>
   </Card>
 );
+
