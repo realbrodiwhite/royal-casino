@@ -8,28 +8,31 @@ const KenoCategoryIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
     data-ai-hint="keno numbers grid"
     {...props}
   >
-    <rect x="10" y="20" width="80" height="60" rx="3" stroke="currentColor" strokeWidth="2" fill="none" />
-    {/* Sample numbers and selected cells */}
-    <text x="20" y="35" fontSize="10" fill="currentColor">07</text>
-    <circle cx="20" cy="31" r="7" stroke="currentColor" strokeWidth="1.5" fill="none" />
-    <text x="35" y="35" fontSize="10" fill="currentColor">15</text>
-    <text x="50" y="35" fontSize="10" fill="currentColor">23</text>
-    <text x="65" y="35" fontSize="10" fill="currentColor">38</text>
-    <text x="80" y="35" fontSize="10" fill="currentColor">42</text>
+    {/* Main Keno board outline */}
+    <rect x="15" y="20" width="70" height="60" rx="4" stroke="currentColor" strokeWidth="3" fill="none" />
 
-    <text x="20" y="50" fontSize="10" fill="currentColor">51</text>
-    <text x="35" y="50" fontSize="10" fill="currentColor">59</text>
-    <circle cx="35" cy="46" r="7" stroke="currentColor" strokeWidth="1.5" fill="none" />
-    <text x="50" y="50" fontSize="10" fill="currentColor">66</text>
-    <text x="65" y="50" fontSize="10" fill="currentColor">72</text>
-    <text x="80" y="50" fontSize="10" fill="currentColor">80</text>
+    {/* Simplified grid of circles (representing number slots) */}
+    <circle cx="30" cy="35" r="8" fill="hsl(var(--muted))" opacity="0.5" />
+    <text x="30" y="39" fontSize="9" fill="currentColor" textAnchor="middle">12</text>
+    
+    <circle cx="50" cy="35" r="8" fill="hsl(var(--primary))" opacity="0.8" /> {/* Selected */}
+    <text x="50" y="39" fontSize="9" fill="hsl(var(--primary-foreground))" textAnchor="middle">27</text>
+    
+    <circle cx="70" cy="35" r="8" fill="hsl(var(--muted))" opacity="0.5" />
+    <text x="70" y="39" fontSize="9" fill="currentColor" textAnchor="middle">45</text>
 
-    <text x="20" y="65" fontSize="10" fill="currentColor">03</text>    
-    <text x="35" y="65" fontSize="10" fill="currentColor">11</text>
-    <text x="50" y="65" fontSize="10" fill="currentColor">29</text>
-    <circle cx="50" cy="61" r="7" stroke="currentColor" strokeWidth="1.5" fill="none" />
-    <text x="65" y="65" fontSize="10" fill="currentColor">34</text>
-    <text x="80" y="65" fontSize="10" fill="currentColor">49</text>
+    <circle cx="30" cy="55" r="8" fill="hsl(var(--muted))" opacity="0.5" />
+    <text x="30" y="59" fontSize="9" fill="currentColor" textAnchor="middle">58</text>
+
+    <circle cx="50" cy="55" r="8" fill="hsl(var(--muted))" opacity="0.5" />
+    <text x="50" y="59" fontSize="9" fill="currentColor" textAnchor="middle">63</text>
+
+    <circle cx="70" cy="55" r="8" fill="hsl(var(--primary))" opacity="0.8" /> {/* Selected */}
+    <text x="70" y="59" fontSize="9" fill="hsl(var(--primary-foreground))" textAnchor="middle">71</text>
+    
+    <circle cx="50" cy="70" r="3" fill="currentColor" opacity="0.3" />
+    <circle cx="40" cy="70" r="3" fill="currentColor" opacity="0.3" />
+    <circle cx="60" cy="70" r="3" fill="currentColor" opacity="0.3" />
   </svg>
 );
 
