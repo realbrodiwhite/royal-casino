@@ -5,28 +5,29 @@ const ScratchersCategoryIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) 
   <svg
     viewBox="0 0 100 100"
     xmlns="http://www.w3.org/2000/svg"
+    preserveAspectRatio="xMidYMid meet"
     data-ai-hint="scratcher ticket win"
     {...props}
   >
     {/* Ticket Body */}
-    <rect x="15" y="25" width="70" height="50" rx="5" fill="hsl(var(--muted))" stroke="currentColor" strokeWidth="3" />
+    <rect x="18" y="28" width="64" height="44" rx="4" fill="hsl(var(--muted))" stroke="currentColor" strokeWidth="2.5" />
 
     {/* "Scratched" area showing a win symbol (e.g., a star) */}
-    <circle cx="50" cy="50" r="20" fill="hsl(var(--background))" /> {/* Area that's "scratched off" */}
+    <circle cx="50" cy="50" r="18" fill="hsl(var(--background))" /> {/* Area that's "scratched off" */}
     {/* Star Symbol */}
     <path 
-      d="M50 38 L53.5 45.5 L61.5 45.5 L55.5 50.5 L57.5 58 L50 53 L42.5 58 L44.5 50.5 L38.5 45.5 L46.5 45.5 Z" 
+      d="M50 40 L53 47 L60 47 L54.5 51 L56.5 58 L50 54 L43.5 58 L45.5 51 L40 47 L47 47 Z" 
       fill="hsl(var(--primary))" 
       stroke="hsl(var(--primary-foreground))" 
-      strokeWidth="1"
+      strokeWidth="0.5"
     />
 
     {/* Representation of scratching tool or coin edge */}
-    <rect x="60" y="15" width="15" height="8" rx="2" fill="hsl(var(--foreground))" opacity="0.7" transform="rotate(20 67.5 19)" />
+    <rect x="62" y="18" width="14" height="7" rx="1.5" fill="hsl(var(--foreground))" opacity="0.6" transform="rotate(15 69 21.5)" />
     
      {/* Subtle texture on the ticket */}
-    <line x1="20" y1="30" x2="80" y2="30" stroke="currentColor" strokeWidth="1" opacity="0.2" strokeDasharray="3 3"/>
-    <line x1="20" y1="70" x2="80" y2="70" stroke="currentColor" strokeWidth="1" opacity="0.2" strokeDasharray="3 3"/>
+    <line x1="22" y1="33" x2="78" y2="33" stroke="currentColor" strokeWidth="0.75" opacity="0.15" strokeDasharray="2.5 2.5"/>
+    <line x1="22" y1="67" x2="78" y2="67" stroke="currentColor" strokeWidth="0.75" opacity="0.15" strokeDasharray="2.5 2.5"/>
   </svg>
 );
 

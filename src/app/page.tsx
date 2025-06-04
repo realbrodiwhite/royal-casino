@@ -22,7 +22,7 @@ export default function LandingPage() {
       <main className="flex-grow">
         <section className="pt-16 pb-8 sm:pt-20 sm:pb-10 md:pt-28 md:pb-14 text-center bg-gradient-to-b from-background via-purple-800/30 to-background">
           <div className="container mx-auto px-4">
-            <Crown className="mx-auto h-16 w-16 sm:h-20 md:h-24 md:w-24 text-primary mb-4 sm:mb-6 animate-pulse" />
+            <Crown aria-hidden="true" className="mx-auto h-16 w-16 sm:h-20 md:h-24 md:w-24 text-primary mb-4 sm:mb-6 animate-pulse" />
             <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold font-headline text-primary mb-3 sm:mb-4">
               Welcome to Royal Casino
             </h1>
@@ -31,7 +31,7 @@ export default function LandingPage() {
             </p>
             <div className="mb-8 sm:mb-10 p-4 sm:p-6 bg-primary/10 border border-primary rounded-lg inline-block shadow-xl">
                 <h2 className="text-xl sm:text-2xl md:text-3xl font-headline text-primary flex items-center justify-center">
-                    <DollarSign className="h-6 w-6 sm:h-8 md:h-10 mr-2 sm:mr-3 text-primary" /> New Player Offer!
+                    <DollarSign aria-hidden="true" className="h-6 w-6 sm:h-8 md:h-10 mr-2 sm:mr-3 text-primary" /> New Player Offer!
                 </h2>
                 <p className="text-md sm:text-lg md:text-xl text-foreground mt-1 sm:mt-2">Double Your First Credit Purchase <span className="font-bold text-primary">Up To $20!</span></p>
             </div>
@@ -52,28 +52,28 @@ export default function LandingPage() {
 
         <section className="pt-6 pb-12 sm:pt-8 sm:pb-16 bg-background/80 backdrop-blur-sm">
           <div className="container mx-auto px-4">
-            <Crown className="mx-auto h-12 w-12 sm:h-16 sm:w-16 text-primary mb-4 sm:mb-6" />
+            <Crown aria-hidden="true" className="mx-auto h-12 w-12 sm:h-16 sm:w-16 text-primary mb-4 sm:mb-6" />
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold font-headline text-primary mb-10 sm:mb-12 text-center">
               Why Choose Royal Casino?
             </h2>
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
               <FeatureCard
-                icon={<Gem className="h-10 w-10 sm:h-12 sm:w-12 text-primary mb-3 sm:mb-4" />}
+                icon={<Gem aria-hidden="true" className="h-10 w-10 sm:h-12 sm:w-12 text-primary mb-3 sm:mb-4" />}
                 title="Exclusive Games"
                 description="Discover a curated selection of unique slots, classic table games, and thrilling instant wins!"
               />
               <FeatureCard
-                icon={<ShieldCheck className="h-10 w-10 sm:h-12 sm:w-12 text-primary mb-3 sm:mb-4" />}
+                icon={<ShieldCheck aria-hidden="true" className="h-10 w-10 sm:h-12 sm:w-12 text-primary mb-3 sm:mb-4" />}
                 title="Fair & Secure Play"
                 description="Enjoy peace of mind in our secure social gaming environment, committed to fair play."
               />
               <FeatureCard
-                icon={<Coins className="h-10 w-10 sm:h-12 sm:w-12 text-primary mb-3 sm:mb-4" />}
+                icon={<Coins aria-hidden="true" className="h-10 w-10 sm:h-12 sm:w-12 text-primary mb-3 sm:mb-4" />}
                 title="Generous Rewards"
                 description="Boost your play with daily free credits, exciting promotions, and loyalty bonuses."
               />
               <FeatureCard
-                icon={<LuxuryExperienceIcon className="h-10 w-10 sm:h-12 sm:w-12 text-primary mb-3 sm:mb-4" />}
+                icon={<LuxuryExperienceIcon aria-hidden="true" className="h-10 w-10 sm:h-12 sm:w-12 text-primary mb-3 sm:mb-4" />}
                 title="Luxury Experience"
                 description="Immerse yourself in our opulent casino atmosphere, designed for premium entertainment."
               />
@@ -83,26 +83,26 @@ export default function LandingPage() {
 
         <section className="py-12 sm:py-16 bg-background">
           <div className="container mx-auto px-4">
-            <Globe className="mx-auto h-12 w-12 sm:h-16 sm:w-16 text-primary mb-4 sm:mb-6" />
+            <Globe aria-hidden="true" className="mx-auto h-12 w-12 sm:h-16 sm:w-16 text-primary mb-4 sm:mb-6" />
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold font-headline text-primary mb-10 sm:mb-12 text-center">Step Into Our World of Games</h2>
             <p className="text-lg sm:text-xl text-muted-foreground mb-8 sm:mb-10 text-center max-w-lg sm:max-w-xl md:max-w-2xl mx-auto px-2">
               From the fast-paced thrill of the slots to the strategic depths of table games, your next favorite game awaits.
             </p>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
               <GameTypeCard
-                icon={<SlotsCategoryIcon className="h-8 w-8 sm:h-10 sm:w-10 text-primary" />}
+                icon={<SlotsCategoryIcon aria-hidden="true" className="h-8 w-8 sm:h-10 sm:w-10 text-primary" />}
                 title="Thrilling Slots"
                 description="Spin the reels on a variety of themed slot machines with unique features and big win potential."
                 href="/games/slots"
               />
               <GameTypeCard
-                icon={<PokerCategoryIcon className="h-8 w-8 sm:h-10 sm:w-10 text-primary" />}
+                icon={<PokerCategoryIcon aria-hidden="true" className="h-8 w-8 sm:h-10 sm:w-10 text-primary" />}
                 title="Classic Poker"
                 description="Test your skills and strategy at our virtual poker tables."
                 href="/lobby/poker"
               />
               <GameTypeCard
-                icon={<BingoCategoryIcon className="h-8 w-8 sm:h-10 sm:w-10 text-primary" />}
+                icon={<BingoCategoryIcon aria-hidden="true" className="h-8 w-8 sm:h-10 sm:w-10 text-primary" />}
                 title="Exciting Bingo"
                 description="Join the fun in our bingo halls and daub your way to victory."
                 href="/lobby/bingo"
@@ -114,7 +114,7 @@ export default function LandingPage() {
 
         <section className="py-16 sm:py-20 text-center bg-gradient-to-t from-background via-purple-800/30 to-background">
           <div className="container mx-auto px-4">
-            <Sparkles className="mx-auto h-12 w-12 sm:h-16 sm:w-16 text-primary mb-4 sm:mb-6" />
+            <Sparkles aria-hidden="true" className="mx-auto h-12 w-12 sm:h-16 sm:w-16 text-primary mb-4 sm:mb-6" />
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold font-headline text-primary mb-4 sm:mb-6">
               Ready to Experience Royalty?
             </h2>
@@ -191,4 +191,3 @@ const GameTypeCard: React.FC<GameTypeCardProps> = ({ icon, title, description, h
     </CardContent>
   </Card>
 );
-
