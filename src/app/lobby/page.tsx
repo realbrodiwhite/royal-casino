@@ -6,8 +6,19 @@ import Link from 'next/link';
 import Navbar from '@/components/layout/navbar';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Dice5, AppWindow, Ticket, CircleDollarSign, Rows, Dice6, ListChecks, Disc3 } from 'lucide-react';
 import Image from 'next/image';
+
+// Import new SVG category icons
+import SlotsCategoryIcon from '@/components/game/category-icons/SlotsCategoryIcon';
+import PokerCategoryIcon from '@/components/game/category-icons/PokerCategoryIcon';
+import BingoCategoryIcon from '@/components/game/category-icons/BingoCategoryIcon';
+import ScratchersCategoryIcon from '@/components/game/category-icons/ScratchersCategoryIcon';
+import CoinFlipCategoryIcon from '@/components/game/category-icons/CoinFlipCategoryIcon';
+import CrapsCategoryIcon from '@/components/game/category-icons/CrapsCategoryIcon';
+import KenoCategoryIcon from '@/components/game/category-icons/KenoCategoryIcon';
+import RouletteCategoryIcon from '@/components/game/category-icons/RouletteCategoryIcon';
+import LotteryCategoryIcon from '@/components/game/category-icons/LotteryCategoryIcon';
+
 
 interface GameCardProps {
   title: string;
@@ -50,15 +61,15 @@ const GameCard: React.FC<GameCardProps> = ({ title, description, icon, href, ima
 
 export default function LobbyPage() {
   const games = [
-    { title: "Slots", description: "Spin the reels for exciting wins! Choose your theme.", icon: <Dice5 />, href: "/games/slots", imageUrl: "https://placehold.co/300x200.png?text=Slots" , dataAiHint: "slot machine casino"},
-    { title: "Poker", description: "Test your skills at video poker.", icon: <Rows />, href: "/lobby/poker", imageUrl: "https://placehold.co/300x200.png?text=Poker", dataAiHint: "poker cards casino", disabled: false },
-    { title: "Bingo", description: "Daub your way to victory!", icon: <AppWindow />, href: "/lobby/bingo", imageUrl: "https://placehold.co/300x200.png?text=Bingo", dataAiHint: "bingo card game", disabled: false },
-    { title: "Scratchers", description: "Instant win lottery tickets.", icon: <Ticket />, href: "/lobby/scratchers", imageUrl: "https://placehold.co/300x200.png?text=Scratchers", dataAiHint: "lottery scratch ticket", disabled: false },
-    { title: "Coin Flip", description: "A simple game of chance. Heads or tails?", icon: <CircleDollarSign />, href: "/lobby/coin-flip", imageUrl: "https://placehold.co/300x200.png?text=Coin+Flip", dataAiHint: "coin flip chance", disabled: false },
-    { title: "Craps", description: "Roll the dice in this classic casino game.", icon: <Dice6 />, href: "#", imageUrl: "https://placehold.co/300x200.png?text=Craps", dataAiHint: "craps dice game", disabled: true },
-    { title: "Keno", description: "Pick your lucky numbers for a chance to win big!", icon: <ListChecks />, href: "#", imageUrl: "https://placehold.co/300x200.png?text=Keno", dataAiHint: "keno numbers game", disabled: true },
-    { title: "Roulette", description: "Place your bets and spin the iconic wheel.", icon: <Disc3 />, href: "#", imageUrl: "https://placehold.co/300x200.png?text=Roulette", dataAiHint: "roulette wheel casino", disabled: true },
-    { title: "Lottery Draw", description: "Match numbers for a chance at huge jackpots!", icon: <Ticket />, href: "#", imageUrl: "https://placehold.co/300x200.png?text=Lottery", dataAiHint: "lottery balls draw", disabled: true },
+    { title: "Slots", description: "Spin the reels for exciting wins! Choose your theme.", icon: <SlotsCategoryIcon />, href: "/games/slots", imageUrl: "https://placehold.co/300x200.png?text=Slots" , dataAiHint: "slot machine casino"},
+    { title: "Poker", description: "Test your skills at video poker.", icon: <PokerCategoryIcon />, href: "/lobby/poker", imageUrl: "https://placehold.co/300x200.png?text=Poker", dataAiHint: "poker cards casino", disabled: false },
+    { title: "Bingo", description: "Daub your way to victory!", icon: <BingoCategoryIcon />, href: "/lobby/bingo", imageUrl: "https://placehold.co/300x200.png?text=Bingo", dataAiHint: "bingo card game", disabled: false },
+    { title: "Scratchers", description: "Instant win lottery tickets.", icon: <ScratchersCategoryIcon />, href: "/lobby/scratchers", imageUrl: "https://placehold.co/300x200.png?text=Scratchers", dataAiHint: "lottery scratch ticket", disabled: false },
+    { title: "Coin Flip", description: "A simple game of chance. Heads or tails?", icon: <CoinFlipCategoryIcon />, href: "/lobby/coin-flip", imageUrl: "https://placehold.co/300x200.png?text=Coin+Flip", dataAiHint: "coin flip chance", disabled: false },
+    { title: "Craps", description: "Roll the dice in this classic casino game.", icon: <CrapsCategoryIcon />, href: "#", imageUrl: "https://placehold.co/300x200.png?text=Craps", dataAiHint: "craps dice game", disabled: true },
+    { title: "Keno", description: "Pick your lucky numbers for a chance to win big!", icon: <KenoCategoryIcon />, href: "#", imageUrl: "https://placehold.co/300x200.png?text=Keno", dataAiHint: "keno numbers game", disabled: true },
+    { title: "Roulette", description: "Place your bets and spin the iconic wheel.", icon: <RouletteCategoryIcon />, href: "#", imageUrl: "https://placehold.co/300x200.png?text=Roulette", dataAiHint: "roulette wheel casino", disabled: true },
+    { title: "Lottery Draw", description: "Match numbers for a chance at huge jackpots!", icon: <LotteryCategoryIcon />, href: "#", imageUrl: "https://placehold.co/300x200.png?text=Lottery", dataAiHint: "lottery balls draw", disabled: true },
   ];
 
   return (
