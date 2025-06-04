@@ -128,9 +128,9 @@ export default function BingoPage() {
       <Navbar />
       <main className="flex-grow container mx-auto px-2 sm:px-4 py-8 sm:py-12 flex flex-col items-center">
         <header className="mb-8 sm:mb-10 text-center">
-          <AppWindow className="h-16 w-16 sm:h-20 sm:w-20 text-primary mx-auto mb-3 sm:mb-4" />
-          <h1 className="text-4xl sm:text-5xl font-bold font-headline text-primary">Bingo Hall</h1>
-          <p className="text-lg sm:text-xl text-muted-foreground mt-2 px-2">
+          <AppWindow className="h-12 w-12 sm:h-16 md:h-20 text-primary mx-auto mb-3 sm:mb-4" />
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold font-headline text-primary">Bingo Hall</h1>
+          <p className="text-md sm:text-lg md:text-xl text-muted-foreground mt-2 px-2">
             Get your daubers ready! More features coming soon.
           </p>
         </header>
@@ -147,7 +147,7 @@ export default function BingoPage() {
         </div>
 
         {bingoCard.length > 0 ? (
-          <div className="bg-card p-3 sm:p-4 border border-border rounded-lg shadow-xl">
+          <div className="bg-card p-3 sm:p-4 border border-border rounded-lg shadow-xl w-full max-w-md">
             <div className="grid grid-cols-5 gap-1 sm:gap-2">
               {BINGO_COLS.map((letter) => (
                 <div key={letter} className="flex items-center justify-center text-xl sm:text-2xl md:text-3xl font-bold text-primary h-10 sm:h-12 md:h-14 rounded-t-md bg-primary/20">

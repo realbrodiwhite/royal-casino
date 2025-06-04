@@ -163,7 +163,7 @@ const PokerPage: React.FC = () => {
           <XpDisplay experiencePoints={experiencePoints} />
         </div>
 
-        <UICard className="w-full max-w-2xl bg-card border-border shadow-xl mb-6 sm:mb-8">
+        <UICard className="w-full max-w-lg bg-card border-border shadow-xl mb-6 sm:mb-8">
           <CardHeader>
             <CardTitle className="text-xl sm:text-2xl text-primary font-headline text-center">Your Hand</CardTitle>
           </CardHeader>
@@ -242,3 +242,4 @@ const PokerPage: React.FC = () => {
 };
 
 export default PokerPage;
+
