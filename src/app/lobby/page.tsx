@@ -51,7 +51,7 @@ const GameCard: React.FC<GameCardProps> = ({ title, description, icon, href, ima
 export default function LobbyPage() {
   const games = [
     { title: "Slots", description: "Spin the reels for exciting wins!", icon: <Dice5 />, href: "/lobby/slots", imageUrl: "https://placehold.co/300x200.png?text=Slots" , dataAiHint: "slot machine casino"},
-    { title: "Poker", description: "Test your skills at the poker table.", icon: <Rows />, href: "/lobby/poker", imageUrl: "https://placehold.co/300x200.png?text=Poker", dataAiHint: "poker cards casino", disabled: true },
+    { title: "Poker", description: "Test your skills at video poker.", icon: <Rows />, href: "/lobby/poker", imageUrl: "https://placehold.co/300x200.png?text=Poker", dataAiHint: "poker cards casino", disabled: false },
     { title: "Bingo", description: "Daub your way to victory!", icon: <Puzzle />, href: "/lobby/bingo", imageUrl: "https://placehold.co/300x200.png?text=Bingo", dataAiHint: "bingo balls cards", disabled: true },
     { title: "Scratchers", description: "Instant win lottery tickets.", icon: <Ticket />, href: "/lobby/scratchers", imageUrl: "https://placehold.co/300x200.png?text=Scratchers", dataAiHint: "lottery scratch ticket", disabled: false },
     { title: "Coin Flip", description: "A simple game of chance. Heads or tails?", icon: <CircleDollarSign />, href: "/lobby/coin-flip", imageUrl: "https://placehold.co/300x200.png?text=Coin+Flip", dataAiHint: "coin flip chance", disabled: false },
