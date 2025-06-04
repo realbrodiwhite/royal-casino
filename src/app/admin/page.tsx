@@ -8,7 +8,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { useToast } from "@/hooks/use-toast";
-import { Coins, UserCog, BarChart2, Brain, Settings, UsersRound, Percent, Search, BarChartHorizontalBig, LineChart } from 'lucide-react';
+import { Coins, UserCog, BarChart2, Brain, Settings, UsersRound, Percent, Search, BarChartHorizontalBig, LineChart, TrendingUp, UserPlus, Clock, Award } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 import {
@@ -203,11 +203,35 @@ export default function AdminDashboardPage() {
                         <BarChart2 className="mr-2 h-4 w-4 sm:h-5 sm:w-5" /> Game Performance
                       </CardTitle>
                       <CardDescription className="text-muted-foreground text-xs sm:text-sm">
-                        View game performance, popularity, and detailed statistics. (Coming Soon)
+                        Key metrics and trends for all casino games.
                       </CardDescription>
                     </CardHeader>
-                    <CardContent>
-                      <p className="text-foreground">Detailed game analytics, charts, and reports will be available here.</p>
+                    <CardContent className="space-y-6">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                            <div className="p-3 sm:p-4 bg-input/50 rounded-lg border border-border/60 shadow-sm">
+                                <div className="flex items-center justify-between mb-1">
+                                    <h4 className="text-xs sm:text-sm font-medium text-muted-foreground">Total Spins Today</h4>
+                                    <TrendingUp className="h-4 w-4 text-green-500" />
+                                </div>
+                                <p className="text-xl sm:text-2xl font-bold text-primary">125,670</p>
+                            </div>
+                             <div className="p-3 sm:p-4 bg-input/50 rounded-lg border border-border/60 shadow-sm">
+                                <h4 className="text-xs sm:text-sm font-medium text-muted-foreground mb-1">Avg. RTP (Overall)</h4>
+                                <p className="text-xl sm:text-2xl font-bold text-primary">96.2%</p>
+                            </div>
+                            <div className="p-3 sm:p-4 bg-input/50 rounded-lg border border-border/60 shadow-sm">
+                                <h4 className="text-xs sm:text-sm font-medium text-muted-foreground mb-1">Most Popular Game</h4>
+                                <p className="text-lg sm:text-xl font-semibold text-primary truncate">Vegas Adventure</p>
+                            </div>
+                            <div className="p-3 sm:p-4 bg-input/50 rounded-lg border border-border/60 shadow-sm">
+                                <h4 className="text-xs sm:text-sm font-medium text-muted-foreground mb-1">Highest Win Today</h4>
+                                <p className="text-xl sm:text-2xl font-bold text-primary">5,000 CR</p>
+                            </div>
+                        </div>
+                        <div className="mt-6 p-4 border border-dashed border-border/70 rounded-lg bg-background/30 text-center">
+                            <BarChartHorizontalBig className="h-10 w-10 sm:h-12 sm:w-12 text-muted-foreground mx-auto mb-2" />
+                            <p className="text-sm text-muted-foreground">Game Play Count (Placeholder)</p>
+                        </div>
                     </CardContent>
                   </Card>
                 </TabsContent>
@@ -218,15 +242,48 @@ export default function AdminDashboardPage() {
                         <UsersRound className="mr-2 h-4 w-4 sm:h-5 sm:w-5" /> User Insights
                       </CardTitle>
                       <CardDescription className="text-muted-foreground text-xs sm:text-sm">
-                        Analyze user behavior, demographics, and engagement. (Coming Soon)
+                        Analyze user behavior, demographics, and engagement.
                       </CardDescription>
                     </CardHeader>
-                    <CardContent className="space-y-4">
-                        <div className="flex items-center gap-2">
+                    <CardContent className="space-y-6">
+                        <div className="flex items-center gap-2 mb-4">
                             <Input type="text" placeholder="Search User ID or Email..." className="bg-input border-border text-foreground placeholder:text-muted-foreground"/>
                             <Button variant="outline"><Search className="h-4 w-4"/></Button>
                         </div>
-                      <p className="text-foreground">Detailed user statistics, search functionality, and behavioral analytics will be integrated here.</p>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                           <div className="p-3 sm:p-4 bg-input/50 rounded-lg border border-border/60 shadow-sm">
+                                <div className="flex items-center justify-between mb-1">
+                                    <h4 className="text-xs sm:text-sm font-medium text-muted-foreground">Active Users (24h)</h4>
+                                    <UsersRound className="h-4 w-4 text-blue-500" />
+                                </div>
+                                <p className="text-xl sm:text-2xl font-bold text-primary">850</p>
+                            </div>
+                           <div className="p-3 sm:p-4 bg-input/50 rounded-lg border border-border/60 shadow-sm">
+                               <div className="flex items-center justify-between mb-1">
+                                    <h4 className="text-xs sm:text-sm font-medium text-muted-foreground">New Signups (Today)</h4>
+                                    <UserPlus className="h-4 w-4 text-green-500" />
+                                </div>
+                                <p className="text-xl sm:text-2xl font-bold text-primary">45</p>
+                            </div>
+                            <div className="p-3 sm:p-4 bg-input/50 rounded-lg border border-border/60 shadow-sm">
+                                <div className="flex items-center justify-between mb-1">
+                                    <h4 className="text-xs sm:text-sm font-medium text-muted-foreground">Avg. Session</h4>
+                                    <Clock className="h-4 w-4 text-yellow-500" />
+                                </div>
+                                <p className="text-xl sm:text-2xl font-bold text-primary">25 min</p>
+                            </div>
+                            <div className="p-3 sm:p-4 bg-input/50 rounded-lg border border-border/60 shadow-sm">
+                                <div className="flex items-center justify-between mb-1">
+                                    <h4 className="text-xs sm:text-sm font-medium text-muted-foreground">Top Spender (Today)</h4>
+                                    <Award className="h-4 w-4 text-primary" />
+                                 </div>
+                                <p className="text-lg sm:text-xl font-semibold text-primary truncate">UID123 (500 CR)</p>
+                            </div>
+                        </div>
+                         <div className="mt-6 p-4 border border-dashed border-border/70 rounded-lg bg-background/30 text-center">
+                            <LineChart className="h-10 w-10 sm:h-12 sm:w-12 text-muted-foreground mx-auto mb-2" />
+                            <p className="text-sm text-muted-foreground">User Activity Over Time (Placeholder)</p>
+                        </div>
                     </CardContent>
                   </Card>
                 </TabsContent>
@@ -371,3 +428,5 @@ export default function AdminDashboardPage() {
     </SidebarProvider>
   );
 }
+
+    
