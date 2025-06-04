@@ -52,6 +52,7 @@ export default function LandingPage() {
 
         <section className="pt-6 pb-12 sm:pt-8 sm:pb-16 bg-background/80 backdrop-blur-sm">
           <div className="container mx-auto px-4">
+            <ShieldCheck className="mx-auto h-12 w-12 sm:h-16 sm:w-16 text-primary mb-4 sm:mb-6" />
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold font-headline text-primary mb-10 sm:mb-12 text-center">
               Why Choose Royal Casino?
             </h2>
@@ -190,3 +191,4 @@ const GameTypeCard: React.FC<GameTypeCardProps> = ({ icon, title, description, h
     </CardContent>
   </Card>
 );
+
