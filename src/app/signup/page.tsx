@@ -27,6 +27,16 @@ export default function SignupPage() {
     event.preventDefault();
     setIsLoading(true);
 
+    if (!email || !password || !confirmPassword) {
+      toast({
+        title: "Signup Error",
+        description: "Please fill in all fields.",
+        variant: "destructive",
+      });
+      setIsLoading(false);
+      return;
+    }
+
     if (password !== confirmPassword) {
       toast({
         title: "Signup Error",
@@ -49,7 +59,7 @@ export default function SignupPage() {
       if (error.code === 'auth/email-already-in-use') {
         errorMessage = 'This email address is already in use.';
       } else if (error.code === 'auth/weak-password') {
-        errorMessage = 'The password is too weak. Please choose a stronger password.';
+        errorMessage = 'The password is too weak. Please choose a stronger password (at least 6 characters).';
       } else if (error.code === 'auth/invalid-email') {
         errorMessage = 'The email address is not valid.';
       }
@@ -84,6 +94,7 @@ export default function SignupPage() {
                   id="email"
                   name="email"
                   type="email"
+                  autoComplete="email"
                   placeholder="you@example.com"
                   required
                   value={email}
@@ -98,6 +109,7 @@ export default function SignupPage() {
                   id="password"
                   name="password"
                   type="password"
+                  autoComplete="new-password"
                   placeholder="••••••••"
                   required
                   value={password}
@@ -112,6 +124,7 @@ export default function SignupPage() {
                   id="confirm-password"
                   name="confirm-password"
                   type="password"
+                  autoComplete="new-password"
                   placeholder="••••••••"
                   required
                   value={confirmPassword}

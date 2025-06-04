@@ -40,10 +40,11 @@ export default function LoginPage() {
       
       toast({
         title: "Login Successful",
-        description: `Welcome back, ${email}!`,
+        description: `Welcome back, ${userCredential.user.email || 'player'}!`,
       });
 
-      if (email === 'admin@royalcasino.dev') {
+      // Check for admin email
+      if (userCredential.user.email === 'admin@royalcasino.dev') {
         router.push('/admin');
       } else {
         router.push('/lobby');
@@ -54,6 +55,8 @@ export default function LoginPage() {
         errorMessage = "Invalid email or password. Please try again.";
       } else if (error.code === 'auth/invalid-email') {
         errorMessage = "The email address is not valid.";
+      } else if (error.code === 'auth/too-many-requests') {
+        errorMessage = "Access to this account has been temporarily disabled due to many failed login attempts. You can immediately restore it by resetting your password or you can try again later."
       }
       console.error("Firebase Login Error:", error);
       toast({
@@ -86,6 +89,7 @@ export default function LoginPage() {
                   id="email"
                   name="email"
                   type="email"
+                  autoComplete="email"
                   placeholder="you@example.com"
                   required
                   value={email}
@@ -100,6 +104,7 @@ export default function LoginPage() {
                   id="password"
                   name="password"
                   type="password"
+                  autoComplete="current-password"
                   placeholder="••••••••"
                   required
                   value={password}
@@ -130,7 +135,7 @@ export default function LoginPage() {
                     <ShieldAlert className="mr-2 h-5 w-5 text-yellow-400"/> Test Credentials
                 </CardTitle>
                 <CardDescription className="text-muted-foreground text-xs">
-                    For testing with your Firebase project. Make sure these users exist in your Firebase Authentication.
+                    For testing with your Firebase project. Ensure these users exist in your Firebase Authentication.
                 </CardDescription>
             </CardHeader>
             <CardContent className="text-sm space-y-3 text-foreground">
@@ -141,10 +146,10 @@ export default function LoginPage() {
                 </div>
                 <div>
                     <h4 className="font-semibold">Regular Player:</h4>
-                    <p className="text-muted-foreground">Email: <code className="bg-input px-1 rounded">player@royalcasino.dev</code></p>
+                    <p className="text-muted-foreground">Email: <code className="bg-input px-1 rounded">player@royalcasino.dev</code> (or any other test email)</p>
                     <p className="text-muted-foreground">Password: (Set this in Firebase)</p>
                 </div>
-                 <p className="text-xs text-muted-foreground pt-2 border-t border-border/20">Note: The passwords displayed previously were for mock login. With Firebase, you'll manage users and passwords directly in your Firebase project's Authentication section.</p>
+                 <p className="text-xs text-muted-foreground pt-2 border-t border-border/20">Note: You'll manage users and passwords directly in your Firebase project's Authentication section.</p>
             </CardContent>
         </Card>
 
