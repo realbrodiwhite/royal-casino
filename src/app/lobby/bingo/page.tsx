@@ -4,11 +4,12 @@
 import Navbar from '@/components/layout/navbar';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import { AppWindow, Ticket, Users } from 'lucide-react'; // Changed icon
-import React, { useState, useEffect, useCallback } from 'react';
+import { AppWindow, Ticket, Users, Play, Pause, RotateCcw, History, Volume2 } from 'lucide-react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { cn } from '@/lib/utils';
 import CreditDisplay from '@/components/game/CreditDisplay';
-// XpDisplay removed
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { useToast } from "@/hooks/use-toast";
 
 const BINGO_COLS = ['B', 'I', 'N', 'G', 'O'] as const;
 const NUMBERS_PER_COL: Record<typeof BINGO_COLS[number], { min: number, max: number, count: number }> = {
@@ -18,13 +19,14 @@ const NUMBERS_PER_COL: Record<typeof BINGO_COLS[number], { min: number, max: num
   G: { min: 46, max: 60, count: 5 },
   O: { min: 61, max: 75, count: 5 },
 };
+const TOTAL_NUMBERS = 75;
 
 type BingoNumber = number | 'FREE';
 type BingoCardGrid = BingoNumber[][]; // Column-major: grid[col][row]
 
 const generateBingoCard = (): BingoCardGrid => {
   const card: BingoCardGrid = [];
-  BINGO_COLS.forEach((colLetter, colIndex) => {
+  BINGO_COLS.forEach((colLetter) => {
     const { min, max, count } = NUMBERS_PER_COL[colLetter];
     const colNumbers: Set<number> = new Set();
     while (colNumbers.size < count) {
@@ -33,123 +35,232 @@ const generateBingoCard = (): BingoCardGrid => {
     const sortedColNumbers = Array.from(colNumbers).sort((a, b) => a - b);
     
     if (colLetter === 'N') {
-      // Insert FREE space in the middle of N column (2 numbers, FREE, 2 numbers)
-      const nColWithFree: BingoNumber[] = [];
-      nColWithFree.push(sortedColNumbers[0]);
-      nColWithFree.push(sortedColNumbers[1]);
-      nColWithFree.push('FREE');
-      nColWithFree.push(sortedColNumbers[2]);
-      nColWithFree.push(sortedColNumbers[3]);
+      const nColWithFree: BingoNumber[] = [
+        sortedColNumbers[0],
+        sortedColNumbers[1],
+        'FREE',
+        sortedColNumbers[2],
+        sortedColNumbers[3],
+      ];
       card.push(nColWithFree);
     } else {
       card.push(sortedColNumbers);
     }
   });
-  return card; // This is column-major, needs to be transposed for row-major display
+  return card;
 };
 
-// Helper to transpose for display
 const transposeGrid = (grid: BingoCardGrid): BingoNumber[][] => {
   if (!grid || grid.length === 0) return [];
   return grid[0].map((_, rowIndex) => grid.map(col => col[rowIndex]));
 };
 
+const initialAllPossibleNumbers = () => Array.from({ length: TOTAL_NUMBERS }, (_, i) => i + 1);
 
 export default function BingoPage() {
   const [bingoCard, setBingoCard] = useState<BingoNumber[][]>([]);
   const [daubedCells, setDaubedCells] = useState<boolean[][]>([]);
-  const [calledNumbers, setCalledNumbers] = useState<Set<number>>(new Set());
-  const [currentCredits, setCurrentCredits] = useState(1000); 
-  const [currentXp, setCurrentXp] = useState(0); 
-  const [isGameActive, setIsGameActive] = useState(false);
-  // TODO: Add more game state: current called number, game messages, win state, etc.
-
-  const initializeNewCard = useCallback(() => {
-    const newCardData = generateBingoCard();
-    setBingoCard(transposeGrid(newCardData)); // Transpose for display
-    setDaubedCells(Array(5).fill(null).map(() => Array(5).fill(false)));
-    setCalledNumbers(new Set());
-    // setIsGameActive(false); // Or true if auto-starting
-  }, []);
   
-  useEffect(() => {
-    initializeNewCard();
-  }, [initializeNewCard]);
+  const [calledNumbersSet, setCalledNumbersSet] = useState<Set<number>>(new Set());
+  const [calledNumbersHistory, setCalledNumbersHistory] = useState<number[]>([]);
+  const [currentCalledNumber, setCurrentCalledNumber] = useState<number | null>(null);
+  const [remainingToCall, setRemainingToCall] = useState<number[]>(initialAllPossibleNumbers());
 
-  const handleDaub = (row: number, col: number) => {
-    if (!isGameActive) return;
-    const number = bingoCard[row][col];
-    if (typeof number === 'number' && calledNumbers.has(number)) {
-      const newDaubs = daubedCells.map(r => [...r]);
-      newDaubs[row][col] = !newDaubs[row][col];
-      setDaubedCells(newDaubs);
-      // TODO: Check for Bingo
-    } else if (number === 'FREE' && !daubedCells[row][col]) { // Auto-daub FREE space if not already
-      const newDaubs = daubedCells.map(r => [...r]);
-      newDaubs[row][col] = true;
-      setDaubedCells(newDaubs);
-    }
-  };
+  const [currentCredits, setCurrentCredits] = useState(1000); 
+  const [isGameActive, setIsGameActive] = useState(false);
+  const [isGamePaused, setIsGamePaused] = useState(false);
+  
+  const { toast } = useToast();
+  const gameIntervalRef = useRef<NodeJS.Timeout | null>(null);
+  const cardCost = 10;
 
-  // Placeholder for starting a game
-  const handleStartGame = () => {
-    if (currentCredits >= 10) { // Assuming a ticket costs 10 credits
-        setCurrentCredits(prev => prev - 10);
-        setCurrentXp(prevXp => prevXp + 10);
-        initializeNewCard();
-        // Auto-daub FREE space at start
-        const freeSpaceCoords = findFreeSpace(bingoCard);
-        if (freeSpaceCoords) {
-          setDaubedCells(prevDaubs => {
-            const newDaubs = prevDaubs.map(r => [...r]);
-            newDaubs[freeSpaceCoords.row][freeSpaceCoords.col] = true;
-            return newDaubs;
-          });
-        }
-        setIsGameActive(true);
-        // TODO: Start calling numbers
-    } else {
-        // Show error: not enough credits
-    }
-  };
-
-  const findFreeSpace = (card: BingoNumber[][]): {row: number, col: number} | null => {
+  const findFreeSpaceCoords = (card: BingoNumber[][]): {row: number, col: number} | null => {
     for (let r = 0; r < card.length; r++) {
-        for (let c = 0; c < card[r].length; c++) {
-            if (card[r][c] === 'FREE') return {row: r, col: c};
-        }
+      for (let c = 0; c < (card[r]?.length || 0); c++) {
+        if (card[r][c] === 'FREE') return {row: r, col: c};
+      }
     }
     return null;
-  }
+  };
+  
+  const initializeNewCardAndDaubs = useCallback(() => {
+    const newCardData = generateBingoCard();
+    const transposedCard = transposeGrid(newCardData);
+    setBingoCard(transposedCard);
+    
+    const initialDaubs = Array(5).fill(null).map(() => Array(5).fill(false));
+    const freeSpaceCoords = findFreeSpaceCoords(transposedCard);
+    if (freeSpaceCoords) {
+      initialDaubs[freeSpaceCoords.row][freeSpaceCoords.col] = true;
+    }
+    setDaubedCells(initialDaubs);
+  }, []);
 
+  const resetCaller = () => {
+    setCurrentCalledNumber(null);
+    setCalledNumbersSet(new Set());
+    setCalledNumbersHistory([]);
+    const shuffledNumbers = [...initialAllPossibleNumbers()].sort(() => Math.random() - 0.5);
+    setRemainingToCall(shuffledNumbers);
+  };
+  
+  useEffect(() => {
+    initializeNewCardAndDaubs();
+    resetCaller();
+  }, [initializeNewCardAndDaubs]);
+
+  const callNextNumber = useCallback(() => {
+    setRemainingToCall(prevRemaining => {
+      if (prevRemaining.length === 0) {
+        if (gameIntervalRef.current) clearInterval(gameIntervalRef.current);
+        setIsGameActive(false);
+        toast({ title: "Game Over", description: "All numbers have been called!" });
+        return [];
+      }
+      const [nextNumber, ...rest] = prevRemaining;
+      setCurrentCalledNumber(nextNumber);
+      setCalledNumbersSet(prevSet => new Set(prevSet).add(nextNumber));
+      setCalledNumbersHistory(prevHistory => [...prevHistory, nextNumber]);
+      return rest;
+    });
+  }, [toast]);
+
+  useEffect(() => {
+    if (isGameActive && !isGamePaused && remainingToCall.length > 0) {
+      gameIntervalRef.current = setInterval(callNextNumber, 3000); // Call number every 3 seconds
+    } else {
+      if (gameIntervalRef.current) clearInterval(gameIntervalRef.current);
+    }
+    return () => {
+      if (gameIntervalRef.current) clearInterval(gameIntervalRef.current);
+    };
+  }, [isGameActive, isGamePaused, callNextNumber, remainingToCall.length]);
+
+
+  const handleDaub = (row: number, col: number) => {
+    if (!isGameActive) {
+      toast({ title: "Game Not Active", description: "Start the game to daub numbers.", variant: "destructive" });
+      return;
+    }
+    const number = bingoCard[row][col];
+    if (typeof number === 'number') {
+      if (calledNumbersSet.has(number)) {
+        const newDaubs = daubedCells.map(r => [...r]);
+        newDaubs[row][col] = !newDaubs[row][col]; // Toggle daub
+        setDaubedCells(newDaubs);
+        // TODO: Check for Bingo immediately after daub
+      } else {
+        toast({ title: "Number Not Called", description: `Number ${number} has not been called yet.`, variant: "destructive" });
+      }
+    } else if (number === 'FREE') { // Free space is auto-daubed and can be un-daubed/re-daubed if desired, though unusual.
+        const newDaubs = daubedCells.map(r => [...r]);
+        newDaubs[row][col] = !newDaubs[row][col];
+        setDaubedCells(newDaubs);
+    }
+  };
+
+  const handleBuyAndStart = () => {
+    if (gameIntervalRef.current) clearInterval(gameIntervalRef.current); // Stop any current game
+
+    if (currentCredits < cardCost) {
+        toast({ title: "Not Enough Credits", description: `You need ${cardCost} credits to play.`, variant: "destructive" });
+        return;
+    }
+    setCurrentCredits(prev => prev - cardCost);
+    // setCurrentXp(prevXp => prevXp + cardCost); // XP gain on game start
+    
+    initializeNewCardAndDaubs();
+    resetCaller();
+    setIsGameActive(true);
+    setIsGamePaused(false);
+    toast({ title: "New Game Started!", description: `New card purchased for ${cardCost} credits. Good luck!`});
+  };
+
+  const handlePauseResumeGame = () => {
+    if (!isGameActive) return;
+    setIsGamePaused(!isGamePaused);
+    toast({ title: isGamePaused ? "Game Resumed" : "Game Paused" });
+  };
+
+  const handleResetGame = () => {
+    if (gameIntervalRef.current) clearInterval(gameIntervalRef.current);
+    setIsGameActive(false);
+    setIsGamePaused(false);
+    initializeNewCardAndDaubs(); // Gives a fresh card
+    resetCaller(); // Resets the numbers to be called
+    toast({ title: "Game Reset", description: "Board and caller have been reset. Buy a new card to start." });
+  };
 
   return (
     <div className="min-h-screen text-foreground flex flex-col">
       <Navbar />
       <main className="flex-grow container mx-auto px-2 sm:px-4 py-8 sm:py-12 flex flex-col items-center">
-        <header className="mb-8 sm:mb-10 text-center">
-          <AppWindow className="h-12 w-12 sm:h-16 md:h-20 text-primary mx-auto mb-3 sm:mb-4" />
+        <header className="mb-6 sm:mb-8 text-center">
+          <AppWindow className="h-10 w-10 sm:h-12 md:h-16 text-primary mx-auto mb-2 sm:mb-3" />
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold font-headline text-primary">Bingo Hall</h1>
-          <p className="text-md sm:text-lg md:text-xl text-muted-foreground mt-2 px-2">
-            Get your daubers ready! More features coming soon.
+          <p className="text-md sm:text-lg text-muted-foreground mt-1 px-2">
+            Daub your way to victory! Numbers are called automatically.
           </p>
         </header>
 
-        <div className="w-full max-w-xs sm:max-w-sm mx-auto mb-6 sm:mb-8">
+        <div className="w-full max-w-xs sm:max-w-sm mx-auto mb-4 sm:mb-6">
           <CreditDisplay initialCredits={currentCredits} />
         </div>
         
-        <div className="mb-6">
-            <Button onClick={handleStartGame} disabled={isGameActive} size="lg">
-                <Ticket className="mr-2 h-5 w-5"/> Buy New Card (10 Credits)
+        <div className="flex flex-wrap justify-center items-center gap-2 sm:gap-3 mb-4 sm:mb-6">
+            <Button onClick={handleBuyAndStart} size="lg" variant="default" disabled={isGameActive && !isGamePaused}>
+                <Ticket className="mr-2 h-4 w-4 sm:h-5 sm:w-5"/> Buy New Card & Play ({cardCost} Cr)
+            </Button>
+            <Button onClick={handlePauseResumeGame} size="sm" variant="outline" disabled={!isGameActive}>
+                {isGamePaused ? <Play className="mr-2 h-4 w-4"/> : <Pause className="mr-2 h-4 w-4"/>}
+                {isGamePaused ? "Resume" : "Pause"}
+            </Button>
+            <Button onClick={handleResetGame} size="sm" variant="destructive">
+                <RotateCcw className="mr-2 h-4 w-4"/> Reset Game
             </Button>
         </div>
 
+        {/* Caller Information */}
+        <Card className="w-full max-w-lg bg-card border-border shadow-md mb-4 sm:mb-6">
+            <CardHeader className="pb-2 pt-4">
+                <CardTitle className="text-xl sm:text-2xl text-primary font-headline text-center flex items-center justify-center">
+                    <Volume2 className="mr-2 h-5 w-5 sm:h-6 sm:w-6"/> Caller's Board
+                </CardTitle>
+            </CardHeader>
+            <CardContent className="text-center">
+                <div className="mb-3">
+                    <p className="text-sm text-muted-foreground">Current Number:</p>
+                    <p className={cn(
+                        "text-5xl sm:text-6xl font-bold text-primary transition-all duration-300",
+                        currentCalledNumber ? "scale-110" : "scale-100"
+                    )}>
+                        {currentCalledNumber || "--"}
+                    </p>
+                </div>
+                <div className="h-24 overflow-y-auto p-2 border border-border/30 rounded-md bg-background/50">
+                    <p className="text-xs text-muted-foreground mb-1">Called Numbers History ({calledNumbersHistory.length}/{TOTAL_NUMBERS}):</p>
+                    {calledNumbersHistory.length > 0 ? (
+                        <div className="flex flex-wrap gap-1 justify-center">
+                            {calledNumbersHistory.map(num => (
+                                <span key={num} className="px-1.5 py-0.5 text-xs bg-accent text-accent-foreground rounded-sm">
+                                    {num}
+                                </span>
+                            ))}
+                        </div>
+                    ) : (
+                        <p className="text-xs text-muted-foreground italic">Waiting for game to start...</p>
+                    )}
+                </div>
+            </CardContent>
+        </Card>
+
+
+        {/* Bingo Card */}
         {bingoCard.length > 0 ? (
-          <div className="bg-card p-3 sm:p-4 border border-border rounded-lg shadow-xl w-full max-w-md">
-            <div className="grid grid-cols-5 gap-1 sm:gap-2">
+          <div className="bg-card p-2 sm:p-3 border border-border rounded-lg shadow-xl w-full max-w-md mb-4 sm:mb-6">
+            <div className="grid grid-cols-5 gap-1 sm:gap-1.5">
               {BINGO_COLS.map((letter) => (
-                <div key={letter} className="flex items-center justify-center text-xl sm:text-2xl md:text-3xl font-bold text-primary h-10 sm:h-12 md:h-14 rounded-t-md bg-primary/20">
+                <div key={letter} className="flex items-center justify-center text-lg sm:text-xl md:text-2xl font-bold text-primary h-8 sm:h-10 md:h-12 rounded-t-sm bg-primary/20">
                   {letter}
                 </div>
               ))}
@@ -159,15 +270,16 @@ export default function BingoPage() {
                     <button
                       key={`${rowIndex}-${colIndex}`}
                       onClick={() => handleDaub(rowIndex, colIndex)}
-                      disabled={!isGameActive && num !== 'FREE'}
+                      disabled={!isGameActive}
                       className={cn(
-                        "flex items-center justify-center text-lg sm:text-xl md:text-2xl font-semibold aspect-square w-full rounded-md border border-border/50 transition-all",
-                        "focus:outline-none focus:ring-2 focus:ring-ring",
+                        "flex items-center justify-center text-md sm:text-lg md:text-xl font-semibold aspect-square w-full rounded-sm border border-border/30 transition-all",
+                        "focus:outline-none focus:ring-1 focus:ring-ring",
                         daubedCells[rowIndex]?.[colIndex] 
                           ? "bg-accent text-accent-foreground scale-95 shadow-inner" 
                           : "bg-card hover:bg-muted/50",
-                        num === 'FREE' && !daubedCells[rowIndex]?.[colIndex] && "bg-primary/10 text-primary",
-                        num === 'FREE' && daubedCells[rowIndex]?.[colIndex] && "bg-primary text-primary-foreground"
+                        num === 'FREE' && !daubedCells[rowIndex]?.[colIndex] && "bg-primary/10 text-primary font-bold",
+                        num === 'FREE' && daubedCells[rowIndex]?.[colIndex] && "bg-primary text-primary-foreground font-bold",
+                        (!isGameActive || (typeof num === 'number' && !calledNumbersSet.has(num) && num !== 'FREE')) && !daubedCells[rowIndex]?.[colIndex] && "opacity-60"
                       )}
                     >
                       {num}
@@ -181,9 +293,14 @@ export default function BingoPage() {
           <p className="text-muted-foreground">Loading Bingo Card...</p>
         )}
         
-        <div className="mt-8 text-center">
-            <p className="text-muted-foreground text-sm">Current Called Number: <span className="font-bold text-primary">--</span> (Coming Soon)</p>
-            <p className="text-muted-foreground text-sm mt-2">Game interactions like number calling and win detection are under development.</p>
+        <div className="text-center">
+            {/* Placeholder for BINGO button and win messages */}
+            <Button variant="default" size="lg" className="mt-2 sm:mt-3" disabled={!isGameActive} onClick={() => toast({title: "Coming Soon!", description:"Bingo win checking is under development."})}>
+                Call BINGO!
+            </Button>
+            <p className="text-muted-foreground text-xs sm:text-sm mt-3 px-2">
+                Win checking and automated BINGO detection are coming soon. Daub your card as numbers are called!
+            </p>
         </div>
 
       </main>
