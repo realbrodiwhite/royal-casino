@@ -4,7 +4,7 @@
 import Navbar from '@/components/layout/navbar';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import { AppWindow, Ticket, Users, Play, Pause, RotateCcw, History, Volume2 } from 'lucide-react';
+import { AppWindow, Ticket, Users, Play, Pause, RotateCcw, History, Volume2, Award } from 'lucide-react';
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { cn } from '@/lib/utils';
 import CreditDisplay from '@/components/game/CreditDisplay';
@@ -20,6 +20,9 @@ const NUMBERS_PER_COL: Record<typeof BINGO_COLS[number], { min: number, max: num
   O: { min: 61, max: 75, count: 5 },
 };
 const TOTAL_NUMBERS = 75;
+const BINGO_GRID_SIZE = 5;
+const BINGO_WIN_AMOUNT = 100;
+
 
 type BingoNumber = number | 'FREE';
 type BingoCardGrid = BingoNumber[][]; // Column-major: grid[col][row]
@@ -50,6 +53,7 @@ const generateBingoCard = (): BingoCardGrid => {
   return card;
 };
 
+// Transposes from column-major (generation format) to row-major (display/daubing format)
 const transposeGrid = (grid: BingoCardGrid): BingoNumber[][] => {
   if (!grid || grid.length === 0) return [];
   return grid[0].map((_, rowIndex) => grid.map(col => col[rowIndex]));
@@ -58,8 +62,8 @@ const transposeGrid = (grid: BingoCardGrid): BingoNumber[][] => {
 const initialAllPossibleNumbers = () => Array.from({ length: TOTAL_NUMBERS }, (_, i) => i + 1);
 
 export default function BingoPage() {
-  const [bingoCard, setBingoCard] = useState<BingoNumber[][]>([]);
-  const [daubedCells, setDaubedCells] = useState<boolean[][]>([]);
+  const [bingoCard, setBingoCard] = useState<BingoNumber[][]>([]); // Row-major
+  const [daubedCells, setDaubedCells] = useState<boolean[][]>([]); // Row-major, matches bingoCard structure
   
   const [calledNumbersSet, setCalledNumbersSet] = useState<Set<number>>(new Set());
   const [calledNumbersHistory, setCalledNumbersHistory] = useState<number[]>([]);
@@ -69,6 +73,7 @@ export default function BingoPage() {
   const [currentCredits, setCurrentCredits] = useState(1000); 
   const [isGameActive, setIsGameActive] = useState(false);
   const [isGamePaused, setIsGamePaused] = useState(false);
+  const [hasPlayerWonBingo, setHasPlayerWonBingo] = useState(false);
   
   const { toast } = useToast();
   const gameIntervalRef = useRef<NodeJS.Timeout | null>(null);
@@ -84,12 +89,12 @@ export default function BingoPage() {
   };
   
   const initializeNewCardAndDaubs = useCallback(() => {
-    const newCardData = generateBingoCard();
-    const transposedCard = transposeGrid(newCardData);
-    setBingoCard(transposedCard);
+    const newCardDataColMajor = generateBingoCard();
+    const transposedCardRowMajor = transposeGrid(newCardDataColMajor);
+    setBingoCard(transposedCardRowMajor);
     
-    const initialDaubs = Array(5).fill(null).map(() => Array(5).fill(false));
-    const freeSpaceCoords = findFreeSpaceCoords(transposedCard);
+    const initialDaubs = Array(BINGO_GRID_SIZE).fill(null).map(() => Array(BINGO_GRID_SIZE).fill(false));
+    const freeSpaceCoords = findFreeSpaceCoords(transposedCardRowMajor);
     if (freeSpaceCoords) {
       initialDaubs[freeSpaceCoords.row][freeSpaceCoords.col] = true;
     }
@@ -120,39 +125,38 @@ export default function BingoPage() {
       const [nextNumber, ...rest] = prevRemaining;
       setCurrentCalledNumber(nextNumber);
       setCalledNumbersSet(prevSet => new Set(prevSet).add(nextNumber));
-      setCalledNumbersHistory(prevHistory => [...prevHistory, nextNumber]);
+      setCalledNumbersHistory(prevHistory => [nextNumber, ...prevHistory]); // Add to front for recent display
       return rest;
     });
   }, [toast]);
 
   useEffect(() => {
-    if (isGameActive && !isGamePaused && remainingToCall.length > 0) {
-      gameIntervalRef.current = setInterval(callNextNumber, 3000); // Call number every 3 seconds
+    if (isGameActive && !isGamePaused && remainingToCall.length > 0 && !hasPlayerWonBingo) {
+      gameIntervalRef.current = setInterval(callNextNumber, 3000); 
     } else {
       if (gameIntervalRef.current) clearInterval(gameIntervalRef.current);
     }
     return () => {
       if (gameIntervalRef.current) clearInterval(gameIntervalRef.current);
     };
-  }, [isGameActive, isGamePaused, callNextNumber, remainingToCall.length]);
+  }, [isGameActive, isGamePaused, callNextNumber, remainingToCall.length, hasPlayerWonBingo]);
 
 
   const handleDaub = (row: number, col: number) => {
-    if (!isGameActive) {
-      toast({ title: "Game Not Active", description: "Start the game to daub numbers.", variant: "destructive" });
+    if (!isGameActive || hasPlayerWonBingo) {
+      toast({ title: "Game Not Active", description: "Start the game to daub numbers or game already won.", variant: "destructive" });
       return;
     }
     const number = bingoCard[row][col];
     if (typeof number === 'number') {
       if (calledNumbersSet.has(number)) {
         const newDaubs = daubedCells.map(r => [...r]);
-        newDaubs[row][col] = !newDaubs[row][col]; // Toggle daub
+        newDaubs[row][col] = !newDaubs[row][col]; 
         setDaubedCells(newDaubs);
-        // TODO: Check for Bingo immediately after daub
       } else {
         toast({ title: "Number Not Called", description: `Number ${number} has not been called yet.`, variant: "destructive" });
       }
-    } else if (number === 'FREE') { // Free space is auto-daubed and can be un-daubed/re-daubed if desired, though unusual.
+    } else if (number === 'FREE') {
         const newDaubs = daubedCells.map(r => [...r]);
         newDaubs[row][col] = !newDaubs[row][col];
         setDaubedCells(newDaubs);
@@ -160,24 +164,24 @@ export default function BingoPage() {
   };
 
   const handleBuyAndStart = () => {
-    if (gameIntervalRef.current) clearInterval(gameIntervalRef.current); // Stop any current game
+    if (gameIntervalRef.current) clearInterval(gameIntervalRef.current); 
 
     if (currentCredits < cardCost) {
         toast({ title: "Not Enough Credits", description: `You need ${cardCost} credits to play.`, variant: "destructive" });
         return;
     }
     setCurrentCredits(prev => prev - cardCost);
-    // setCurrentXp(prevXp => prevXp + cardCost); // XP gain on game start
     
     initializeNewCardAndDaubs();
     resetCaller();
+    setHasPlayerWonBingo(false);
     setIsGameActive(true);
     setIsGamePaused(false);
     toast({ title: "New Game Started!", description: `New card purchased for ${cardCost} credits. Good luck!`});
   };
 
   const handlePauseResumeGame = () => {
-    if (!isGameActive) return;
+    if (!isGameActive || hasPlayerWonBingo) return;
     setIsGamePaused(!isGamePaused);
     toast({ title: isGamePaused ? "Game Resumed" : "Game Paused" });
   };
@@ -186,10 +190,82 @@ export default function BingoPage() {
     if (gameIntervalRef.current) clearInterval(gameIntervalRef.current);
     setIsGameActive(false);
     setIsGamePaused(false);
-    initializeNewCardAndDaubs(); // Gives a fresh card
-    resetCaller(); // Resets the numbers to be called
+    setHasPlayerWonBingo(false);
+    initializeNewCardAndDaubs(); 
+    resetCaller(); 
     toast({ title: "Game Reset", description: "Board and caller have been reset. Buy a new card to start." });
   };
+
+  const checkForBingo = useCallback((currentDaubedCells: boolean[][]): boolean => {
+    if (!currentDaubedCells || currentDaubedCells.length !== BINGO_GRID_SIZE) return false;
+
+    // Check rows
+    for (let i = 0; i < BINGO_GRID_SIZE; i++) {
+      if (currentDaubedCells[i]?.every(cell => cell === true)) return true;
+    }
+
+    // Check columns
+    for (let j = 0; j < BINGO_GRID_SIZE; j++) {
+      let colWin = true;
+      for (let i = 0; i < BINGO_GRID_SIZE; i++) {
+        if (!currentDaubedCells[i]?.[j]) {
+          colWin = false;
+          break;
+        }
+      }
+      if (colWin) return true;
+    }
+
+    // Check main diagonal (top-left to bottom-right)
+    let mainDiagWin = true;
+    for (let i = 0; i < BINGO_GRID_SIZE; i++) {
+      if (!currentDaubedCells[i]?.[i]) {
+        mainDiagWin = false;
+        break;
+      }
+    }
+    if (mainDiagWin) return true;
+
+    // Check anti-diagonal (top-right to bottom-left)
+    let antiDiagWin = true;
+    for (let i = 0; i < BINGO_GRID_SIZE; i++) {
+      if (!currentDaubedCells[i]?.[BINGO_GRID_SIZE - 1 - i]) {
+        antiDiagWin = false;
+        break;
+      }
+    }
+    if (antiDiagWin) return true;
+
+    return false;
+  }, []);
+
+  const handleCallBingo = () => {
+    if (!isGameActive || hasPlayerWonBingo) {
+      toast({ title: "Cannot Call Bingo", description: "Game is not active or Bingo already achieved.", variant: "destructive" });
+      return;
+    }
+
+    const isWin = checkForBingo(daubedCells);
+
+    if (isWin) {
+        setHasPlayerWonBingo(true);
+        setCurrentCredits(prev => prev + BINGO_WIN_AMOUNT);
+        if (gameIntervalRef.current) clearInterval(gameIntervalRef.current);
+        setIsGameActive(false); 
+        toast({
+            title: "BINGO!",
+            description: `Congratulations! You won ${BINGO_WIN_AMOUNT} credits!`,
+            action: <Award className="h-5 w-5 text-primary" />,
+        });
+    } else {
+        toast({
+            title: "Not a BINGO",
+            description: "No winning pattern found. Keep daubing!",
+            variant: "destructive",
+        });
+    }
+  };
+
 
   return (
     <div className="min-h-screen text-foreground flex flex-col">
@@ -208,10 +284,10 @@ export default function BingoPage() {
         </div>
         
         <div className="flex flex-wrap justify-center items-center gap-2 sm:gap-3 mb-4 sm:mb-6">
-            <Button onClick={handleBuyAndStart} size="lg" variant="default" disabled={isGameActive && !isGamePaused}>
+            <Button onClick={handleBuyAndStart} size="lg" variant="default" disabled={isGameActive && !isGamePaused && !hasPlayerWonBingo}>
                 <Ticket className="mr-2 h-4 w-4 sm:h-5 sm:w-5"/> Buy New Card & Play ({cardCost} Cr)
             </Button>
-            <Button onClick={handlePauseResumeGame} size="sm" variant="outline" disabled={!isGameActive}>
+            <Button onClick={handlePauseResumeGame} size="sm" variant="outline" disabled={!isGameActive || hasPlayerWonBingo}>
                 {isGamePaused ? <Play className="mr-2 h-4 w-4"/> : <Pause className="mr-2 h-4 w-4"/>}
                 {isGamePaused ? "Resume" : "Pause"}
             </Button>
@@ -220,7 +296,6 @@ export default function BingoPage() {
             </Button>
         </div>
 
-        {/* Caller Information */}
         <Card className="w-full max-w-lg bg-card border-border shadow-md mb-4 sm:mb-6">
             <CardHeader className="pb-2 pt-4">
                 <CardTitle className="text-xl sm:text-2xl text-primary font-headline text-center flex items-center justify-center">
@@ -254,8 +329,6 @@ export default function BingoPage() {
             </CardContent>
         </Card>
 
-
-        {/* Bingo Card */}
         {bingoCard.length > 0 ? (
           <div className="bg-card p-2 sm:p-3 border border-border rounded-lg shadow-xl w-full max-w-md mb-4 sm:mb-6">
             <div className="grid grid-cols-5 gap-1 sm:gap-1.5">
@@ -270,7 +343,7 @@ export default function BingoPage() {
                     <button
                       key={`${rowIndex}-${colIndex}`}
                       onClick={() => handleDaub(rowIndex, colIndex)}
-                      disabled={!isGameActive}
+                      disabled={!isGameActive || hasPlayerWonBingo}
                       className={cn(
                         "flex items-center justify-center text-md sm:text-lg md:text-xl font-semibold aspect-square w-full rounded-sm border border-border/30 transition-all",
                         "focus:outline-none focus:ring-1 focus:ring-ring",
@@ -279,8 +352,9 @@ export default function BingoPage() {
                           : "bg-card hover:bg-muted/50",
                         num === 'FREE' && !daubedCells[rowIndex]?.[colIndex] && "bg-primary/10 text-primary font-bold",
                         num === 'FREE' && daubedCells[rowIndex]?.[colIndex] && "bg-primary text-primary-foreground font-bold",
-                        (!isGameActive || (typeof num === 'number' && !calledNumbersSet.has(num) && num !== 'FREE')) && !daubedCells[rowIndex]?.[colIndex] && "opacity-60"
+                        (!isGameActive || (typeof num === 'number' && !calledNumbersSet.has(num) && num !== 'FREE')) && !daubedCells[rowIndex]?.[colIndex] && !hasPlayerWonBingo && "opacity-60"
                       )}
+                      aria-label={`Cell ${BINGO_COLS[colIndex]}${rowIndex + 1} - ${num}`}
                     >
                       {num}
                     </button>
@@ -294,12 +368,20 @@ export default function BingoPage() {
         )}
         
         <div className="text-center">
-            {/* Placeholder for BINGO button and win messages */}
-            <Button variant="default" size="lg" className="mt-2 sm:mt-3" disabled={!isGameActive} onClick={() => toast({title: "Coming Soon!", description:"Bingo win checking is under development."})}>
-                Call BINGO!
+            <Button 
+              variant="default" 
+              size="lg" 
+              className="mt-2 sm:mt-3" 
+              disabled={!isGameActive || hasPlayerWonBingo} 
+              onClick={handleCallBingo}
+            >
+                <Award className="mr-2 h-5 w-5"/> Call BINGO!
             </Button>
+            {hasPlayerWonBingo && (
+                <p className="text-primary font-semibold mt-3">You won this round! Buy a new card to play again.</p>
+            )}
             <p className="text-muted-foreground text-xs sm:text-sm mt-3 px-2">
-                Win checking and automated BINGO detection are coming soon. Daub your card as numbers are called!
+                Win patterns: 5 in a row, column, or diagonal.
             </p>
         </div>
 
