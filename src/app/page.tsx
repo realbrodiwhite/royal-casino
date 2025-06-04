@@ -4,10 +4,15 @@
 import Link from 'next/link';
 import Navbar from '@/components/layout/navbar';
 import { Button } from '@/components/ui/button';
-import { Crown, Gem, ShieldCheck, Coins, DollarSign, Dice5, Rows, Puzzle, Sparkles } from 'lucide-react';
+import { Crown, Gem, ShieldCheck, Coins, DollarSign, Sparkles } from 'lucide-react';
 import Image from 'next/image';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import LuxuryExperienceIcon from '@/components/game/category-icons/LuxuryExperienceIcon';
+
+// Import specific game category icons
+import SlotsCategoryIcon from '@/components/game/category-icons/SlotsCategoryIcon';
+import PokerCategoryIcon from '@/components/game/category-icons/PokerCategoryIcon';
+import BingoCategoryIcon from '@/components/game/category-icons/BingoCategoryIcon';
 
 export default function LandingPage() {
   return (
@@ -83,23 +88,23 @@ export default function LandingPage() {
             </p>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
               <GameTypeCard
-                icon={<Dice5 className="h-8 w-8 sm:h-10 sm:w-10 text-primary" />}
+                icon={<SlotsCategoryIcon className="h-8 w-8 sm:h-10 sm:w-10 text-primary" />}
                 title="Thrilling Slots"
                 description="Spin the reels on a variety of themed slot machines with unique features and big win potential."
                 href="/games/slots"
               />
               <GameTypeCard
-                icon={<Rows className="h-8 w-8 sm:h-10 sm:w-10 text-primary" />}
+                icon={<PokerCategoryIcon className="h-8 w-8 sm:h-10 sm:w-10 text-primary" />}
                 title="Classic Poker"
                 description="Test your skills and strategy at our virtual poker tables."
                 href="/lobby/poker"
               />
               <GameTypeCard
-                icon={<Puzzle className="h-8 w-8 sm:h-10 sm:w-10 text-primary" />}
+                icon={<BingoCategoryIcon className="h-8 w-8 sm:h-10 sm:w-10 text-primary" />}
                 title="Exciting Bingo"
-                description="Join the fun in our bingo halls and daub your way to victory. (Coming Soon)"
+                description="Join the fun in our bingo halls and daub your way to victory."
                 href="/lobby/bingo"
-                disabled
+                disabled={false} 
               />
             </div>
           </div>
@@ -148,6 +153,7 @@ const FeatureCard: React.FC<FeatureCardProps> = ({ icon, image, title, descripti
         width={300}
         height={200}
         className="rounded-md mb-3 sm:mb-4 object-cover w-full h-32 sm:h-40"
+        data-ai-hint="casino game feature" 
       />
     )}
     <h3 className="text-xl sm:text-2xl font-semibold text-primary mb-1 sm:mb-2 font-headline">{title}</h3>
