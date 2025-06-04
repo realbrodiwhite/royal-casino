@@ -4,7 +4,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Button } from '@/components/ui/button';
 import CreditDisplay from '@/components/game/CreditDisplay';
-import XpDisplay from '@/components/game/XpDisplay';
+// XpDisplay removed
 import GameGrid from '@/components/game/GameGrid';
 import GridBox from '@/components/game/GridBox';
 import SpinButton from '@/components/game/SpinButton';
@@ -271,7 +271,6 @@ export default function SlotsPage() {
     setIsAutospin(false);
     setResultsMessage(null);
     setIsWin(null);
-    // Reset credits and XP here if desired when switching themes, or manage globally
   };
 
   if (!selectedTheme) {
@@ -279,7 +278,7 @@ export default function SlotsPage() {
       <div className="min-h-screen text-foreground flex flex-col items-center p-4">
         <Navbar />
         <header className="my-6 sm:my-8 text-center">
-          <h1 className="text-3xl sm:text-4xl font-bold font-headline text-primary">Choose Your Slot Adventure!</h1>
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold font-headline text-primary">Choose Your Slot Adventure!</h1>
           <p className="text-md sm:text-lg text-muted-foreground mt-2 px-2">Select a theme to start playing.</p>
         </header>
         <main className="flex flex-wrap justify-center items-start gap-6 sm:gap-8 w-full max-w-4xl px-2">
@@ -313,14 +312,13 @@ export default function SlotsPage() {
     <div className="min-h-screen text-foreground flex flex-col items-center p-4">
       <Navbar />
       <header className="my-6 sm:my-8 text-center">
-        <h1 className="text-3xl sm:text-4xl font-bold font-headline text-primary">{selectedTheme.displayName}</h1>
+        <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold font-headline text-primary">{selectedTheme.displayName}</h1>
         <p className="text-md sm:text-lg text-muted-foreground mt-2 px-2">{selectedTheme.description}</p>
       </header>
 
       <main className="flex flex-col items-center gap-4 sm:gap-6 w-full max-w-2xl px-2">
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full">
+        <div className="w-full max-w-xs sm:max-w-sm mx-auto">
             <CreditDisplay initialCredits={credits} />
-            <XpDisplay experiencePoints={experiencePoints} />
         </div>
 
         <Button onClick={() => setSelectedTheme(null)} variant="outline" className="w-full sm:w-auto">
@@ -381,5 +379,4 @@ export default function SlotsPage() {
     </div>
   );
 }
-
     

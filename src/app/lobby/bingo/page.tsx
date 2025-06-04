@@ -8,7 +8,7 @@ import { AppWindow, Ticket, Users } from 'lucide-react'; // Changed icon
 import React, { useState, useEffect, useCallback } from 'react';
 import { cn } from '@/lib/utils';
 import CreditDisplay from '@/components/game/CreditDisplay';
-import XpDisplay from '@/components/game/XpDisplay';
+// XpDisplay removed
 
 const BINGO_COLS = ['B', 'I', 'N', 'G', 'O'] as const;
 const NUMBERS_PER_COL: Record<typeof BINGO_COLS[number], { min: number, max: number, count: number }> = {
@@ -59,8 +59,8 @@ export default function BingoPage() {
   const [bingoCard, setBingoCard] = useState<BingoNumber[][]>([]);
   const [daubedCells, setDaubedCells] = useState<boolean[][]>([]);
   const [calledNumbers, setCalledNumbers] = useState<Set<number>>(new Set());
-  const [currentCredits, setCurrentCredits] = useState(1000); // Mock credits
-  const [currentXp, setCurrentXp] = useState(0); // Mock XP
+  const [currentCredits, setCurrentCredits] = useState(1000); 
+  const [currentXp, setCurrentXp] = useState(0); 
   const [isGameActive, setIsGameActive] = useState(false);
   // TODO: Add more game state: current called number, game messages, win state, etc.
 
@@ -135,9 +135,8 @@ export default function BingoPage() {
           </p>
         </header>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 w-full max-w-3xl mb-6 sm:mb-8">
+        <div className="w-full max-w-xs sm:max-w-sm mx-auto mb-6 sm:mb-8">
           <CreditDisplay initialCredits={currentCredits} />
-          <XpDisplay experiencePoints={currentXp} />
         </div>
         
         <div className="mb-6">
@@ -194,5 +193,4 @@ export default function BingoPage() {
     </div>
   );
 }
-
     

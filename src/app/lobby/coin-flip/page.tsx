@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import CreditDisplay from '@/components/game/CreditDisplay';
-import XpDisplay from '@/components/game/XpDisplay';
+// XpDisplay removed
 import ResultsDisplay from '@/components/game/ResultsDisplay';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { CircleDollarSign, Repeat, HelpCircle, TrendingUp, TrendingDown, Pocket, ChevronsUp } from 'lucide-react';
@@ -149,9 +149,8 @@ export default function CoinFlipPage() {
           <p className="text-md sm:text-lg text-muted-foreground mt-1 px-2">Heads or Tails? Double your winnings!</p>
         </header>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 w-full max-w-md mb-6 sm:mb-8">
+        <div className="w-full max-w-xs sm:max-w-sm mx-auto mb-6 sm:mb-8">
           <CreditDisplay initialCredits={credits} />
-          <XpDisplay experiencePoints={experiencePoints} />
         </div>
 
         <Card className="w-full max-w-md bg-card border-border shadow-xl">
@@ -249,4 +248,4 @@ export default function CoinFlipPage() {
     </div>
   );
 }
-
+    
