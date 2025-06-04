@@ -54,7 +54,7 @@ export default function SlotsPage() {
         if (component) {
           return { id: themeSymbol.id, component, weight: themeSymbol.weight };
         }
-        console.warn(\`Symbol component for id '\${themeSymbol.id}' not found in allSymbolComponents.\`);
+        console.warn(`Symbol component for id '${themeSymbol.id}' not found in allSymbolComponents.`);
         return null;
       })
       .filter((item): item is SymbolData & { weight: number } => Boolean(item));
@@ -122,7 +122,7 @@ export default function SlotsPage() {
         if (finalReels[r] && finalReels[r][c]) {
           symbolsOnPayline.push(finalReels[r][c]);
         } else {
-          console.error(\`Invalid coordinate [\${r},\${c}] in payline \${paylineIndex} for current grid dimensions.\`);
+          console.error(`Invalid coordinate [${r},${c}] in payline ${paylineIndex} for current grid dimensions.`);
           return; 
         }
       }
@@ -209,9 +209,9 @@ export default function SlotsPage() {
 
         if (totalWinAmount > 0) {
           const winMessages = winDetails.map(detail => 
-            \`\${detail.count} \${detail.symbolId}s on line \${detail.paylineIndex + 1} (\${detail.line.map(c => \`[\${c[0]},\${c[1]}]\`).join(' ')}) for \${detail.amount}\`
+            `${detail.count} ${detail.symbolId}s on line ${detail.paylineIndex + 1} (${detail.line.map(c => `[${c[0]},${c[1]}]`).join(' ')}) for ${detail.amount}`
           );
-          setResultsMessage(\`You won \${totalWinAmount} credits! \${winDetails.length > 1 ? 'Details: ' + winMessages.join('; ') : winMessages[0]}\`);
+          setResultsMessage(`You won ${totalWinAmount} credits! ${winDetails.length > 1 ? 'Details: ' + winMessages.join('; ') : winMessages[0]}`);
           setIsWin(true);
           setCredits((prev) => prev + totalWinAmount);
           setWinAmount(totalWinAmount);

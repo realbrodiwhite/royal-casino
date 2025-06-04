@@ -12,8 +12,8 @@ interface GameGridProps {
 const GameGrid: React.FC<GameGridProps> = ({ rows, cols, children, className }) => {
   const gridStyle: React.CSSProperties = {
     display: 'grid',
-    gridTemplateRows: \`repeat(\${rows}, minmax(0, 1fr))\`,
-    gridTemplateColumns: \`repeat(\${cols}, minmax(0, 1fr))\`,
+    gridTemplateRows: `repeat(${rows}, minmax(0, 1fr))`,
+    gridTemplateColumns: `repeat(${cols}, minmax(0, 1fr))`,
     gap: '0.5rem', 
   };
 
