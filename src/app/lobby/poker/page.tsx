@@ -11,7 +11,7 @@ import XpDisplay from '@/components/game/XpDisplay';
 import ResultsDisplay from '@/components/game/ResultsDisplay';
 import PokerCardComponent from '@/components/game/PokerCard';
 import { Card as UICard, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
-import { Hand, DollarSign, Repeat, CheckCircle, XCircle, Info } from 'lucide-react';
+import { Hand, DollarSign, CheckCircle, Info } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
 import {
   createDeck,
@@ -50,12 +50,12 @@ const PokerPage: React.FC = () => {
     if (!isNaN(value) && value > 0) {
       setBetAmount(value);
     } else if (e.target.value === "") {
-      setBetAmount(0); // Or some default like 1
+      setBetAmount(0); 
     }
   };
 
   const handleDealDraw = useCallback(() => {
-    if (gameState === "BETTING" || gameState === "GAME_OVER") { // Deal new hand
+    if (gameState === "BETTING" || gameState === "GAME_OVER") { 
       if (credits < betAmount) {
         toast({ title: "Not Enough Credits", description: "Your bet is too high.", variant: "destructive" });
         return;
@@ -69,7 +69,7 @@ const PokerPage: React.FC = () => {
       setExperiencePoints(prevXp => prevXp + betAmount);
       
       let currentDeck = deck;
-      if (currentDeck.length < 10) { // Ensure enough cards for deal and potential draw
+      if (currentDeck.length < 10) { 
          currentDeck = shuffleDeck(createDeck());
       }
       
@@ -87,7 +87,7 @@ const PokerPage: React.FC = () => {
       const cardsToDraw = held.filter(h => !h).length;
       
       if (currentDeck.length < cardsToDraw) {
-         currentDeck = shuffleDeck(createDeck().filter(cardInDeck => !hand.find(hc => hc?.id === cardInDeck.id))); // Create new deck excluding current hand cards
+         currentDeck = shuffleDeck(createDeck().filter(cardInDeck => !hand.find(hc => hc?.id === cardInDeck.id))); 
       }
 
       const drawnReplacementCards = dealCardsFromDeck(currentDeck, cardsToDraw);
@@ -98,14 +98,13 @@ const PokerPage: React.FC = () => {
       for(let i = 0; i < 5; i++) {
         if(held[i] && hand[i]) {
           finalHand.push(hand[i]!);
-        } else if(hand[i] && replacementIndex < drawnReplacementCards.length) { // Check if hand[i] is not null
+        } else if(hand[i] && replacementIndex < drawnReplacementCards.length) { 
             finalHand.push(drawnReplacementCards[replacementIndex++]);
-        } else if (hand[i]) { // Fallback if not enough replacement cards (should ideally not happen with deck refresh logic)
+        } else if (hand[i]) { 
             finalHand.push(hand[i]!); 
             console.warn("Not enough replacement cards, reusing old card. This should be rare.");
         }
       }
-       // Ensure finalHand always has 5 cards, even if something went wrong with replacements
       while (finalHand.length < 5 && currentDeck.length > 0) {
         console.warn("Final hand has less than 5 cards, dealing more from deck.");
         finalHand.push(dealCardsFromDeck(currentDeck, 1)[0]);
@@ -117,7 +116,6 @@ const PokerPage: React.FC = () => {
         setHand(Array(5).fill(null));
         return;
       }
-
 
       setHand(finalHand);
       const { rank, payoutMultiplier } = evaluateHand(finalHand);
@@ -153,24 +151,24 @@ const PokerPage: React.FC = () => {
   return (
     <div className="min-h-screen text-foreground flex flex-col">
       <Navbar />
-      <main className="flex-grow container mx-auto px-4 py-12 flex flex-col items-center">
-        <header className="mb-10 text-center">
-          <Hand className="h-20 w-20 text-primary mx-auto mb-4" />
-          <h1 className="text-5xl font-bold font-headline text-primary">Video Poker</h1>
-          <p className="text-xl text-muted-foreground mt-2">Jacks or Better - Get the best hand!</p>
+      <main className="flex-grow container mx-auto px-2 sm:px-4 py-8 sm:py-12 flex flex-col items-center">
+        <header className="mb-8 sm:mb-10 text-center">
+          <Hand className="h-16 w-16 sm:h-20 sm:w-20 text-primary mx-auto mb-3 sm:mb-4" />
+          <h1 className="text-4xl sm:text-5xl font-bold font-headline text-primary">Video Poker</h1>
+          <p className="text-lg sm:text-xl text-muted-foreground mt-2 px-2">Jacks or Better - Get the best hand!</p>
         </header>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-3xl mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 w-full max-w-3xl mb-6 sm:mb-8">
           <CreditDisplay initialCredits={credits} />
           <XpDisplay experiencePoints={experiencePoints} />
         </div>
 
-        <UICard className="w-full max-w-2xl bg-card border-border shadow-xl mb-8">
+        <UICard className="w-full max-w-2xl bg-card border-border shadow-xl mb-6 sm:mb-8">
           <CardHeader>
-            <CardTitle className="text-2xl text-primary font-headline text-center">Your Hand</CardTitle>
+            <CardTitle className="text-xl sm:text-2xl text-primary font-headline text-center">Your Hand</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="grid grid-cols-5 gap-2 sm:gap-4 mb-6">
+            <div className="grid grid-cols-5 gap-1 xs:gap-2 sm:gap-3 md:gap-4 mb-4 sm:mb-6">
               {hand.map((card, index) => (
                 <PokerCardComponent
                   key={card ? card.id : `empty-${index}`}
@@ -182,16 +180,16 @@ const PokerPage: React.FC = () => {
                 />
               ))}
             </div>
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
               <div className="flex items-center gap-2">
-                <Label htmlFor="betAmount" className="text-foreground whitespace-nowrap">Bet:</Label>
+                <Label htmlFor="betAmount" className="text-foreground whitespace-nowrap text-sm sm:text-base">Bet:</Label>
                 <Input
                   id="betAmount"
                   type="number"
                   value={betAmount}
                   onChange={handleBetAmountChange}
                   min="1"
-                  className="w-24 bg-input border-border text-foreground placeholder:text-muted-foreground"
+                  className="w-20 sm:w-24 bg-input border-border text-foreground placeholder:text-muted-foreground text-sm sm:text-base"
                   disabled={gameState === "DEALT"}
                 />
               </div>
@@ -200,14 +198,14 @@ const PokerPage: React.FC = () => {
                 disabled={betAmount <= 0 && (gameState === "BETTING" || gameState === "GAME_OVER")}
                 variant="default"
                 size="lg"
-                className="w-full sm:w-auto px-8"
+                className="w-full sm:w-auto px-6 sm:px-8 py-2.5 sm:py-3 text-sm sm:text-base"
               >
-                {gameState === "DEALT" ? <CheckCircle className="mr-2"/> : <DollarSign className="mr-2"/>}
+                {gameState === "DEALT" ? <CheckCircle className="mr-2 h-4 w-4 sm:h-5 sm:w-5"/> : <DollarSign className="mr-2 h-4 w-4 sm:h-5 sm:w-5"/>}
                 {getButtonText()}
               </Button>
             </div>
              {gameMessage && (
-              <div className="mt-6">
+              <div className="mt-4 sm:mt-6">
                 <ResultsDisplay message={gameMessage} isWin={isWin} />
               </div>
             )}
@@ -216,17 +214,17 @@ const PokerPage: React.FC = () => {
 
         <UICard className="w-full max-w-md bg-card border-border shadow-md">
           <CardHeader>
-            <CardTitle className="text-xl text-primary font-headline text-center flex items-center justify-center">
-              <Info className="mr-2 h-5 w-5"/> Paytable (per credit bet)
+            <CardTitle className="text-lg sm:text-xl text-primary font-headline text-center flex items-center justify-center">
+              <Info className="mr-2 h-4 w-4 sm:h-5 sm:w-5"/> Paytable (per credit bet)
             </CardTitle>
           </CardHeader>
-          <CardContent className="text-sm">
+          <CardContent className="text-xs sm:text-sm">
             <ul className="space-y-1 text-muted-foreground">
               {Object.entries(PAYTABLE)
-                .filter(([, payout]) => payout > 0) // Show only winning hands
-                .sort(([, aPayout], [, bPayout]) => bPayout - aPayout) // Sort by highest payout
+                .filter(([, payout]) => payout > 0) 
+                .sort(([, aPayout], [, bPayout]) => bPayout - aPayout) 
                 .map(([handName, payout]) => (
-                  <li key={handName} className="flex justify-between items-center p-1.5 bg-card-foreground/5 rounded-sm">
+                  <li key={handName} className="flex justify-between items-center p-1 sm:p-1.5 bg-card-foreground/5 rounded-sm">
                     <span>{handName}</span>
                     <span className="font-semibold text-primary">{payout}x</span>
                   </li>
@@ -236,7 +234,7 @@ const PokerPage: React.FC = () => {
         </UICard>
 
       </main>
-      <footer className="text-center py-6 text-sm text-muted-foreground border-t border-border mt-auto">
+      <footer className="text-center py-4 sm:py-6 text-xs sm:text-sm text-muted-foreground border-t border-border mt-auto">
         <p>&copy; {new Date().getFullYear()} Royal Casino. Play Responsibly.</p>
       </footer>
     </div>

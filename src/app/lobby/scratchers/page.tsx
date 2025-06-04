@@ -5,7 +5,7 @@ import React, { useState, useCallback } from 'react';
 import Navbar from '@/components/layout/navbar';
 import { Button } from '@/components/ui/button';
 import CreditDisplay from '@/components/game/CreditDisplay';
-import XpDisplay from '@/components/game/XpDisplay'; // Import XpDisplay
+import XpDisplay from '@/components/game/XpDisplay';
 import ResultsDisplay from '@/components/game/ResultsDisplay';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { Ticket, Gift, Sparkles, Palette } from 'lucide-react';
@@ -133,7 +133,7 @@ export default function ScratchersPage() {
     setGameMessage("Scratch to reveal your prize!");
     setIsWin(null);
     setRevealedCount(0);
-    toast({ title: "Ticket Purchased!", description: \`Cost: \${TICKET_COST} credits. Good luck!\` });
+    toast({ title: "Ticket Purchased!", description: `Cost: ${TICKET_COST} credits. Good luck!` });
   };
 
   const handleScratchCell = (row: number, col: number) => {
@@ -149,10 +149,10 @@ export default function ScratchersPage() {
     
     if (win && winningSymbol) {
       setCredits(prev => prev + WIN_AMOUNT);
-      setGameMessage(\`Congratulations! You matched three \${winningSymbol}s and won \${WIN_AMOUNT} credits!\`);
+      setGameMessage(`Congratulations! You matched three ${winningSymbol}s and won ${WIN_AMOUNT} credits!`);
       setIsWin(true);
       setIsTicketActive(false); 
-      toast({ title: "You Won!", description: \`You won \${WIN_AMOUNT} credits!\` });
+      toast({ title: "You Won!", description: `You won ${WIN_AMOUNT} credits!` });
     } else if (currentRevealedCount === GRID_SIZE * GRID_SIZE) { 
         setGameMessage("No win this time. Better luck next ticket!");
         setIsWin(false);
@@ -164,39 +164,39 @@ export default function ScratchersPage() {
   return (
     <div className="min-h-screen text-foreground flex flex-col">
       <Navbar />
-      <main className="flex-grow container mx-auto px-4 py-12 flex flex-col items-center">
-        <header className="mb-10 text-center">
-          <Ticket className="h-20 w-20 text-primary mx-auto mb-4" />
-          <h1 className="text-5xl font-bold font-headline text-primary">Scratch & Win</h1>
-          <p className="text-xl text-muted-foreground mt-2">Buy a ticket and scratch for instant prizes!</p>
+      <main className="flex-grow container mx-auto px-4 py-8 sm:py-12 flex flex-col items-center">
+        <header className="mb-8 sm:mb-10 text-center">
+          <Ticket className="h-16 w-16 sm:h-20 sm:w-20 text-primary mx-auto mb-3 sm:mb-4" />
+          <h1 className="text-4xl sm:text-5xl font-bold font-headline text-primary">Scratch & Win</h1>
+          <p className="text-lg sm:text-xl text-muted-foreground mt-2 px-2">Buy a ticket and scratch for instant prizes!</p>
         </header>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-3xl mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 w-full max-w-3xl mb-6 sm:mb-8">
           <CreditDisplay initialCredits={credits} />
           <XpDisplay experiencePoints={experiencePoints} />
         </div>
 
         <Card className="w-full max-w-md bg-card border-border shadow-xl">
           <CardHeader>
-            <CardTitle className="text-2xl text-primary font-headline text-center">
+            <CardTitle className="text-xl sm:text-2xl text-primary font-headline text-center">
               {isTicketActive ? "Scratch Your Ticket!" : "Get Your Ticket"}
             </CardTitle>
              <p className="text-sm text-center text-muted-foreground">Ticket Cost: {TICKET_COST} credits</p>
           </CardHeader>
-          <CardContent className="space-y-6">
+          <CardContent className="space-y-4 sm:space-y-6">
             {!isTicketActive ? (
               <Button 
                 onClick={handleBuyTicket} 
                 variant="default"
-                className="w-full font-semibold text-lg py-3"
+                className="w-full font-semibold text-md sm:text-lg py-2.5 sm:py-3"
                 disabled={credits < TICKET_COST}
               >
-                <Gift className="mr-2 h-5 w-5" /> Buy Ticket ({TICKET_COST} Credits)
+                <Gift className="mr-2 h-4 w-4 sm:h-5 sm:w-5" /> Buy Ticket ({TICKET_COST} Credits)
               </Button>
             ) : (
               <div 
-                className="grid gap-2 mx-auto aspect-square"
-                style={{gridTemplateColumns: \`repeat(\${GRID_SIZE}, 1fr)\`}}
+                className="grid gap-1 sm:gap-2 mx-auto aspect-square max-w-xs sm:max-w-sm"
+                style={{gridTemplateColumns: `repeat(${GRID_SIZE}, 1fr)`}}
               >
                 {scratchGrid.flat().map((cell, index) => {
                   const row = Math.floor(index / GRID_SIZE);
@@ -207,20 +207,20 @@ export default function ScratchersPage() {
                       onClick={() => handleScratchCell(row, col)}
                       disabled={cell.revealed}
                       className={cn(
-                        "aspect-square flex items-center justify-center rounded-md border border-border text-3xl font-bold transition-all duration-300 ease-in-out",
+                        "aspect-square flex items-center justify-center rounded-md border border-border text-2xl sm:text-3xl font-bold transition-all duration-300 ease-in-out",
                         "focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 focus:ring-offset-background",
                         cell.revealed ? "bg-card-foreground/10 text-primary cursor-default" : "bg-muted hover:bg-muted/80 text-transparent cursor-pointer",
-                        cell.revealed && cell.symbol === "💰" && "text-green-400", // Keep specific colors for emphasis
+                        cell.revealed && cell.symbol === "💰" && "text-green-400",
                         cell.revealed && cell.symbol === "💎" && "text-blue-400",
                         cell.revealed && cell.symbol === "🍒" && "text-red-400",
                         cell.revealed && cell.symbol === "⭐" && "text-yellow-400",
                          !cell.revealed && "scratch-overlay relative overflow-hidden"
                       )}
-                      aria-label={`Scratch cell \${row + 1}-\${col + 1}`}
+                      aria-label={`Scratch cell ${row + 1}-${col + 1}`}
                     >
                       {cell.revealed ? cell.symbol : 
                         <div className="absolute inset-0 bg-gradient-to-br from-gray-400 via-gray-500 to-gray-600 flex items-center justify-center">
-                            <Palette className="h-8 w-8 text-gray-700 opacity-50"/>
+                            <Palette className="h-6 w-6 sm:h-8 sm:w-8 text-gray-700 opacity-50"/>
                         </div>
                       }
                     </button>
@@ -237,23 +237,23 @@ export default function ScratchersPage() {
                  <Button 
                     onClick={handleBuyTicket} 
                     variant="default"
-                    className="w-full font-semibold text-lg py-3 mt-4"
+                    className="w-full font-semibold text-md sm:text-lg py-2.5 sm:py-3 mt-3 sm:mt-4"
                     disabled={credits < TICKET_COST}
                 >
-                    <Sparkles className="mr-2 h-5 w-5" /> Play Again?
+                    <Sparkles className="mr-2 h-4 w-4 sm:h-5 sm:w-5" /> Play Again?
                 </Button>
             )}
           </CardContent>
-           <CardFooter className="text-xs text-center text-muted-foreground pt-4">
+           <CardFooter className="text-xs text-center text-muted-foreground pt-3 sm:pt-4">
                 <p>Match 3 symbols in a row, column, or diagonal to win {WIN_AMOUNT} credits!</p>
             </CardFooter>
         </Card>
 
       </main>
-      <footer className="text-center py-6 text-sm text-muted-foreground border-t border-border mt-auto">
+      <footer className="text-center py-4 sm:py-6 text-xs sm:text-sm text-muted-foreground border-t border-border mt-auto">
         <p>&copy; {new Date().getFullYear()} Royal Casino. Play Responsibly.</p>
       </footer>
-      <style jsx global>{\`
+      <style jsx global>{`
         .scratch-overlay::before {
           content: '';
           position: absolute;
@@ -267,7 +267,7 @@ export default function ScratchersPage() {
           );
           z-index: 1;
         }
-      \`}</style>
+      `}</style>
     </div>
   );
 }

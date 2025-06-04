@@ -41,7 +41,7 @@ export default function SignupPage() {
       await createUserWithEmailAndPassword(auth, email, password);
       toast({
         title: "Signup Successful",
-        description: \`Welcome, \${email}! Your account has been created.\`,
+        description: `Welcome, ${email}! Your account has been created.`,
       });
       router.push('/lobby'); 
     } catch (error: any) {

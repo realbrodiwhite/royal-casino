@@ -47,10 +47,10 @@ export default function AdminDashboardPage() {
       });
       return;
     }
-    console.log(\`Adding \${amount} credits to user \${userId}\`);
+    console.log(`Adding ${amount} credits to user ${userId}`);
     toast({
       title: "Success",
-      description: \`Successfully added \${amount} credits to user \${userId}. (Mock Action)\`,
+      description: `Successfully added ${amount} credits to user ${userId}. (Mock Action)`,
     });
     setUserId('');
     setCreditAmount('');
@@ -74,10 +74,10 @@ export default function AdminDashboardPage() {
       });
       return;
     }
-    console.log(\`Setting credits for user \${userId} to \${amount}\`);
+    console.log(`Setting credits for user ${userId} to ${amount}`);
     toast({
       title: "Success",
-      description: \`Successfully set credits for user \${userId} to \${amount}. (Mock Action)\`,
+      description: `Successfully set credits for user ${userId} to ${amount}. (Mock Action)`,
     });
     setUserId('');
     setCreditAmount('');
@@ -89,10 +89,10 @@ export default function AdminDashboardPage() {
         return (
           <Card className="bg-card border-border">
             <CardHeader>
-              <CardTitle className="text-primary flex items-center">
-                <UserCog className="mr-2 h-6 w-6" /> User Credit Management
+              <CardTitle className="text-primary flex items-center text-xl sm:text-2xl">
+                <UserCog className="mr-2 h-5 w-5 sm:h-6 sm:w-6" /> User Credit Management
               </CardTitle>
-              <CardDescription className="text-muted-foreground">
+              <CardDescription className="text-muted-foreground text-sm sm:text-base">
                 Add or set credits for a user.
               </CardDescription>
             </CardHeader>
@@ -120,11 +120,11 @@ export default function AdminDashboardPage() {
                 />
               </div>
             </CardContent>
-            <CardFooter className="flex justify-end gap-2">
-              <Button onClick={handleAddCredits} variant="outline">
+            <CardFooter className="flex flex-col sm:flex-row justify-end gap-2">
+              <Button onClick={handleAddCredits} variant="outline" className="w-full sm:w-auto">
                 <Coins className="mr-2 h-4 w-4"/> Add Credits
               </Button>
-              <Button onClick={handleSetCredits} variant="default">
+              <Button onClick={handleSetCredits} variant="default" className="w-full sm:w-auto">
                 Set Credits
               </Button>
             </CardFooter>
@@ -134,8 +134,8 @@ export default function AdminDashboardPage() {
         return (
           <Card className="bg-card border-border">
             <CardHeader>
-              <CardTitle className="text-primary flex items-center"><BarChart2 className="mr-2 h-6 w-6" />Game Stats Analysis</CardTitle>
-              <CardDescription className="text-muted-foreground">
+              <CardTitle className="text-primary flex items-center text-xl sm:text-2xl"><BarChart2 className="mr-2 h-5 w-5 sm:h-6 sm:w-6" />Game Stats Analysis</CardTitle>
+              <CardDescription className="text-muted-foreground text-sm sm:text-base">
                 View game performance and RTP. (Coming Soon)
               </CardDescription>
             </CardHeader>
@@ -148,8 +148,8 @@ export default function AdminDashboardPage() {
         return (
           <Card className="bg-card border-border">
             <CardHeader>
-              <CardTitle className="text-primary flex items-center"><Brain className="mr-2 h-6 w-6" />AI Pattern Recognition</CardTitle>
-              <CardDescription className="text-muted-foreground">
+              <CardTitle className="text-primary flex items-center text-xl sm:text-2xl"><Brain className="mr-2 h-5 w-5 sm:h-6 sm:w-6" />AI Pattern Recognition</CardTitle>
+              <CardDescription className="text-muted-foreground text-sm sm:text-base">
                 Analyze player patterns. (Coming Soon)
               </CardDescription>
             </CardHeader>
@@ -206,16 +206,16 @@ export default function AdminDashboardPage() {
           </Sidebar>
 
           <SidebarInset className="flex-1 overflow-y-auto">
-            <main className="container mx-auto px-4 py-8">
-              <header className="mb-8 flex items-center justify-between">
-                <h1 className="text-4xl md:text-5xl font-bold font-headline text-primary">Admin Dashboard</h1>
+            <main className="container mx-auto px-4 py-6 sm:py-8">
+              <header className="mb-6 sm:mb-8 flex items-center justify-between">
+                <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold font-headline text-primary">Admin Dashboard</h1>
                 <SidebarTrigger className="md:hidden text-primary border-primary hover:bg-accent/10" />
               </header>
               <div className="space-y-6">
                 {renderContent()}
               </div>
             </main>
-            <footer className="text-center py-6 text-sm text-muted-foreground border-t border-border">
+            <footer className="text-center py-4 sm:py-6 text-xs sm:text-sm text-muted-foreground border-t border-border">
               <p>&copy; {new Date().getFullYear()} Royal Casino Admin Panel.</p>
             </footer>
           </SidebarInset>

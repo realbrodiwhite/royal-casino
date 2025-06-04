@@ -4,6 +4,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Button } from '@/components/ui/button';
 import CreditDisplay from '@/components/game/CreditDisplay';
+import XpDisplay from '@/components/game/XpDisplay'; 
 import GameGrid from '@/components/game/GameGrid';
 import GridBox from '@/components/game/GridBox';
 import SpinButton from '@/components/game/SpinButton';
@@ -21,13 +22,11 @@ import { classicSlotsTheme } from '@/game-themes/classic-slots.theme';
 import { vegasAdventureTheme } from '@/game-themes/vegas-adventure.theme';
 import type { SlotGameThemeConfig } from '@/types/game-theme';
 
-// Maps symbol string identifiers from the theme config to actual React components.
 const allSymbolComponents: Record<string, React.FC<React.SVGProps<SVGSVGElement>>> = {
   CherrySymbol: CherrySymbol,
   DiamondSymbol: DiamondSymbol,
   GoldCoinSymbol: GoldCoinSymbol,
   BellSymbol: BellSymbol,
-  // Add other symbols here as they are created and imported
 };
 
 interface SymbolData {
@@ -55,7 +54,7 @@ export default function SlotsPage() {
         if (component) {
           return { id: themeSymbol.id, component, weight: themeSymbol.weight };
         }
-        console.warn(\`Symbol component for id '\${themeSymbol.id}' not found in allSymbolComponents.\`);
+        console.warn(`Symbol component for id '${themeSymbol.id}' not found in allSymbolComponents.`);
         return null;
       })
       .filter((item): item is SymbolData & { weight: number } => Boolean(item));
@@ -77,7 +76,6 @@ export default function SlotsPage() {
       }
       random -= symbol.weight;
     }
-    // Should not be reached if weights are positive and totalWeight > 0, but as a fallback:
     const lastSymbol = availableSymbolsWithData[availableSymbolsWithData.length - 1];
     return {id: lastSymbol.id, component: lastSymbol.component};
   }, [availableSymbolsWithData]);
@@ -92,13 +90,14 @@ export default function SlotsPage() {
   const [reels, setReels] = useState<SymbolData[][]>(() => initialReels(rows, cols));
   const [spinning, setSpinning] = useState(false);
   const [credits, setCredits] = useState(1000);
+  const [experiencePoints, setExperiencePoints] = useState(0);
   const [isAutospin, setIsAutospin] = useState(false);
   const [resultsMessage, setResultsMessage] = useState<string | null>(null);
   const [isWin, setIsWin] = useState<boolean | null>(null);
   const [winAmount, setWinAmount] = useState(0);
   const [showWinAnimation, setShowWinAnimation] = useState(false);
 
-  const spinCost = 10; // This is the total bet for the spin
+  const spinCost = 10; 
 
   useEffect(() => {
     setReels(initialReels(rows, cols));
@@ -123,32 +122,31 @@ export default function SlotsPage() {
         if (finalReels[r] && finalReels[r][c]) {
           symbolsOnPayline.push(finalReels[r][c]);
         } else {
-          console.error(\`Invalid coordinate [\${r},\${c}] in payline \${paylineIndex} for current grid dimensions.\`);
-          return; // Skip this payline if coordinates are out of bounds
+          console.error(`Invalid coordinate [${r},${c}] in payline ${paylineIndex} for current grid dimensions.`);
+          return; 
         }
       }
 
       if (symbolsOnPayline.length === 0) return;
 
       const firstSymbolId = symbolsOnPayline[0].id;
-      if (firstSymbolId === FALLBACK_SYMBOL.id) return; // Cannot win with fallback symbols
+      if (firstSymbolId === FALLBACK_SYMBOL.id) return; 
 
       let matchCount = 0;
       for (const symbolData of symbolsOnPayline) {
         if (symbolData.id === firstSymbolId) {
           matchCount++;
         } else {
-          break; // Streak broken (matches must be from left)
+          break; 
         }
       }
 
       if (matchCount > 0) {
         const symbolPaytableInfo = theme.paytable[firstSymbolId];
         if (symbolPaytableInfo) {
-          // Pay for the longest match found
           let actualPayoutMultiplier = 0;
           let paidMatchCount = 0;
-          for (let count = matchCount; count >=1; count--) { // Check from longest possible match downwards
+          for (let count = matchCount; count >=1; count--) { 
             if (symbolPaytableInfo[count]) {
               actualPayoutMultiplier = symbolPaytableInfo[count];
               paidMatchCount = count;
@@ -176,6 +174,8 @@ export default function SlotsPage() {
 
 
   const handleSpin = useCallback(() => {
+    setShowWinAnimation(false); // Hide win modal on new spin
+
     if (credits < spinCost) {
       setResultsMessage("Not enough credits to spin!");
       setIsWin(false);
@@ -190,16 +190,16 @@ export default function SlotsPage() {
 
     setSpinning(true);
     setCredits((prev) => prev - spinCost);
+    setExperiencePoints((prevXp) => prevXp + spinCost);
     setResultsMessage(null);
     setIsWin(null);
-    setShowWinAnimation(false);
     setWinAmount(0);
 
     let spinCycles = 0;
     const visualSpinInterval = setInterval(() => {
       setReels(currentReels => currentReels.map(row => row.map(() => getRandomSymbolData())));
       spinCycles++;
-      if (spinCycles >= 10) { // Spin visually for ~1 second
+      if (spinCycles >= 10) { 
         clearInterval(visualSpinInterval);
         
         const finalReelsResult = initialReels(rows, cols);
@@ -210,9 +210,9 @@ export default function SlotsPage() {
 
         if (totalWinAmount > 0) {
           const winMessages = winDetails.map(detail => 
-            \`\${detail.count} \${detail.symbolId}s on line \${detail.paylineIndex + 1} (\${detail.line.map(c => \`[\${c[0]},\${c[1]}]\`).join(' ')}) for \${detail.amount}\`
+            `${detail.count} ${detail.symbolId}s on line ${detail.paylineIndex + 1} (${detail.line.map(c => `[${c[0]},${c[1]}]`).join(' ')}) for ${detail.amount}`
           );
-          setResultsMessage(\`You won \${totalWinAmount} credits! \${winDetails.length > 1 ? 'Details: ' + winMessages.join('; ') : winMessages[0]}\`);
+          setResultsMessage(`You won ${totalWinAmount} credits! ${winDetails.length > 1 ? 'Details: ' + winMessages.join('; ') : winMessages[0]}`);
           setIsWin(true);
           setCredits((prev) => prev + totalWinAmount);
           setWinAmount(totalWinAmount);
@@ -228,7 +228,7 @@ export default function SlotsPage() {
   useEffect(() => {
     let autoSpinTimeout: NodeJS.Timeout;
     if (isAutospin && !spinning && credits >= spinCost && availableSymbolsWithData.length > 0) {
-      autoSpinTimeout = setTimeout(handleSpin, 2000); // Increased delay for autospin
+      autoSpinTimeout = setTimeout(handleSpin, 2000); 
     }
     return () => clearTimeout(autoSpinTimeout);
   }, [isAutospin, spinning, credits, handleSpin, availableSymbolsWithData.length]);
@@ -245,7 +245,7 @@ export default function SlotsPage() {
         return;
     }
     setIsAutospin(!isAutospin);
-    if (isAutospin) { // If stopping autospin
+    if (isAutospin) { 
         setResultsMessage(null);
     }
   };
@@ -258,24 +258,26 @@ export default function SlotsPage() {
     setActiveThemeConfig(prevTheme => 
       prevTheme.themeId === classicSlotsTheme.themeId ? vegasAdventureTheme : classicSlotsTheme
     );
-     // Reset autospin when theme changes
     setIsAutospin(false);
     setResultsMessage(null);
     setIsWin(null);
   };
 
   return (
-    <div className="min-h-screen bg-deep-purple text-silver flex flex-col items-center p-4">
+    <div className="min-h-screen text-foreground flex flex-col items-center p-4">
       <Navbar />
-      <header className="my-8 text-center">
-        <h1 className="text-5xl font-bold font-headline text-gold">{activeThemeConfig.displayName}</h1>
-        <p className="text-xl text-silver mt-2">{activeThemeConfig.description}</p>
+      <header className="my-6 sm:my-8 text-center">
+        <h1 className="text-4xl sm:text-5xl font-bold font-headline text-primary">{activeThemeConfig.displayName}</h1>
+        <p className="text-lg sm:text-xl text-muted-foreground mt-2 px-2">{activeThemeConfig.description}</p>
       </header>
 
-      <main className="flex flex-col items-center gap-6 w-full max-w-2xl">
-        <CreditDisplay initialCredits={credits} />
+      <main className="flex flex-col items-center gap-4 sm:gap-6 w-full max-w-2xl px-2">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full">
+            <CreditDisplay initialCredits={credits} />
+            <XpDisplay experiencePoints={experiencePoints} />
+        </div>
         
-        <Button onClick={toggleTheme} variant="outline" className="border-gold text-gold hover:bg-gold/10">
+        <Button onClick={toggleTheme} variant="outline" className="w-full sm:w-auto">
           Switch to {activeThemeConfig.themeId === classicSlotsTheme.themeId ? vegasAdventureTheme.displayName : classicSlotsTheme.displayName}
         </Button>
 
@@ -286,13 +288,13 @@ export default function SlotsPage() {
                 key={index}
                 className={spinning ? 'animate-pulse' : ''}
               >
-                <symbolData.component className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 p-1" />
+                <symbolData.component className="w-12 h-12 xs:w-14 xs:h-14 sm:w-20 sm:h-20 md:w-24 md:h-24 p-1" />
               </GridBox>
             ))}
           </GameGrid>
         ) : (
-          <div className="text-center text-red-400 p-4 border border-red-400 rounded-md bg-black/30">
-            <p>Error: No symbols configured or available for the current theme: <code className="bg-black/50 px-1 rounded">{activeThemeConfig.themeId}</code>.</p>
+          <div className="text-center text-destructive p-4 border border-destructive rounded-md bg-destructive/10">
+            <p>Error: No symbols configured or available for the current theme: <code className="bg-destructive/20 px-1 rounded">{activeThemeConfig.themeId}</code>.</p>
             <p>Please check the theme configuration and ensure symbols are correctly mapped and weighted.</p>
           </div>
         )}
@@ -310,12 +312,13 @@ export default function SlotsPage() {
             onClick={handleSpin} 
             isLoading={spinning} 
             disabled={spinning || (isAutospin && credits < spinCost) || availableSymbolsWithData.length === 0}
+            className="w-full sm:w-auto"
           >
             {spinning ? 'Spinning...' : 'Spin'}
           </SpinButton>
           <Button 
             variant="outline" 
-            className="border-gold text-gold hover:bg-gold/10 w-full md:w-auto"
+            className="w-full sm:w-auto"
             onClick={handleToggleAutospin}
             disabled={(spinning && isAutospin) || (availableSymbolsWithData.length === 0 && !isAutospin)}
           >
@@ -325,7 +328,7 @@ export default function SlotsPage() {
         </div>
       </main>
 
-      <footer className="mt-12 text-center text-sm">
+      <footer className="mt-8 sm:mt-12 text-center text-sm text-muted-foreground px-2">
         <p>&copy; {new Date().getFullYear()} Royal Casino. All rights reserved.</p>
         <p>Games are for entertainment purposes only. Play responsibly.</p>
       </footer>
