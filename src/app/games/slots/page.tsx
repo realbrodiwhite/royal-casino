@@ -354,7 +354,7 @@ export default function SlotsPage() {
           ))}
         </main>
          <footer className="mt-8 sm:mt-12 text-center text-sm text-muted-foreground px-2">
-            <p>&copy; {new Date().getFullYear()} Royal Casino. All rights reserved.</p>
+            <p>&copy; {new Date().getFullYear()} Royal Casino. All Rights Reserved.</p>
          </footer>
       </div>
     );
@@ -434,10 +434,9 @@ export default function SlotsPage() {
       </main>
 
       <footer className="mt-8 sm:mt-12 text-center text-sm text-muted-foreground px-2">
-        <p>&copy; {new Date().getFullYear()} Royal Casino. All rights reserved.</p>
+        <p>&copy; {new Date().getFullYear()} Royal Casino. All Rights Reserved.</p>
         <p>Games are for entertainment purposes only. Play responsibly.</p>
       </footer>
     </div>
   );
 }
-

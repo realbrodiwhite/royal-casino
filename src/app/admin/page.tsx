@@ -420,7 +420,7 @@ export default function AdminDashboardPage() {
               </div>
             </main>
             <footer className="text-center py-4 sm:py-6 text-xs sm:text-sm text-muted-foreground border-t border-border">
-              <p>&copy; {new Date().getFullYear()} Royal Casino Admin Panel.</p>
+              <p>&copy; {new Date().getFullYear()} Royal Casino. All Rights Reserved.</p>
             </footer>
           </SidebarInset>
         </div>
@@ -428,5 +428,3 @@ export default function AdminDashboardPage() {
     </SidebarProvider>
   );
 }
-
-    

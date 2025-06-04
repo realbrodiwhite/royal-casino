@@ -6,7 +6,7 @@ import Navbar from '@/components/layout/navbar';
 import { Button } from '@/components/ui/button';
 import { Crown, Gem, ShieldCheck, Coins, DollarSign, Sparkles, Globe } from 'lucide-react';
 import Image from 'next/image';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import LuxuryExperienceIcon from '@/components/game/category-icons/LuxuryExperienceIcon';
 
 // Import specific game category icons
@@ -130,7 +130,7 @@ export default function LandingPage() {
       </main>
 
       <footer className="text-center py-4 sm:py-6 text-xs sm:text-sm text-muted-foreground border-t border-border">
-        <p>&copy; {new Date().getFullYear()} Royal Casino. All rights reserved.</p>
+        <p>&copy; {new Date().getFullYear()} Royal Casino. All Rights Reserved.</p>
         <p>For entertainment purposes only. Play responsibly.</p>
       </footer>
     </div>
@@ -190,4 +190,3 @@ const GameTypeCard: React.FC<GameTypeCardProps> = ({ icon, title, description, h
     </CardContent>
   </Card>
 );
-

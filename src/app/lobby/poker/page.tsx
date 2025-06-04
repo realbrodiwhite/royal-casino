@@ -250,7 +250,7 @@ const PokerPage: React.FC = () => {
 
       </main>
       <footer className="text-center py-4 sm:py-6 text-xs sm:text-sm text-muted-foreground border-t border-border mt-auto">
-        <p>&copy; {new Date().getFullYear()} Royal Casino. Play Responsibly.</p>
+        <p>&copy; {new Date().getFullYear()} Royal Casino. All Rights Reserved.</p>
       </footer>
     </div>
   );

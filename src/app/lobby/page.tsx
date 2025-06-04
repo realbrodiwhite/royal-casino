@@ -95,7 +95,7 @@ export default function LobbyPage() {
         </div>
       </main>
       <footer className="text-center py-6 text-sm text-muted-foreground border-t border-border">
-        <p>&copy; {new Date().getFullYear()} Royal Casino. All rights reserved.</p>
+        <p>&copy; {new Date().getFullYear()} Royal Casino. All Rights Reserved.</p>
       </footer>
     </div>
   );
