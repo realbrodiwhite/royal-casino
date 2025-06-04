@@ -72,8 +72,8 @@ export default function LoginPage() {
       <main className="flex-grow container mx-auto px-4 py-16 flex flex-col items-center justify-center">
         <Card className="w-full max-w-md bg-card border-border shadow-xl">
           <CardHeader className="text-center">
-            <LogIn className="mx-auto h-16 w-16 text-primary mb-4" />
-            <CardTitle className="text-2xl sm:text-3xl md:text-4xl font-headline text-primary">Login to Royal Casino</CardTitle>
+            <LogIn className="mx-auto h-12 w-12 sm:h-16 sm:w-16 text-primary mb-4" />
+            <CardTitle className="text-xl sm:text-2xl md:text-3xl font-headline text-primary">Login to Royal Casino</CardTitle>
             <CardDescription className="text-muted-foreground">
               Access your account to continue your gaming journey.
             </CardDescription>
@@ -126,7 +126,7 @@ export default function LoginPage() {
 
         <Card className="w-full max-w-md bg-card border-border/50 shadow-lg mt-8">
             <CardHeader>
-                <CardTitle className="text-primary flex items-center text-xl">
+                <CardTitle className="text-primary flex items-center text-lg">
                     <ShieldAlert className="mr-2 h-5 w-5 text-yellow-400"/> Test Credentials
                 </CardTitle>
                 <CardDescription className="text-muted-foreground text-xs">
