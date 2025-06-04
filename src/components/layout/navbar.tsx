@@ -41,7 +41,7 @@ export default function Navbar() {
           <Link href="/" legacyBehavior>
             <a className="flex items-center text-primary hover:text-primary/90 transition-colors">
               <Crown className="h-8 w-8 mr-2" />
-              <span className="text-2xl font-headline font-bold">Royal Casino</span>
+              <span className="text-xl font-headline font-bold">Royal Casino</span>
             </a>
           </Link>
           <div className="hidden md:flex items-center space-x-2">
