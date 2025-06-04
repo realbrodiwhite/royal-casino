@@ -40,7 +40,7 @@ export default function Navbar() {
         <div className="flex items-center justify-between h-14">
           <Link href="/" legacyBehavior>
             <a className="flex items-center text-primary hover:text-primary/90 transition-colors">
-              <Crown className="h-6 w-6 mr-2" />
+              <Crown className="h-6 w-6 mr-1" />
               <span className="text-base font-headline font-bold">Royal Casino</span>
             </a>
           </Link>
