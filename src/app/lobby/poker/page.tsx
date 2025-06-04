@@ -7,7 +7,6 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import CreditDisplay from '@/components/game/CreditDisplay';
-// XpDisplay removed
 import ResultsDisplay from '@/components/game/ResultsDisplay';
 import PokerCardComponent from '@/components/game/PokerCard';
 import { Card as UICard, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
@@ -27,13 +26,14 @@ type GameState = "BETTING" | "DEALT" | "GAME_OVER";
 
 const PokerPage: React.FC = () => {
   const [credits, setCredits] = useState(1000);
-  const [experiencePoints, setExperiencePoints] = useState(0);
+  // experiencePoints removed as per previous request
   const [betAmount, setBetAmount] = useState<number>(5);
   const [deck, setDeck] = useState<Card[]>([]);
   const [hand, setHand] = useState<(Card | null)[]>(Array(5).fill(null));
   const [held, setHeld] = useState<boolean[]>(Array(5).fill(false));
   const [gameState, setGameState] = useState<GameState>("BETTING");
   const [gameMessage, setGameMessage] = useState<string | null>(null);
+  const [evaluatedHandRank, setEvaluatedHandRank] = useState<HandRank | null>(null);
   const [isWin, setIsWin] = useState<boolean | null>(null);
   const { toast } = useToast();
 
@@ -66,19 +66,20 @@ const PokerPage: React.FC = () => {
       }
 
       setCredits(prev => prev - betAmount);
-      setExperiencePoints(prevXp => prevXp + betAmount);
+      // setExperiencePoints removed
       
       let currentDeck = deck;
-      if (currentDeck.length < 10) { 
+      if (currentDeck.length < 10) { // Ensure enough cards for deal and potential draw
          currentDeck = shuffleDeck(createDeck());
       }
       
       const newHand = dealCardsFromDeck(currentDeck, 5);
-      setDeck(currentDeck);
+      setDeck(currentDeck); // Deck is modified by dealCardsFromDeck
       setHand(newHand);
       setHeld(Array(5).fill(false));
       setGameState("DEALT");
       setGameMessage("Hold your cards and click Draw.");
+      setEvaluatedHandRank(null);
       setIsWin(null);
       toast({ title: "Cards Dealt", description: `Bet: ${betAmount} credits. Good luck!` });
 
@@ -86,39 +87,48 @@ const PokerPage: React.FC = () => {
       let currentDeck = deck;
       const cardsToDraw = held.filter(h => !h).length;
       
+      // Ensure deck has enough cards, potentially reshuffle if very low (though usually 52 cards are enough for one hand)
       if (currentDeck.length < cardsToDraw) {
-         currentDeck = shuffleDeck(createDeck().filter(cardInDeck => !hand.find(hc => hc?.id === cardInDeck.id))); 
+         // This scenario is less likely in standard 5-card draw but good for robustness
+         currentDeck = shuffleDeck(createDeck().filter(cardInDeck => 
+            !hand.some(hc => hc?.id === cardInDeck.id) // Avoid re-dealing cards already in hand if possible
+         )); 
       }
 
       const drawnReplacementCards = dealCardsFromDeck(currentDeck, cardsToDraw);
-      setDeck(currentDeck);
+      setDeck(currentDeck); // Deck is modified
       
       const finalHand: Card[] = [];
       let replacementIndex = 0;
       for(let i = 0; i < 5; i++) {
         if(held[i] && hand[i]) {
           finalHand.push(hand[i]!);
-        } else if(hand[i] && replacementIndex < drawnReplacementCards.length) { 
+        } else if (replacementIndex < drawnReplacementCards.length) { // Use a new card if available
             finalHand.push(drawnReplacementCards[replacementIndex++]);
-        } else if (hand[i]) { 
-            finalHand.push(hand[i]!); 
+        } else if (hand[i]) { // Fallback if not enough new cards (should be rare)
             console.warn("Not enough replacement cards, reusing old card. This should be rare.");
+            finalHand.push(hand[i]!); 
         }
       }
+      // Ensure hand is 5 cards, if something went wrong
       while (finalHand.length < 5 && currentDeck.length > 0) {
-        console.warn("Final hand has less than 5 cards, dealing more from deck.");
+        console.warn("Final hand has less than 5 cards after draw logic, dealing more from deck.");
         finalHand.push(dealCardsFromDeck(currentDeck, 1)[0]);
       }
-      if (finalHand.length < 5) {
+       if (finalHand.length < 5) { // Critical error if still not 5 cards
         console.error("Critical error: Could not form a 5 card hand after draw.");
         toast({ title: "Game Error", description: "Could not complete the hand. Resetting.", variant: "destructive"});
         setGameState("GAME_OVER");
-        setHand(Array(5).fill(null));
+        setHand(Array(5).fill(null)); // Clear hand
+        setEvaluatedHandRank(null);
+        initializeDeck(); // Re-initialize deck
         return;
       }
 
+
       setHand(finalHand);
       const { rank, payoutMultiplier } = evaluateHand(finalHand);
+      setEvaluatedHandRank(rank);
       
       if (payoutMultiplier > 0) {
         const winnings = betAmount * payoutMultiplier;
@@ -170,12 +180,12 @@ const PokerPage: React.FC = () => {
             <div className="grid grid-cols-5 gap-1 xs:gap-2 sm:gap-3 md:gap-4 mb-4 sm:mb-6">
               {hand.map((card, index) => (
                 <PokerCardComponent
-                  key={card ? card.id : `empty-${index}`}
+                  key={card ? card.id : `empty-${index}-${Math.random()}`} // Add random for better key uniqueness on re-renders
                   card={card}
                   isHeld={held[index]}
                   onToggleHold={() => toggleHold(index)}
                   disabled={gameState !== "DEALT"}
-                  isHidden={!card}
+                  isHidden={!card && gameState !== "DEALT" && gameState !== "GAME_OVER"} // Only show empty slots before deal
                 />
               ))}
             </div>
@@ -194,7 +204,7 @@ const PokerPage: React.FC = () => {
               </div>
               <Button
                 onClick={handleDealDraw}
-                disabled={betAmount <= 0 && (gameState === "BETTING" || gameState === "GAME_OVER")}
+                disabled={(betAmount <= 0 || credits < betAmount) && (gameState === "BETTING" || gameState === "GAME_OVER")}
                 variant="default"
                 size="lg"
                 className="w-full sm:w-auto px-6 sm:px-8 py-2.5 sm:py-3 text-sm sm:text-base"
@@ -205,8 +215,16 @@ const PokerPage: React.FC = () => {
             </div>
              {gameMessage && (
               <div className="mt-4 sm:mt-6">
-                <ResultsDisplay message={gameMessage} isWin={isWin} />
+                <ResultsDisplay 
+                    message={gameMessage} 
+                    isWin={isWin} 
+                />
               </div>
+            )}
+            {gameState === "GAME_OVER" && evaluatedHandRank && (
+                 <p className="text-center text-lg font-semibold text-primary mt-3">
+                    Final Hand: <span className="text-foreground">{evaluatedHandRank}</span>
+                </p>
             )}
           </CardContent>
         </UICard>
@@ -218,13 +236,16 @@ const PokerPage: React.FC = () => {
             </CardTitle>
           </CardHeader>
           <CardContent className="text-xs sm:text-sm">
-            <ul className="space-y-1 text-muted-foreground">
+            <ul className="space-y-0.5 text-muted-foreground">
               {Object.entries(PAYTABLE)
                 .filter(([, payout]) => payout > 0) 
                 .sort(([, aPayout], [, bPayout]) => bPayout - aPayout) 
-                .map(([handName, payout]) => (
-                  <li key={handName} className="flex justify-between items-center p-1 sm:p-1.5 bg-card-foreground/5 rounded-sm">
-                    <span>{handName}</span>
+                .map(([handName, payout], index) => (
+                  <li 
+                    key={handName} 
+                    className={`flex justify-between items-center p-1.5 sm:p-2 rounded-sm ${index % 2 === 0 ? 'bg-card-foreground/5' : 'bg-transparent'}`}
+                  >
+                    <span className="text-foreground">{handName}</span>
                     <span className="font-semibold text-primary">{payout}x</span>
                   </li>
               ))}
@@ -241,4 +262,3 @@ const PokerPage: React.FC = () => {
 };
 
 export default PokerPage;
-    
