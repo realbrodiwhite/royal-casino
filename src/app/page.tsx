@@ -66,7 +66,7 @@ export default function LandingPage() {
                 description="Boost your play with daily free credits, exciting promotions, and loyalty bonuses."
               />
               <FeatureCard
-                image={{ src: "https://placehold.co/600x400.png", alt: "Luxury Casino Experience", "data-ai-hint": "casino lounge" }}
+                image={{ src: "/images/general-art/casino-lounge.svg", alt: "Luxury Casino Experience" }}
                 title="Luxury Experience"
                 description="Immerse yourself in our opulent casino atmosphere, designed for premium entertainment."
               />
@@ -132,7 +132,7 @@ export default function LandingPage() {
 
 interface FeatureCardProps {
   icon?: React.ReactNode;
-  image?: { src: string; alt: string; "data-ai-hint": string };
+  image?: { src: string; alt: string; };
   title: string;
   description: string;
 }
@@ -144,10 +144,9 @@ const FeatureCard: React.FC<FeatureCardProps> = ({ icon, image, title, descripti
       <Image
         src={image.src}
         alt={image.alt}
-        width={300}
+        width={300} 
         height={200}
         className="rounded-md mb-3 sm:mb-4 object-cover w-full h-32 sm:h-40"
-        data-ai-hint={image['data-ai-hint']}
       />
     )}
     <h3 className="text-xl sm:text-2xl font-semibold text-primary mb-1 sm:mb-2 font-headline">{title}</h3>

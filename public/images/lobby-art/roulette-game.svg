@@ -1,0 +1,17 @@
+<svg width="300" height="200" viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg" data-ai-hint="roulette wheel casino">
+  <rect width="300" height="200" fill="#003300" rx="10"/>
+  <!-- Roulette Wheel -->
+  <circle cx="150" cy="100" r="80" fill="#8B4513" stroke="#A0522D" stroke-width="3"/>
+  <circle cx="150" cy="100" r="70" fill="#228B22" stroke="#A0522D" stroke-width="2"/>
+  <circle cx="150" cy="100" r="30" fill="#DAA520" stroke="#8B4513" stroke-width="2"/>
+  <!-- Spokes/Numbers (simplified) -->
+  <g stroke="#FFD700" stroke-width="1.5">
+    <line x1="150" y1="30" x2="150" y2="70"/> <text x="146" y="25" fill="#FFD700" font-size="10">0</text>
+    <line x1="220" y1="100" x2="180" y2="100"/> <text x="225" y="104" fill="red" font-size="10">3</text>
+    <line x1="150" y1="170" x2="150" y2="130"/> <text x="146" y="180" fill="black" font-size="10">12</text>
+    <line x1="80" y1="100" x2="120" y2="100"/> <text x="70" y="104" fill="red" font-size="10">27</text>
+  </g>
+  <!-- Ball -->
+  <circle cx="185" cy="65" r="7" fill="ivory" stroke="black" stroke-width="1"/>
+  <text x="110" y="180" font-family="Arial, sans-serif" font-size="18" fill="#FFD700" font-weight="bold">ROULETTE</text>
+</svg>

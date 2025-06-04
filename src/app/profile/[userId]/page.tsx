@@ -8,15 +8,21 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { User, Users, Trophy, Gamepad2, Star, MessageSquare, ShieldAlert } from 'lucide-react';
-import { useParams } from 'next/navigation'; // Import useParams
+import { useParams, useRouter } from 'next/navigation'; // Import useRouter
+import Link from 'next/link'; // Import Link
 
+const genericAvatars = [
+  "/images/avatars/avatar-generic-1.svg",
+  "/images/avatars/avatar-generic-2.svg",
+  "/images/avatars/avatar-generic-3.svg",
+];
 
 // Mock data - replace with actual data fetching later
 const allMockUsers: Record<string, any> = {
-  "user123": { // This is "Player One" from the main profile page
+  "user123": { // This is "Player One"
     id: "user123",
     name: "Player One",
-    avatarUrl: "https://placehold.co/100x100.png?text=P1",
+    avatarUrl: "/images/avatars/avatar-player-one.svg", // Specific avatar
     joinDate: "January 15, 2023",
     bio: "Loves playing slots and poker. Always up for a challenge!",
     level: 12,
@@ -36,7 +42,7 @@ const allMockUsers: Record<string, any> = {
   "friend1": {
     id: "friend1",
     name: "CasinoKing",
-    avatarUrl: "https://placehold.co/100x100.png?text=CK",
+    avatarUrl: genericAvatars[0 % genericAvatars.length],
     joinDate: "March 10, 2022",
     bio: "High roller and slots enthusiast. Aiming for the top!",
     level: 15,
@@ -48,7 +54,7 @@ const allMockUsers: Record<string, any> = {
    "friend2": {
     id: "friend2",
     name: "LadyLuck",
-    avatarUrl: "https://placehold.co/100x100.png?text=LL",
+    avatarUrl: genericAvatars[1 % genericAvatars.length],
     joinDate: "June 22, 2023",
     bio: "Bingo is my game, luck is my name!",
     level: 20,
@@ -60,7 +66,7 @@ const allMockUsers: Record<string, any> = {
    "friend3": {
     id: "friend3",
     name: "PokerFace",
-    avatarUrl: "https://placehold.co/100x100.png?text=PF",
+    avatarUrl: genericAvatars[2 % genericAvatars.length],
     joinDate: "September 1, 2023",
     bio: "Master of the bluff. See you at the poker table.",
     level: 10,
@@ -72,7 +78,7 @@ const allMockUsers: Record<string, any> = {
   "friend4": {
     id: "friend4",
     name: "SlotMachineFan",
-    avatarUrl: "https://placehold.co/100x100.png?text=SF",
+    avatarUrl: genericAvatars[0 % genericAvatars.length],
     joinDate: "February 14, 2023",
     bio: "Spin to win! Living the slot life.",
     level: 18,
@@ -84,7 +90,7 @@ const allMockUsers: Record<string, any> = {
    "friend5": {
     id: "friend5",
     name: "BingoStar",
-    avatarUrl: "https://placehold.co/100x100.png?text=BS",
+    avatarUrl: genericAvatars[1 % genericAvatars.length],
     joinDate: "December 5, 2023",
     bio: "B-I-N-G-O! Always ready for a game.",
     level: 5,
@@ -152,9 +158,9 @@ export default function UserProfilePage() {
           <ShieldAlert className="mx-auto h-24 w-24 text-red-500 mb-6" />
           <h1 className="text-4xl font-bold font-headline text-red-400 mb-4">Profile Not Found</h1>
           <p className="text-xl text-silver mb-8">The user profile you are looking for does not exist or could not be loaded.</p>
-          <Link href="/leaderboards">
+          <Link href="/lobby">
             <Button variant="outline" className="border-gold text-gold hover:bg-gold/10">
-              Back to Leaderboards
+              Back to Lobby
             </Button>
           </Link>
         </main>
@@ -165,8 +171,6 @@ export default function UserProfilePage() {
     );
   }
 
-  // For this example, we'll assume this is the logged-in user's profile.
-  // In a real app, you might have a dynamic route like /profile/[userId]
 
   return (
     <div className="min-h-screen bg-deep-purple text-silver flex flex-col">
@@ -182,7 +186,7 @@ export default function UserProfilePage() {
             <Card className="bg-silver/10 border-gold shadow-xl">
               <CardHeader className="items-center text-center pt-6">
                 <Avatar className="w-32 h-32 mb-4 border-4 border-gold shadow-lg">
-                  <AvatarImage src={profileData.avatarUrl} alt={profileData.name} data-ai-hint="player avatar large" />
+                  <AvatarImage src={profileData.avatarUrl} alt={profileData.name} />
                   <AvatarFallback>{profileData.name.substring(0, 2).toUpperCase()}</AvatarFallback>
                 </Avatar>
                 <CardTitle className="text-3xl text-gold font-headline">{profileData.name}</CardTitle>
@@ -191,7 +195,6 @@ export default function UserProfilePage() {
               </CardHeader>
               <CardContent className="text-center">
                 <p className="text-silver/90 mb-6 text-sm">{profileData.bio}</p>
-                {/* Actions like Add Friend or Message would go here if not viewing own profile */}
                  <Button className="bg-gold text-deep-purple hover:bg-gold/90 w-full">
                     <MessageSquare className="mr-2 h-4 w-4" /> Send Message
                 </Button>

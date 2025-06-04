@@ -1,0 +1,18 @@
+<svg width="300" height="200" viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg" data-ai-hint="craps dice game">
+  <rect width="300" height="200" fill="#006400" rx="10"/>
+  <!-- Dice 1 -->
+  <g transform="translate(70 60) rotate(15)">
+    <rect x="0" y="0" width="60" height="60" fill="white" rx="5" stroke="black" stroke-width="2"/>
+    <circle cx="15" cy="15" r="6" fill="black"/>
+    <circle cx="45" cy="45" r="6" fill="black"/>
+  </g>
+  <!-- Dice 2 -->
+  <g transform="translate(150 70) rotate(-10)">
+    <rect x="0" y="0" width="60" height="60" fill="white" rx="5" stroke="black" stroke-width="2"/>
+    <circle cx="15" cy="15" r="6" fill="black"/>
+    <circle cx="15" cy="45" r="6" fill="black"/>
+    <circle cx="45" cy="15" r="6" fill="black"/>
+    <circle cx="45" cy="45" r="6" fill="black"/>
+  </g>
+  <text x="120" y="180" font-family="Arial, sans-serif" font-size="18" fill="#FFD700" font-weight="bold">CRAPS</text>
+</svg>

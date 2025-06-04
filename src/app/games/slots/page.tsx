@@ -37,10 +37,10 @@ const allSymbolComponents: Record<string, React.FC<React.SVGProps<SVGSVGElement>
   GoldCoinSymbol: GoldCoinSymbol,
   BellSymbol: BellSymbol,
   // Add new symbols here once their components are created:
-  // PumpkinSymbol: PumpkinSymbol,
-  // GhostSymbol: GhostSymbol,
-  // BatSymbol: BatSymbol,
-  // WitchHatSymbol: WitchHatSymbol,
+  PumpkinSymbol: (props: React.SVGProps<SVGSVGElement>) => <svg viewBox="0 0 100 100" {...props} data-ai-hint="jack-o-lantern pumpkin"><text x="25" y="65" fontSize="50">🎃</text></svg>, // Placeholder
+  GhostSymbol: (props: React.SVGProps<SVGSVGElement>) => <svg viewBox="0 0 100 100" {...props} data-ai-hint="spooky ghost"><text x="25" y="65" fontSize="50">👻</text></svg>,     // Placeholder
+  BatSymbol: (props: React.SVGProps<SVGSVGElement>) => <svg viewBox="0 0 100 100" {...props} data-ai-hint="flying bat"><text x="25" y="65" fontSize="50">🦇</text></svg>,       // Placeholder
+  WitchHatSymbol: (props: React.SVGProps<SVGSVGElement>) => <svg viewBox="0 0 100 100" {...props} data-ai-hint="witch hat"><text x="25" y="65" fontSize="50">🧙</text></svg>, // Placeholder
 };
 
 interface SymbolData {
@@ -54,6 +54,12 @@ const FALLBACK_SYMBOL: SymbolData = {
 };
 
 const availableThemes: SlotGameThemeConfig[] = [classicSlotsTheme, vegasAdventureTheme, horrificHalloweenTheme]; // Add new theme to the list
+
+const themeImagePaths: Record<string, string> = {
+  'classic-slots': '/images/theme-art/classic-slots-theme.svg',
+  'vegas-adventure': '/images/theme-art/vegas-adventure-theme.svg',
+  'horrific-halloween': '/images/theme-art/horrific-halloween-theme.svg',
+};
 
 export default function SlotsPage() {
   const [selectedTheme, setSelectedTheme] = useState<SlotGameThemeConfig | null>(null);
@@ -115,7 +121,7 @@ export default function SlotsPage() {
   const [reels, setReels] = useState<SymbolData[][]>(() => initialReels(rows, cols));
   const [spinning, setSpinning] = useState(false);
   const [credits, setCredits] = useState(1000);
-  const [experiencePoints, setExperiencePoints] = useState(0); 
+  // experiencePoints state removed
   const [isAutospin, setIsAutospin] = useState(false);
   const [resultsMessage, setResultsMessage] = useState<string | null>(null);
   const [isWin, setIsWin] = useState<boolean | null>(null);
@@ -220,7 +226,7 @@ export default function SlotsPage() {
 
     setSpinning(true);
     setCredits((prev) => prev - spinCost);
-    setExperiencePoints((prevXp) => prevXp + spinCost); 
+    // setExperiencePoints removed
     setResultsMessage(null);
     setIsWin(null);
     setWinAmount(0);
@@ -314,14 +320,12 @@ export default function SlotsPage() {
               <CardContent className="flex-grow flex flex-col justify-center">
                  <p className="text-xs text-muted-foreground text-center mb-1">Grid: {theme.grid.rows}x{theme.grid.cols}</p>
                  <p className="text-xs text-muted-foreground text-center mb-3">Symbols: {theme.symbols.length}</p>
-                 {/* Optional: Add a small placeholder image for the theme */}
                  <Image 
-                    src={`https://placehold.co/200x100.png?text=${encodeURIComponent(theme.displayName)}`} 
+                    src={themeImagePaths[theme.themeId] || `/images/theme-art/default-theme.svg`}
                     alt={theme.displayName} 
                     width={200} 
                     height={100} 
                     className="rounded-md mx-auto object-cover"
-                    data-ai-hint={`${theme.themeId.replace('-',' ')} slot theme`}
                  />
               </CardContent>
               <CardFooter className="mt-auto">

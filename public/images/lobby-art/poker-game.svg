@@ -1,0 +1,23 @@
+<svg width="300" height="200" viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg" data-ai-hint="poker cards casino">
+  <rect width="300" height="200" fill="#004d00" rx="10"/>
+  <!-- Cards -->
+  <g transform="translate(40 50) rotate(-15)">
+    <rect x="0" y="0" width="70" height="100" fill="white" rx="5" stroke="black" stroke-width="2"/>
+    <text x="10" y="25" font-family="Arial, sans-serif" font-size="20" fill="red">A</text>
+    <text x="35" y="65" font-family="Arial, sans-serif" font-size="30" fill="red" text-anchor="middle">♥</text>
+  </g>
+  <g transform="translate(100 45) rotate(0)">
+    <rect x="0" y="0" width="70" height="100" fill="white" rx="5" stroke="black" stroke-width="2"/>
+    <text x="10" y="25" font-family="Arial, sans-serif" font-size="20" fill="black">K</text>
+    <text x="35" y="65" font-family="Arial, sans-serif" font-size="30" fill="black" text-anchor="middle">♠</text>
+  </g>
+  <g transform="translate(160 50) rotate(15)">
+    <rect x="0" y="0" width="70" height="100" fill="white" rx="5" stroke="black" stroke-width="2"/>
+    <text x="10" y="25" font-family="Arial, sans-serif" font-size="20" fill="red">Q</text>
+    <text x="35" y="65" font-family="Arial, sans-serif" font-size="30" fill="red" text-anchor="middle">♦</text>
+  </g>
+  <!-- Chips -->
+  <circle cx="230" cy="140" r="25" fill="red" stroke="darkred" stroke-width="2"/>
+  <circle cx="245" cy="155" r="25" fill="blue" stroke="darkblue" stroke-width="2"/>
+  <text x="130" y="175" font-family="Arial, sans-serif" font-size="18" fill="#FFD700" font-weight="bold">POKER</text>
+</svg>

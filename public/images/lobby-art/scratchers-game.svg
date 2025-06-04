@@ -1,0 +1,14 @@
+<svg width="300" height="200" viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg" data-ai-hint="lottery scratch ticket">
+  <rect width="300" height="200" fill="#6A0DAD" rx="10"/>
+  <!-- Scratcher Ticket -->
+  <rect x="40" y="40" width="220" height="120" fill="silver" rx="10" stroke="#FFD700" stroke-width="2"/>
+  <path d="M60 60 Q90 50 120 70 T180 60" stroke="#darkgray" stroke-width="15" fill="none" stroke-linecap="round" opacity="0.5"/>
+  <text x="70" y="100" font-family="Impact" font-size="30" fill="#FFD700" opacity="0.8">$</text>
+  <text x="120" y="100" font-family="Impact" font-size="30" fill="#FFD700" opacity="0.8">$</text>
+  <text x="170" y="100" font-family="Impact" font-size="30" fill="#FFD700" opacity="0.8">$</text>
+  <text x="220" y="100" font-family="Impact" font-size="30" fill="#FFD700" opacity="0.8">$</text>
+  <!-- Coin -->
+  <circle cx="240" cy="55" r="20" fill="gold" stroke="darkgoldenrod" stroke-width="2"/>
+  <text x="240" y="62" font-family="Arial" font-size="15" fill="black" text-anchor="middle">$</text>
+  <text x="100" y="180" font-family="Arial, sans-serif" font-size="18" fill="#FFD700" font-weight="bold">SCRATCHERS</text>
+</svg>

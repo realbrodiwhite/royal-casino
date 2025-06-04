@@ -14,7 +14,7 @@ import Link from 'next/link';
 const mockUser = {
   id: "user123",
   name: "Player One",
-  avatarUrl: "https://placehold.co/100x100.png",
+  avatarUrl: "/images/avatars/avatar-player-one.svg", // Updated
   joinDate: "January 15, 2023",
   bio: "Loves playing slots and poker. Always up for a challenge!",
   level: 12,
@@ -32,13 +32,19 @@ const mockUser = {
   topFriendIds: ["friend2", "friend4", "friend1"],
 };
 
+const genericAvatars = [
+  "/images/avatars/avatar-generic-1.svg",
+  "/images/avatars/avatar-generic-2.svg",
+  "/images/avatars/avatar-generic-3.svg",
+];
+
 const allMockFriends: Friend[] = [
-  { id: "friend1", name: "CasinoKing", avatarUrl: "https://placehold.co/100x100.png?text=CK", level: 15 },
-  { id: "friend2", name: "LadyLuck", avatarUrl: "https://placehold.co/100x100.png?text=LL", level: 20 },
-  { id: "friend3", name: "PokerFace", avatarUrl: "https://placehold.co/100x100.png?text=PF", level: 10 },
-  { id: "friend4", name: "SlotMachineFan", avatarUrl: "https://placehold.co/100x100.png?text=SF", level: 18 },
-  { id: "friend5", name: "BingoStar", avatarUrl: "https://placehold.co/100x100.png?text=BS", level: 5 },
-  { id: "friend6", name: "JustAnotherPlayer", avatarUrl: "https://placehold.co/100x100.png?text=JP", level: 2 },
+  { id: "friend1", name: "CasinoKing", avatarUrl: genericAvatars[0], level: 15 },
+  { id: "friend2", name: "LadyLuck", avatarUrl: genericAvatars[1], level: 20 },
+  { id: "friend3", name: "PokerFace", avatarUrl: genericAvatars[2], level: 10 },
+  { id: "friend4", name: "SlotMachineFan", avatarUrl: genericAvatars[0], level: 18 },
+  { id: "friend5", name: "BingoStar", avatarUrl: genericAvatars[1], level: 5 },
+  { id: "friend6", name: "JustAnotherPlayer", avatarUrl: genericAvatars[2], level: 2 },
 ];
 
 // In a real app, you'd fetch these based on IDs
@@ -64,7 +70,7 @@ export default function ProfilePage() {
             <Card className="bg-silver/10 border-gold shadow-xl">
               <CardHeader className="items-center text-center pt-6">
                 <Avatar className="w-32 h-32 mb-4 border-4 border-gold shadow-lg">
-                  <AvatarImage src={mockUser.avatarUrl} alt={mockUser.name} data-ai-hint="player avatar large" />
+                  <AvatarImage src={mockUser.avatarUrl} alt={mockUser.name} />
                   <AvatarFallback>{mockUser.name.substring(0, 2).toUpperCase()}</AvatarFallback>
                 </Avatar>
                 <CardTitle className="text-3xl text-gold font-headline">{mockUser.name}</CardTitle>
