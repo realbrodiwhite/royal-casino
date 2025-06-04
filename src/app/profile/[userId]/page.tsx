@@ -156,7 +156,7 @@ export default function UserProfilePage() {
         <Navbar />
         <main className="flex-grow container mx-auto px-4 py-8 text-center">
           <ShieldAlert className="mx-auto h-24 w-24 text-red-500 mb-6" />
-          <h1 className="text-4xl font-bold font-headline text-red-400 mb-4">Profile Not Found</h1>
+          <h1 className="text-3xl font-bold font-headline text-red-400 mb-4">Profile Not Found</h1>
           <p className="text-xl text-silver mb-8">The user profile you are looking for does not exist or could not be loaded.</p>
           <Link href="/lobby">
             <Button variant="outline" className="border-gold text-gold hover:bg-gold/10">
@@ -177,7 +177,7 @@ export default function UserProfilePage() {
       <Navbar />
       <main className="flex-grow container mx-auto px-4 py-8">
         <header className="mb-8 text-center">
-          <h1 className="text-5xl font-bold font-headline text-gold">{profileData.name}'s Profile</h1>
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold font-headline text-gold">{profileData.name}'s Profile</h1>
         </header>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">

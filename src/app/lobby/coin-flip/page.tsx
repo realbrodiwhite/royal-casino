@@ -7,7 +7,6 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import CreditDisplay from '@/components/game/CreditDisplay';
-// XpDisplay removed
 import ResultsDisplay from '@/components/game/ResultsDisplay';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { CircleDollarSign, Repeat, HelpCircle, TrendingUp, TrendingDown, Pocket, ChevronsUp } from 'lucide-react';
@@ -64,7 +63,6 @@ export default function CoinFlipPage() {
         return;
       }
       setCredits(prev => prev - currentBet);
-      setExperiencePoints(prevXp => prevXp + currentBet); // XP only on initial bet
     }
 
     setTimeout(() => {
@@ -145,7 +143,7 @@ export default function CoinFlipPage() {
       <main className="flex-grow container mx-auto px-4 py-8 sm:py-12 flex flex-col items-center">
         <header className="mb-8 sm:mb-10 text-center">
           <CircleDollarSign className="h-12 w-12 sm:h-16 sm:w-16 text-primary mx-auto mb-2 sm:mb-3" />
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold font-headline text-primary">Coin Flip</h1>
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold font-headline text-primary">Coin Flip</h1>
           <p className="text-md sm:text-lg text-muted-foreground mt-1 px-2">Heads or Tails? Double your winnings!</p>
         </header>
 

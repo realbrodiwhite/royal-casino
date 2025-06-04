@@ -5,7 +5,6 @@ import React, { useState, useCallback, useEffect } from 'react';
 import Navbar from '@/components/layout/navbar';
 import { Button } from '@/components/ui/button';
 import CreditDisplay from '@/components/game/CreditDisplay';
-// XpDisplay removed
 import ResultsDisplay from '@/components/game/ResultsDisplay';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { Ticket, Gift, Sparkles, Palette } from 'lucide-react';
@@ -83,7 +82,6 @@ const generateTicketSymbols = (): ScratchGrid => {
 
 export default function ScratchersPage() {
   const [credits, setCredits] = useState(1000);
-  const [experiencePoints, setExperiencePoints] = useState(0);
   const [scratchGrid, setScratchGrid] = useState<ScratchGrid>(generateInitialGrid());
   const [isTicketActive, setIsTicketActive] = useState(false); 
   const [gameMessage, setGameMessage] = useState<string | null>(null);
@@ -156,7 +154,6 @@ export default function ScratchersPage() {
       return;
     }
     setCredits(prev => prev - selectedTicket.cost);
-    setExperiencePoints(prevXp => prevXp + selectedTicket.cost);
     setScratchGrid(generateTicketSymbols());
     setIsTicketActive(true);
     setGameMessage("Scratch to reveal your prize!");
@@ -203,7 +200,7 @@ export default function ScratchersPage() {
       <main className="flex-grow container mx-auto px-4 py-8 sm:py-12 flex flex-col items-center">
         <header className="mb-8 sm:mb-10 text-center">
           <Ticket className="h-12 w-12 sm:h-16 sm:w-16 text-primary mx-auto mb-3 sm:mb-4" />
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold font-headline text-primary">Scratch & Win</h1>
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold font-headline text-primary">Scratch & Win</h1>
           <p className="text-md sm:text-lg text-muted-foreground mt-1 px-2">Buy a ticket and scratch for instant prizes!</p>
         </header>
 

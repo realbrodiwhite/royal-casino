@@ -17,7 +17,7 @@ export default function LandingPage() {
         <section className="py-16 sm:py-20 md:py-28 text-center bg-gradient-to-b from-background via-purple-800/30 to-background">
           <div className="container mx-auto px-4">
             <Crown className="mx-auto h-16 w-16 sm:h-20 md:h-24 md:w-24 text-primary mb-4 sm:mb-6 animate-pulse" />
-            <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold font-headline text-primary mb-3 sm:mb-4">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold font-headline text-primary mb-3 sm:mb-4">
               Welcome to Royal Casino
             </h1>
             <p className="text-lg sm:text-xl md:text-2xl text-foreground mb-6 sm:mb-8 max-w-xl sm:max-w-2xl md:max-w-3xl mx-auto px-2">
@@ -46,7 +46,7 @@ export default function LandingPage() {
 
         <section className="py-12 sm:py-16 bg-background/80 backdrop-blur-sm">
           <div className="container mx-auto px-4">
-            <h2 className="text-3xl sm:text-4xl font-bold font-headline text-primary mb-10 sm:mb-12 text-center">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold font-headline text-primary mb-10 sm:mb-12 text-center">
               Why Choose Royal Casino?
             </h2>
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
@@ -76,7 +76,7 @@ export default function LandingPage() {
 
         <section className="py-12 sm:py-16 bg-background">
           <div className="container mx-auto px-4">
-            <h2 className="text-3xl sm:text-4xl font-bold font-headline text-primary mb-10 sm:mb-12 text-center">Step Into Our World of Games</h2>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold font-headline text-primary mb-10 sm:mb-12 text-center">Step Into Our World of Games</h2>
             <p className="text-lg sm:text-xl text-muted-foreground mb-8 sm:mb-10 text-center max-w-lg sm:max-w-xl md:max-w-2xl mx-auto px-2">
               From the fast-paced thrill of the slots to the strategic depths of table games, your next favorite game awaits.
             </p>
@@ -85,7 +85,7 @@ export default function LandingPage() {
                 icon={<Dice5 className="h-8 w-8 sm:h-10 sm:w-10 text-primary" />}
                 title="Thrilling Slots"
                 description="Spin the reels on a variety of themed slot machines with unique features and big win potential."
-                href="/lobby/slots"
+                href="/games/slots"
               />
               <GameTypeCard
                 icon={<Rows className="h-8 w-8 sm:h-10 sm:w-10 text-primary" />}
@@ -107,7 +107,7 @@ export default function LandingPage() {
         <section className="py-16 sm:py-20 text-center bg-gradient-to-t from-background via-purple-800/30 to-background">
           <div className="container mx-auto px-4">
             <Sparkles className="mx-auto h-12 w-12 sm:h-16 sm:w-16 text-primary mb-4 sm:mb-6" />
-            <h2 className="text-3xl sm:text-4xl font-bold font-headline text-primary mb-4 sm:mb-6">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold font-headline text-primary mb-4 sm:mb-6">
               Ready to Experience Royalty?
             </h2>
             <p className="text-lg sm:text-xl text-muted-foreground mb-6 sm:mb-8 max-w-lg sm:max-w-xl md:max-w-2xl mx-auto px-2">

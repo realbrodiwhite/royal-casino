@@ -355,7 +355,7 @@ export default function AdminDashboardPage() {
           <SidebarInset className="flex-1 overflow-y-auto">
             <main className="container mx-auto px-4 py-6 sm:py-8">
               <header className="mb-6 sm:mb-8 flex items-center justify-between">
-                <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold font-headline text-primary">Admin Dashboard</h1>
+                <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold font-headline text-primary">Admin Dashboard</h1>
                 <SidebarTrigger className="md:hidden text-primary border-primary hover:bg-accent/10" />
               </header>
               <div className="space-y-6">

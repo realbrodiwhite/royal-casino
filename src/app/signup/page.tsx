@@ -71,7 +71,7 @@ export default function SignupPage() {
         <Card className="w-full max-w-md bg-card border-border shadow-xl">
           <CardHeader className="text-center">
             <UserPlus className="mx-auto h-16 w-16 text-primary mb-4" />
-            <CardTitle className="text-4xl font-headline text-primary">Create Your Account</CardTitle>
+            <CardTitle className="text-2xl sm:text-3xl md:text-4xl font-headline text-primary">Create Your Account</CardTitle>
             <CardDescription className="text-muted-foreground">
               Join Royal Casino today and start your winning journey!
             </CardDescription>

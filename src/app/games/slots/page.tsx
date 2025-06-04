@@ -123,7 +123,6 @@ export default function SlotsPage() {
   const [reels, setReels] = useState<SymbolData[][]>(() => initialReels(rows, cols));
   const [spinning, setSpinning] = useState(false);
   const [credits, setCredits] = useState(1000);
-  // experiencePoints state removed
   const [isAutospin, setIsAutospin] = useState(false);
   const [resultsMessage, setResultsMessage] = useState<string | null>(null);
   const [isWin, setIsWin] = useState<boolean | null>(null);
@@ -231,7 +230,6 @@ export default function SlotsPage() {
 
     setSpinning(true);
     setCredits((prev) => prev - spinCost);
-    // setExperiencePoints removed
     setResultsMessage(null);
     setIsWin(null);
     setWinAmount(0);
@@ -325,7 +323,7 @@ export default function SlotsPage() {
       <div className="min-h-screen text-foreground flex flex-col items-center p-4">
         <Navbar />
         <header className="my-6 sm:my-8 text-center">
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold font-headline text-primary">Choose Your Slot Adventure!</h1>
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold font-headline text-primary">Choose Your Slot Adventure!</h1>
           <p className="text-md sm:text-lg text-muted-foreground mt-2 px-2">Select a theme to start playing.</p>
         </header>
         <main className="flex flex-wrap justify-center items-stretch gap-6 sm:gap-8 w-full max-w-5xl px-2">
@@ -367,7 +365,7 @@ export default function SlotsPage() {
     <div className="min-h-screen text-foreground flex flex-col items-center p-4">
       <Navbar />
       <header className="my-6 sm:my-8 text-center">
-        <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold font-headline text-primary">{selectedTheme.displayName}</h1>
+        <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold font-headline text-primary">{selectedTheme.displayName}</h1>
         <p className="text-md sm:text-lg text-muted-foreground mt-2 px-2">{selectedTheme.description}</p>
       </header>
 

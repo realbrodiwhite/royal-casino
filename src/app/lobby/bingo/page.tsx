@@ -273,7 +273,7 @@ export default function BingoPage() {
       <main className="flex-grow container mx-auto px-2 sm:px-4 py-8 sm:py-12 flex flex-col items-center">
         <header className="mb-6 sm:mb-8 text-center">
           <AppWindow className="h-10 w-10 sm:h-12 md:h-16 text-primary mx-auto mb-2 sm:mb-3" />
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold font-headline text-primary">Bingo Hall</h1>
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold font-headline text-primary">Bingo Hall</h1>
           <p className="text-md sm:text-lg text-muted-foreground mt-1 px-2">
             Daub your way to victory! Numbers are called automatically.
           </p>

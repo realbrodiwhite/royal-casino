@@ -26,7 +26,6 @@ type GameState = "BETTING" | "DEALT" | "GAME_OVER";
 
 const PokerPage: React.FC = () => {
   const [credits, setCredits] = useState(1000);
-  // experiencePoints removed as per previous request
   const [betAmount, setBetAmount] = useState<number>(5);
   const [deck, setDeck] = useState<Card[]>([]);
   const [hand, setHand] = useState<(Card | null)[]>(Array(5).fill(null));
@@ -66,7 +65,6 @@ const PokerPage: React.FC = () => {
       }
 
       setCredits(prev => prev - betAmount);
-      // setExperiencePoints removed
       
       let currentDeck = deck;
       if (currentDeck.length < 10) { // Ensure enough cards for deal and potential draw
@@ -87,41 +85,38 @@ const PokerPage: React.FC = () => {
       let currentDeck = deck;
       const cardsToDraw = held.filter(h => !h).length;
       
-      // Ensure deck has enough cards, potentially reshuffle if very low (though usually 52 cards are enough for one hand)
       if (currentDeck.length < cardsToDraw) {
-         // This scenario is less likely in standard 5-card draw but good for robustness
          currentDeck = shuffleDeck(createDeck().filter(cardInDeck => 
-            !hand.some(hc => hc?.id === cardInDeck.id) // Avoid re-dealing cards already in hand if possible
+            !hand.some(hc => hc?.id === cardInDeck.id) 
          )); 
       }
 
       const drawnReplacementCards = dealCardsFromDeck(currentDeck, cardsToDraw);
-      setDeck(currentDeck); // Deck is modified
+      setDeck(currentDeck); 
       
       const finalHand: Card[] = [];
       let replacementIndex = 0;
       for(let i = 0; i < 5; i++) {
         if(held[i] && hand[i]) {
           finalHand.push(hand[i]!);
-        } else if (replacementIndex < drawnReplacementCards.length) { // Use a new card if available
+        } else if (replacementIndex < drawnReplacementCards.length) { 
             finalHand.push(drawnReplacementCards[replacementIndex++]);
-        } else if (hand[i]) { // Fallback if not enough new cards (should be rare)
+        } else if (hand[i]) { 
             console.warn("Not enough replacement cards, reusing old card. This should be rare.");
             finalHand.push(hand[i]!); 
         }
       }
-      // Ensure hand is 5 cards, if something went wrong
       while (finalHand.length < 5 && currentDeck.length > 0) {
         console.warn("Final hand has less than 5 cards after draw logic, dealing more from deck.");
         finalHand.push(dealCardsFromDeck(currentDeck, 1)[0]);
       }
-       if (finalHand.length < 5) { // Critical error if still not 5 cards
+       if (finalHand.length < 5) { 
         console.error("Critical error: Could not form a 5 card hand after draw.");
         toast({ title: "Game Error", description: "Could not complete the hand. Resetting.", variant: "destructive"});
         setGameState("GAME_OVER");
-        setHand(Array(5).fill(null)); // Clear hand
+        setHand(Array(5).fill(null)); 
         setEvaluatedHandRank(null);
-        initializeDeck(); // Re-initialize deck
+        initializeDeck(); 
         return;
       }
 
@@ -164,7 +159,7 @@ const PokerPage: React.FC = () => {
       <main className="flex-grow container mx-auto px-2 sm:px-4 py-8 sm:py-12 flex flex-col items-center">
         <header className="mb-8 sm:mb-10 text-center">
           <Hand className="h-12 w-12 sm:h-16 sm:w-16 text-primary mx-auto mb-3 sm:mb-4" />
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold font-headline text-primary">Video Poker</h1>
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold font-headline text-primary">Video Poker</h1>
           <p className="text-md sm:text-lg text-muted-foreground mt-2 px-2">Jacks or Better - Get the best hand!</p>
         </header>
 
@@ -180,12 +175,12 @@ const PokerPage: React.FC = () => {
             <div className="grid grid-cols-5 gap-1 xs:gap-2 sm:gap-3 md:gap-4 mb-4 sm:mb-6">
               {hand.map((card, index) => (
                 <PokerCardComponent
-                  key={card ? card.id : `empty-${index}-${Math.random()}`} // Add random for better key uniqueness on re-renders
+                  key={card ? card.id : `empty-${index}-${Math.random()}`} 
                   card={card}
                   isHeld={held[index]}
                   onToggleHold={() => toggleHold(index)}
                   disabled={gameState !== "DEALT"}
-                  isHidden={!card && gameState !== "DEALT" && gameState !== "GAME_OVER"} // Only show empty slots before deal
+                  isHidden={!card && gameState !== "DEALT" && gameState !== "GAME_OVER"}
                 />
               ))}
             </div>
