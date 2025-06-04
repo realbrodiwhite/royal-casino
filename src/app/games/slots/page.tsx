@@ -19,9 +19,16 @@ import CherrySymbol from '@/components/game/symbols/CherrySymbol';
 import DiamondSymbol from '@/components/game/symbols/DiamondSymbol';
 import GoldCoinSymbol from '@/components/game/symbols/GoldCoinSymbol';
 import BellSymbol from '@/components/game/symbols/BellSymbol';
+// Import new symbol components here when created, e.g.:
+// import PumpkinSymbol from '@/components/game/symbols/PumpkinSymbol';
+// import GhostSymbol from '@/components/game/symbols/GhostSymbol';
+// import BatSymbol from '@/components/game/symbols/BatSymbol';
+// import WitchHatSymbol from '@/components/game/symbols/WitchHatSymbol';
+
 
 import { classicSlotsTheme } from '@/game-themes/classic-slots.theme';
 import { vegasAdventureTheme } from '@/game-themes/vegas-adventure.theme';
+import { horrificHalloweenTheme } from '@/game-themes/horrific-halloween.theme'; // Import the new theme
 import type { SlotGameThemeConfig } from '@/types/game-theme';
 
 const allSymbolComponents: Record<string, React.FC<React.SVGProps<SVGSVGElement>>> = {
@@ -29,6 +36,11 @@ const allSymbolComponents: Record<string, React.FC<React.SVGProps<SVGSVGElement>
   DiamondSymbol: DiamondSymbol,
   GoldCoinSymbol: GoldCoinSymbol,
   BellSymbol: BellSymbol,
+  // Add new symbols here once their components are created:
+  // PumpkinSymbol: PumpkinSymbol,
+  // GhostSymbol: GhostSymbol,
+  // BatSymbol: BatSymbol,
+  // WitchHatSymbol: WitchHatSymbol,
 };
 
 interface SymbolData {
@@ -38,10 +50,10 @@ interface SymbolData {
 
 const FALLBACK_SYMBOL: SymbolData = {
   id: "fallback",
-  component: (props: React.SVGProps<SVGSVGElement>) => <svg viewBox="0 0 100 100" {...props}><text x="10" y="50">?</text></svg>,
+  component: (props: React.SVGProps<SVGSVGElement>) => <svg viewBox="0 0 100 100" {...props} data-ai-hint="question mark error"><text x="25" y="65" fontSize="50">?</text></svg>,
 };
 
-const availableThemes: SlotGameThemeConfig[] = [classicSlotsTheme, vegasAdventureTheme];
+const availableThemes: SlotGameThemeConfig[] = [classicSlotsTheme, vegasAdventureTheme, horrificHalloweenTheme]; // Add new theme to the list
 
 export default function SlotsPage() {
   const [selectedTheme, setSelectedTheme] = useState<SlotGameThemeConfig | null>(null);
@@ -60,8 +72,8 @@ export default function SlotsPage() {
           if (component) {
             return { id: themeSymbol.id, component, weight: themeSymbol.weight };
           }
-          console.warn(`Symbol component for id '${themeSymbol.id}' not found in allSymbolComponents.`);
-          return null;
+          console.warn(`Symbol component for id '${themeSymbol.id}' not found in allSymbolComponents. Using fallback.`);
+          return { id: themeSymbol.id, component: FALLBACK_SYMBOL.component, weight: themeSymbol.weight }; // Use fallback if symbol not found
         })
         .filter((item): item is SymbolData & { weight: number } => Boolean(item));
       setAvailableSymbolsWithData(currentSymbols);
@@ -71,10 +83,15 @@ export default function SlotsPage() {
 
   const getRandomSymbolData = useCallback((): SymbolData => {
     if (availableSymbolsWithData.length === 0) {
+      console.warn("No symbols available in availableSymbolsWithData, returning FALLBACK_SYMBOL");
       return FALLBACK_SYMBOL;
     }
 
     const totalWeight = availableSymbolsWithData.reduce((sum, symbol) => sum + symbol.weight, 0);
+    if (totalWeight === 0) {
+        console.warn("Total weight of available symbols is 0, returning FALLBACK_SYMBOL");
+        return FALLBACK_SYMBOL;
+    }
     let random = Math.random() * totalWeight;
 
     for (const symbol of availableSymbolsWithData) {
@@ -83,6 +100,7 @@ export default function SlotsPage() {
       }
       random -= symbol.weight;
     }
+    // Fallback to the last symbol if somehow random logic fails (should not happen if weights are positive)
     const lastSymbol = availableSymbolsWithData[availableSymbolsWithData.length - 1];
     return {id: lastSymbol.id, component: lastSymbol.component};
   }, [availableSymbolsWithData]);
@@ -131,7 +149,7 @@ export default function SlotsPage() {
         if (finalReels[r] && finalReels[r][c]) {
           symbolsOnPayline.push(finalReels[r][c]);
         } else {
-          console.error(`Invalid coordinate [${r},${c}] in payline ${paylineIndex} for current grid dimensions.`);
+          console.error(`Invalid coordinate [${r},${c}] in payline ${paylineIndex} for current grid dimensions ${theme.grid.rows}x${theme.grid.cols}. FinalReels:`, finalReels);
           return;
         }
       }
@@ -194,7 +212,8 @@ export default function SlotsPage() {
       return;
     }
     if (availableSymbolsWithData.length === 0) {
-      setResultsMessage("No symbols available for this theme.");
+      setResultsMessage("No symbols available for this theme. Check console for details.");
+      console.error("Aborting spin: availableSymbolsWithData is empty. Selected theme:", selectedTheme);
       setIsWin(false);
       return;
     }
@@ -221,7 +240,7 @@ export default function SlotsPage() {
 
         if (totalWinAmount > 0) {
           const winMessages = winDetails.map(detail =>
-            `${detail.count} ${detail.symbolId}s on line ${detail.paylineIndex + 1} (${detail.line.map(c => `[${c[0]},${c[1]}]`).join(' ')}) for ${detail.amount}`
+            `${detail.count} ${detail.symbolId}(s) on line ${detail.paylineIndex + 1} for ${detail.amount}`
           );
           setResultsMessage(`You won ${totalWinAmount} credits! ${winDetails.length > 1 ? 'Details: ' + winMessages.join('; ') : winMessages[0]}`);
           setIsWin(true);
@@ -234,7 +253,7 @@ export default function SlotsPage() {
         }
       }
     }, 100);
-  }, [credits, initialReels, getRandomSymbolData, availableSymbolsWithData.length, calculateWins, selectedTheme, spinCost]);
+  }, [credits, initialReels, getRandomSymbolData, availableSymbolsWithData, calculateWins, selectedTheme, spinCost]);
 
   useEffect(() => {
     let autoSpinTimeout: NodeJS.Timeout;
@@ -268,9 +287,12 @@ export default function SlotsPage() {
 
   const handleThemeSelect = (theme: SlotGameThemeConfig) => {
     setSelectedTheme(theme);
-    setIsAutospin(false);
+    setIsAutospin(false); // Stop autospin when changing themes
     setResultsMessage(null);
     setIsWin(null);
+    setShowWinAnimation(false);
+    setWinAmount(0);
+    // Reels will be re-initialized by the useEffect watching selectedTheme
   };
 
   if (!selectedTheme) {
@@ -281,9 +303,9 @@ export default function SlotsPage() {
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold font-headline text-primary">Choose Your Slot Adventure!</h1>
           <p className="text-md sm:text-lg text-muted-foreground mt-2 px-2">Select a theme to start playing.</p>
         </header>
-        <main className="flex flex-wrap justify-center items-start gap-6 sm:gap-8 w-full max-w-4xl px-2">
+        <main className="flex flex-wrap justify-center items-stretch gap-6 sm:gap-8 w-full max-w-5xl px-2">
           {availableThemes.map(theme => (
-            <Card key={theme.themeId} className="w-full sm:max-w-xs bg-card border-border shadow-xl hover:shadow-primary/50 transition-all duration-300 flex flex-col">
+            <Card key={theme.themeId} className="w-full sm:w-72 md:w-80 bg-card border-border shadow-xl hover:shadow-primary/50 transition-all duration-300 flex flex-col">
               <CardHeader className="items-center text-center">
                  <Sparkles className="h-10 w-10 text-primary mb-3" />
                 <CardTitle className="text-xl font-headline text-primary">{theme.displayName}</CardTitle>
@@ -292,8 +314,17 @@ export default function SlotsPage() {
               <CardContent className="flex-grow flex flex-col justify-center">
                  <p className="text-xs text-muted-foreground text-center mb-1">Grid: {theme.grid.rows}x{theme.grid.cols}</p>
                  <p className="text-xs text-muted-foreground text-center mb-3">Symbols: {theme.symbols.length}</p>
+                 {/* Optional: Add a small placeholder image for the theme */}
+                 <Image 
+                    src={`https://placehold.co/200x100.png?text=${encodeURIComponent(theme.displayName)}`} 
+                    alt={theme.displayName} 
+                    width={200} 
+                    height={100} 
+                    className="rounded-md mx-auto object-cover"
+                    data-ai-hint={`${theme.themeId.replace('-',' ')} slot theme`}
+                 />
               </CardContent>
-              <CardFooter>
+              <CardFooter className="mt-auto">
                 <Button onClick={() => handleThemeSelect(theme)} variant="default" className="w-full">
                   Play {theme.displayName}
                 </Button>
@@ -308,6 +339,7 @@ export default function SlotsPage() {
     );
   }
 
+  // Game View (when a theme is selected)
   return (
     <div className="min-h-screen text-foreground flex flex-col items-center p-4">
       <Navbar />
@@ -321,7 +353,7 @@ export default function SlotsPage() {
             <CreditDisplay initialCredits={credits} />
         </div>
 
-        <Button onClick={() => setSelectedTheme(null)} variant="outline" className="w-full sm:w-auto">
+        <Button onClick={() => handleThemeSelect(null)} variant="outline" className="w-full sm:w-auto">
           <Palette className="mr-2 h-4 w-4" /> Change Theme
         </Button>
 
@@ -332,14 +364,14 @@ export default function SlotsPage() {
                 key={index}
                 className={spinning ? 'animate-pulse' : ''}
               >
-                <symbolData.component className="w-12 h-12 xs:w-14 xs:h-14 sm:w-20 sm:h-20 md:w-24 md:h-24 p-1" />
+                <symbolData.component className="w-12 h-12 xs:w-14 xs:h-14 sm:w-16 sm:h-16 md:w-20 md:h-20 p-1" />
               </GridBox>
             ))}
           </GameGrid>
         ) : (
           <div className="text-center text-destructive p-4 border border-destructive rounded-md bg-destructive/10">
             <p>Error: No symbols configured or available for the current theme: <code className="bg-destructive/20 px-1 rounded">{selectedTheme.themeId}</code>.</p>
-            <p>Please check the theme configuration and ensure symbols are correctly mapped and weighted.</p>
+            <p>Please check the theme configuration and ensure symbols are correctly mapped and available in <code className="bg-destructive/20 px-1 rounded">allSymbolComponents</code>.</p>
           </div>
         )}
 
@@ -379,4 +411,3 @@ export default function SlotsPage() {
     </div>
   );
 }
-    
