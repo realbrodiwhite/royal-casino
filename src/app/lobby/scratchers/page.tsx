@@ -1,7 +1,7 @@
 
 "use client";
 
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import Navbar from '@/components/layout/navbar';
 import { Button } from '@/components/ui/button';
 import CreditDisplay from '@/components/game/CreditDisplay';
@@ -37,25 +37,32 @@ const generateInitialGrid = (): ScratchGrid => {
 
 const generateTicketSymbols = (): ScratchGrid => {
   const newGrid = generateInitialGrid();
-  const shouldWin = Math.random() < 0.2; 
+  // Slightly higher win chance for testing, e.g., 30%
+  const shouldWin = Math.random() < 0.3; 
   let winningSymbol = POSSIBLE_SYMBOLS[Math.floor(Math.random() * POSSIBLE_SYMBOLS.length)];
   
   if (shouldWin) {
-    const winType = Math.floor(Math.random() * 3); 
+    // Determine win type: 0 for row, 1 for column, 2 for main diagonal, 3 for anti-diagonal
+    const winType = Math.floor(Math.random() * (GRID_SIZE === 3 ? 4 : 2)); // Only allow diagonals for 3x3
     const winIndex = Math.floor(Math.random() * GRID_SIZE);
 
-    if (winType === 0) { 
+    if (winType === 0) { // Row win
       for (let j = 0; j < GRID_SIZE; j++) newGrid[winIndex][j].symbol = winningSymbol;
-    } else if (winType === 1) { 
+    } else if (winType === 1) { // Column win
       for (let i = 0; i < GRID_SIZE; i++) newGrid[i][winIndex].symbol = winningSymbol;
-    } else if (winType === 2 && GRID_SIZE === 3) { 
+    } else if (winType === 2 && GRID_SIZE === 3) { // Main diagonal win (top-left to bottom-right)
         for (let i = 0; i < GRID_SIZE; i++) newGrid[i][i].symbol = winningSymbol;
+    } else if (winType === 3 && GRID_SIZE === 3) { // Anti-diagonal win (top-right to bottom-left)
+        for (let i = 0; i < GRID_SIZE; i++) newGrid[i][GRID_SIZE - 1 - i].symbol = winningSymbol;
+    } else if (GRID_SIZE !== 3 && winType > 1) { // Fallback for non 3x3 if diagonal was chosen
+        for (let j = 0; j < GRID_SIZE; j++) newGrid[winIndex][j].symbol = winningSymbol; // Default to row win
     }
   }
 
+  // Fill remaining cells with random symbols, ensuring no accidental overwrite of winning line
   for (let i = 0; i < GRID_SIZE; i++) {
     for (let j = 0; j < GRID_SIZE; j++) {
-      if (newGrid[i][j].symbol === '?') { 
+      if (newGrid[i][j].symbol === '?') { // Only fill if not already part of a planned win
         newGrid[i][j].symbol = POSSIBLE_SYMBOLS[Math.floor(Math.random() * POSSIBLE_SYMBOLS.length)];
       }
     }
@@ -68,54 +75,69 @@ export default function ScratchersPage() {
   const [credits, setCredits] = useState(1000);
   const [experiencePoints, setExperiencePoints] = useState(0);
   const [scratchGrid, setScratchGrid] = useState<ScratchGrid>(generateInitialGrid());
-  const [isTicketActive, setIsTicketActive] = useState(false);
+  const [isTicketActive, setIsTicketActive] = useState(false); // Is there an active ticket being played?
   const [gameMessage, setGameMessage] = useState<string | null>(null);
-  const [isWin, setIsWin] = useState<boolean | null>(null);
+  const [isWin, setIsWin] = useState<boolean | null>(null); // null = undecided, true = win, false = loss
   const [revealedCount, setRevealedCount] = useState(0);
+  const [hasWonThisTicket, setHasWonThisTicket] = useState(false);
   const { toast } = useToast();
 
   const checkForWin = useCallback((currentGrid: ScratchGrid): { win: boolean; winningSymbol: string | null } => {
     if (!currentGrid || currentGrid.length === 0) return { win: false, winningSymbol: null };
     const size = currentGrid.length;
 
+    // Check rows
     for (let i = 0; i < size; i++) {
-      const firstSymbol = currentGrid[i][0].symbol;
-      if (currentGrid[i].every(cell => cell.revealed && cell.symbol === firstSymbol)) {
-        return { win: true, winningSymbol: firstSymbol };
+      // Ensure all cells in the row are revealed and have the same symbol
+      if (currentGrid[i].every(cell => cell.revealed)) {
+        const firstSymbol = currentGrid[i][0].symbol;
+        if (currentGrid[i].every(cell => cell.symbol === firstSymbol)) {
+          return { win: true, winningSymbol: firstSymbol };
+        }
       }
     }
 
+    // Check columns
     for (let j = 0; j < size; j++) {
-      const firstSymbol = currentGrid[0][j].symbol;
-      let colMatch = true;
-      for (let i = 0; i < size; i++) {
-        if (!currentGrid[i][j].revealed || currentGrid[i][j].symbol !== firstSymbol) {
-          colMatch = false;
-          break;
+      // Ensure all cells in the column are revealed and have the same symbol
+      if (currentGrid.every(row => row[j].revealed)) {
+        const firstSymbol = currentGrid[0][j].symbol;
+        let colMatch = true;
+        for (let i = 0; i < size; i++) {
+          if (currentGrid[i][j].symbol !== firstSymbol) {
+            colMatch = false;
+            break;
+          }
         }
+        if (colMatch) return { win: true, winningSymbol: firstSymbol };
       }
-      if (colMatch) return { win: true, winningSymbol: firstSymbol };
     }
     
-    const firstDiagSymbol = currentGrid[0][0].symbol;
-    let mainDiagMatch = true;
-    for (let i = 0; i < size; i++) {
-        if(!currentGrid[i][i].revealed || currentGrid[i][i].symbol !== firstDiagSymbol) {
-            mainDiagMatch = false;
-            break;
+    // Check main diagonal (top-left to bottom-right)
+    if (currentGrid.every((row, idx) => row[idx].revealed)) {
+        const firstDiagSymbol = currentGrid[0][0].symbol;
+        let mainDiagMatch = true;
+        for (let i = 0; i < size; i++) {
+            if(currentGrid[i][i].symbol !== firstDiagSymbol) {
+                mainDiagMatch = false;
+                break;
+            }
         }
+        if (mainDiagMatch) return { win: true, winningSymbol: firstDiagSymbol };
     }
-    if (mainDiagMatch) return { win: true, winningSymbol: firstDiagSymbol };
 
-    const firstAntiDiagSymbol = currentGrid[0][size-1].symbol;
-    let antiDiagMatch = true;
-    for (let i = 0; i < size; i++) {
-        if(!currentGrid[i][size-1-i].revealed || currentGrid[i][size-1-i].symbol !== firstAntiDiagSymbol) {
-            antiDiagMatch = false;
-            break;
+    // Check anti-diagonal (top-right to bottom-left)
+    if (currentGrid.every((row, idx) => row[size - 1 - idx].revealed)) {
+        const firstAntiDiagSymbol = currentGrid[0][size-1].symbol;
+        let antiDiagMatch = true;
+        for (let i = 0; i < size; i++) {
+            if(currentGrid[i][size-1-i].symbol !== firstAntiDiagSymbol) {
+                antiDiagMatch = false;
+                break;
+            }
         }
+        if (antiDiagMatch) return { win: true, winningSymbol: firstAntiDiagSymbol };
     }
-    if (antiDiagMatch) return { win: true, winningSymbol: firstAntiDiagSymbol };
 
     return { win: false, winningSymbol: null };
   }, []);
@@ -131,8 +153,9 @@ export default function ScratchersPage() {
     setScratchGrid(generateTicketSymbols());
     setIsTicketActive(true);
     setGameMessage("Scratch to reveal your prize!");
-    setIsWin(null);
+    setIsWin(null); // Reset win status for new ticket
     setRevealedCount(0);
+    setHasWonThisTicket(false); // Reset win flag for new ticket
     toast({ title: "Ticket Purchased!", description: `Cost: ${TICKET_COST} credits. Good luck!` });
   };
 
@@ -142,22 +165,31 @@ export default function ScratchersPage() {
     const newGrid = scratchGrid.map(r => r.map(c => ({ ...c })));
     newGrid[row][col].revealed = true;
     setScratchGrid(newGrid);
-    const currentRevealedCount = revealedCount + 1;
+    
+    const currentRevealedCount = newGrid.flat().filter(cell => cell.revealed).length;
     setRevealedCount(currentRevealedCount);
 
-    const { win, winningSymbol } = checkForWin(newGrid);
+    // Check for win only if not already won on this ticket
+    if (!hasWonThisTicket) {
+        const { win, winningSymbol } = checkForWin(newGrid);
+        if (win && winningSymbol) {
+            setCredits(prev => prev + WIN_AMOUNT);
+            setGameMessage(`Congratulations! You matched three ${winningSymbol}s and won ${WIN_AMOUNT} credits!`);
+            setIsWin(true);
+            setHasWonThisTicket(true); // Mark that a win has occurred on this ticket
+            toast({ title: "You Won!", description: `You won ${WIN_AMOUNT} credits!` });
+            // Do not set isTicketActive to false here, allow further scratching
+        }
+    }
     
-    if (win && winningSymbol) {
-      setCredits(prev => prev + WIN_AMOUNT);
-      setGameMessage(`Congratulations! You matched three ${winningSymbol}s and won ${WIN_AMOUNT} credits!`);
-      setIsWin(true);
-      setIsTicketActive(false); 
-      toast({ title: "You Won!", description: `You won ${WIN_AMOUNT} credits!` });
-    } else if (currentRevealedCount === GRID_SIZE * GRID_SIZE) { 
-        setGameMessage("No win this time. Better luck next ticket!");
-        setIsWin(false);
-        setIsTicketActive(false);
-        toast({ title: "No Win", description: "Try buying another ticket.", variant: "destructive" });
+    // If all cells are revealed, the ticket is finished
+    if (currentRevealedCount === GRID_SIZE * GRID_SIZE) { 
+        setIsTicketActive(false); // Ticket is now fully revealed
+        if (!hasWonThisTicket) { // If all revealed and no win was registered for this ticket
+            setGameMessage("No win this time. Better luck next ticket!");
+            setIsWin(false);
+            toast({ title: "No Win", description: "Try buying another ticket.", variant: "destructive" });
+        }
     }
   };
   
@@ -166,12 +198,12 @@ export default function ScratchersPage() {
       <Navbar />
       <main className="flex-grow container mx-auto px-4 py-8 sm:py-12 flex flex-col items-center">
         <header className="mb-8 sm:mb-10 text-center">
-          <Ticket className="h-16 w-16 sm:h-20 sm:w-20 text-primary mx-auto mb-3 sm:mb-4" />
-          <h1 className="text-4xl sm:text-5xl font-bold font-headline text-primary">Scratch & Win</h1>
-          <p className="text-lg sm:text-xl text-muted-foreground mt-2 px-2">Buy a ticket and scratch for instant prizes!</p>
+          <Ticket className="h-12 w-12 sm:h-16 sm:w-16 text-primary mx-auto mb-3 sm:mb-4" />
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold font-headline text-primary">Scratch & Win</h1>
+          <p className="text-md sm:text-lg text-muted-foreground mt-1 px-2">Buy a ticket and scratch for instant prizes!</p>
         </header>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 w-full max-w-3xl mb-6 sm:mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 w-full max-w-md mb-6 sm:mb-8">
           <CreditDisplay initialCredits={credits} />
           <XpDisplay experiencePoints={experiencePoints} />
         </div>
@@ -179,12 +211,12 @@ export default function ScratchersPage() {
         <Card className="w-full max-w-md bg-card border-border shadow-xl">
           <CardHeader>
             <CardTitle className="text-xl sm:text-2xl text-primary font-headline text-center">
-              {isTicketActive ? "Scratch Your Ticket!" : "Get Your Ticket"}
+              {isTicketActive ? "Scratch Your Ticket!" : (gameMessage && isWin !== null ? "Ticket Revealed!" : "Get Your Ticket")}
             </CardTitle>
              <p className="text-sm text-center text-muted-foreground">Ticket Cost: {TICKET_COST} credits</p>
           </CardHeader>
           <CardContent className="space-y-4 sm:space-y-6">
-            {!isTicketActive ? (
+            {!isTicketActive && isWin === null && ( // Show buy button only if no active ticket AND no game result displayed
               <Button 
                 onClick={handleBuyTicket} 
                 variant="default"
@@ -193,7 +225,9 @@ export default function ScratchersPage() {
               >
                 <Gift className="mr-2 h-4 w-4 sm:h-5 sm:w-5" /> Buy Ticket ({TICKET_COST} Credits)
               </Button>
-            ) : (
+            )}
+
+            {(isTicketActive || (isWin !== null && scratchGrid.flat().some(c => c.symbol !== '?'))) && ( // Show grid if ticket is active OR if there's a result from a played ticket
               <div 
                 className="grid gap-1 sm:gap-2 mx-auto aspect-square max-w-xs sm:max-w-sm"
                 style={{gridTemplateColumns: `repeat(${GRID_SIZE}, 1fr)`}}
@@ -205,7 +239,7 @@ export default function ScratchersPage() {
                     <button
                       key={index}
                       onClick={() => handleScratchCell(row, col)}
-                      disabled={cell.revealed}
+                      disabled={!isTicketActive || cell.revealed} // Disable if ticket not active or cell already revealed
                       className={cn(
                         "aspect-square flex items-center justify-center rounded-md border border-border text-2xl sm:text-3xl font-bold transition-all duration-300 ease-in-out",
                         "focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 focus:ring-offset-background",
@@ -233,7 +267,7 @@ export default function ScratchersPage() {
               <ResultsDisplay message={gameMessage} isWin={isWin} />
             )}
 
-            {isWin !== null && !isTicketActive && (
+            {!isTicketActive && isWin !== null && ( // Show Play Again button only if ticket is finished
                  <Button 
                     onClick={handleBuyTicket} 
                     variant="default"
@@ -271,3 +305,4 @@ export default function ScratchersPage() {
     </div>
   );
 }
+
