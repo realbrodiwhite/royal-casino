@@ -6,7 +6,7 @@ import Link from 'next/link';
 import Navbar from '@/components/layout/navbar';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Dice5, Puzzle, Ticket, CircleDollarSign, Rows } from 'lucide-react';
+import { Dice5, AppWindow, Ticket, CircleDollarSign, Rows } from 'lucide-react'; // Changed Puzzle to AppWindow
 import Image from 'next/image';
 
 interface GameCardProps {
@@ -50,9 +50,9 @@ const GameCard: React.FC<GameCardProps> = ({ title, description, icon, href, ima
 
 export default function LobbyPage() {
   const games = [
-    { title: "Slots", description: "Spin the reels for exciting wins!", icon: <Dice5 />, href: "/lobby/slots", imageUrl: "https://placehold.co/300x200.png?text=Slots" , dataAiHint: "slot machine casino"},
+    { title: "Slots", description: "Spin the reels for exciting wins! Choose your theme.", icon: <Dice5 />, href: "/games/slots", imageUrl: "https://placehold.co/300x200.png?text=Slots" , dataAiHint: "slot machine casino"}, // Updated href for slots
     { title: "Poker", description: "Test your skills at video poker.", icon: <Rows />, href: "/lobby/poker", imageUrl: "https://placehold.co/300x200.png?text=Poker", dataAiHint: "poker cards casino", disabled: false },
-    { title: "Bingo", description: "Daub your way to victory!", icon: <Puzzle />, href: "/lobby/bingo", imageUrl: "https://placehold.co/300x200.png?text=Bingo", dataAiHint: "bingo balls cards", disabled: true },
+    { title: "Bingo", description: "Daub your way to victory!", icon: <AppWindow />, href: "/lobby/bingo", imageUrl: "https://placehold.co/300x200.png?text=Bingo", dataAiHint: "bingo card game", disabled: false }, // Enabled Bingo
     { title: "Scratchers", description: "Instant win lottery tickets.", icon: <Ticket />, href: "/lobby/scratchers", imageUrl: "https://placehold.co/300x200.png?text=Scratchers", dataAiHint: "lottery scratch ticket", disabled: false },
     { title: "Coin Flip", description: "A simple game of chance. Heads or tails?", icon: <CircleDollarSign />, href: "/lobby/coin-flip", imageUrl: "https://placehold.co/300x200.png?text=Coin+Flip", dataAiHint: "coin flip chance", disabled: false },
   ];
@@ -87,3 +87,5 @@ export default function LobbyPage() {
     </div>
   );
 }
+
+    

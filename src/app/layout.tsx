@@ -3,6 +3,7 @@ import type { Metadata } from 'next';
 import { Playfair_Display, Roboto } from 'next/font/google';
 import './globals.css';
 import { Toaster } from "@/components/ui/toaster";
+import ExperienceBar from '@/components/layout/ExperienceBar';
 
 const playfairDisplay = Playfair_Display({
   subsets: ['latin'],
@@ -31,10 +32,13 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${playfairDisplay.variable} ${roboto.variable}`}>
       <head />
-      <body className="font-body antialiased bg-background text-foreground">
+      <body className="font-body antialiased bg-background text-foreground pt-12 sm:pt-14"> {/* Add padding-top for sticky bar */}
+        <ExperienceBar />
         {children}
         <Toaster />
       </body>
     </html>
   );
 }
+
+    
