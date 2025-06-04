@@ -15,7 +15,7 @@ export default function LandingPage() {
       <Navbar />
 
       <main className="flex-grow">
-        <section className="py-16 sm:py-20 md:py-28 text-center bg-gradient-to-b from-background via-purple-800/30 to-background">
+        <section className="pt-16 pb-8 sm:pt-20 sm:pb-10 md:pt-28 md:pb-14 text-center bg-gradient-to-b from-background via-purple-800/30 to-background">
           <div className="container mx-auto px-4">
             <Crown className="mx-auto h-16 w-16 sm:h-20 md:h-24 md:w-24 text-primary mb-4 sm:mb-6 animate-pulse" />
             <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold font-headline text-primary mb-3 sm:mb-4">
@@ -45,7 +45,7 @@ export default function LandingPage() {
           </div>
         </section>
 
-        <section className="py-12 sm:py-16 bg-background/80 backdrop-blur-sm">
+        <section className="pt-6 pb-12 sm:pt-8 sm:pb-16 bg-background/80 backdrop-blur-sm">
           <div className="container mx-auto px-4">
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold font-headline text-primary mb-10 sm:mb-12 text-center">
               Why Choose Royal Casino?
@@ -67,7 +67,7 @@ export default function LandingPage() {
                 description="Boost your play with daily free credits, exciting promotions, and loyalty bonuses."
               />
               <FeatureCard
-                icon={<LuxuryExperienceIcon className="h-10 w-10 sm:h-12 sm:w-12 text-primary" />}
+                icon={<LuxuryExperienceIcon className="h-10 w-10 sm:h-12 sm:w-12 text-primary mb-3 sm:mb-4" />}
                 title="Luxury Experience"
                 description="Immerse yourself in our opulent casino atmosphere, designed for premium entertainment."
               />
