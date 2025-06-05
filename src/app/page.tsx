@@ -23,7 +23,7 @@ export default function LandingPage() {
         <section className="pt-10 pb-8 sm:pt-12 sm:pb-10 md:pt-16 md:pb-12 text-center bg-gradient-to-b from-background via-purple-800/30 to-background">
           <div className="container mx-auto px-4">
             <div className="inline-flex items-center justify-center w-24 h-24 sm:w-32 sm:h-32 md:w-36 md:h-36 border-2 border-primary rounded-full bg-transparent animate-pulse mb-4 sm:mb-6">
-              <Crown aria-hidden="true" className="h-12 w-12 sm:h-16 sm:w-16 md:h-18 md:w-18 text-primary" />
+              <Crown aria-hidden="true" className="h-12 w-12 sm:h-16 sm:h-16 md:h-18 md:w-18 text-primary" />
             </div>
             <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold font-headline text-primary mb-3 sm:mb-4">
               Welcome to Royal Casino
@@ -94,19 +94,19 @@ export default function LandingPage() {
             </p>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
               <GameTypeCard
-                icon={<SlotsCategoryIcon aria-hidden="true" className="h-10 w-10 sm:h-12 sm:w-12 text-primary" />}
+                icon={<SlotsCategoryIcon aria-hidden="true" className="h-12 w-12 sm:h-14 sm:w-14 text-primary" />}
                 title="Thrilling Slots"
                 description="Spin the reels on a variety of themed slot machines with unique features and big win potential."
                 href="/games/slots"
               />
               <GameTypeCard
-                icon={<PokerCategoryIcon aria-hidden="true" className="h-10 w-10 sm:h-12 sm:w-12 text-primary" />}
+                icon={<PokerCategoryIcon aria-hidden="true" className="h-12 w-12 sm:h-14 sm:w-14 text-primary" />}
                 title="Classic Poker"
                 description="Test your skills and strategy at our virtual poker tables."
                 href="/lobby/poker"
               />
               <GameTypeCard
-                icon={<BingoCategoryIcon aria-hidden="true" className="h-10 w-10 sm:h-12 sm:w-12 text-primary" />}
+                icon={<BingoCategoryIcon aria-hidden="true" className="h-12 w-12 sm:h-14 sm:w-14 text-primary" />}
                 title="Exciting Bingo"
                 description="Join the fun in our bingo halls and daub your way to victory."
                 href="/lobby/bingo"
@@ -177,8 +177,8 @@ interface GameTypeCardProps {
 
 const GameTypeCard: React.FC<GameTypeCardProps> = ({ icon, title, description, href, disabled }) => (
   <Card className="bg-card border-border shadow-lg hover:shadow-primary/30 transition-shadow duration-300 flex flex-col text-center">
-    <CardHeader className="items-center pt-4 sm:pt-6">
-      <div className="p-3 sm:p-4 bg-primary/20 rounded-full mb-2 sm:mb-3 inline-block">
+    <CardHeader className="items-center pt-6 sm:pt-8">
+      <div className="p-3 sm:p-4 bg-primary/20 rounded-full mb-3 sm:mb-4 inline-block">
         {icon}
       </div>
       <CardTitle className="text-lg sm:text-xl font-headline text-primary">{title}</CardTitle>
@@ -195,3 +195,4 @@ const GameTypeCard: React.FC<GameTypeCardProps> = ({ icon, title, description, h
     </CardContent>
   </Card>
 );
+
