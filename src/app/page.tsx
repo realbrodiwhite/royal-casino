@@ -27,19 +27,23 @@ export default function LandingPage() {
           <div className="container mx-auto px-4">
             <div className="relative flex justify-center items-center mb-4 sm:mb-6 h-24 sm:h-32 md:h-36">
               {/* Left Side Coin (behind) */}
-              <div className="relative z-0 transform scale-90 mr-[-19px] sm:mr-[-26px] md:mr-[-29px]">
-                <div className="border-4 border-primary rounded-full bg-transparent flex items-center justify-center w-24 h-24 sm:w-32 sm:h-32 md:w-36 md:h-36">
-                  <Crown className="text-primary h-12 w-12 sm:h-16 sm:h-16 md:h-18 md:w-18" aria-hidden="true" />
+              <div className="absolute top-1/2 left-1/2 z-0 transform -translate-y-1/2 translate-x-[-72px] sm:translate-x-[-96px] md:translate-x-[-108px]">
+                <div className="transform scale-90">
+                  <div className="border-4 border-primary rounded-full bg-transparent flex items-center justify-center w-24 h-24 sm:w-32 sm:h-32 md:w-36 md:h-36">
+                    <Crown aria-hidden="true" className="h-12 w-12 sm:h-16 sm:h-16 md:h-18 md:w-18 text-primary" />
+                  </div>
                 </div>
               </div>
               {/* Central Coin (front) */}
               <div className="relative z-10 border-4 border-primary rounded-full bg-background flex items-center justify-center w-24 h-24 sm:w-32 sm:h-32 md:w-36 md:h-36">
-                <Crown className="text-primary h-12 w-12 sm:h-16 sm:h-16 md:h-18 md:w-18" aria-hidden="true" />
+                <Crown aria-hidden="true" className="h-12 w-12 sm:h-16 sm:h-16 md:h-18 md:w-18 text-primary" />
               </div>
               {/* Right Side Coin (behind) */}
-              <div className="relative z-0 transform scale-90 ml-[-19px] sm:ml-[-26px] md:ml-[-29px]">
-                <div className="border-4 border-primary rounded-full bg-transparent flex items-center justify-center w-24 h-24 sm:w-32 sm:h-32 md:w-36 md:h-36">
-                  <Crown className="text-primary h-12 w-12 sm:h-16 sm:h-16 md:h-18 md:w-18" aria-hidden="true" />
+              <div className="absolute top-1/2 left-1/2 z-0 transform -translate-y-1/2 translate-x-[72px] sm:translate-x-[96px] md:translate-x-[108px]">
+                <div className="transform scale-90">
+                  <div className="border-4 border-primary rounded-full bg-transparent flex items-center justify-center w-24 h-24 sm:w-32 sm:h-32 md:w-36 md:h-36">
+                    <Crown aria-hidden="true" className="h-12 w-12 sm:h-16 sm:h-16 md:h-18 md:w-18 text-primary" />
+                  </div>
                 </div>
               </div>
             </div>
@@ -49,7 +53,7 @@ export default function LandingPage() {
             <p className="text-lg sm:text-xl md:text-2xl text-foreground mb-6 sm:mb-8 max-w-xl sm:max-w-2xl md:max-w-3xl mx-auto px-2">
               Experience the pinnacle of social casino gaming, where every play is a new adventure. Connect, compete, and celebrate your wins!
             </p>
-            <div className="mb-8 sm:mb-10 p-4 sm:p-6 bg-primary/10 border border-primary rounded-lg inline-block shadow-xl">
+            <div className="mb-8 sm:mb-10 p-4 sm:p-6 bg-primary/10 border border-primary rounded-lg inline-block animate-glow">
                 <h2 className="text-xl sm:text-2xl md:text-3xl font-headline text-primary flex items-center justify-center">
                     <Coins aria-hidden="true" className="h-6 w-6 sm:h-8 md:h-10 mr-2 sm:mr-3 text-primary" /> New Player Offer!
                 </h2>
@@ -87,7 +91,7 @@ export default function LandingPage() {
         <section className="py-12 sm:py-16 bg-background">
           <div className="container mx-auto px-4">
             <Globe aria-hidden="true" className="mx-auto h-12 w-12 sm:h-16 sm:w-16 text-primary mb-4 sm:mb-6" />
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold font-headline text-primary mb-4 text-center">A Universe of Thrilling Games Awaits!</h2>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold font-headline text-primary mb-4 text-center">A Universe of Thrilling Games Awaits Your Command!</h2>
             <p className="text-lg text-muted-foreground mb-10 sm:mb-12 text-center max-w-2xl mx-auto">
               From dazzling slots and strategic poker to lively bingo and instant-win scratchers, your next favorite game is here. Explore diverse themes and chase epic virtual jackpots!
             </p>
@@ -136,7 +140,7 @@ export default function LandingPage() {
         {/* Experience the Royal Treatment Section */}
         <section className="py-12 sm:py-16 bg-background/80 backdrop-blur-sm">
           <div className="container mx-auto px-4">
-            <div className="border-4 border-primary rounded-full bg-background flex items-center justify-center w-20 h-20 sm:w-24 sm:w-24 mb-4 sm:mb-6 mx-auto">
+            <div className="border-4 border-primary rounded-full bg-background flex items-center justify-center w-20 h-20 sm:w-24 sm:h-24 mb-4 sm:mb-6 mx-auto">
               <Crown aria-hidden="true" className="h-10 w-10 sm:h-12 sm:w-12 text-primary" />
             </div>
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold font-headline text-primary mb-10 sm:mb-12 text-center">
