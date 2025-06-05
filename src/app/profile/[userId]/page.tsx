@@ -8,8 +8,8 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { User, Users, Trophy, Gamepad2, Star, MessageSquare, ShieldAlert } from 'lucide-react';
-import { useParams, useRouter } from 'next/navigation'; // Import useRouter
-import Link from 'next/link'; // Import Link
+import { useParams, useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 const genericAvatars = [
   "/images/avatars/avatar-generic-1.svg",
@@ -110,30 +110,39 @@ const allMockFriendsData: FriendType[] = Object.values(allMockUsers).map(u => ({
 
 
 export default function UserProfilePage() {
-  const params = useParams();
-  const userId = params?.userId as string;
+  // Explicitly type the params object and userId
+  const params = useParams<{ userId?: string }>(); // Use an optional type for userId initially
+  const userId = params.userId; // userId will be string | undefined
+
   const [profileData, setProfileData] = useState<any | null>(null);
   const [friends, setFriends] = useState<FriendType[]>([]);
   const [topFriends, setTopFriends] = useState<FriendType[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    if (userId) {
+    // Ensure userId is a string before proceeding
+    if (typeof userId === 'string' && userId) {
       setIsLoading(true);
       // Simulate API call
       setTimeout(() => {
         const user = allMockUsers[userId];
         if (user) {
           setProfileData(user);
-          setFriends(allMockFriendsData.filter(f => user.friendIds?.includes(f.id) && f.id !== userId));
-          setTopFriends(allMockFriendsData.filter(f => user.topFriendIds?.includes(f.id) && f.id !== userId));
+          // Ensure userId is treated as string for comparisons/includes
+          const currentUserIdStr = String(userId);
+          setFriends(allMockFriendsData.filter(f => user.friendIds?.includes(f.id) && f.id !== currentUserIdStr));
+          setTopFriends(allMockFriendsData.filter(f => user.topFriendIds?.includes(f.id) && f.id !== currentUserIdStr));
         } else {
           setProfileData(null); // User not found
         }
         setIsLoading(false);
       }, 500);
+    } else if (params.userId !== undefined) { // If params.userId exists but isn't a string, or is empty after initial load
+        setIsLoading(false); // Stop loading if userId is not valid or route not fully resolved
+        setProfileData(null); // Treat as user not found
     }
-  }, [userId]);
+    // If params.userId is undefined initially, useEffect will re-run when it resolves.
+  }, [userId, params.userId]); // params.userId added to re-trigger if the raw param value changes
 
   if (isLoading) {
     return (
