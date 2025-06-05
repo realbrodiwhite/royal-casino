@@ -1,6 +1,6 @@
 
 import type { Metadata, Viewport } from 'next';
-import { Playfair_Display, Roboto } from 'next/font/google';
+import { Playfair_Display, Lato } from 'next/font/google';
 import './globals.css';
 import { Toaster } from "@/components/ui/toaster";
 import ExperienceBar from '@/components/layout/ExperienceBar';
@@ -12,10 +12,10 @@ const playfairDisplay = Playfair_Display({
   display: 'swap',
 });
 
-const roboto = Roboto({
+const lato = Lato({
   subsets: ['latin'],
   weight: ['400', '700'],
-  variable: '--font-roboto',
+  variable: '--font-lato',
   display: 'swap',
 });
 
@@ -39,7 +39,7 @@ export const metadata: Metadata = {
     siteName: 'Royal Casino',
     images: [
       {
-        url: `${siteBaseUrl}/images/og-image.png`, // Replace with actual path to a 1200x630 image
+        url: `${siteBaseUrl}/images/og-image.png`, 
         width: 1200,
         height: 630,
         alt: 'Royal Casino Games',
@@ -52,9 +52,9 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Royal Casino - Premier Social Gaming Experience',
     description: 'Join Royal Casino for top social casino games! Slots, poker, bingo, and more. Get your bonus now!',
-    site: '@RoyalCasino', // Replace with actual Twitter handle
-    creator: '@RoyalCasinoDevs', // Replace with actual Twitter handle of creators
-    images: [`${siteBaseUrl}/images/twitter-card-image.png`], // Replace with actual path to a suitable Twitter card image
+    site: '@RoyalCasino', 
+    creator: '@RoyalCasinoDevs', 
+    images: [`${siteBaseUrl}/images/twitter-card-image.png`], 
   },
   robots: {
     index: true,
@@ -68,21 +68,15 @@ export const metadata: Metadata = {
     },
   },
   manifest: '/manifest.json',
-  icons: { // Add paths to your actual icons
+  icons: { 
     icon: '/favicon.ico',
-    shortcut: '/favicon-16x16.png', // Example
-    apple: '/apple-touch-icon.png', // Example
+    shortcut: '/favicon-16x16.png', 
+    apple: '/apple-touch-icon.png', 
   },
-  // alternates: { // If you have multiple languages
-  //   canonical: '/',
-  //   languages: {
-  //     'en-US': '/en-US',
-  //   },
-  // },
 };
 
 export const viewport: Viewport = {
-  themeColor: '#4B0082', // Deep Purple
+  themeColor: '#4B0082', 
   width: 'device-width',
   initialScale: 1,
   maximumScale: 1,
@@ -95,9 +89,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${playfairDisplay.variable} ${roboto.variable}`}>
+    <html lang="en" className={`${playfairDisplay.variable} ${lato.variable}`}>
       <head />
-      <body className="font-body antialiased bg-background text-foreground pt-12 sm:pt-14"> {/* Add padding-top for sticky bar */}
+      <body className="font-body antialiased bg-background text-foreground pt-12 sm:pt-14"> {}
         <ExperienceBar />
         {children}
         <Toaster />
