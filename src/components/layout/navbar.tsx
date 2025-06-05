@@ -34,17 +34,12 @@ const NavLink: React.FC<NavLinkProps> = ({ href, children, icon }) => {
 };
 
 export default function Navbar() {
-  // Central coin: 40px diameter (w-10 h-10), 20px crown (h-5 w-5)
-  // Side coins: 36px diameter (90% of 40px), 18px crown (90% of 20px)
-  // Offset for side coins: 0.75 * 36px = 27px
   const sideCoinOffset = 27; 
-  const centralCoinWidth = 40; // Corresponds to w-10
-  const sideCoinWidth = 36;    // 90% of centralCoinWidth
+  const centralCoinWidth = 40; 
+  const sideCoinWidth = 36;    
 
-  // Calculate approximate visible part of side coins for container width adjustment
-  // This is a rough estimate for visual spacing.
-  const visiblePartOfSideCoin = sideCoinWidth * 0.25; // Assuming about 25% of each side coin is visible past the central one
-  const containerWidth = centralCoinWidth + (2 * visiblePartOfSideCoin) + 10; // Central + 2 * visible parts + some padding
+  const visiblePartOfSideCoin = sideCoinWidth * 0.25; 
+  const containerWidth = centralCoinWidth + (2 * visiblePartOfSideCoin) + 10; 
 
   return (
     <nav className="bg-background/80 backdrop-blur-md shadow-lg sticky top-0 z-50 border-b border-border">
@@ -53,8 +48,8 @@ export default function Navbar() {
           <Link href="/" legacyBehavior>
             <a className="flex items-center text-primary hover:text-primary/90 transition-colors">
               <div 
-                className="relative flex items-center justify-center mr-3 h-[40px]" // Height of the central coin
-                style={{ width: `${containerWidth}px` }} // Dynamically set width
+                className="relative flex items-center justify-center mr-3 h-[40px]"
+                style={{ width: `${containerWidth}px` }} 
               >
 
                 {/* Left Coin (behind) */}
@@ -70,7 +65,7 @@ export default function Navbar() {
                 </div>
 
                 {/* Central Coin (front) */}
-                <div className="relative z-10 w-[40px] h-[40px] flex items-center justify-center rounded-full border-4 border-primary bg-transparent">
+                <div className="relative z-10 w-[40px] h-[40px] flex items-center justify-center rounded-full border-4 border-primary bg-background"> {/* Added bg-background here */}
                   <Crown className="h-[20px] w-[20px] text-primary" aria-hidden="true" />
                 </div>
 
