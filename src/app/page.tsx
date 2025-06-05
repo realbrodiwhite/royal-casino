@@ -25,21 +25,25 @@ export default function LandingPage() {
             {/* Triple King's Coin Logo for Hero */}
             <div className="relative inline-flex items-center justify-center mb-4 sm:mb-6 h-24 w-auto sm:h-32 md:h-36">
               {/* Left Side Coin (behind) */}
-              <div className="absolute top-1/2 left-1/2 z-0 transform scale-90 -translate-y-1/2 translate-x-[-72px] sm:translate-x-[-96px] md:translate-x-[-108px]">
-                <div className="w-24 h-24 sm:w-32 sm:h-32 md:w-36 md:h-36 flex items-center justify-center rounded-full border-4 border-primary bg-transparent">
-                  <Crown className="h-12 w-12 sm:h-16 sm:h-16 md:h-18 md:w-18 text-primary" aria-hidden="true" />
+              <div className="absolute top-1/2 left-1/2 z-0 transform -translate-y-1/2 translate-x-[-72px] sm:translate-x-[-96px] md:translate-x-[-108px]">
+                <div className="transform scale-90">
+                  <div className="border-4 border-primary rounded-full bg-transparent flex items-center justify-center w-24 h-24 sm:w-32 sm:h-32 md:w-36 md:h-36">
+                    <Crown className="text-primary h-12 w-12 sm:h-16 sm:h-16 md:h-18 md:w-18" aria-hidden="true" />
+                  </div>
                 </div>
               </div>
 
               {/* Central Coin (front) */}
-              <div className="relative z-10 w-24 h-24 sm:w-32 sm:h-32 md:w-36 md:h-36 flex items-center justify-center rounded-full border-4 border-primary bg-background">
-                <Crown className="h-12 w-12 sm:h-16 sm:h-16 md:h-18 md:w-18 text-primary" aria-hidden="true" />
+              <div className="relative z-10 border-4 border-primary rounded-full bg-background flex items-center justify-center w-24 h-24 sm:w-32 sm:h-32 md:w-36 md:h-36">
+                <Crown className="text-primary h-12 w-12 sm:h-16 sm:h-16 md:h-18 md:w-18" aria-hidden="true" />
               </div>
 
               {/* Right Side Coin (behind) */}
-              <div className="absolute top-1/2 left-1/2 z-0 transform scale-90 -translate-y-1/2 translate-x-[72px] sm:translate-x-[96px] md:translate-x-[108px]">
-                <div className="w-24 h-24 sm:w-32 sm:h-32 md:w-36 md:h-36 flex items-center justify-center rounded-full border-4 border-primary bg-transparent">
-                  <Crown className="h-12 w-12 sm:h-16 sm:h-16 md:h-18 md:w-18 text-primary" aria-hidden="true" />
+              <div className="absolute top-1/2 left-1/2 z-0 transform -translate-y-1/2 translate-x-[72px] sm:translate-x-[96px] md:translate-x-[108px]">
+                <div className="transform scale-90">
+                  <div className="border-4 border-primary rounded-full bg-transparent flex items-center justify-center w-24 h-24 sm:w-32 sm:h-32 md:w-36 md:h-36">
+                    <Crown className="text-primary h-12 w-12 sm:h-16 sm:h-16 md:h-18 md:w-18" aria-hidden="true" />
+                  </div>
                 </div>
               </div>
             </div>
@@ -72,8 +76,8 @@ export default function LandingPage() {
 
         <section className="pt-8 pb-12 sm:pt-10 sm:pb-16 bg-background/80 backdrop-blur-sm">
           <div className="container mx-auto px-4">
-            <div className="inline-flex items-center justify-center w-20 h-20 sm:w-24 sm:h-24 border-4 border-primary rounded-full bg-background mb-4 sm:mb-6">
-              <Crown aria-hidden="true" className="h-10 w-10 sm:h-12 sm:w-12 text-primary" />
+            <div className="inline-flex items-center justify-center border-4 border-primary rounded-full bg-background w-20 h-20 sm:w-24 sm:h-24 mb-4 sm:mb-6">
+              <Crown aria-hidden="true" className="text-primary h-10 w-10 sm:h-12 sm:w-12" />
             </div>
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold font-headline text-primary mb-10 sm:mb-12 text-center">
               Why Choose Royal Casino?
@@ -213,8 +217,3 @@ const GameTypeCard: React.FC<GameTypeCardProps> = ({ icon, title, description, h
     </CardContent>
   </Card>
 );
-
-
-    
-
-    
