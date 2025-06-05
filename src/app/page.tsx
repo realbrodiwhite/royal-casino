@@ -22,7 +22,7 @@ export default function LandingPage() {
       <main className="flex-grow">
         <section className="pt-10 pb-8 sm:pt-12 sm:pb-10 md:pt-16 md:pb-12 text-center bg-gradient-to-b from-background via-purple-800/30 to-background">
           <div className="container mx-auto px-4">
-            <div className="inline-flex items-center justify-center w-24 h-24 sm:w-32 sm:h-32 md:w-36 md:h-36 border-2 border-primary rounded-full bg-transparent animate-pulse mb-4 sm:mb-6">
+            <div className="inline-flex items-center justify-center w-24 h-24 sm:w-32 sm:h-32 md:w-36 md:h-36 border-4 border-primary rounded-full bg-transparent animate-pulse mb-4 sm:mb-6">
               <Crown aria-hidden="true" className="h-12 w-12 sm:h-16 sm:h-16 md:h-18 md:w-18 text-primary" />
             </div>
             <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold font-headline text-primary mb-3 sm:mb-4">
@@ -54,8 +54,8 @@ export default function LandingPage() {
 
         <section className="pt-8 pb-12 sm:pt-10 sm:pb-16 bg-background/80 backdrop-blur-sm">
           <div className="container mx-auto px-4">
-            <div className="mx-auto mb-4 sm:mb-6 flex items-center justify-center w-20 h-20 sm:w-24 sm:h-24 border-2 border-primary rounded-full bg-transparent">
-              <Crown aria-hidden="true" className="h-10 w-10 sm:h-12 sm:w-12 text-primary" />
+            <div className="inline-flex items-center justify-center w-20 h-20 sm:w-24 sm:h-24 border-2 border-primary rounded-full bg-transparent mb-4 sm:mb-6">
+              <Crown aria-hidden="true" className="h-10 w-10 sm:h-12 sm:h-12 text-primary" />
             </div>
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold font-headline text-primary mb-10 sm:mb-12 text-center">
               Why Choose Royal Casino?
