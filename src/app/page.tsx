@@ -22,7 +22,7 @@ export default function LandingPage() {
       <main className="flex-grow">
         <section className="pt-16 pb-8 sm:pt-20 sm:pb-10 md:pt-28 md:pb-14 text-center bg-gradient-to-b from-background via-purple-800/30 to-background">
           <div className="container mx-auto px-4">
-            <div className="mx-auto mb-4 sm:mb-6 animate-pulse inline-block border-2 border-primary rounded-full p-2 sm:p-3 md:p-4 flex items-center justify-center bg-transparent">
+            <div className="mx-auto mb-4 sm:mb-6 animate-pulse inline-flex items-center justify-center w-20 h-20 sm:w-28 sm:h-28 md:w-32 md:h-32 border-2 border-primary rounded-full bg-transparent">
               <Crown aria-hidden="true" className="h-16 w-16 sm:h-20 md:h-24 md:w-24 text-primary" />
             </div>
             <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold font-headline text-primary mb-3 sm:mb-4">
@@ -54,8 +54,8 @@ export default function LandingPage() {
 
         <section className="pt-6 pb-12 sm:pt-8 sm:pb-16 bg-background/80 backdrop-blur-sm">
           <div className="container mx-auto px-4">
-            <div className="mx-auto mb-4 sm:mb-6 inline-block border-2 border-primary rounded-full p-2 sm:p-3 flex items-center justify-center bg-transparent">
-              <Crown aria-hidden="true" className="h-12 w-12 sm:h-16 sm:w-16 text-primary" />
+            <div className="mx-auto mb-4 sm:mb-6 flex items-center justify-center w-16 h-16 sm:w-24 sm:h-24 border-2 border-primary rounded-full bg-transparent">
+              <Crown aria-hidden="true" className="h-12 w-12 sm:h-16 sm:h-16 text-primary" />
             </div>
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold font-headline text-primary mb-10 sm:mb-12 text-center">
               Why Choose Royal Casino?
@@ -77,7 +77,7 @@ export default function LandingPage() {
                 description="Boost your play with daily free credits, exciting promotions, and loyalty bonuses."
               />
               <FeatureCard
-                icon={<LuxuryExperienceIcon aria-hidden="true" className="h-10 w-10 sm:h-12 sm:w-12 text-primary mb-3 sm:mb-4" />}
+                icon={<LuxuryExperienceIcon aria-hidden="true" className="h-10 w-10 sm:h-12 sm:w-12 text-primary" />}
                 title="Luxury Experience"
                 description="Immerse yourself in our opulent casino atmosphere, designed for premium entertainment."
               />
