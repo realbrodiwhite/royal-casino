@@ -34,52 +34,14 @@ const NavLink: React.FC<NavLinkProps> = ({ href, children, icon }) => {
 };
 
 export default function Navbar() {
-  const sideCoinOffset = 27; 
-  const centralCoinWidth = 40; 
-  const sideCoinWidth = 36;    
-
-  const visiblePartOfSideCoin = sideCoinWidth * 0.25; 
-  const containerWidth = centralCoinWidth + (2 * visiblePartOfSideCoin) + 10; 
-
   return (
     <nav className="bg-background/80 backdrop-blur-md shadow-lg sticky top-0 z-50 border-b border-border">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-14">
           <Link href="/" legacyBehavior>
             <a className="flex items-center text-primary hover:text-primary/90 transition-colors">
-              <div 
-                className="relative flex items-center justify-center mr-3 h-[40px]"
-                style={{ width: `${containerWidth}px` }} 
-              >
-
-                {/* Left Coin (behind) */}
-                <div
-                  className="absolute top-1/2 left-1/2 z-0"
-                  style={{
-                    transform: `translate(calc(-50% - ${sideCoinOffset}px), -50%) scale(0.9)`,
-                  }}
-                >
-                  <div className="w-[36px] h-[36px] flex items-center justify-center rounded-full border-4 border-primary bg-transparent">
-                    <Crown className="h-[18px] w-[18px] text-primary" aria-hidden="true" />
-                  </div>
-                </div>
-
-                {/* Central Coin (front) */}
-                <div className="relative z-10 w-[40px] h-[40px] flex items-center justify-center rounded-full border-4 border-primary bg-background"> {/* Added bg-background here */}
-                  <Crown className="h-[20px] w-[20px] text-primary" aria-hidden="true" />
-                </div>
-
-                {/* Right Coin (behind) */}
-                <div
-                  className="absolute top-1/2 left-1/2 z-0"
-                  style={{
-                    transform: `translate(calc(-50% + ${sideCoinOffset}px), -50%) scale(0.9)`,
-                  }}
-                >
-                  <div className="w-[36px] h-[36px] flex items-center justify-center rounded-full border-4 border-primary bg-transparent">
-                    <Crown className="h-[18px] w-[18px] text-primary" aria-hidden="true" />
-                  </div>
-                </div>
+              <div className="mr-3 flex items-center justify-center w-10 h-10 border-4 border-primary rounded-full bg-background">
+                <Crown className="h-5 w-5 text-primary" aria-hidden="true" />
               </div>
               <span className="text-base font-headline font-bold">Royal Casino</span>
             </a>

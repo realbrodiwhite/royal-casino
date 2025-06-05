@@ -22,8 +22,28 @@ export default function LandingPage() {
       <main className="flex-grow">
         <section className="pt-10 pb-8 sm:pt-12 sm:pb-10 md:pt-16 md:pb-12 text-center bg-gradient-to-b from-background via-purple-800/30 to-background">
           <div className="container mx-auto px-4">
-            <div className="inline-flex items-center justify-center w-24 h-24 sm:w-32 sm:h-32 md:w-36 md:h-36 border-4 border-primary rounded-full bg-transparent animate-pulse mb-4 sm:mb-6">
-              <Crown aria-hidden="true" className="h-12 w-12 sm:h-16 sm:h-16 md:h-18 md:w-18 text-primary" />
+            {/* Triple King's Coin Logo for Hero */}
+            <div className="relative inline-flex items-center justify-center animate-pulse mb-4 sm:mb-6 h-24 w-24 sm:h-32 sm:w-32 md:h-36 md:w-36">
+              {/* Left Side Coin (behind) */}
+              <div className="absolute top-1/2 left-1/2 z-0 transform -translate-y-1/2 scale-90 
+                              translate-x-[-72px] sm:translate-x-[-96px] md:translate-x-[-108px]">
+                <div className="w-24 h-24 sm:w-32 sm:h-32 md:w-36 md:h-36 flex items-center justify-center rounded-full border-4 border-primary bg-transparent">
+                  <Crown className="h-12 w-12 sm:h-16 sm:h-16 md:h-18 md:w-18 text-primary" aria-hidden="true" />
+                </div>
+              </div>
+
+              {/* Central Coin (front) */}
+              <div className="relative z-10 w-24 h-24 sm:w-32 sm:h-32 md:w-36 md:h-36 flex items-center justify-center rounded-full border-4 border-primary bg-background">
+                <Crown className="h-12 w-12 sm:h-16 sm:h-16 md:h-18 md:w-18 text-primary" aria-hidden="true" />
+              </div>
+
+              {/* Right Side Coin (behind) */}
+              <div className="absolute top-1/2 left-1/2 z-0 transform -translate-y-1/2 scale-90 
+                              translate-x-[72px] sm:translate-x-[96px] md:translate-x-[108px]">
+                <div className="w-24 h-24 sm:w-32 sm:h-32 md:w-36 md:h-36 flex items-center justify-center rounded-full border-4 border-primary bg-transparent">
+                  <Crown className="h-12 w-12 sm:h-16 sm:h-16 md:h-18 md:w-18 text-primary" aria-hidden="true" />
+                </div>
+              </div>
             </div>
             <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold font-headline text-primary mb-3 sm:mb-4">
               Welcome to Royal Casino
@@ -54,7 +74,7 @@ export default function LandingPage() {
 
         <section className="pt-8 pb-12 sm:pt-10 sm:pb-16 bg-background/80 backdrop-blur-sm">
           <div className="container mx-auto px-4">
-            <div className="inline-flex items-center justify-center w-20 h-20 sm:w-24 sm:h-24 border-4 border-primary rounded-full bg-transparent mb-4 sm:mb-6">
+            <div className="inline-flex items-center justify-center w-20 h-20 sm:w-24 sm:h-24 border-4 border-primary rounded-full bg-background mb-4 sm:mb-6">
               <Crown aria-hidden="true" className="h-10 w-10 sm:h-12 sm:h-12 text-primary" />
             </div>
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold font-headline text-primary mb-10 sm:mb-12 text-center">
@@ -77,7 +97,7 @@ export default function LandingPage() {
                 description="Boost your play with daily free credits, exciting promotions, and loyalty bonuses."
               />
               <FeatureCard
-                icon={<LuxuryExperienceIcon aria-hidden="true" className="h-10 w-10 sm:h-12 sm:w-12 text-primary" />}
+                icon={<LuxuryExperienceIcon aria-hidden="true" className="h-10 w-10 sm:h-12 sm:h-12 text-primary" />}
                 title="Luxury Experience"
                 description="Immerse yourself in our opulent casino atmosphere, designed for premium entertainment."
               />
