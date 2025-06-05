@@ -20,10 +20,10 @@ export default function LandingPage() {
       <Navbar />
 
       <main className="flex-grow">
-        <section className="pt-16 pb-8 sm:pt-20 sm:pb-10 md:pt-28 md:pb-14 text-center bg-gradient-to-b from-background via-purple-800/30 to-background">
+        <section className="pt-12 pb-8 sm:pt-16 sm:pb-10 md:pt-20 md:pb-14 text-center bg-gradient-to-b from-background via-purple-800/30 to-background">
           <div className="container mx-auto px-4">
-            <div className="mx-auto mb-4 sm:mb-6 animate-pulse inline-flex items-center justify-center w-20 h-20 sm:w-28 sm:h-28 md:w-32 md:h-32 border-2 border-primary rounded-full bg-transparent">
-              <Crown aria-hidden="true" className="h-16 w-16 sm:h-20 md:h-24 md:w-24 text-primary" />
+            <div className="inline-flex items-center justify-center w-20 h-20 sm:w-28 sm:h-28 md:w-32 md:h-32 border-2 border-primary rounded-full bg-transparent animate-pulse mb-4 sm:mb-6">
+              <Crown aria-hidden="true" className="h-12 w-12 sm:h-16 sm:w-16 md:h-20 md:w-20 text-primary" />
             </div>
             <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold font-headline text-primary mb-3 sm:mb-4">
               Welcome to Royal Casino
@@ -54,8 +54,8 @@ export default function LandingPage() {
 
         <section className="pt-6 pb-12 sm:pt-8 sm:pb-16 bg-background/80 backdrop-blur-sm">
           <div className="container mx-auto px-4">
-            <div className="mx-auto mb-4 sm:mb-6 flex items-center justify-center w-16 h-16 sm:w-24 sm:h-24 border-2 border-primary rounded-full bg-transparent">
-              <Crown aria-hidden="true" className="h-12 w-12 sm:h-16 sm:h-16 text-primary" />
+            <div className="mx-auto mb-4 sm:mb-6 flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 border-2 border-primary rounded-full bg-transparent">
+              <Crown aria-hidden="true" className="h-10 w-10 sm:h-12 sm:w-12 text-primary" />
             </div>
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold font-headline text-primary mb-10 sm:mb-12 text-center">
               Why Choose Royal Casino?
