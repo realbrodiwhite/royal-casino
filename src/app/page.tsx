@@ -54,7 +54,7 @@ export default function LandingPage() {
 
         <section className="pt-8 pb-12 sm:pt-10 sm:pb-16 bg-background/80 backdrop-blur-sm">
           <div className="container mx-auto px-4">
-            <div className="inline-flex items-center justify-center w-20 h-20 sm:w-24 sm:h-24 border-2 border-primary rounded-full bg-transparent mb-4 sm:mb-6">
+            <div className="inline-flex items-center justify-center w-20 h-20 sm:w-24 sm:h-24 border-4 border-primary rounded-full bg-transparent mb-4 sm:mb-6">
               <Crown aria-hidden="true" className="h-10 w-10 sm:h-12 sm:h-12 text-primary" />
             </div>
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold font-headline text-primary mb-10 sm:mb-12 text-center">
@@ -195,4 +195,3 @@ const GameTypeCard: React.FC<GameTypeCardProps> = ({ icon, title, description, h
     </CardContent>
   </Card>
 );
-
