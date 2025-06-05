@@ -22,8 +22,8 @@ const NavLink: React.FC<NavLinkProps> = ({ href, children, icon }) => {
         className={cn(
           "flex items-center px-4 py-2 text-sm font-medium rounded-md transition-colors duration-150",
           isActive
-            ? "bg-accent text-accent-foreground" // Use theme's accent for active
-            : "text-foreground hover:bg-accent/50 hover:text-accent-foreground" // Use foreground and accent for hover
+            ? "bg-accent text-accent-foreground"
+            : "text-foreground hover:bg-accent/50 hover:text-accent-foreground"
         )}
       >
         {icon && <span className="mr-2 h-5 w-5">{icon}</span>}
@@ -34,10 +34,17 @@ const NavLink: React.FC<NavLinkProps> = ({ href, children, icon }) => {
 };
 
 export default function Navbar() {
-  // Central coin: 40px diameter, 20px crown
+  // Central coin: 40px diameter (w-10 h-10), 20px crown (h-5 w-5)
   // Side coins: 36px diameter (90% of 40px), 18px crown (90% of 20px)
-  // Offset for side coins: 0.85 * 36px = 30.6px
-  const sideCoinOffset = 0.85 * 36; // 30.6px
+  // Offset for side coins: 0.75 * 36px = 27px
+  const sideCoinOffset = 27; 
+  const centralCoinWidth = 40; // Corresponds to w-10
+  const sideCoinWidth = 36;    // 90% of centralCoinWidth
+
+  // Calculate approximate visible part of side coins for container width adjustment
+  // This is a rough estimate for visual spacing.
+  const visiblePartOfSideCoin = sideCoinWidth * 0.25; // Assuming about 25% of each side coin is visible past the central one
+  const containerWidth = centralCoinWidth + (2 * visiblePartOfSideCoin) + 10; // Central + 2 * visible parts + some padding
 
   return (
     <nav className="bg-background/80 backdrop-blur-md shadow-lg sticky top-0 z-50 border-b border-border">
@@ -45,8 +52,10 @@ export default function Navbar() {
         <div className="flex items-center justify-between h-14">
           <Link href="/" legacyBehavior>
             <a className="flex items-center text-primary hover:text-primary/90 transition-colors">
-              {/* Container for the three King's Coins logo */}
-              <div className="relative flex items-center justify-center mr-3 h-[40px] w-[calc(40px+2*(36px*0.15)+2*4px)] sm:w-[calc(40px+2*(36px*0.15)+10px)]"> {/* Approx width: center coin + visible parts of side coins + some spacing */}
+              <div 
+                className="relative flex items-center justify-center mr-3 h-[40px]" // Height of the central coin
+                style={{ width: `${containerWidth}px` }} // Dynamically set width
+              >
 
                 {/* Left Coin (behind) */}
                 <div
@@ -87,7 +96,6 @@ export default function Navbar() {
             <NavLink href="/admin" icon={<Shield />}>Admin</NavLink>
           </div>
           <div className="md:hidden">
-            {/* Mobile menu button could be a Sheet trigger */}
             <button className="text-foreground hover:text-primary focus:outline-none">
               <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16m-7 6h7" />
