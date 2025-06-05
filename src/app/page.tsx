@@ -94,19 +94,19 @@ export default function LandingPage() {
             </p>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
               <GameTypeCard
-                icon={<SlotsCategoryIcon aria-hidden="true" className="h-8 w-8 sm:h-10 sm:h-10 text-primary" />}
+                icon={<SlotsCategoryIcon aria-hidden="true" className="h-10 w-10 sm:h-12 sm:w-12 text-primary" />}
                 title="Thrilling Slots"
                 description="Spin the reels on a variety of themed slot machines with unique features and big win potential."
                 href="/games/slots"
               />
               <GameTypeCard
-                icon={<PokerCategoryIcon aria-hidden="true" className="h-8 w-8 sm:h-10 sm:h-10 text-primary" />}
+                icon={<PokerCategoryIcon aria-hidden="true" className="h-10 w-10 sm:h-12 sm:w-12 text-primary" />}
                 title="Classic Poker"
                 description="Test your skills and strategy at our virtual poker tables."
                 href="/lobby/poker"
               />
               <GameTypeCard
-                icon={<BingoCategoryIcon aria-hidden="true" className="h-8 w-8 sm:h-10 sm:h-10 text-primary" />}
+                icon={<BingoCategoryIcon aria-hidden="true" className="h-10 w-10 sm:h-12 sm:w-12 text-primary" />}
                 title="Exciting Bingo"
                 description="Join the fun in our bingo halls and daub your way to victory."
                 href="/lobby/bingo"
@@ -178,7 +178,7 @@ interface GameTypeCardProps {
 const GameTypeCard: React.FC<GameTypeCardProps> = ({ icon, title, description, href, disabled }) => (
   <Card className="bg-card border-border shadow-lg hover:shadow-primary/30 transition-shadow duration-300 flex flex-col text-center">
     <CardHeader className="items-center pt-4 sm:pt-6">
-      <div className="p-2 sm:p-3 bg-primary/20 rounded-full mb-2 sm:mb-3 inline-block">
+      <div className="p-3 sm:p-4 bg-primary/20 rounded-full mb-2 sm:mb-3 inline-block">
         {icon}
       </div>
       <CardTitle className="text-lg sm:text-xl font-headline text-primary">{title}</CardTitle>
@@ -195,4 +195,3 @@ const GameTypeCard: React.FC<GameTypeCardProps> = ({ icon, title, description, h
     </CardContent>
   </Card>
 );
-
