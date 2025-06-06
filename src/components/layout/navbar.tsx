@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { Crown, Gamepad2, UserCircle, BarChart3, Shield } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
+import ExperienceBar from '@/components/layout/ExperienceBar'; // Import ExperienceBar
 
 interface NavLinkProps {
   href: string;
@@ -35,53 +36,56 @@ const NavLink: React.FC<NavLinkProps> = ({ href, children, icon }) => {
 
 export default function Navbar() {
   return (
-    <nav className="bg-background/80 backdrop-blur-md shadow-lg sticky top-0 z-50 border-b border-border">
-      <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between h-14">
-          <Link href="/" legacyBehavior>
-            <a className="flex items-center text-primary hover:text-primary/90 transition-colors">
-              <div className="mr-3 flex items-center justify-center w-10 h-10 border-4 border-primary rounded-full bg-background">
-                <Crown className="h-5 w-5 text-primary" aria-hidden="true" />
-              </div>
-              <span className="text-base font-headline font-bold">Royal Casino</span>
-            </a>
-          </Link>
-          <div className="hidden md:flex items-center space-x-2">
-            <NavLink href="/lobby" icon={<Gamepad2 />}>Game Lobby</NavLink>
-            <NavLink href="/profile" icon={<UserCircle />}>Profile</NavLink>
-            {/* <NavLink href="/leaderboards" icon={<BarChart3 />}>Leaderboards</NavLink> */}
-            <NavLink href="/admin" icon={<Shield />}>Admin</NavLink>
-          </div>
-          <div className="md:hidden">
-            <button className="text-foreground hover:text-primary focus:outline-none">
-              <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16m-7 6h7" />
-              </svg>
-            </button>
-            {/* 
-            Example Sheet for mobile menu (needs Sidebar components or similar)
-            <Sheet>
-              <SheetTrigger asChild>
-                <button className="text-foreground hover:text-primary focus:outline-none">
-                  <Menu className="h-6 w-6" />
-                </button>
-              </SheetTrigger>
-              <SheetContent side="left">
-                <nav className="flex flex-col space-y-4 p-4">
-                  <Link href="/" className="flex items-center text-primary hover:text-primary/90 transition-colors">
-                     // Simplified logo for sheet?
-                    <span className="text-lg font-headline font-bold">Royal Casino</span>
-                  </Link>
-                  <NavLink href="/lobby" icon={<Gamepad2 />}>Game Lobby</NavLink>
-                  <NavLink href="/profile" icon={<UserCircle />}>Profile</NavLink>
-                  <NavLink href="/admin" icon={<Shield />}>Admin</NavLink>
-                </nav>
-              </SheetContent>
-            </Sheet>
-            */}
+    <>
+      <ExperienceBar /> 
+      <nav className="bg-background/80 backdrop-blur-md shadow-lg sticky top-0 z-30 border-b border-border"> {/* Ensure ExperienceBar (z-40) is above Navbar (z-30) */}
+        <div className="container mx-auto px-4">
+          <div className="flex items-center justify-between h-14">
+            <Link href="/" legacyBehavior>
+              <a className="flex items-center text-primary hover:text-primary/90 transition-colors">
+                <div className="mr-3 flex items-center justify-center w-10 h-10 border-4 border-primary rounded-full bg-background">
+                  <Crown className="h-5 w-5 text-primary" aria-hidden="true" />
+                </div>
+                <span className="text-base font-headline font-bold">Royal Casino</span>
+              </a>
+            </Link>
+            <div className="hidden md:flex items-center space-x-2">
+              <NavLink href="/lobby" icon={<Gamepad2 />}>Game Lobby</NavLink>
+              <NavLink href="/profile" icon={<UserCircle />}>Profile</NavLink>
+              {/* <NavLink href="/leaderboards" icon={<BarChart3 />}>Leaderboards</NavLink> */}
+              <NavLink href="/admin" icon={<Shield />}>Admin</NavLink>
+            </div>
+            <div className="md:hidden">
+              <button className="text-foreground hover:text-primary focus:outline-none">
+                <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16m-7 6h7" />
+                </svg>
+              </button>
+              {/* 
+              Example Sheet for mobile menu (needs Sidebar components or similar)
+              <Sheet>
+                <SheetTrigger asChild>
+                  <button className="text-foreground hover:text-primary focus:outline-none">
+                    <Menu className="h-6 w-6" />
+                  </button>
+                </SheetTrigger>
+                <SheetContent side="left">
+                  <nav className="flex flex-col space-y-4 p-4">
+                    <Link href="/" className="flex items-center text-primary hover:text-primary/90 transition-colors">
+                       // Simplified logo for sheet?
+                      <span className="text-lg font-headline font-bold">Royal Casino</span>
+                    </Link>
+                    <NavLink href="/lobby" icon={<Gamepad2 />}>Game Lobby</NavLink>
+                    <NavLink href="/profile" icon={<UserCircle />}>Profile</NavLink>
+                    <NavLink href="/admin" icon={<Shield />}>Admin</NavLink>
+                  </nav>
+                </SheetContent>
+              </Sheet>
+              */}
+            </div>
           </div>
         </div>
-      </div>
-    </nav>
+      </nav>
+    </>
   );
 }
