@@ -3,8 +3,8 @@
 
 import React, { useState, useEffect, useCallback } from 'react';
 import { Button } from '@/components/ui/button';
-import CreditDisplay from '@/components/game/CreditDisplay';
-import XpDisplay from '@/components/game/XpDisplay'; // Import XpDisplay
+import UserBalanceDisplay from '@/components/game/UserBalanceDisplay'; // Updated import
+import XpDisplay from '@/components/game/XpDisplay'; 
 import GameGrid from '@/components/game/GameGrid';
 import GridBox from '@/components/game/GridBox';
 import SpinButton from '@/components/game/SpinButton';
@@ -89,7 +89,8 @@ export default function SlotsPage() {
 
   const [reels, setReels] = useState<SymbolData[][]>(() => initialReels(rows, cols));
   const [spinning, setSpinning] = useState(false);
-  const [credits, setCredits] = useState(1000);
+  const [standardCredits, setStandardCredits] = useState(1000);
+  const [premiumCoins, setPremiumCoins] = useState(50); // Mock premium coins
   const [experiencePoints, setExperiencePoints] = useState(0);
   const [isAutospin, setIsAutospin] = useState(false);
   const [resultsMessage, setResultsMessage] = useState<string | null>(null);
@@ -97,7 +98,7 @@ export default function SlotsPage() {
   const [winAmount, setWinAmount] = useState(0);
   const [showWinAnimation, setShowWinAnimation] = useState(false);
 
-  const spinCost = 10; 
+  const spinCost = 10; // Assuming spin cost is in standard credits
 
   useEffect(() => {
     setReels(initialReels(rows, cols));
@@ -174,8 +175,8 @@ export default function SlotsPage() {
 
 
   const handleSpin = useCallback(() => {
-    if (credits < spinCost) {
-      setResultsMessage("Not enough credits to spin!");
+    if (standardCredits < spinCost) {
+      setResultsMessage("Not enough standard credits to spin!");
       setIsWin(false);
       setIsAutospin(false);
       return;
@@ -187,7 +188,7 @@ export default function SlotsPage() {
     }
 
     setSpinning(true);
-    setCredits((prev) => prev - spinCost);
+    setStandardCredits((prev) => prev - spinCost);
     setExperiencePoints((prevXp) => prevXp + spinCost);
     setResultsMessage(null);
     setIsWin(null);
@@ -213,7 +214,7 @@ export default function SlotsPage() {
           );
           setResultsMessage(`You won ${totalWinAmount} credits! ${winDetails.length > 1 ? 'Details: ' + winMessages.join('; ') : winMessages[0]}`);
           setIsWin(true);
-          setCredits((prev) => prev + totalWinAmount);
+          setStandardCredits((prev) => prev + totalWinAmount); // Winnings in standard credits
           setWinAmount(totalWinAmount);
           setShowWinAnimation(true);
         } else {
@@ -222,18 +223,18 @@ export default function SlotsPage() {
         }
       }
     }, 100);
-  }, [credits, rows, cols, initialReels, getRandomSymbolData, availableSymbolsWithData.length, calculateWins, activeThemeConfig, spinCost]);
+  }, [standardCredits, rows, cols, initialReels, getRandomSymbolData, availableSymbolsWithData.length, calculateWins, activeThemeConfig, spinCost]);
 
   useEffect(() => {
     let autoSpinTimeout: NodeJS.Timeout;
-    if (isAutospin && !spinning && credits >= spinCost && availableSymbolsWithData.length > 0) {
+    if (isAutospin && !spinning && standardCredits >= spinCost && availableSymbolsWithData.length > 0) {
       autoSpinTimeout = setTimeout(handleSpin, 2000); 
     }
     return () => clearTimeout(autoSpinTimeout);
-  }, [isAutospin, spinning, credits, handleSpin, availableSymbolsWithData.length]);
+  }, [isAutospin, spinning, standardCredits, handleSpin, availableSymbolsWithData.length]);
   
   const handleToggleAutospin = () => {
-    if (!isAutospin && credits < spinCost) {
+    if (!isAutospin && standardCredits < spinCost) {
         setResultsMessage("Not enough credits to start autospin!");
         setIsWin(false);
         return;
@@ -271,8 +272,11 @@ export default function SlotsPage() {
       </header>
 
       <main className="flex flex-col items-center gap-6 w-full max-w-2xl">
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full">
-            <CreditDisplay initialCredits={credits} />
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full max-w-md mx-auto">
+            <UserBalanceDisplay standardCredits={standardCredits} premiumCoins={premiumCoins} />
+            {/* XpDisplay is separate so UserBalanceDisplay doesn't need to manage its layout directly */}
+        </div>
+         <div className="w-full max-w-xs sm:max-w-sm mx-auto">
             <XpDisplay experiencePoints={experiencePoints} />
         </div>
         
@@ -310,7 +314,7 @@ export default function SlotsPage() {
           <SpinButton 
             onClick={handleSpin} 
             isLoading={spinning} 
-            disabled={spinning || (isAutospin && credits < spinCost) || availableSymbolsWithData.length === 0}
+            disabled={spinning || (isAutospin && standardCredits < spinCost) || availableSymbolsWithData.length === 0}
           >
             {spinning ? 'Spinning...' : 'Spin'}
           </SpinButton>

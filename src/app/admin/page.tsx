@@ -8,7 +8,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { useToast } from "@/hooks/use-toast";
-import { Coins, UserCog, BarChart2, Brain, Settings, UsersRound, Percent, Search, BarChartHorizontalBig, LineChart, TrendingUp, UserPlus, Clock, Award } from 'lucide-react';
+import { Coins, UserCog, BarChart2, Brain, Settings, UsersRound, Percent, Search, BarChartHorizontalBig, LineChart, TrendingUp, UserPlus, Clock, Award, Gem } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 import {
@@ -44,6 +44,7 @@ export default function AdminDashboardPage() {
   const [activeView, setActiveView] = useState<AdminView>('analytics');
   const [userId, setUserId] = useState('');
   const [creditAmount, setCreditAmount] = useState('');
+  const [premiumCoinAmount, setPremiumCoinAmount] = useState('');
   const { toast } = useToast();
 
   const [gameSettings, setGameSettings] = useState<GameSetting[]>(initialGameSettings);
@@ -57,36 +58,70 @@ export default function AdminDashboardPage() {
     setRtpInputs(initialRtpInputs);
   }, [gameSettings]);
 
-  const handleAddCredits = () => {
-    if (!userId || !creditAmount) {
-      toast({ title: "Error", description: "Please enter User ID and Credit Amount.", variant: "destructive" });
+  const handleAddCurrency = () => {
+    if (!userId) {
+      toast({ title: "Error", description: "Please enter a User ID.", variant: "destructive" });
       return;
     }
-    const amount = parseInt(creditAmount);
-    if (isNaN(amount) || amount <= 0) {
-      toast({ title: "Error", description: "Please enter a valid positive credit amount.", variant: "destructive" });
+    const stdCredits = parseInt(creditAmount);
+    const premCoins = parseInt(premiumCoinAmount);
+
+    if ((isNaN(stdCredits) || stdCredits <= 0) && (isNaN(premCoins) || premCoins <= 0)) {
+      toast({ title: "Error", description: "Please enter a valid positive amount for Standard Credits or Premium Coins.", variant: "destructive" });
       return;
     }
-    console.log(`Adding ${amount} credits to user ${userId}`);
-    toast({ title: "Success", description: `Successfully added ${amount} credits to user ${userId}. (Mock Action)` });
+
+    let messages = [];
+    if (!isNaN(stdCredits) && stdCredits > 0) {
+      console.log(`Adding ${stdCredits} standard credits to user ${userId}`);
+      messages.push(`${stdCredits} standard credits`);
+    }
+    if (!isNaN(premCoins) && premCoins > 0) {
+      console.log(`Adding ${premCoins} premium coins to user ${userId}`);
+      messages.push(`${premCoins} premium coins`);
+    }
+
+    toast({ title: "Success", description: `Successfully added ${messages.join(' and ')} to user ${userId}. (Mock Action)` });
     setUserId('');
     setCreditAmount('');
+    setPremiumCoinAmount('');
   };
 
-  const handleSetCredits = () => {
-    if (!userId || creditAmount === '') {
-      toast({ title: "Error", description: "Please enter User ID and Credit Amount.", variant: "destructive" });
+  const handleSetCurrency = () => {
+     if (!userId) {
+      toast({ title: "Error", description: "Please enter a User ID.", variant: "destructive" });
       return;
     }
-    const amount = parseInt(creditAmount);
-    if (isNaN(amount) || amount < 0) {
-      toast({ title: "Error", description: "Please enter a valid non-negative credit amount.", variant: "destructive" });
+    const stdCredits = creditAmount !== '' ? parseInt(creditAmount) : NaN;
+    const premCoins = premiumCoinAmount !== '' ? parseInt(premiumCoinAmount) : NaN;
+
+    if (isNaN(stdCredits) && isNaN(premCoins) ) {
+       toast({ title: "Error", description: "Please enter an amount for Standard Credits or Premium Coins.", variant: "destructive" });
       return;
     }
-    console.log(`Setting credits for user ${userId} to ${amount}`);
-    toast({ title: "Success", description: `Successfully set credits for user ${userId} to ${amount}. (Mock Action)` });
+    if (!isNaN(stdCredits) && stdCredits < 0) {
+         toast({ title: "Error", description: "Standard Credit amount must be non-negative.", variant: "destructive" });
+        return;
+    }
+    if (!isNaN(premCoins) && premCoins < 0) {
+        toast({ title: "Error", description: "Premium Coin amount must be non-negative.", variant: "destructive" });
+        return;
+    }
+
+
+    let messages = [];
+    if (!isNaN(stdCredits)) {
+      console.log(`Setting standard credits for user ${userId} to ${stdCredits}`);
+      messages.push(`standard credits to ${stdCredits}`);
+    }
+    if (!isNaN(premCoins)) {
+      console.log(`Setting premium coins for user ${userId} to ${premCoins}`);
+      messages.push(`premium coins to ${premCoins}`);
+    }
+    toast({ title: "Success", description: `Successfully set ${messages.join(' and ')} for user ${userId}. (Mock Action)` });
     setUserId('');
     setCreditAmount('');
+    setPremiumCoinAmount('');
   };
 
   const handleRtpInputChange = (gameId: string, value: string) => {
@@ -115,19 +150,19 @@ export default function AdminDashboardPage() {
     switch (activeView) {
       case 'userManagement':
         return (
-            <Tabs defaultValue="creditManagement" className="w-full">
+            <Tabs defaultValue="currencyManagement" className="w-full">
               <TabsList className="grid w-full grid-cols-2 mb-4 sm:mb-6">
-                <TabsTrigger value="creditManagement">Credit Management</TabsTrigger>
+                <TabsTrigger value="currencyManagement">Currency Management</TabsTrigger>
                 <TabsTrigger value="accountActions">Account Actions</TabsTrigger>
               </TabsList>
-              <TabsContent value="creditManagement">
+              <TabsContent value="currencyManagement">
                 <Card className="bg-card border-border">
                   <CardHeader>
                     <CardTitle className="text-primary flex items-center text-xl sm:text-2xl">
-                      <UserCog className="mr-2 h-5 w-5 sm:h-6 sm:w-6" /> User Credit Management
+                      <UserCog className="mr-2 h-5 w-5 sm:h-6 sm:w-6" /> User Currency Management
                     </CardTitle>
                     <CardDescription className="text-muted-foreground text-sm sm:text-base">
-                      Add or set credits for a user.
+                      Add or set Standard Credits and Premium Coins for a user.
                     </CardDescription>
                   </CardHeader>
                   <CardContent className="space-y-4">
@@ -140,20 +175,28 @@ export default function AdminDashboardPage() {
                       />
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="creditAmount" className="text-foreground">Credit Amount</Label>
+                      <Label htmlFor="creditAmount" className="text-foreground flex items-center"><Coins className="mr-1 h-4 w-4 text-primary" /> Standard Credit Amount</Label>
                       <Input
                         id="creditAmount" type="number" placeholder="Enter amount" value={creditAmount}
                         onChange={(e) => setCreditAmount(e.target.value)}
                         className="bg-input border-border text-foreground placeholder:text-muted-foreground"
                       />
                     </div>
+                     <div className="space-y-2">
+                      <Label htmlFor="premiumCoinAmount" className="text-foreground flex items-center"><Gem className="mr-1 h-4 w-4 text-accent" /> Premium Coin Amount</Label>
+                      <Input
+                        id="premiumCoinAmount" type="number" placeholder="Enter amount" value={premiumCoinAmount}
+                        onChange={(e) => setPremiumCoinAmount(e.target.value)}
+                        className="bg-input border-border text-foreground placeholder:text-muted-foreground"
+                      />
+                    </div>
                   </CardContent>
                   <CardFooter className="flex flex-col sm:flex-row justify-end gap-2">
-                    <Button onClick={handleAddCredits} variant="outline" className="w-full sm:w-auto">
-                      <Coins className="mr-2 h-4 w-4"/> Add Credits
+                    <Button onClick={handleAddCurrency} variant="outline" className="w-full sm:w-auto">
+                      Add Currency
                     </Button>
-                    <Button onClick={handleSetCredits} variant="default" className="w-full sm:w-auto">
-                      Set Credits
+                    <Button onClick={handleSetCurrency} variant="default" className="w-full sm:w-auto">
+                      Set Currency
                     </Button>
                   </CardFooter>
                 </Card>

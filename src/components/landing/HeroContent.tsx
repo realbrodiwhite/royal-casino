@@ -10,7 +10,6 @@ export default function HeroContent() {
   return (
     <section className="text-center bg-gradient-to-b from-background via-purple-800/30 to-background pt-[88px] sm:pt-[92px] min-h-[calc(100vh-88px)] sm:min-h-[calc(100vh-92px)] flex flex-col justify-center">
       <div className="container mx-auto px-4">
-        {/* Triple King's Coin Logo */}
         <div className="relative mb-16 sm:mb-20 md:mb-24 h-32 sm:h-36 md:h-40">
           {/* Left Side Coin (Behind) */}
           <div className="absolute top-1/2 left-1/2 z-0 transform -translate-y-1/2 translate-x-[-81.92px] sm:translate-x-[-92.16px] md:translate-x-[-102.4px]">
@@ -40,7 +39,7 @@ export default function HeroContent() {
             <Coins aria-hidden="true" className="h-6 w-6 sm:h-8 md:h-10 mr-2 sm:mr-3 text-primary" /> New Player Offer!
           </h2>
           <p className="text-md sm:text-lg md:text-xl text-foreground mt-1 sm:mt-2">
-            $5 Free Play or Credit Match Up To $20 on Newly Verified Accounts!
+            $5 Free Play or Credit Match Up To $20 on Newly Verified Accounts, plus 10 FREE Premium Coins!
           </p>
         </div>
         <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 mt-6 sm:mt-8">

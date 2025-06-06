@@ -7,7 +7,7 @@ import Link from 'next/link';
 import { AppWindow, Ticket, Users, Play, Pause, RotateCcw, History, Volume2, Award } from 'lucide-react';
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { cn } from '@/lib/utils';
-import CreditDisplay from '@/components/game/CreditDisplay';
+import UserBalanceDisplay from '@/components/game/UserBalanceDisplay'; // Updated import
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useToast } from "@/hooks/use-toast";
 
@@ -70,14 +70,15 @@ export default function BingoPage() {
   const [currentCalledNumber, setCurrentCalledNumber] = useState<number | null>(null);
   const [remainingToCall, setRemainingToCall] = useState<number[]>(initialAllPossibleNumbers());
 
-  const [currentCredits, setCurrentCredits] = useState(1000);
+  const [standardCredits, setStandardCredits] = useState(1000);
+  const [premiumCoins, setPremiumCoins] = useState(50); // Mock premium coins
   const [isGameActive, setIsGameActive] = useState(false);
   const [isGamePaused, setIsGamePaused] = useState(false);
   const [hasPlayerWonBingo, setHasPlayerWonBingo] = useState(false);
 
   const { toast } = useToast();
   const gameIntervalRef = useRef<NodeJS.Timeout | null>(null);
-  const cardCost = 10;
+  const cardCost = 10; // Assuming card cost is in standard credits
 
   const findFreeSpaceCoords = (card: BingoNumber[][]): {row: number, col: number} | null => {
     for (let r = 0; r < card.length; r++) {
@@ -125,7 +126,7 @@ export default function BingoPage() {
       const [nextNumber, ...rest] = prevRemaining;
       setCurrentCalledNumber(nextNumber);
       setCalledNumbersSet(prevSet => new Set(prevSet).add(nextNumber));
-      setCalledNumbersHistory(prevHistory => [nextNumber, ...prevHistory]); // Add to front for recent display
+      setCalledNumbersHistory(prevHistory => [nextNumber, ...prevHistory]); 
       return rest;
     });
   }, [toast]);
@@ -166,11 +167,11 @@ export default function BingoPage() {
   const handleBuyAndStart = () => {
     if (gameIntervalRef.current) clearInterval(gameIntervalRef.current);
 
-    if (currentCredits < cardCost) {
-        toast({ title: "Not Enough Credits", description: `You need ${cardCost} credits to play.`, variant: "destructive" });
+    if (standardCredits < cardCost) {
+        toast({ title: "Not Enough Credits", description: `You need ${cardCost} standard credits to play.`, variant: "destructive" });
         return;
     }
-    setCurrentCredits(prev => prev - cardCost);
+    setStandardCredits(prev => prev - cardCost);
 
     initializeNewCardAndDaubs();
     resetCaller();
@@ -199,12 +200,10 @@ export default function BingoPage() {
   const checkForBingo = useCallback((currentDaubedCells: boolean[][]): boolean => {
     if (!currentDaubedCells || currentDaubedCells.length !== BINGO_GRID_SIZE) return false;
 
-    // Check rows
     for (let i = 0; i < BINGO_GRID_SIZE; i++) {
       if (currentDaubedCells[i]?.every(cell => cell === true)) return true;
     }
 
-    // Check columns
     for (let j = 0; j < BINGO_GRID_SIZE; j++) {
       let colWin = true;
       for (let i = 0; i < BINGO_GRID_SIZE; i++) {
@@ -216,7 +215,6 @@ export default function BingoPage() {
       if (colWin) return true;
     }
 
-    // Check main diagonal (top-left to bottom-right)
     let mainDiagWin = true;
     for (let i = 0; i < BINGO_GRID_SIZE; i++) {
       if (!currentDaubedCells[i]?.[i]) {
@@ -226,7 +224,6 @@ export default function BingoPage() {
     }
     if (mainDiagWin) return true;
 
-    // Check anti-diagonal (top-right to bottom-left)
     let antiDiagWin = true;
     for (let i = 0; i < BINGO_GRID_SIZE; i++) {
       if (!currentDaubedCells[i]?.[BINGO_GRID_SIZE - 1 - i]) {
@@ -249,7 +246,7 @@ export default function BingoPage() {
 
     if (isWin) {
         setHasPlayerWonBingo(true);
-        setCurrentCredits(prev => prev + BINGO_WIN_AMOUNT);
+        setStandardCredits(prev => prev + BINGO_WIN_AMOUNT); // Winnings in standard credits
         if (gameIntervalRef.current) clearInterval(gameIntervalRef.current);
         setIsGameActive(false);
         toast({
@@ -279,8 +276,8 @@ export default function BingoPage() {
           </p>
         </header>
 
-        <div className="w-full max-w-xs sm:max-w-sm mx-auto mb-4 sm:mb-6">
-          <CreditDisplay initialCredits={currentCredits} />
+        <div className="w-full max-w-md mx-auto mb-4 sm:mb-6">
+          <UserBalanceDisplay standardCredits={standardCredits} premiumCoins={premiumCoins} />
         </div>
 
         <div className="flex flex-wrap justify-center items-center gap-2 sm:gap-3 mb-4 sm:mb-6">

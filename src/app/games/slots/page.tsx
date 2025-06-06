@@ -3,7 +3,7 @@
 
 import React, { useState, useEffect, useCallback } from 'react';
 import { Button } from '@/components/ui/button';
-import CreditDisplay from '@/components/game/CreditDisplay';
+import UserBalanceDisplay from '@/components/game/UserBalanceDisplay'; // Updated import
 // XpDisplay removed
 import GameGrid from '@/components/game/GameGrid';
 import GridBox from '@/components/game/GridBox';
@@ -124,7 +124,8 @@ export default function SlotsPage() {
 
   const [reels, setReels] = useState<SymbolData[][]>(() => initialReels(rows, cols));
   const [spinning, setSpinning] = useState(false);
-  const [credits, setCredits] = useState(1000);
+  const [standardCredits, setStandardCredits] = useState(1000);
+  const [premiumCoins, setPremiumCoins] = useState(50); // Mock premium coins
   const [isAutospin, setIsAutospin] = useState(false);
   const [resultsMessage, setResultsMessage] = useState<string | null>(null);
   const [isWin, setIsWin] = useState<boolean | null>(null);
@@ -132,7 +133,7 @@ export default function SlotsPage() {
   const [showWinAnimation, setShowWinAnimation] = useState(false);
   const [highlightedWinningCells, setHighlightedWinningCells] = useState<CellCoordinate[]>([]);
 
-  const spinCost = 10;
+  const spinCost = 10; // Assuming spin cost is in standard credits
 
   useEffect(() => {
     if (selectedTheme) {
@@ -200,7 +201,7 @@ export default function SlotsPage() {
               symbolId: firstSymbolId,
               count: paidMatchCount,
               amount: winAmountForPayline,
-              line: payline.slice(0, paidMatchCount) as CellCoordinate[] // Only highlight the matched part of the line
+              line: payline.slice(0, paidMatchCount) as CellCoordinate[]
             });
           }
         }
@@ -217,8 +218,8 @@ export default function SlotsPage() {
 
     if (!selectedTheme) return;
 
-    if (credits < spinCost) {
-      setResultsMessage("Not enough credits to spin!");
+    if (standardCredits < spinCost) {
+      setResultsMessage("Not enough standard credits to spin!");
       setIsWin(false);
       setIsAutospin(false);
       return;
@@ -231,8 +232,8 @@ export default function SlotsPage() {
     }
 
     setSpinning(true);
-    setCredits((prev) => prev - spinCost);
-    addXp(spinCost); // Add XP for the spin
+    setStandardCredits((prev) => prev - spinCost);
+    addXp(spinCost); 
     setResultsMessage(null);
     setIsWin(null);
     setWinAmount(0);
@@ -256,7 +257,7 @@ export default function SlotsPage() {
           );
           setResultsMessage(`You won ${totalWinAmount} credits! ${winDetails.length > 1 ? 'Details: ' + winMessages.join('; ') : winMessages[0]}`);
           setIsWin(true);
-          setCredits((prev) => prev + totalWinAmount);
+          setStandardCredits((prev) => prev + totalWinAmount); // Winnings are in standard credits
           setWinAmount(totalWinAmount);
           setShowWinAnimation(true);
 
@@ -277,19 +278,19 @@ export default function SlotsPage() {
         }
       }
     }, 100);
-  }, [credits, initialReels, getRandomSymbolData, availableSymbolsWithData, calculateWins, selectedTheme, spinCost, addXp]);
+  }, [standardCredits, initialReels, getRandomSymbolData, availableSymbolsWithData, calculateWins, selectedTheme, spinCost, addXp]);
 
   useEffect(() => {
     let autoSpinTimeout: NodeJS.Timeout;
-    if (selectedTheme && isAutospin && !spinning && credits >= spinCost && availableSymbolsWithData.length > 0) {
+    if (selectedTheme && isAutospin && !spinning && standardCredits >= spinCost && availableSymbolsWithData.length > 0) {
       autoSpinTimeout = setTimeout(handleSpin, 2000);
     }
     return () => clearTimeout(autoSpinTimeout);
-  }, [isAutospin, spinning, credits, handleSpin, availableSymbolsWithData.length, selectedTheme]);
+  }, [isAutospin, spinning, standardCredits, handleSpin, availableSymbolsWithData.length, selectedTheme]);
 
   const handleToggleAutospin = () => {
     if (!selectedTheme) return;
-    if (!isAutospin && credits < spinCost) {
+    if (!isAutospin && standardCredits < spinCost) {
         setResultsMessage("Not enough credits to start autospin!");
         setIsWin(false);
         return;
@@ -312,13 +313,12 @@ export default function SlotsPage() {
 
   const handleThemeSelect = (theme: SlotGameThemeConfig) => {
     setSelectedTheme(theme);
-    setIsAutospin(false); // Stop autospin when changing themes
+    setIsAutospin(false); 
     setResultsMessage(null);
     setIsWin(null);
     setShowWinAnimation(false);
     setWinAmount(0);
     setHighlightedWinningCells([]);
-    // Reels will be re-initialized by the useEffect watching selectedTheme
   };
 
   if (!selectedTheme) {
@@ -363,7 +363,6 @@ export default function SlotsPage() {
     );
   }
 
-  // Game View (when a theme is selected)
   return (
     <div className="min-h-screen text-foreground flex flex-col items-center p-4 pt-[88px] sm:pt-[92px]">
       <Navbar />
@@ -373,8 +372,8 @@ export default function SlotsPage() {
       </header>
 
       <main className="flex flex-col items-center gap-4 sm:gap-6 w-full max-w-2xl px-2">
-        <div className="w-full max-w-xs sm:max-w-sm mx-auto">
-            <CreditDisplay initialCredits={credits} />
+        <div className="w-full max-w-md mx-auto">
+            <UserBalanceDisplay standardCredits={standardCredits} premiumCoins={premiumCoins} />
         </div>
 
         <Button onClick={() => handleThemeSelect(null)} variant="outline" className="w-full sm:w-auto">
@@ -419,7 +418,7 @@ export default function SlotsPage() {
           <SpinButton
             onClick={handleSpin}
             isLoading={spinning}
-            disabled={spinning || (isAutospin && credits < spinCost) || availableSymbolsWithData.length === 0}
+            disabled={spinning || (isAutospin && standardCredits < spinCost) || availableSymbolsWithData.length === 0}
             className="w-full sm:w-auto"
           >
             {spinning ? 'Spinning...' : 'Spin'}

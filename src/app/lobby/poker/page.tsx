@@ -6,7 +6,7 @@ import Navbar from '@/components/layout/navbar';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import CreditDisplay from '@/components/game/CreditDisplay';
+import UserBalanceDisplay from '@/components/game/UserBalanceDisplay'; // Updated import
 import ResultsDisplay from '@/components/game/ResultsDisplay';
 import PokerCardComponent from '@/components/game/PokerCard';
 import { Card as UICard, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
@@ -25,7 +25,8 @@ import {
 type GameState = "BETTING" | "DEALT" | "GAME_OVER";
 
 const PokerPage: React.FC = () => {
-  const [credits, setCredits] = useState(1000);
+  const [standardCredits, setStandardCredits] = useState(1000);
+  const [premiumCoins, setPremiumCoins] = useState(50); // Mock premium coins
   const [betAmount, setBetAmount] = useState<number>(5);
   const [deck, setDeck] = useState<Card[]>([]);
   const [hand, setHand] = useState<(Card | null)[]>(Array(5).fill(null));
@@ -55,8 +56,8 @@ const PokerPage: React.FC = () => {
 
   const handleDealDraw = useCallback(() => {
     if (gameState === "BETTING" || gameState === "GAME_OVER") {
-      if (credits < betAmount) {
-        toast({ title: "Not Enough Credits", description: "Your bet is too high.", variant: "destructive" });
+      if (standardCredits < betAmount) { // Assuming bets are in standard credits
+        toast({ title: "Not Enough Credits", description: "Your bet is too high for your standard credits.", variant: "destructive" });
         return;
       }
       if (betAmount <= 0) {
@@ -64,15 +65,15 @@ const PokerPage: React.FC = () => {
         return;
       }
 
-      setCredits(prev => prev - betAmount);
+      setStandardCredits(prev => prev - betAmount);
 
       let currentDeck = deck;
-      if (currentDeck.length < 10) { // Ensure enough cards for deal and potential draw
+      if (currentDeck.length < 10) { 
          currentDeck = shuffleDeck(createDeck());
       }
 
       const newHand = dealCardsFromDeck(currentDeck, 5);
-      setDeck(currentDeck); // Deck is modified by dealCardsFromDeck
+      setDeck(currentDeck); 
       setHand(newHand);
       setHeld(Array(5).fill(false));
       setGameState("DEALT");
@@ -81,7 +82,7 @@ const PokerPage: React.FC = () => {
       setIsWin(null);
       toast({ title: "Cards Dealt", description: `Bet: ${betAmount} credits. Good luck!` });
 
-    } else if (gameState === "DEALT") { // Draw new cards
+    } else if (gameState === "DEALT") { 
       let currentDeck = deck;
       const cardsToDraw = held.filter(h => !h).length;
 
@@ -127,7 +128,7 @@ const PokerPage: React.FC = () => {
 
       if (payoutMultiplier > 0) {
         const winnings = betAmount * payoutMultiplier;
-        setCredits(prev => prev + winnings);
+        setStandardCredits(prev => prev + winnings); // Winnings in standard credits
         setGameMessage(`You got ${rank}! You won ${winnings} credits!`);
         setIsWin(true);
         toast({ title: "You Won!", description: `${rank} - Payout: ${winnings} credits.` });
@@ -138,7 +139,7 @@ const PokerPage: React.FC = () => {
       }
       setGameState("GAME_OVER");
     }
-  }, [gameState, credits, betAmount, deck, hand, held, toast, initializeDeck]);
+  }, [gameState, standardCredits, betAmount, deck, hand, held, toast, initializeDeck]);
 
   const toggleHold = (index: number) => {
     if (gameState === "DEALT") {
@@ -163,8 +164,8 @@ const PokerPage: React.FC = () => {
           <p className="text-md sm:text-lg text-muted-foreground mt-2 px-2">Jacks or Better - Get the best hand!</p>
         </header>
 
-        <div className="w-full max-w-xs sm:max-w-sm mx-auto mb-6 sm:mb-8">
-          <CreditDisplay initialCredits={credits} />
+        <div className="w-full max-w-md mx-auto mb-6 sm:mb-8">
+          <UserBalanceDisplay standardCredits={standardCredits} premiumCoins={premiumCoins} />
         </div>
 
         <UICard className="w-full max-w-lg bg-card border-border shadow-xl mb-6 sm:mb-8">
@@ -186,7 +187,7 @@ const PokerPage: React.FC = () => {
             </div>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
               <div className="flex items-center gap-2">
-                <Label htmlFor="betAmount" className="text-foreground whitespace-nowrap text-sm sm:text-base">Bet:</Label>
+                <Label htmlFor="betAmount" className="text-foreground whitespace-nowrap text-sm sm:text-base">Bet (Std. Credits):</Label>
                 <Input
                   id="betAmount"
                   type="number"
@@ -199,7 +200,7 @@ const PokerPage: React.FC = () => {
               </div>
               <Button
                 onClick={handleDealDraw}
-                disabled={(betAmount <= 0 || credits < betAmount) && (gameState === "BETTING" || gameState === "GAME_OVER")}
+                disabled={(betAmount <= 0 || standardCredits < betAmount) && (gameState === "BETTING" || gameState === "GAME_OVER")}
                 variant="default"
                 size="lg"
                 className="w-full sm:w-auto px-6 sm:px-8 py-2.5 sm:py-3 text-sm sm:text-base"
