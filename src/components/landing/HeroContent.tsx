@@ -11,7 +11,7 @@ export default function HeroContent() {
     <section className="pb-8 sm:pb-10 md:pb-12 text-center bg-gradient-to-b from-background via-purple-800/30 to-background pt-[88px] sm:pt-[92px]">
       <div className="container mx-auto px-4">
         {/* Triple King's Coin Logo */}
-        <div className="relative flex justify-center items-center mb-4 sm:mb-6 h-28 sm:h-36 md:h-40">
+        <div className="relative flex justify-center items-center mb-4 sm:mb-6 h-32 sm:h-40 md:h-44">
           {/* Left Side Coin (Behind) */}
           <div className="absolute top-1/2 left-1/2 z-0 transform -translate-y-1/2 scale-90 translate-x-[-134px] sm:translate-x-[-173px] md:translate-x-[-192px]">
             <div className="border-4 border-primary rounded-full bg-transparent flex items-center justify-center w-28 h-28 sm:w-36 sm:h-36 md:w-40 md:h-40">
@@ -19,7 +19,7 @@ export default function HeroContent() {
             </div>
           </div>
           {/* Central Coin (Front) */}
-          <div className="absolute top-1/2 left-1/2 z-10 transform -translate-x-1/2 -translate-y-1/2 border-4 border-primary rounded-full bg-background flex items-center justify-center w-28 h-28 sm:w-36 sm:h-36 md:w-40 md:h-40">
+          <div className="absolute top-1/2 left-1/2 z-10 transform -translate-x-1/2 -translate-y-1/2 border-4 border-primary rounded-full bg-background flex items-center justify-center w-32 h-32 sm:w-40 sm:h-40 md:w-44 md:h-44">
             <Crown aria-hidden="true" className="h-[calc(50%)] w-[calc(50%)] text-primary" />
           </div>
           {/* Right Side Coin (Behind) */}
