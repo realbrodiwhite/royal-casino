@@ -25,25 +25,22 @@ export default function LandingPage() {
         {/* Hero Section */}
         <section className="pt-10 pb-8 sm:pt-12 sm:pb-10 md:pt-16 md:pb-12 text-center bg-gradient-to-b from-background via-purple-800/30 to-background">
           <div className="container mx-auto px-4">
+            {/* Triple King's Coin Logo */}
             <div className="relative flex justify-center items-center mb-4 sm:mb-6 h-24 sm:h-32 md:h-36">
-              {/* Left Side Coin (behind) */}
-              <div className="absolute top-1/2 left-1/2 z-0 transform -translate-y-1/2 translate-x-[-72px] sm:translate-x-[-96px] md:translate-x-[-108px]">
-                <div className="transform scale-90">
-                  <div className="border-4 border-primary rounded-full bg-transparent flex items-center justify-center w-24 h-24 sm:w-32 sm:h-32 md:w-36 md:h-36">
-                    <Crown aria-hidden="true" className="h-12 w-12 sm:h-16 sm:h-16 md:h-18 md:w-18 text-primary" />
-                  </div>
+              {/* Left Side Coin */}
+              <div className="absolute top-1/2 left-1/2 z-0 transform scale-90 -translate-y-1/2 translate-x-[-115px] sm:translate-x-[-154px] md:translate-x-[-173px]">
+                <div className="border-4 border-primary rounded-full bg-transparent flex items-center justify-center w-24 h-24 sm:w-32 sm:h-32 md:w-36 md:h-36">
+                  <Crown aria-hidden="true" className="h-12 w-12 sm:h-16 sm:h-16 md:h-18 md:w-18 text-primary" />
                 </div>
               </div>
-              {/* Central Coin (front) */}
-              <div className="relative z-10 border-4 border-primary rounded-full bg-background flex items-center justify-center w-24 h-24 sm:w-32 sm:h-32 md:w-36 md:h-36">
+              {/* Central Coin (Front) */}
+              <div className="absolute top-1/2 left-1/2 z-10 transform -translate-x-1/2 -translate-y-1/2 border-4 border-primary rounded-full bg-background flex items-center justify-center w-24 h-24 sm:w-32 sm:h-32 md:w-36 md:h-36">
                 <Crown aria-hidden="true" className="h-12 w-12 sm:h-16 sm:h-16 md:h-18 md:w-18 text-primary" />
               </div>
-              {/* Right Side Coin (behind) */}
-              <div className="absolute top-1/2 left-1/2 z-0 transform -translate-y-1/2 translate-x-[72px] sm:translate-x-[96px] md:translate-x-[108px]">
-                <div className="transform scale-90">
-                  <div className="border-4 border-primary rounded-full bg-transparent flex items-center justify-center w-24 h-24 sm:w-32 sm:h-32 md:w-36 md:h-36">
-                    <Crown aria-hidden="true" className="h-12 w-12 sm:h-16 sm:h-16 md:h-18 md:w-18 text-primary" />
-                  </div>
+              {/* Right Side Coin */}
+              <div className="absolute top-1/2 left-1/2 z-0 transform scale-90 -translate-y-1/2 translate-x-[29px] sm:translate-x-[38px] md:translate-x-[43px]">
+                <div className="border-4 border-primary rounded-full bg-transparent flex items-center justify-center w-24 h-24 sm:w-32 sm:h-32 md:w-36 md:h-36">
+                  <Crown aria-hidden="true" className="h-12 w-12 sm:h-16 sm:h-16 md:h-18 md:w-18 text-primary" />
                 </div>
               </div>
             </div>
