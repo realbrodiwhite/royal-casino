@@ -2,30 +2,40 @@
 "use client";
 
 import Link from 'next/link';
-import { Crown, Gamepad2, UserCircle, BarChart3, Shield } from 'lucide-react';
+import { Crown, Gamepad2, UserCircle, BarChart3, Shield, Menu } from 'lucide-react'; // Added Menu
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
-import ExperienceBar from '@/components/layout/ExperienceBar'; // Import ExperienceBar
+import ExperienceBar from '@/components/layout/ExperienceBar';
+import {
+  Sheet,
+  SheetContent,
+  SheetTrigger,
+} from "@/components/ui/sheet"; // Added Sheet components
+import React from 'react'; // Added React for Sheet state
 
 interface NavLinkProps {
   href: string;
   children: React.ReactNode;
   icon?: React.ReactNode;
+  onClick?: () => void; // For closing sheet on mobile
 }
 
-const NavLink: React.FC<NavLinkProps> = ({ href, children, icon }) => {
+const NavLink: React.FC<NavLinkProps> = ({ href, children, icon, onClick }) => {
   const pathname = usePathname();
-  const isActive = pathname === href || (href === "/lobby" && pathname.startsWith("/lobby/"));
+  const isActive = pathname === href || 
+                 (href === "/lobby" && pathname.startsWith("/games")) || // Make lobby active for any game page
+                 (href === "/profile" && pathname.startsWith("/profile")); // Make profile active for specific user profiles
 
   return (
     <Link href={href} legacyBehavior>
       <a
         className={cn(
-          "flex items-center px-4 py-2 text-sm font-medium rounded-md transition-colors duration-150",
+          "flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors duration-150 w-full md:w-auto", // ensure full width for mobile sheet
           isActive
             ? "bg-accent text-accent-foreground"
             : "text-foreground hover:bg-accent/50 hover:text-accent-foreground"
         )}
+        onClick={onClick}
       >
         {icon && <span className="mr-2 h-5 w-5">{icon}</span>}
         {children}
@@ -35,53 +45,53 @@ const NavLink: React.FC<NavLinkProps> = ({ href, children, icon }) => {
 };
 
 export default function Navbar() {
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
+
   return (
     <>
       <ExperienceBar /> 
-      <nav className="bg-background/80 backdrop-blur-md shadow-lg sticky top-0 z-30 border-b border-border"> {/* Ensure ExperienceBar (z-40) is above Navbar (z-30) */}
+      <nav className="bg-background/80 backdrop-blur-md shadow-lg sticky top-0 z-30 border-b border-border mt-[44px]"> {/* Adjusted mt for ExperienceBar height */}
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between h-14">
             <Link href="/" legacyBehavior>
               <a className="flex items-center text-primary hover:text-primary/90 transition-colors">
-                <div className="mr-3 flex items-center justify-center w-10 h-10 border-4 border-primary rounded-full bg-background">
-                  <Crown className="h-5 w-5 text-primary" aria-hidden="true" />
+                <div className="mr-2 sm:mr-3 flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 border-2 sm:border-4 border-primary rounded-full bg-background">
+                  <Crown className="h-4 w-4 sm:h-5 sm:w-5 text-primary" aria-hidden="true" />
                 </div>
-                <span className="text-base font-headline font-bold">Royal Casino</span>
+                <span className="text-base sm:text-lg font-headline font-bold">Royal Casino</span>
               </a>
             </Link>
-            <div className="hidden md:flex items-center space-x-2">
+            <div className="hidden md:flex items-center space-x-1 lg:space-x-2">
               <NavLink href="/lobby" icon={<Gamepad2 />}>Game Lobby</NavLink>
               <NavLink href="/profile" icon={<UserCircle />}>Profile</NavLink>
               {/* <NavLink href="/leaderboards" icon={<BarChart3 />}>Leaderboards</NavLink> */}
               <NavLink href="/admin" icon={<Shield />}>Admin</NavLink>
             </div>
             <div className="md:hidden">
-              <button className="text-foreground hover:text-primary focus:outline-none">
-                <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16m-7 6h7" />
-                </svg>
-              </button>
-              {/* 
-              Example Sheet for mobile menu (needs Sidebar components or similar)
-              <Sheet>
+              <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
                 <SheetTrigger asChild>
-                  <button className="text-foreground hover:text-primary focus:outline-none">
+                  <button className="text-foreground hover:text-primary focus:outline-none p-2">
                     <Menu className="h-6 w-6" />
+                    <span className="sr-only">Open menu</span>
                   </button>
                 </SheetTrigger>
-                <SheetContent side="left">
-                  <nav className="flex flex-col space-y-4 p-4">
-                    <Link href="/" className="flex items-center text-primary hover:text-primary/90 transition-colors">
-                       // Simplified logo for sheet?
-                      <span className="text-lg font-headline font-bold">Royal Casino</span>
+                <SheetContent side="left" className="w-[280px] bg-background p-0">
+                  <nav className="flex flex-col space-y-2 p-4 pt-6">
+                     <Link href="/" legacyBehavior>
+                        <a className="flex items-center text-primary hover:text-primary/90 transition-colors mb-4" onClick={() => setIsMobileMenuOpen(false)}>
+                            <div className="mr-3 flex items-center justify-center w-10 h-10 border-4 border-primary rounded-full bg-background">
+                            <Crown className="h-5 w-5 text-primary" aria-hidden="true" />
+                            </div>
+                            <span className="text-lg font-headline font-bold">Royal Casino</span>
+                        </a>
                     </Link>
-                    <NavLink href="/lobby" icon={<Gamepad2 />}>Game Lobby</NavLink>
-                    <NavLink href="/profile" icon={<UserCircle />}>Profile</NavLink>
-                    <NavLink href="/admin" icon={<Shield />}>Admin</NavLink>
+                    <NavLink href="/lobby" icon={<Gamepad2 />} onClick={() => setIsMobileMenuOpen(false)}>Game Lobby</NavLink>
+                    <NavLink href="/profile" icon={<UserCircle />} onClick={() => setIsMobileMenuOpen(false)}>Profile</NavLink>
+                    {/* <NavLink href="/leaderboards" icon={<BarChart3 />} onClick={() => setIsMobileMenuOpen(false)}>Leaderboards</NavLink> */}
+                    <NavLink href="/admin" icon={<Shield />} onClick={() => setIsMobileMenuOpen(false)}>Admin</NavLink>
                   </nav>
                 </SheetContent>
               </Sheet>
-              */}
             </div>
           </div>
         </div>

@@ -3,7 +3,7 @@ import type { Metadata, Viewport } from 'next';
 import { Playfair_Display, Lato } from 'next/font/google';
 import './globals.css';
 import { Toaster } from "@/components/ui/toaster";
-// ExperienceBar removed from here
+import { XpProvider } from '@/contexts/XpContext'; // Import XpProvider
 
 const playfairDisplay = Playfair_Display({
   subsets: ['latin'],
@@ -91,9 +91,10 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${playfairDisplay.variable} ${lato.variable}`}>
       <head />
-      <body className="font-body antialiased bg-background text-foreground pt-12 sm:pt-14"> {}
-        {/* ExperienceBar removed from here */}
-        {children}
+      <body className="font-body antialiased bg-background text-foreground">
+        <XpProvider>
+          {children}
+        </XpProvider>
         <Toaster />
       </body>
     </html>

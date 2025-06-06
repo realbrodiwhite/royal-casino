@@ -14,6 +14,7 @@ import Navbar from '@/components/layout/navbar';
 import { PlayCircle, PauseCircle, Palette, Sparkles } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import Image from 'next/image';
+import { useXp } from '@/contexts/XpContext'; // Import useXp
 
 import CherrySymbol from '@/components/game/symbols/CherrySymbol';
 import DiamondSymbol from '@/components/game/symbols/DiamondSymbol';
@@ -64,6 +65,7 @@ const themeImagePaths: Record<string, string> = {
 type CellCoordinate = [number, number];
 
 export default function SlotsPage() {
+  const { addXp } = useXp(); // Get addXp from context
   const [selectedTheme, setSelectedTheme] = useState<SlotGameThemeConfig | null>(null);
   
   const [rows, setRows] = useState(3);
@@ -230,6 +232,7 @@ export default function SlotsPage() {
 
     setSpinning(true);
     setCredits((prev) => prev - spinCost);
+    addXp(spinCost); // Add XP for the spin
     setResultsMessage(null);
     setIsWin(null);
     setWinAmount(0);
@@ -274,7 +277,7 @@ export default function SlotsPage() {
         }
       }
     }, 100);
-  }, [credits, initialReels, getRandomSymbolData, availableSymbolsWithData, calculateWins, selectedTheme, spinCost]);
+  }, [credits, initialReels, getRandomSymbolData, availableSymbolsWithData, calculateWins, selectedTheme, spinCost, addXp]);
 
   useEffect(() => {
     let autoSpinTimeout: NodeJS.Timeout;
@@ -322,7 +325,7 @@ export default function SlotsPage() {
     return (
       <div className="min-h-screen text-foreground flex flex-col items-center p-4">
         <Navbar />
-        <header className="my-6 sm:my-8 text-center">
+        <header className="my-6 sm:my-8 text-center pt-12"> {/* Adjusted padding for ExperienceBar */}
           <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold font-headline text-primary">Choose Your Slot Adventure!</h1>
           <p className="text-md sm:text-lg text-muted-foreground mt-2 px-2">Select a theme to start playing.</p>
         </header>
@@ -364,7 +367,7 @@ export default function SlotsPage() {
   return (
     <div className="min-h-screen text-foreground flex flex-col items-center p-4">
       <Navbar />
-      <header className="my-6 sm:my-8 text-center">
+      <header className="my-6 sm:my-8 text-center pt-12"> {/* Adjusted padding for ExperienceBar */}
         <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold font-headline text-primary">{selectedTheme.displayName}</h1>
         <p className="text-md sm:text-lg text-muted-foreground mt-2 px-2">{selectedTheme.description}</p>
       </header>
