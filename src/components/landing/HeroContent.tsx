@@ -11,7 +11,7 @@ export default function HeroContent() {
     <section className="pb-8 sm:pb-10 md:pb-12 text-center bg-gradient-to-b from-background via-purple-800/30 to-background pt-[88px] sm:pt-[92px]">
       <div className="container mx-auto px-4">
         {/* Triple King's Coin Logo */}
-        <div className="relative flex justify-center items-center mb-8 sm:mb-10 md:mb-12 h-40 sm:h-48 md:h-52">
+        <div className="relative flex justify-center items-center mb-16 sm:mb-20 md:mb-24 h-40 sm:h-48 md:h-52">
           {/* Left Side Coin (Behind) */}
           <div className="absolute top-1/2 left-1/2 z-0 transform scale-90 -translate-y-1/2 translate-x-[-138px] sm:translate-x-[-177px] md:translate-x-[-196px]">
             {/* Visual element for left coin */}
