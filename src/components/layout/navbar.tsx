@@ -2,7 +2,7 @@
 "use client";
 
 import Link from 'next/link';
-import { Crown, Gamepad2, UserCircle, BarChart3, Shield, Menu } from 'lucide-react'; // Added Menu
+import { Crown, Gamepad2, UserCircle, BarChart3, Shield, Menu } from 'lucide-react'; 
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import ExperienceBar from '@/components/layout/ExperienceBar';
@@ -10,27 +10,27 @@ import {
   Sheet,
   SheetContent,
   SheetTrigger,
-} from "@/components/ui/sheet"; // Added Sheet components
-import React from 'react'; // Added React for Sheet state
+} from "@/components/ui/sheet"; 
+import React from 'react'; 
 
 interface NavLinkProps {
   href: string;
   children: React.ReactNode;
   icon?: React.ReactNode;
-  onClick?: () => void; // For closing sheet on mobile
+  onClick?: () => void; 
 }
 
 const NavLink: React.FC<NavLinkProps> = ({ href, children, icon, onClick }) => {
   const pathname = usePathname();
   const isActive = pathname === href || 
-                 (href === "/lobby" && pathname.startsWith("/games")) || // Make lobby active for any game page
-                 (href === "/profile" && pathname.startsWith("/profile")); // Make profile active for specific user profiles
+                 (href === "/lobby" && pathname.startsWith("/games")) || 
+                 (href === "/profile" && pathname.startsWith("/profile")); 
 
   return (
     <Link href={href} legacyBehavior>
       <a
         className={cn(
-          "flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors duration-150 w-full md:w-auto", // ensure full width for mobile sheet
+          "flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors duration-150 w-full md:w-auto", 
           isActive
             ? "bg-accent text-accent-foreground"
             : "text-foreground hover:bg-accent/50 hover:text-accent-foreground"
@@ -50,7 +50,7 @@ export default function Navbar() {
   return (
     <>
       <ExperienceBar /> 
-      <nav className="bg-background/80 backdrop-blur-md shadow-lg sticky top-0 z-30 border-b border-border mt-[44px]"> {/* Adjusted mt for ExperienceBar height */}
+      <nav className="bg-background/80 backdrop-blur-md shadow-lg sticky top-[44px] z-30 border-b border-border"> {/* Adjusted top value and removed mt */}
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between h-14">
             <Link href="/" legacyBehavior>

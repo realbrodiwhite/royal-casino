@@ -27,7 +27,7 @@ const ExperienceBar: React.FC = () => {
 
   return (
     <div className={cn(
-        "fixed top-0 left-0 right-0 z-40 p-2 bg-background/90 backdrop-blur-md shadow-md border-b border-border",
+        "fixed top-0 left-0 right-0 z-40 p-2 bg-background/90 backdrop-blur-md shadow-md border-b border-border h-[44px] flex items-center", // Added h-[44px] and flex items-center
         "transition-transform duration-300 ease-in-out",
         isVisible ? "translate-y-0" : "-translate-y-full"
       )}
