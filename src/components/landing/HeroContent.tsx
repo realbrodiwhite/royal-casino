@@ -41,7 +41,9 @@ export default function HeroContent() {
           <h2 className="text-xl sm:text-2xl md:text-3xl font-headline text-primary flex items-center justify-center">
             <Coins aria-hidden="true" className="h-6 w-6 sm:h-8 md:h-10 mr-2 sm:mr-3 text-primary" /> New Player Offer!
           </h2>
-          <p className="text-md sm:text-lg md:text-xl text-foreground mt-1 sm:mt-2">Double Your First Credit Purchase <span className="font-bold text-primary">Up To $20 Equivalent in Credits!</span></p>
+          <p className="text-md sm:text-lg md:text-xl text-foreground mt-1 sm:mt-2">
+            $5 Free Play <span className="font-semibold text-primary">or</span> Credit Match Up To $20 <span className="font-semibold text-primary">on Newly Verified Accounts!</span>
+          </p>
         </div>
         <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 mt-6 sm:mt-8">
           <Link href="/signup" passHref>
