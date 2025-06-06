@@ -1,5 +1,5 @@
 
-"use client"; // Keep as client component if it has client-side interactions or needs framer-motion in future
+"use client";
 
 import React from 'react';
 import Link from 'next/link';
@@ -13,22 +13,20 @@ export default function HeroContent() {
         {/* Triple King's Coin Logo */}
         <div className="relative mb-16 sm:mb-20 md:mb-24 h-32 sm:h-36 md:h-40">
           {/* Left Side Coin (Behind) */}
-          <div className="absolute top-1/2 left-1/2 z-0 transform -translate-y-1/2 translate-x-[-67.2px] sm:translate-x-[-78.4px] md:translate-x-[-89.6px]">
-            {/* Visual element for left coin */}
-            <div className="border-4 border-primary rounded-full bg-transparent flex items-center justify-center w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32">
+          <div className="absolute top-1/2 left-1/2 z-0 transform -translate-y-1/2 translate-x-[-81.92px] sm:translate-x-[-92.16px] md:translate-x-[-102.4px]">
+            <div className="border-4 border-primary rounded-full bg-transparent flex items-center justify-center w-[102.4px] h-[102.4px] sm:w-[115.2px] sm:h-[115.2px] md:w-32 md:h-32">
+              <Crown aria-hidden="true" className="h-[calc(50%)] w-[calc(50%)] text-primary" />
+            </div>
+          </div>
+          {/* Right Side Coin (Behind) */}
+          <div className="absolute top-1/2 left-1/2 z-0 transform -translate-y-1/2 translate-x-[81.92px] sm:translate-x-[92.16px] md:translate-x-[102.4px]">
+            <div className="border-4 border-primary rounded-full bg-transparent flex items-center justify-center w-[102.4px] h-[102.4px] sm:w-[115.2px] sm:h-[115.2px] md:w-32 md:h-32">
               <Crown aria-hidden="true" className="h-[calc(50%)] w-[calc(50%)] text-primary" />
             </div>
           </div>
           {/* Central Coin (Front) */}
           <div className="absolute top-1/2 left-1/2 z-10 transform -translate-x-1/2 -translate-y-1/2 border-4 border-primary rounded-full bg-background flex items-center justify-center w-32 h-32 sm:w-36 sm:h-36 md:w-40 md:h-40">
             <Crown aria-hidden="true" className="h-[calc(50%)] w-[calc(50%)] text-primary" />
-          </div>
-          {/* Right Side Coin (Behind) */}
-          <div className="absolute top-1/2 left-1/2 z-0 transform -translate-y-1/2 translate-x-[67.2px] sm:translate-x-[78.4px] md:translate-x-[89.6px]">
-            {/* Visual element for right coin */}
-            <div className="border-4 border-primary rounded-full bg-transparent flex items-center justify-center w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32">
-              <Crown aria-hidden="true" className="h-[calc(50%)] w-[calc(50%)] text-primary" />
-            </div>
           </div>
         </div>
         <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold font-headline text-primary mb-3 sm:mb-4">
@@ -42,7 +40,7 @@ export default function HeroContent() {
             <Coins aria-hidden="true" className="h-6 w-6 sm:h-8 md:h-10 mr-2 sm:mr-3 text-primary" /> New Player Offer!
           </h2>
           <p className="text-md sm:text-lg md:text-xl text-foreground mt-1 sm:mt-2">
-            $5 Free Play <span className="font-semibold text-primary">or</span> Credit Match Up To $20 <span className="font-semibold text-primary">on Newly Verified Accounts!</span>
+            $5 Free Play or Credit Match Up To $20 on Newly Verified Accounts!
           </p>
         </div>
         <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 mt-6 sm:mt-8">
