@@ -58,8 +58,8 @@ export default function Navbar() {
           <div className="flex items-center justify-between h-14">
             <Link href="/" legacyBehavior>
               <a className="flex items-center text-primary hover:text-primary/90 transition-colors">
-                <div className="mr-2 sm:mr-3 flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 border-2 sm:border-4 border-primary rounded-full bg-background">
-                  <Crown className="h-4 w-4 sm:h-5 sm:w-5 text-primary" aria-hidden="true" />
+                <div className="mr-2 sm:mr-3 flex items-center justify-center w-7 h-7 sm:w-8 sm:h-8 border-2 sm:border-[3px] border-primary rounded-full bg-background">
+                  <Crown className="h-3.5 w-3.5 sm:h-4 sm:h-4 text-primary" aria-hidden="true" />
                 </div>
                 <span className="text-base sm:text-lg font-headline font-bold">Royal Casino</span>
               </a>
@@ -82,8 +82,8 @@ export default function Navbar() {
                   <nav className="flex flex-col space-y-2 p-4 pt-6">
                      <Link href="/" legacyBehavior>
                         <a className="flex items-center text-primary hover:text-primary/90 transition-colors mb-4" onClick={() => setIsMobileMenuOpen(false)}>
-                            <div className="mr-3 flex items-center justify-center w-10 h-10 border-4 border-primary rounded-full bg-background">
-                            <Crown className="h-5 w-5 text-primary" aria-hidden="true" />
+                            <div className="mr-3 flex items-center justify-center w-8 h-8 border-[3px] border-primary rounded-full bg-background">
+                            <Crown className="h-4 w-4 text-primary" aria-hidden="true" />
                             </div>
                             <span className="text-lg font-headline font-bold">Royal Casino</span>
                         </a>
