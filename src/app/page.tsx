@@ -1,6 +1,7 @@
 
 "use client";
 
+import React from 'react'; // Added React import
 import Link from 'next/link';
 import Navbar from '@/components/layout/navbar';
 import { Button } from '@/components/ui/button';
@@ -26,9 +27,9 @@ export default function LandingPage() {
         <section className="pb-8 sm:pb-10 md:pb-12 text-center bg-gradient-to-b from-background via-purple-800/30 to-background pt-[88px] sm:pt-[92px]">
           <div className="container mx-auto px-4">
             {/* Triple King's Coin Logo */}
-             <div className="relative flex justify-center items-center mb-4 sm:mb-6 h-24 sm:h-32 md:h-36">
+            <div className="relative flex justify-center items-center mb-4 sm:mb-6 h-24 sm:h-32 md:h-36">
               {/* Left Side Coin */}
-              <div className="absolute top-1/2 left-1/2 z-0 transform scale-90 -translate-y-1/2 translate-x-[-115px] sm:translate-x-[-154px] md:translate-x-[-173px]">
+              <div className="absolute top-1/2 left-1/2 z-0 transform -translate-y-1/2 translate-x-[-115px] sm:translate-x-[-154px] md:translate-x-[-173px] scale-90">
                 <div className="border-4 border-primary rounded-full bg-transparent flex items-center justify-center w-24 h-24 sm:w-32 sm:h-32 md:w-36 md:h-36">
                   <Crown aria-hidden="true" className="h-12 w-12 sm:h-16 sm:h-16 md:h-18 md:w-18 text-primary" />
                 </div>
@@ -38,8 +39,8 @@ export default function LandingPage() {
                 <Crown aria-hidden="true" className="h-12 w-12 sm:h-16 sm:h-16 md:h-18 md:w-18 text-primary" />
               </div>
               {/* Right Side Coin */}
-              <div className="absolute top-1/2 left-1/2 z-0 transform scale-90 -translate-y-1/2 translate-x-[29px] sm:translate-x-[38px] md:translate-x-[43px]">
-                <div className="border-4 border-primary rounded-full bg-transparent flex items-center justify-center w-24 h-24 sm:w-32 sm:h-32 md:w-36 md:h-36">
+              <div className="absolute top-1/2 left-1/2 z-0 transform -translate-y-1/2 translate-x-[29px] sm:translate-x-[38px] md:translate-x-[43px] scale-90">
+                 <div className="border-4 border-primary rounded-full bg-transparent flex items-center justify-center w-24 h-24 sm:w-32 sm:h-32 md:w-36 md:h-36">
                   <Crown aria-hidden="true" className="h-12 w-12 sm:h-16 sm:h-16 md:h-18 md:w-18 text-primary" />
                 </div>
               </div>
@@ -74,7 +75,7 @@ export default function LandingPage() {
         {/* Discover the Royal Difference Section */}
         <section className="py-12 sm:py-16 bg-background/80 backdrop-blur-sm">
           <div className="container mx-auto px-4 text-center">
-            <Users className="mx-auto h-12 w-12 sm:h-16 sm:w-16 text-primary mb-4 sm:mb-6" />
+            <Users aria-hidden="true" className="mx-auto h-12 w-12 sm:h-16 sm:w-16 text-primary mb-4 sm:mb-6" />
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold font-headline text-primary mb-6">
               Discover the Royal Difference: Your Premier Social Casino!
             </h2>
@@ -138,7 +139,7 @@ export default function LandingPage() {
         <section className="py-12 sm:py-16 bg-background/80 backdrop-blur-sm">
           <div className="container mx-auto px-4">
             <div className="border-4 border-primary rounded-full bg-background flex items-center justify-center w-20 h-20 sm:w-24 sm:h-24 mb-4 sm:mb-6 mx-auto">
-              <Crown aria-hidden="true" className="h-10 w-10 sm:h-12 sm:w-12 text-primary" />
+              <Crown aria-hidden="true" className="h-12 w-12 sm:h-14 sm:w-14 text-primary" />
             </div>
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold font-headline text-primary mb-10 sm:mb-12 text-center">
               Experience the Royal Treatment: Features Fit for Royalty!
@@ -181,7 +182,7 @@ export default function LandingPage() {
         {/* Begin Your Royal Journey Section */}
         <section className="py-12 sm:py-16 bg-background">
           <div className="container mx-auto px-4 text-center">
-            <UserPlus className="mx-auto h-12 w-12 sm:h-16 sm:w-16 text-primary mb-4 sm:mb-6" />
+            <UserPlus aria-hidden="true" className="mx-auto h-12 w-12 sm:h-16 sm:w-16 text-primary mb-4 sm:mb-6" />
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold font-headline text-primary mb-8">
               Begin Your Royal Journey in Moments
             </h2>
@@ -245,7 +246,7 @@ interface FeatureCardProps {
 
 const FeatureCard: React.FC<FeatureCardProps> = ({ icon, title, description }) => (
   <div className="flex flex-col items-center text-center p-4 sm:p-6 bg-card rounded-lg shadow-xl border border-border hover:border-primary/70 hover:shadow-primary/20 transition-all duration-300">
-    {icon && <div className="mb-3 sm:mb-4 p-2 sm:p-3 rounded-full bg-primary/10">{icon}</div>}
+    {icon && <div className="mb-3 sm:mb-4 p-2 sm:p-3 rounded-full bg-primary/10">{React.cloneElement(icon as React.ReactElement, { className: "h-10 w-10 sm:h-12 sm:w-12 text-primary" })}</div>}
     <h3 className="text-xl sm:text-2xl font-semibold text-primary mb-2 font-headline">{title}</h3>
     <p className="text-muted-foreground text-sm leading-relaxed">{description}</p>
   </div>
@@ -263,7 +264,7 @@ const GameTypeCard: React.FC<GameTypeCardProps> = ({ icon, title, description, h
   <Card className="bg-card border-border shadow-lg hover:shadow-primary/30 transition-shadow duration-300 flex flex-col text-center">
     <CardHeader className="items-center pt-6 sm:pt-8">
       <div className="p-3 sm:p-4 bg-primary/20 rounded-full mb-3 sm:mb-4 inline-block">
-        {icon}
+        {React.cloneElement(icon as React.ReactElement, { className: "h-12 w-12 sm:h-14 sm:w-14 text-primary" })}
       </div>
       <CardTitle className="text-lg sm:text-xl font-headline text-primary">{title}</CardTitle>
     </CardHeader>
