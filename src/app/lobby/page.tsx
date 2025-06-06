@@ -74,7 +74,7 @@ export default function LobbyPage() {
   return (
     <div className="min-h-screen text-foreground flex flex-col">
       <Navbar />
-      <main className="flex-grow container mx-auto px-4 py-12">
+      <main className="flex-grow container mx-auto px-4 pb-12 pt-[88px] sm:pt-[92px]">
         <header className="mb-12 text-center">
           <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold font-headline text-primary">Game Lobby</h1>
           <p className="text-xl text-muted-foreground mt-2">Choose your game and let the fun begin!</p>

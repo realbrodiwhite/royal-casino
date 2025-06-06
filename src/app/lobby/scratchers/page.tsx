@@ -49,29 +49,29 @@ const generateInitialGrid = (): ScratchGrid => {
 
 const generateTicketSymbols = (): ScratchGrid => {
   const newGrid = generateInitialGrid();
-  const shouldWin = Math.random() < 0.3; 
+  const shouldWin = Math.random() < 0.3;
   let winningSymbol = POSSIBLE_SYMBOLS[Math.floor(Math.random() * POSSIBLE_SYMBOLS.length)];
-  
+
   if (shouldWin) {
-    const winType = Math.floor(Math.random() * (GRID_SIZE === 3 ? 4 : 2)); 
+    const winType = Math.floor(Math.random() * (GRID_SIZE === 3 ? 4 : 2));
     const winIndex = Math.floor(Math.random() * GRID_SIZE);
 
-    if (winType === 0) { 
+    if (winType === 0) {
       for (let j = 0; j < GRID_SIZE; j++) newGrid[winIndex][j].symbol = winningSymbol;
-    } else if (winType === 1) { 
+    } else if (winType === 1) {
       for (let i = 0; i < GRID_SIZE; i++) newGrid[i][winIndex].symbol = winningSymbol;
-    } else if (winType === 2 && GRID_SIZE === 3) { 
+    } else if (winType === 2 && GRID_SIZE === 3) {
         for (let i = 0; i < GRID_SIZE; i++) newGrid[i][i].symbol = winningSymbol;
-    } else if (winType === 3 && GRID_SIZE === 3) { 
+    } else if (winType === 3 && GRID_SIZE === 3) {
         for (let i = 0; i < GRID_SIZE; i++) newGrid[i][GRID_SIZE - 1 - i].symbol = winningSymbol;
-    } else if (GRID_SIZE !== 3 && winType > 1) { 
-        for (let j = 0; j < GRID_SIZE; j++) newGrid[winIndex][j].symbol = winningSymbol; 
+    } else if (GRID_SIZE !== 3 && winType > 1) {
+        for (let j = 0; j < GRID_SIZE; j++) newGrid[winIndex][j].symbol = winningSymbol;
     }
   }
 
   for (let i = 0; i < GRID_SIZE; i++) {
     for (let j = 0; j < GRID_SIZE; j++) {
-      if (newGrid[i][j].symbol === '?') { 
+      if (newGrid[i][j].symbol === '?') {
         newGrid[i][j].symbol = POSSIBLE_SYMBOLS[Math.floor(Math.random() * POSSIBLE_SYMBOLS.length)];
       }
     }
@@ -83,9 +83,9 @@ const generateTicketSymbols = (): ScratchGrid => {
 export default function ScratchersPage() {
   const [credits, setCredits] = useState(1000);
   const [scratchGrid, setScratchGrid] = useState<ScratchGrid>(generateInitialGrid());
-  const [isTicketActive, setIsTicketActive] = useState(false); 
+  const [isTicketActive, setIsTicketActive] = useState(false);
   const [gameMessage, setGameMessage] = useState<string | null>(null);
-  const [isWin, setIsWin] = useState<boolean | null>(null); 
+  const [isWin, setIsWin] = useState<boolean | null>(null);
   const [revealedCount, setRevealedCount] = useState(0);
   const [hasWonThisTicket, setHasWonThisTicket] = useState(false);
   const [selectedTicketOptionId, setSelectedTicketOptionId] = useState<string>(TICKET_OPTIONS[0].id);
@@ -119,7 +119,7 @@ export default function ScratchersPage() {
         if (colMatch) return { win: true, winningSymbol: firstSymbol };
       }
     }
-    
+
     if (currentGrid.every((row, idx) => row[idx].revealed)) {
         const firstDiagSymbol = currentGrid[0][0].symbol;
         let mainDiagMatch = true;
@@ -157,9 +157,9 @@ export default function ScratchersPage() {
     setScratchGrid(generateTicketSymbols());
     setIsTicketActive(true);
     setGameMessage("Scratch to reveal your prize!");
-    setIsWin(null); 
+    setIsWin(null);
     setRevealedCount(0);
-    setHasWonThisTicket(false); 
+    setHasWonThisTicket(false);
     toast({ title: `${selectedTicket.name} Purchased!`, description: `Cost: ${selectedTicket.cost} credits. Good luck!` });
   };
 
@@ -169,7 +169,7 @@ export default function ScratchersPage() {
     const newGrid = scratchGrid.map(r => r.map(c => ({ ...c })));
     newGrid[row][col].revealed = true;
     setScratchGrid(newGrid);
-    
+
     const currentRevealedCount = newGrid.flat().filter(cell => cell.revealed).length;
     setRevealedCount(currentRevealedCount);
 
@@ -179,25 +179,25 @@ export default function ScratchersPage() {
             setCredits(prev => prev + selectedTicket.winAmount);
             setGameMessage(`Congratulations! You matched three ${winningSymbol}s and won ${selectedTicket.winAmount} credits!`);
             setIsWin(true);
-            setHasWonThisTicket(true); 
+            setHasWonThisTicket(true);
             toast({ title: "You Won!", description: `You won ${selectedTicket.winAmount} credits!` });
         }
     }
-    
-    if (currentRevealedCount === GRID_SIZE * GRID_SIZE) { 
-        setIsTicketActive(false); 
-        if (!hasWonThisTicket) { 
+
+    if (currentRevealedCount === GRID_SIZE * GRID_SIZE) {
+        setIsTicketActive(false);
+        if (!hasWonThisTicket) {
             setGameMessage("No win this time. Better luck next ticket!");
             setIsWin(false);
             toast({ title: "No Win", description: "Try buying another ticket.", variant: "destructive" });
         }
     }
   };
-  
+
   return (
     <div className="min-h-screen text-foreground flex flex-col">
       <Navbar />
-      <main className="flex-grow container mx-auto px-4 py-8 sm:py-12 flex flex-col items-center">
+      <main className="flex-grow container mx-auto px-4 pb-8 sm:pb-12 pt-[88px] sm:pt-[92px] flex flex-col items-center">
         <header className="mb-8 sm:mb-10 text-center">
           <Ticket className="h-12 w-12 sm:h-16 sm:w-16 text-primary mx-auto mb-3 sm:mb-4" />
           <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold font-headline text-primary">Scratch & Win</h1>
@@ -217,8 +217,8 @@ export default function ScratchersPage() {
           </CardHeader>
           <CardContent className="space-y-4 sm:space-y-6">
             {!isTicketActive && (
-              <RadioGroup 
-                value={selectedTicketOptionId} 
+              <RadioGroup
+                value={selectedTicketOptionId}
                 onValueChange={setSelectedTicketOptionId}
                 className="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-3 mb-4"
               >
@@ -240,9 +240,9 @@ export default function ScratchersPage() {
               </RadioGroup>
             )}
 
-            {!isTicketActive && isWin === null && ( 
-              <Button 
-                onClick={handleBuyTicket} 
+            {!isTicketActive && isWin === null && (
+              <Button
+                onClick={handleBuyTicket}
                 variant="default"
                 className="w-full font-semibold text-md sm:text-lg py-2.5 sm:py-3"
                 disabled={credits < selectedTicket.cost}
@@ -252,7 +252,7 @@ export default function ScratchersPage() {
             )}
 
             {(isTicketActive || (isWin !== null && scratchGrid.flat().some(c => c.symbol !== '?'))) && (
-              <div 
+              <div
                 className="grid gap-1 sm:gap-2 mx-auto aspect-square max-w-xs sm:max-w-sm"
                 style={{gridTemplateColumns: `repeat(${GRID_SIZE}, 1fr)`}}
               >
@@ -263,7 +263,7 @@ export default function ScratchersPage() {
                     <button
                       key={index}
                       onClick={() => handleScratchCell(row, col)}
-                      disabled={!isTicketActive || cell.revealed} 
+                      disabled={!isTicketActive || cell.revealed}
                       className={cn(
                         "aspect-square flex items-center justify-center rounded-md border border-border text-2xl sm:text-3xl font-bold transition-all duration-300 ease-in-out",
                         "focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 focus:ring-offset-background",
@@ -276,7 +276,7 @@ export default function ScratchersPage() {
                       )}
                       aria-label={`Scratch cell ${row + 1}-${col + 1}`}
                     >
-                      {cell.revealed ? cell.symbol : 
+                      {cell.revealed ? cell.symbol :
                         <div className="absolute inset-0 bg-gradient-to-br from-gray-400 via-gray-500 to-gray-600 flex items-center justify-center">
                             <Palette className="h-6 w-6 sm:h-8 sm:w-8 text-gray-700 opacity-50"/>
                         </div>
@@ -286,14 +286,14 @@ export default function ScratchersPage() {
                 })}
               </div>
             )}
-            
+
             {gameMessage && (
               <ResultsDisplay message={gameMessage} isWin={isWin} />
             )}
 
-            {!isTicketActive && isWin !== null && ( 
-                 <Button 
-                    onClick={handleBuyTicket} 
+            {!isTicketActive && isWin !== null && (
+                 <Button
+                    onClick={handleBuyTicket}
                     variant="default"
                     className="w-full font-semibold text-md sm:text-lg py-2.5 sm:py-3 mt-3 sm:mt-4"
                     disabled={credits < selectedTicket.cost}

@@ -49,12 +49,12 @@ const PokerPage: React.FC = () => {
     if (!isNaN(value) && value > 0) {
       setBetAmount(value);
     } else if (e.target.value === "") {
-      setBetAmount(0); 
+      setBetAmount(0);
     }
   };
 
   const handleDealDraw = useCallback(() => {
-    if (gameState === "BETTING" || gameState === "GAME_OVER") { 
+    if (gameState === "BETTING" || gameState === "GAME_OVER") {
       if (credits < betAmount) {
         toast({ title: "Not Enough Credits", description: "Your bet is too high.", variant: "destructive" });
         return;
@@ -65,12 +65,12 @@ const PokerPage: React.FC = () => {
       }
 
       setCredits(prev => prev - betAmount);
-      
+
       let currentDeck = deck;
       if (currentDeck.length < 10) { // Ensure enough cards for deal and potential draw
          currentDeck = shuffleDeck(createDeck());
       }
-      
+
       const newHand = dealCardsFromDeck(currentDeck, 5);
       setDeck(currentDeck); // Deck is modified by dealCardsFromDeck
       setHand(newHand);
@@ -84,39 +84,39 @@ const PokerPage: React.FC = () => {
     } else if (gameState === "DEALT") { // Draw new cards
       let currentDeck = deck;
       const cardsToDraw = held.filter(h => !h).length;
-      
+
       if (currentDeck.length < cardsToDraw) {
-         currentDeck = shuffleDeck(createDeck().filter(cardInDeck => 
-            !hand.some(hc => hc?.id === cardInDeck.id) 
-         )); 
+         currentDeck = shuffleDeck(createDeck().filter(cardInDeck =>
+            !hand.some(hc => hc?.id === cardInDeck.id)
+         ));
       }
 
       const drawnReplacementCards = dealCardsFromDeck(currentDeck, cardsToDraw);
-      setDeck(currentDeck); 
-      
+      setDeck(currentDeck);
+
       const finalHand: Card[] = [];
       let replacementIndex = 0;
       for(let i = 0; i < 5; i++) {
         if(held[i] && hand[i]) {
           finalHand.push(hand[i]!);
-        } else if (replacementIndex < drawnReplacementCards.length) { 
+        } else if (replacementIndex < drawnReplacementCards.length) {
             finalHand.push(drawnReplacementCards[replacementIndex++]);
-        } else if (hand[i]) { 
+        } else if (hand[i]) {
             console.warn("Not enough replacement cards, reusing old card. This should be rare.");
-            finalHand.push(hand[i]!); 
+            finalHand.push(hand[i]!);
         }
       }
       while (finalHand.length < 5 && currentDeck.length > 0) {
         console.warn("Final hand has less than 5 cards after draw logic, dealing more from deck.");
         finalHand.push(dealCardsFromDeck(currentDeck, 1)[0]);
       }
-       if (finalHand.length < 5) { 
+       if (finalHand.length < 5) {
         console.error("Critical error: Could not form a 5 card hand after draw.");
         toast({ title: "Game Error", description: "Could not complete the hand. Resetting.", variant: "destructive"});
         setGameState("GAME_OVER");
-        setHand(Array(5).fill(null)); 
+        setHand(Array(5).fill(null));
         setEvaluatedHandRank(null);
-        initializeDeck(); 
+        initializeDeck();
         return;
       }
 
@@ -124,7 +124,7 @@ const PokerPage: React.FC = () => {
       setHand(finalHand);
       const { rank, payoutMultiplier } = evaluateHand(finalHand);
       setEvaluatedHandRank(rank);
-      
+
       if (payoutMultiplier > 0) {
         const winnings = betAmount * payoutMultiplier;
         setCredits(prev => prev + winnings);
@@ -147,7 +147,7 @@ const PokerPage: React.FC = () => {
       setHeld(newHeld);
     }
   };
-  
+
   const getButtonText = () => {
     if (gameState === 'DEALT') return "Draw";
     return "Deal";
@@ -156,7 +156,7 @@ const PokerPage: React.FC = () => {
   return (
     <div className="min-h-screen text-foreground flex flex-col">
       <Navbar />
-      <main className="flex-grow container mx-auto px-2 sm:px-4 py-8 sm:py-12 flex flex-col items-center">
+      <main className="flex-grow container mx-auto px-2 sm:px-4 pb-8 sm:pb-12 pt-[88px] sm:pt-[92px] flex flex-col items-center">
         <header className="mb-8 sm:mb-10 text-center">
           <Hand className="h-12 w-12 sm:h-16 sm:w-16 text-primary mx-auto mb-3 sm:mb-4" />
           <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold font-headline text-primary">Video Poker</h1>
@@ -175,7 +175,7 @@ const PokerPage: React.FC = () => {
             <div className="grid grid-cols-5 gap-1 xs:gap-2 sm:gap-3 md:gap-4 mb-4 sm:mb-6">
               {hand.map((card, index) => (
                 <PokerCardComponent
-                  key={card ? card.id : `empty-${index}-${Math.random()}`} 
+                  key={card ? card.id : `empty-${index}-${Math.random()}`}
                   card={card}
                   isHeld={held[index]}
                   onToggleHold={() => toggleHold(index)}
@@ -210,9 +210,9 @@ const PokerPage: React.FC = () => {
             </div>
              {gameMessage && (
               <div className="mt-4 sm:mt-6">
-                <ResultsDisplay 
-                    message={gameMessage} 
-                    isWin={isWin} 
+                <ResultsDisplay
+                    message={gameMessage}
+                    isWin={isWin}
                 />
               </div>
             )}
@@ -233,11 +233,11 @@ const PokerPage: React.FC = () => {
           <CardContent className="text-xs sm:text-sm">
             <ul className="space-y-0.5 text-muted-foreground">
               {Object.entries(PAYTABLE)
-                .filter(([, payout]) => payout > 0) 
-                .sort(([, aPayout], [, bPayout]) => bPayout - aPayout) 
+                .filter(([, payout]) => payout > 0)
+                .sort(([, aPayout], [, bPayout]) => bPayout - aPayout)
                 .map(([handName, payout], index) => (
-                  <li 
-                    key={handName} 
+                  <li
+                    key={handName}
                     className={`flex justify-between items-center p-1.5 sm:p-2 rounded-sm ${index % 2 === 0 ? 'bg-card-foreground/5' : 'bg-transparent'}`}
                   >
                     <span className="text-foreground">{handName}</span>

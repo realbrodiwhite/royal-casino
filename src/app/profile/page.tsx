@@ -50,7 +50,7 @@ export default function ProfileRedirectPage() {
   return (
     <div className="min-h-screen bg-background text-foreground flex flex-col">
       <Navbar />
-      <main className="flex-grow container mx-auto px-4 py-8 flex flex-col items-center justify-center">
+      <main className="flex-grow container mx-auto px-4 pb-8 pt-[88px] sm:pt-[92px] flex flex-col items-center justify-center">
         <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-primary mb-4"></div>
         <p className="text-xl text-primary">Loading Profile...</p>
       </main>

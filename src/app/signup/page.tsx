@@ -53,7 +53,7 @@ export default function SignupPage() {
         title: "Signup Successful",
         description: `Welcome, ${email}! Your account has been created.`,
       });
-      router.push('/lobby'); 
+      router.push('/lobby');
     } catch (error: any) {
       let errorMessage = "An unexpected error occurred. Please try again.";
       if (error.code === 'auth/email-already-in-use') {
@@ -77,7 +77,7 @@ export default function SignupPage() {
   return (
     <div className="min-h-screen text-foreground flex flex-col">
       <Navbar />
-      <main className="flex-grow container mx-auto px-4 py-16 flex flex-col items-center justify-center">
+      <main className="flex-grow container mx-auto px-4 pb-16 pt-[88px] sm:pt-[92px] flex flex-col items-center justify-center">
         <Card className="w-full max-w-md bg-card border-border shadow-xl">
           <CardHeader className="text-center">
             <UserPlus className="mx-auto h-12 w-12 sm:h-16 sm:w-16 text-primary mb-4" />

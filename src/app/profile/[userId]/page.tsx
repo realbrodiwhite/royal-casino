@@ -148,7 +148,7 @@ export default function UserProfilePage() {
     return (
       <div className="min-h-screen bg-deep-purple text-silver flex flex-col items-center justify-center">
         <Navbar />
-        <div className="flex-grow container mx-auto px-4 py-8 text-center">
+        <div className="flex-grow container mx-auto px-4 py-8 text-center pt-[88px] sm:pt-[92px]">
             <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-gold mx-auto mb-4"></div>
             <p className="text-xl text-gold">Loading Profile...</p>
         </div>
@@ -163,7 +163,7 @@ export default function UserProfilePage() {
     return (
       <div className="min-h-screen bg-deep-purple text-silver flex flex-col">
         <Navbar />
-        <main className="flex-grow container mx-auto px-4 py-8 text-center">
+        <main className="flex-grow container mx-auto px-4 text-center pt-[88px] sm:pt-[92px] pb-8">
           <ShieldAlert className="mx-auto h-24 w-24 text-red-500 mb-6" />
           <h1 className="text-3xl font-bold font-headline text-red-400 mb-4">Profile Not Found</h1>
           <p className="text-xl text-silver mb-8">The user profile you are looking for does not exist or could not be loaded.</p>
@@ -184,7 +184,7 @@ export default function UserProfilePage() {
   return (
     <div className="min-h-screen bg-deep-purple text-silver flex flex-col">
       <Navbar />
-      <main className="flex-grow container mx-auto px-4 py-8">
+      <main className="flex-grow container mx-auto px-4 pb-8 pt-[88px] sm:pt-[92px]">
         <header className="mb-8 text-center">
           <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold font-headline text-gold">{profileData.name}'s Profile</h1>
         </header>
@@ -240,7 +240,7 @@ export default function UserProfilePage() {
               </CardHeader>
               <CardContent className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 text-silver">
                 <div className="text-center p-3 bg-silver/5 rounded-md border border-gold/20">
-                    <p className="text-xs text-silver/70">Slots Played</p> 
+                    <p className="text-xs text-silver/70">Slots Played</p>
                     <p className="text-2xl font-bold text-gold">{profileData.gameStats.slotsPlayed}</p>
                 </div>
                 <div className="text-center p-3 bg-silver/5 rounded-md border border-gold/20">
@@ -275,7 +275,7 @@ export default function UserProfilePage() {
                 )}
               </CardContent>
             </Card>
-            
+
             <Card className="bg-silver/10 border-gold shadow-xl">
                 <CardHeader>
                     <CardTitle className="text-gold flex items-center font-headline text-2xl">

@@ -23,10 +23,10 @@ export default function LandingPage() {
 
       <main className="flex-grow">
         {/* Hero Section */}
-        <section className="pt-10 pb-8 sm:pt-12 sm:pb-10 md:pt-16 md:pb-12 text-center bg-gradient-to-b from-background via-purple-800/30 to-background">
+        <section className="pb-8 sm:pb-10 md:pb-12 text-center bg-gradient-to-b from-background via-purple-800/30 to-background pt-[88px] sm:pt-[92px]">
           <div className="container mx-auto px-4">
             {/* Triple King's Coin Logo */}
-            <div className="relative flex justify-center items-center mb-4 sm:mb-6 h-24 sm:h-32 md:h-36">
+             <div className="relative flex justify-center items-center mb-4 sm:mb-6 h-24 sm:h-32 md:h-36">
               {/* Left Side Coin */}
               <div className="absolute top-1/2 left-1/2 z-0 transform scale-90 -translate-y-1/2 translate-x-[-115px] sm:translate-x-[-154px] md:translate-x-[-173px]">
                 <div className="border-4 border-primary rounded-full bg-transparent flex items-center justify-center w-24 h-24 sm:w-32 sm:h-32 md:w-36 md:h-36">
@@ -299,5 +299,3 @@ const StepCard: React.FC<StepCardProps> = ({ stepNumber, title, description }) =
     </CardContent>
   </Card>
 );
-
-    

@@ -67,7 +67,7 @@ type CellCoordinate = [number, number];
 export default function SlotsPage() {
   const { addXp } = useXp(); // Get addXp from context
   const [selectedTheme, setSelectedTheme] = useState<SlotGameThemeConfig | null>(null);
-  
+
   const [rows, setRows] = useState(3);
   const [cols, setCols] = useState(3);
   const [availableSymbolsWithData, setAvailableSymbolsWithData] = useState<Array<SymbolData & { weight: number }>>([]);
@@ -212,7 +212,7 @@ export default function SlotsPage() {
 
 
   const handleSpin = useCallback(() => {
-    setShowWinAnimation(false); 
+    setShowWinAnimation(false);
     setHighlightedWinningCells([]);
 
     if (!selectedTheme) return;
@@ -243,7 +243,7 @@ export default function SlotsPage() {
       spinCycles++;
       if (spinCycles >= 10) {
         clearInterval(visualSpinInterval);
-        
+
         const finalReelsResult = initialReels(selectedTheme.grid.rows, selectedTheme.grid.cols);
         setReels(finalReelsResult);
         setSpinning(false);
@@ -323,9 +323,9 @@ export default function SlotsPage() {
 
   if (!selectedTheme) {
     return (
-      <div className="min-h-screen text-foreground flex flex-col items-center p-4">
+      <div className="min-h-screen text-foreground flex flex-col items-center p-4 pt-[88px] sm:pt-[92px]">
         <Navbar />
-        <header className="my-6 sm:my-8 text-center pt-12"> {/* Adjusted padding for ExperienceBar */}
+        <header className="my-6 sm:my-8 text-center">
           <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold font-headline text-primary">Choose Your Slot Adventure!</h1>
           <p className="text-md sm:text-lg text-muted-foreground mt-2 px-2">Select a theme to start playing.</p>
         </header>
@@ -340,11 +340,11 @@ export default function SlotsPage() {
               <CardContent className="flex-grow flex flex-col justify-center">
                  <p className="text-xs text-muted-foreground text-center mb-1">Grid: {theme.grid.rows}x{theme.grid.cols}</p>
                  <p className="text-xs text-muted-foreground text-center mb-3">Symbols: {theme.symbols.length}</p>
-                 <Image 
+                 <Image
                     src={themeImagePaths[theme.themeId] || `/images/theme-art/default-theme.svg`}
-                    alt={theme.displayName} 
-                    width={200} 
-                    height={100} 
+                    alt={theme.displayName}
+                    width={200}
+                    height={100}
                     className="rounded-md mx-auto object-cover"
                  />
               </CardContent>
@@ -365,9 +365,9 @@ export default function SlotsPage() {
 
   // Game View (when a theme is selected)
   return (
-    <div className="min-h-screen text-foreground flex flex-col items-center p-4">
+    <div className="min-h-screen text-foreground flex flex-col items-center p-4 pt-[88px] sm:pt-[92px]">
       <Navbar />
-      <header className="my-6 sm:my-8 text-center pt-12"> {/* Adjusted padding for ExperienceBar */}
+      <header className="my-6 sm:my-8 text-center">
         <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold font-headline text-primary">{selectedTheme.displayName}</h1>
         <p className="text-md sm:text-lg text-muted-foreground mt-2 px-2">{selectedTheme.description}</p>
       </header>

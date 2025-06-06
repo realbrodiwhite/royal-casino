@@ -36,7 +36,7 @@ const generateBingoCard = (): BingoCardGrid => {
       colNumbers.add(Math.floor(Math.random() * (max - min + 1)) + min);
     }
     const sortedColNumbers = Array.from(colNumbers).sort((a, b) => a - b);
-    
+
     if (colLetter === 'N') {
       const nColWithFree: BingoNumber[] = [
         sortedColNumbers[0],
@@ -64,17 +64,17 @@ const initialAllPossibleNumbers = () => Array.from({ length: TOTAL_NUMBERS }, (_
 export default function BingoPage() {
   const [bingoCard, setBingoCard] = useState<BingoNumber[][]>([]); // Row-major
   const [daubedCells, setDaubedCells] = useState<boolean[][]>([]); // Row-major, matches bingoCard structure
-  
+
   const [calledNumbersSet, setCalledNumbersSet] = useState<Set<number>>(new Set());
   const [calledNumbersHistory, setCalledNumbersHistory] = useState<number[]>([]);
   const [currentCalledNumber, setCurrentCalledNumber] = useState<number | null>(null);
   const [remainingToCall, setRemainingToCall] = useState<number[]>(initialAllPossibleNumbers());
 
-  const [currentCredits, setCurrentCredits] = useState(1000); 
+  const [currentCredits, setCurrentCredits] = useState(1000);
   const [isGameActive, setIsGameActive] = useState(false);
   const [isGamePaused, setIsGamePaused] = useState(false);
   const [hasPlayerWonBingo, setHasPlayerWonBingo] = useState(false);
-  
+
   const { toast } = useToast();
   const gameIntervalRef = useRef<NodeJS.Timeout | null>(null);
   const cardCost = 10;
@@ -87,12 +87,12 @@ export default function BingoPage() {
     }
     return null;
   };
-  
+
   const initializeNewCardAndDaubs = useCallback(() => {
     const newCardDataColMajor = generateBingoCard();
     const transposedCardRowMajor = transposeGrid(newCardDataColMajor);
     setBingoCard(transposedCardRowMajor);
-    
+
     const initialDaubs = Array(BINGO_GRID_SIZE).fill(null).map(() => Array(BINGO_GRID_SIZE).fill(false));
     const freeSpaceCoords = findFreeSpaceCoords(transposedCardRowMajor);
     if (freeSpaceCoords) {
@@ -108,7 +108,7 @@ export default function BingoPage() {
     const shuffledNumbers = [...initialAllPossibleNumbers()].sort(() => Math.random() - 0.5);
     setRemainingToCall(shuffledNumbers);
   };
-  
+
   useEffect(() => {
     initializeNewCardAndDaubs();
     resetCaller();
@@ -132,7 +132,7 @@ export default function BingoPage() {
 
   useEffect(() => {
     if (isGameActive && !isGamePaused && remainingToCall.length > 0 && !hasPlayerWonBingo) {
-      gameIntervalRef.current = setInterval(callNextNumber, 3000); 
+      gameIntervalRef.current = setInterval(callNextNumber, 3000);
     } else {
       if (gameIntervalRef.current) clearInterval(gameIntervalRef.current);
     }
@@ -151,7 +151,7 @@ export default function BingoPage() {
     if (typeof number === 'number') {
       if (calledNumbersSet.has(number)) {
         const newDaubs = daubedCells.map(r => [...r]);
-        newDaubs[row][col] = !newDaubs[row][col]; 
+        newDaubs[row][col] = !newDaubs[row][col];
         setDaubedCells(newDaubs);
       } else {
         toast({ title: "Number Not Called", description: `Number ${number} has not been called yet.`, variant: "destructive" });
@@ -164,14 +164,14 @@ export default function BingoPage() {
   };
 
   const handleBuyAndStart = () => {
-    if (gameIntervalRef.current) clearInterval(gameIntervalRef.current); 
+    if (gameIntervalRef.current) clearInterval(gameIntervalRef.current);
 
     if (currentCredits < cardCost) {
         toast({ title: "Not Enough Credits", description: `You need ${cardCost} credits to play.`, variant: "destructive" });
         return;
     }
     setCurrentCredits(prev => prev - cardCost);
-    
+
     initializeNewCardAndDaubs();
     resetCaller();
     setHasPlayerWonBingo(false);
@@ -191,8 +191,8 @@ export default function BingoPage() {
     setIsGameActive(false);
     setIsGamePaused(false);
     setHasPlayerWonBingo(false);
-    initializeNewCardAndDaubs(); 
-    resetCaller(); 
+    initializeNewCardAndDaubs();
+    resetCaller();
     toast({ title: "Game Reset", description: "Board and caller have been reset. Buy a new card to start." });
   };
 
@@ -251,7 +251,7 @@ export default function BingoPage() {
         setHasPlayerWonBingo(true);
         setCurrentCredits(prev => prev + BINGO_WIN_AMOUNT);
         if (gameIntervalRef.current) clearInterval(gameIntervalRef.current);
-        setIsGameActive(false); 
+        setIsGameActive(false);
         toast({
             title: "BINGO!",
             description: `Congratulations! You won ${BINGO_WIN_AMOUNT} credits!`,
@@ -270,7 +270,7 @@ export default function BingoPage() {
   return (
     <div className="min-h-screen text-foreground flex flex-col">
       <Navbar />
-      <main className="flex-grow container mx-auto px-2 sm:px-4 py-8 sm:py-12 flex flex-col items-center">
+      <main className="flex-grow container mx-auto px-2 sm:px-4 pb-8 sm:pb-12 pt-[88px] sm:pt-[92px] flex flex-col items-center">
         <header className="mb-6 sm:mb-8 text-center">
           <AppWindow className="h-10 w-10 sm:h-12 md:h-16 text-primary mx-auto mb-2 sm:mb-3" />
           <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold font-headline text-primary">Bingo Hall</h1>
@@ -282,7 +282,7 @@ export default function BingoPage() {
         <div className="w-full max-w-xs sm:max-w-sm mx-auto mb-4 sm:mb-6">
           <CreditDisplay initialCredits={currentCredits} />
         </div>
-        
+
         <div className="flex flex-wrap justify-center items-center gap-2 sm:gap-3 mb-4 sm:mb-6">
             <Button onClick={handleBuyAndStart} size="lg" variant="default" disabled={isGameActive && !isGamePaused && !hasPlayerWonBingo}>
                 <Ticket className="mr-2 h-4 w-4 sm:h-5 sm:w-5"/> Buy New Card & Play ({cardCost} Cr)
@@ -347,8 +347,8 @@ export default function BingoPage() {
                       className={cn(
                         "flex items-center justify-center text-md sm:text-lg md:text-xl font-semibold aspect-square w-full rounded-sm border border-border/30 transition-all",
                         "focus:outline-none focus:ring-1 focus:ring-ring",
-                        daubedCells[rowIndex]?.[colIndex] 
-                          ? "bg-accent text-accent-foreground scale-95 shadow-inner" 
+                        daubedCells[rowIndex]?.[colIndex]
+                          ? "bg-accent text-accent-foreground scale-95 shadow-inner"
                           : "bg-card hover:bg-muted/50",
                         num === 'FREE' && !daubedCells[rowIndex]?.[colIndex] && "bg-primary/10 text-primary font-bold",
                         num === 'FREE' && daubedCells[rowIndex]?.[colIndex] && "bg-primary text-primary-foreground font-bold",
@@ -366,13 +366,13 @@ export default function BingoPage() {
         ) : (
           <p className="text-muted-foreground">Loading Bingo Card...</p>
         )}
-        
+
         <div className="text-center">
-            <Button 
-              variant="default" 
-              size="lg" 
-              className="mt-2 sm:mt-3" 
-              disabled={!isGameActive || hasPlayerWonBingo} 
+            <Button
+              variant="default"
+              size="lg"
+              className="mt-2 sm:mt-3"
+              disabled={!isGameActive || hasPlayerWonBingo}
               onClick={handleCallBingo}
             >
                 <Award className="mr-2 h-5 w-5"/> Call BINGO!

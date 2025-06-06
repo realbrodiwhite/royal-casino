@@ -361,8 +361,8 @@ export default function AdminDashboardPage() {
     <SidebarProvider>
       <div className="min-h-screen bg-background text-foreground flex flex-col">
         <Navbar />
-        <div className="flex flex-1 overflow-hidden">
-          <Sidebar collapsible="icon" variant="sidebar" className="border-r border-sidebar-border bg-sidebar text-sidebar-foreground">
+        <div className="flex flex-1 overflow-hidden pt-[calc(32px+56px)] sm:pt-[calc(36px+56px)]"> {/* Push content below ExpBar + Navbar */}
+          <Sidebar collapsible="icon" variant="sidebar" className="border-r border-sidebar-border bg-sidebar text-sidebar-foreground fixed top-[calc(32px+56px)] sm:top-[calc(36px+56px)] h-[calc(100vh-32px-56px)] sm:h-[calc(100vh-36px-56px)]"> {/* Adjust fixed positioning and height */}
             <SidebarContent className="p-2">
               <SidebarMenu>
                  <SidebarMenuItem>
@@ -409,7 +409,7 @@ export default function AdminDashboardPage() {
             </SidebarContent>
           </Sidebar>
 
-          <SidebarInset className="flex-1 overflow-y-auto">
+          <SidebarInset className="flex-1 overflow-y-auto ml-[var(--sidebar-width-icon)] group-data-[state=expanded]:ml-[var(--sidebar-width)] transition-all duration-200 ease-linear"> {/* Adjust margin for collapsed/expanded sidebar */}
             <main className="container mx-auto px-4 py-6 sm:py-8">
               <header className="mb-6 sm:mb-8 flex items-center justify-between">
                 <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold font-headline text-primary">Admin Dashboard</h1>

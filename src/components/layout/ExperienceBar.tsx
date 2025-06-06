@@ -3,7 +3,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { Progress } from '@/components/ui/progress';
-import { Star, ChevronUp } from 'lucide-react';
+import { Star, ChevronUp, ChevronDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useXp } from '@/contexts/XpContext'; // Import useXp hook
 
@@ -17,17 +17,18 @@ const ExperienceBar: React.FC = () => {
     return (
       <button
         onClick={() => setIsVisible(true)}
-        className="fixed top-0 left-1/2 -translate-x-1/2 mt-2 p-2 bg-primary/80 text-primary-foreground rounded-full shadow-lg hover:bg-primary z-50"
+        className="fixed top-0 left-1/2 -translate-x-1/2 mt-1 p-2 bg-primary/80 text-primary-foreground rounded-full shadow-lg hover:bg-primary z-50 h-8 w-8 flex items-center justify-center sm:h-9 sm:w-9"
         aria-label="Show Experience Bar"
       >
-        <ChevronUp className="h-5 w-5" />
+        <ChevronDown className="h-4 w-4 sm:h-5 sm:w-5" />
       </button>
     );
   }
 
   return (
     <div className={cn(
-        "fixed top-0 left-0 right-0 z-40 p-2 bg-background/90 backdrop-blur-md shadow-md border-b border-border h-[44px] flex items-center", // Added h-[44px] and flex items-center
+        "fixed top-0 left-0 right-0 z-40 p-2 bg-background/90 backdrop-blur-md shadow-md border-b border-border flex items-center",
+        "h-8 sm:h-9", // Explicit responsive height
         "transition-transform duration-300 ease-in-out",
         isVisible ? "translate-y-0" : "-translate-y-full"
       )}
@@ -43,12 +44,12 @@ const ExperienceBar: React.FC = () => {
         <div className="text-muted-foreground whitespace-nowrap">
           {currentLevelXp.toLocaleString()} / {xpToCompleteLevel.toLocaleString()} XP
         </div>
-        <button 
-          onClick={() => setIsVisible(false)} 
+        <button
+          onClick={() => setIsVisible(false)}
           className="text-muted-foreground hover:text-foreground"
           aria-label="Hide Experience Bar"
         >
-          <ChevronUp className="h-4 w-4 sm:h-5 sm:w-5 transform rotate-180" />
+          <ChevronUp className="h-4 w-4 sm:h-5 sm:w-5" />
         </button>
       </div>
     </div>

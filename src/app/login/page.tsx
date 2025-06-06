@@ -12,7 +12,7 @@ import { useToast } from "@/hooks/use-toast";
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { signInWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '@/lib/firebase'; 
+import { auth } from '@/lib/firebase';
 
 export default function LoginPage() {
   const { toast } = useToast();
@@ -37,7 +37,7 @@ export default function LoginPage() {
 
     try {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
-      
+
       toast({
         title: "Login Successful",
         description: `Welcome back, ${userCredential.user.email || 'player'}!`,
@@ -72,7 +72,7 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen text-foreground flex flex-col">
       <Navbar />
-      <main className="flex-grow container mx-auto px-4 py-16 flex flex-col items-center justify-center">
+      <main className="flex-grow container mx-auto px-4 pb-16 pt-[88px] sm:pt-[92px] flex flex-col items-center justify-center">
         <Card className="w-full max-w-md bg-card border-border shadow-xl">
           <CardHeader className="text-center">
             <LogIn className="mx-auto h-12 w-12 sm:h-16 sm:w-16 text-primary mb-4" />
