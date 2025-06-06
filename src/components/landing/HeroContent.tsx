@@ -8,26 +8,25 @@ import { Crown, Coins } from 'lucide-react';
 
 export default function HeroContent() {
   return (
-    <section className="pb-8 sm:pb-10 md:pb-12 text-center bg-gradient-to-b from-background via-purple-800/30 to-background pt-[88px] sm:pt-[92px]">
+    <section className="text-center bg-gradient-to-b from-background via-purple-800/30 to-background pt-[88px] sm:pt-[92px] min-h-[calc(100vh-88px)] sm:min-h-[calc(100vh-92px)] flex flex-col justify-center">
       <div className="container mx-auto px-4">
         {/* Triple King's Coin Logo */}
-        {/* Removed flex justify-center items-center from this div to ensure block behavior for absolute positioning context */}
-        <div className="relative mb-16 sm:mb-20 md:mb-24 h-40 sm:h-48 md:h-52">
+        <div className="relative mb-16 sm:mb-20 md:mb-24 h-32 sm:h-36 md:h-40">
           {/* Left Side Coin (Behind) */}
-          <div className="absolute top-1/2 left-1/2 z-0 transform scale-90 -translate-y-1/2 translate-x-[-138px] sm:translate-x-[-177px] md:translate-x-[-196px]">
+          <div className="absolute top-1/2 left-1/2 z-0 transform -translate-y-1/2 translate-x-[-67.2px] sm:translate-x-[-78.4px] md:translate-x-[-89.6px]">
             {/* Visual element for left coin */}
-            <div className="border-4 border-primary rounded-full bg-transparent flex items-center justify-center w-32 h-32 sm:w-40 sm:h-40 md:w-44 md:h-44">
+            <div className="border-4 border-primary rounded-full bg-transparent flex items-center justify-center w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32">
               <Crown aria-hidden="true" className="h-[calc(50%)] w-[calc(50%)] text-primary" />
             </div>
           </div>
           {/* Central Coin (Front) */}
-          <div className="absolute top-1/2 left-1/2 z-10 transform -translate-x-1/2 -translate-y-1/2 border-4 border-primary rounded-full bg-background flex items-center justify-center w-40 h-40 sm:w-48 sm:h-48 md:w-52 md:h-52">
+          <div className="absolute top-1/2 left-1/2 z-10 transform -translate-x-1/2 -translate-y-1/2 border-4 border-primary rounded-full bg-background flex items-center justify-center w-32 h-32 sm:w-36 sm:h-36 md:w-40 md:h-40">
             <Crown aria-hidden="true" className="h-[calc(50%)] w-[calc(50%)] text-primary" />
           </div>
           {/* Right Side Coin (Behind) */}
-          <div className="absolute top-1/2 left-1/2 z-0 transform scale-90 -translate-y-1/2 translate-x-[36px] sm:translate-x-[45px] md:translate-x-[50px]">
+          <div className="absolute top-1/2 left-1/2 z-0 transform -translate-y-1/2 translate-x-[67.2px] sm:translate-x-[78.4px] md:translate-x-[89.6px]">
             {/* Visual element for right coin */}
-            <div className="border-4 border-primary rounded-full bg-transparent flex items-center justify-center w-28 h-28 sm:w-36 sm:h-36 md:w-40 md:h-40">
+            <div className="border-4 border-primary rounded-full bg-transparent flex items-center justify-center w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32">
               <Crown aria-hidden="true" className="h-[calc(50%)] w-[calc(50%)] text-primary" />
             </div>
           </div>
