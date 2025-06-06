@@ -27,7 +27,7 @@ const GameTypeCard: React.FC<GameTypeCardProps> = ({ icon, title, description, h
   <Card className="bg-card border-border shadow-lg hover:shadow-primary/30 transition-shadow duration-300 flex flex-col text-center">
     <CardHeader className="items-center pt-6 sm:pt-8">
       <div className="p-3 sm:p-4 bg-primary/20 rounded-full mb-3 sm:mb-4 inline-block">
-        {React.cloneElement(icon as React.ReactElement, { className: "h-12 w-12 sm:h-14 sm:w-14 text-primary" })}
+        {React.cloneElement(icon as React.ReactElement, { className: "h-16 w-16 sm:h-20 sm:w-20 text-primary" })}
       </div>
       <CardTitle className="text-lg sm:text-xl font-headline text-primary">{title}</CardTitle>
     </CardHeader>
