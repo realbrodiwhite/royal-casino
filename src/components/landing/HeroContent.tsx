@@ -12,37 +12,36 @@ export default function HeroContent() {
       <div className="container mx-auto px-4">
 
         {/* Triple Coin Logo Container */}
-        {/* Adjusted bottom margin: mb-10 sm:mb-12 md:mb-14 */}
-        <div className="relative mb-10 sm:mb-12 md:mb-14 h-40 sm:h-48 md:h-52">
+        <div className="relative mb-10 sm:mb-12 md:mb-14 h-[115.2px] sm:h-[134.4px] md:h-[153.6px]">
           {/* Left Coin */}
-          <div className="absolute top-1/2 left-1/2 z-0 transform -translate-y-1/2 translate-x-[-81.92px] sm:translate-x-[-92.16px] md:translate-x-[-102.4px]">
-            <div className="border-4 border-primary rounded-full bg-transparent flex items-center justify-center w-[102.4px] h-[102.4px] sm:w-[115.2px] sm:h-[115.2px] md:w-32 md:h-32">
+          <div className="absolute top-1/2 left-1/2 z-0 transform -translate-y-1/2 translate-x-[-67.2px] sm:translate-x-[-78.4px] md:translate-x-[-89.6px]">
+            <div className="border-4 border-primary rounded-full bg-transparent flex items-center justify-center w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32">
               <Crown aria-hidden="true" className="h-[calc(50%)] w-[calc(50%)] text-primary" />
             </div>
           </div>
           {/* Right Coin */}
-          <div className="absolute top-1/2 left-1/2 z-0 transform -translate-y-1/2 translate-x-[81.92px] sm:translate-x-[92.16px] md:translate-x-[102.4px]">
-            <div className="border-4 border-primary rounded-full bg-transparent flex items-center justify-center w-[102.4px] h-[102.4px] sm:w-[115.2px] sm:h-[115.2px] md:w-32 md:h-32">
+          <div className="absolute top-1/2 left-1/2 z-0 transform -translate-y-1/2 translate-x-[67.2px] sm:translate-x-[78.4px] md:translate-x-[89.6px]">
+            <div className="border-4 border-primary rounded-full bg-transparent flex items-center justify-center w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32">
               <Crown aria-hidden="true" className="h-[calc(50%)] w-[calc(50%)] text-primary" />
             </div>
           </div>
           {/* Central Coin */}
-          <div className="absolute top-1/2 left-1/2 z-10 transform -translate-x-1/2 -translate-y-1/2 border-4 border-primary rounded-full bg-background flex items-center justify-center w-32 h-32 sm:w-36 sm:h-36 md:w-40 md:h-40">
+          <div className="absolute top-1/2 left-1/2 z-10 transform -translate-x-1/2 -translate-y-1/2 border-4 border-primary rounded-full bg-background flex items-center justify-center w-[115.2px] h-[115.2px] sm:w-[134.4px] sm:h-[134.4px] md:w-[153.6px] md:h-[153.6px]">
             <Crown aria-hidden="true" className="h-[calc(50%)] w-[calc(50%)] text-primary" />
           </div>
         </div>
 
-        {/* Main Title - Adjusted bottom margin: mb-4 sm:mb-6 md:mb-8 */}
+        {/* Main Title */}
         <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold font-headline text-primary mb-4 sm:mb-6 md:mb-8">
           Step into a Realm of Royal Entertainment!
         </h1>
 
-        {/* Subtitle/Description - Keeping existing margin */}
+        {/* Subtitle/Description */}
         <p className="text-lg sm:text-xl md:text-2xl text-foreground mb-6 sm:mb-8 max-w-xl sm:max-w-2xl md:max-w-3xl mx-auto px-2">
           Experience the pinnacle of social casino gaming, where every play is a new adventure. Connect, compete, and celebrate your wins!
         </p>
 
-        {/* New Player Offer Banner - Keeping existing margin */}
+        {/* New Player Offer Banner */}
         <div className="mb-8 sm:mb-10 p-4 sm:p-6 bg-primary/10 border border-primary rounded-lg inline-block animate-glow">
           <h2 className="text-xl sm:text-2xl md:text-3xl font-headline text-primary flex items-center justify-center">
             <Coins aria-hidden="true" className="h-6 w-6 sm:h-8 md:h-10 mr-2 sm:mr-3 text-primary" /> New Player Offer!
@@ -52,7 +51,7 @@ export default function HeroContent() {
           </p>
         </div>
 
-        {/* CTA Buttons - Keeping existing margin */}
+        {/* CTA Buttons */}
         <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 mt-6 sm:mt-8">
           <Link href="/signup" passHref>
             <Button size="lg" variant="default" className="font-semibold px-6 sm:px-8 py-2.5 sm:py-3 text-md sm:text-lg w-full sm:w-auto">
