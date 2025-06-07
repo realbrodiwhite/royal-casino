@@ -2,7 +2,7 @@
 "use client";
 
 import Link from 'next/link';
-import { Crown, Gamepad2, UserCircle, BarChart3, Shield, Menu } from 'lucide-react';
+import { Crown, Gamepad2, UserCircle, BarChart3, Shield, Menu, BackpackIcon } from 'lucide-react'; // Added BackpackIcon
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import ExperienceBar from '@/components/layout/ExperienceBar';
@@ -26,7 +26,8 @@ const NavLink: React.FC<NavLinkProps> = ({ href, children, icon, onClick }) => {
   const pathname = usePathname();
   const isActive = pathname === href ||
                  (href === "/lobby" && pathname.startsWith("/games")) ||
-                 (href === "/profile" && pathname.startsWith("/profile"));
+                 (href === "/profile" && pathname.startsWith("/profile")) ||
+                 (href === "/backpack" && pathname.startsWith("/backpack")); // Added backpack active state
 
   return (
     <Link href={href} legacyBehavior>
@@ -69,6 +70,7 @@ export default function Navbar() {
             <div className="hidden md:flex items-center space-x-1 lg:space-x-2">
               <NavLink href="/lobby" icon={<Gamepad2 />}>Game Lobby</NavLink>
               <NavLink href="/profile" icon={<UserCircle />}>Profile</NavLink>
+              <NavLink href="/backpack" icon={<BackpackIcon />}>Backpack</NavLink> 
               {/* <NavLink href="/leaderboards" icon={<BarChart3 />}>Leaderboards</NavLink> */}
               <NavLink href="/admin" icon={<Shield />}>Admin</NavLink>
             </div>
@@ -95,6 +97,7 @@ export default function Navbar() {
                   <nav className="flex flex-col space-y-1 p-4 pt-0">
                     <NavLink href="/lobby" icon={<Gamepad2 />} onClick={() => setIsMobileMenuOpen(false)}>Game Lobby</NavLink>
                     <NavLink href="/profile" icon={<UserCircle />} onClick={() => setIsMobileMenuOpen(false)}>Profile</NavLink>
+                    <NavLink href="/backpack" icon={<BackpackIcon />} onClick={() => setIsMobileMenuOpen(false)}>Backpack</NavLink>
                     {/* <NavLink href="/leaderboards" icon={<BarChart3 />} onClick={() => setIsMobileMenuOpen(false)}>Leaderboards</NavLink> */}
                     <NavLink href="/admin" icon={<Shield />} onClick={() => setIsMobileMenuOpen(false)}>Admin</NavLink>
                   </nav>
