@@ -357,7 +357,7 @@ export default function SlotsPage() {
           ))}
         </main>
          <footer className="mt-8 sm:mt-12 text-center text-xs sm:text-sm text-muted-foreground px-2 py-1.5 sm:py-2 border-t border-border">
-            <p>&copy; {new Date().getFullYear()} Royal Casino. All Rights Reserved. Built By Brodi Inc.</p>
+            <p>&copy; 2025 Royal Casino. All Rights Reserved. Built By Brodi Inc.</p>
          </footer>
       </div>
     );
@@ -435,10 +435,12 @@ export default function SlotsPage() {
         </div>
       </main>
 
-      <footer className="mt-8 sm:mt-12 text-center text-xs sm:text-sm text-muted-foreground px-2 py-1.5 sm:py-2 border-t border-border">
-        <p>&copy; {new Date().getFullYear()} Royal Casino. All Rights Reserved. Built By Brodi Inc.</p>
+      <footer className="text-center py-1.5 sm:py-2 text-xs sm:text-sm text-muted-foreground border-t border-border">
+        <p>&copy; 2025 Royal Casino. All Rights Reserved. Built By Brodi Inc.</p>
         <p>Games are for entertainment purposes only. Play responsibly.</p>
       </footer>
     </div>
   );
 }
+
+    

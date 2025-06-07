@@ -153,7 +153,7 @@ export default function UserProfilePage() {
             <p className="text-xl text-gold">Loading Profile...</p>
         </div>
          <footer className="text-center py-1.5 sm:py-2 text-xs sm:text-sm text-silver/70 mt-12 border-t border-gold/20">
-            <p>&copy; {new Date().getFullYear()} Royal Casino. All Rights Reserved. Built By Brodi Inc.</p>
+            <p>&copy; 2025 Royal Casino. All Rights Reserved. Built By Brodi Inc.</p>
         </footer>
       </div>
     );
@@ -174,7 +174,7 @@ export default function UserProfilePage() {
           </Link>
         </main>
         <footer className="text-center py-1.5 sm:py-2 text-xs sm:text-sm text-silver/70 mt-12 border-t border-gold/20">
-            <p>&copy; {new Date().getFullYear()} Royal Casino. All Rights Reserved. Built By Brodi Inc.</p>
+            <p>&copy; 2025 Royal Casino. All Rights Reserved. Built By Brodi Inc.</p>
         </footer>
       </div>
     );
@@ -298,8 +298,10 @@ export default function UserProfilePage() {
         </div>
       </main>
       <footer className="text-center py-1.5 sm:py-2 text-xs sm:text-sm text-silver/70 mt-12 border-t border-gold/20">
-        <p>&copy; {new Date().getFullYear()} Royal Casino. All Rights Reserved. Built By Brodi Inc.</p>
+        <p>&copy; 2025 Royal Casino. All Rights Reserved. Built By Brodi Inc.</p>
       </footer>
     </div>
   );
 }
+
+    

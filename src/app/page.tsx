@@ -46,9 +46,11 @@ export default function LandingPage() {
       </main>
 
       <footer className="text-center py-1.5 sm:py-2 text-xs sm:text-sm text-muted-foreground border-t border-border">
-        <p>&copy; {new Date().getFullYear()} Royal Casino. All Rights Reserved. Built By Brodi Inc.</p>
+        <p>&copy; 2025 Royal Casino. All Rights Reserved. Built By Brodi Inc.</p>
         <p>For entertainment purposes only. Play responsibly.</p>
       </footer>
     </div>
   );
 }
+
+    
