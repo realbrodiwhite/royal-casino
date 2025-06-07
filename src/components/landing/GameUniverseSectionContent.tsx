@@ -6,25 +6,28 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import { Globe, Sparkles } from 'lucide-react';
+import { Globe, Sparkles, Crown } from 'lucide-react';
 import SlotsCategoryIcon from '@/components/game/category-icons/SlotsCategoryIcon';
 import PokerCategoryIcon from '@/components/game/category-icons/PokerCategoryIcon';
 import BingoCategoryIcon from '@/components/game/category-icons/BingoCategoryIcon';
 import ScratchersCategoryIcon from '@/components/game/category-icons/ScratchersCategoryIcon';
 import CoinFlipCategoryIcon from '@/components/game/category-icons/CoinFlipCategoryIcon';
+import CrapsCategoryIcon from '@/components/game/category-icons/CrapsCategoryIcon'; // For Rollin' Dice
 import { useToast } from "@/hooks/use-toast";
+import { cn } from '@/lib/utils'; // Added missing import
 
 interface GameTypeCardProps {
   icon: React.ReactNode;
   title: string;
   description: string;
-  href?: string; // Made optional
+  href?: string;
   disabled?: boolean;
-  footerContent?: React.ReactNode; // New prop for custom footer
+  footerContent?: React.ReactNode;
+  className?: string;
 }
 
-const GameTypeCard: React.FC<GameTypeCardProps> = ({ icon, title, description, href, disabled, footerContent }) => (
-  <Card className="bg-card border-border shadow-lg hover:shadow-primary/30 transition-shadow duration-300 flex flex-col text-center">
+const GameTypeCard: React.FC<GameTypeCardProps> = ({ icon, title, description, href, disabled, footerContent, className }) => (
+  <Card className={cn("bg-card border-border shadow-lg hover:shadow-primary/30 transition-shadow duration-300 flex flex-col text-center", className)}>
     <CardHeader className="items-center pt-6 sm:pt-8">
       <div className="p-3 sm:p-4 bg-primary/20 rounded-full mb-3 sm:mb-4 inline-block">
         {React.cloneElement(icon as React.ReactElement, { className: "h-16 w-16 sm:h-20 sm:w-20 text-primary" })}
@@ -32,7 +35,7 @@ const GameTypeCard: React.FC<GameTypeCardProps> = ({ icon, title, description, h
       <CardTitle className="text-lg sm:text-xl font-headline text-primary">{title}</CardTitle>
     </CardHeader>
     <CardContent className="flex-grow px-4 pb-4 sm:px-6 sm:pb-6">
-      <CardDescription className="text-muted-foreground text-xs sm:text-sm mb-3 sm:mb-4 min-h-[3.5rem]">{description}</CardDescription>
+      <CardDescription className="text-muted-foreground text-xs sm:text-sm mb-3 sm:mb-4 min-h-[3.5rem] sm:min-h-[5rem]">{description}</CardDescription>
     </CardContent>
     <CardFooter className="mt-auto px-4 pb-4 sm:px-6 sm:pb-6 pt-0">
       {footerContent ? footerContent : (
@@ -58,7 +61,6 @@ export default function GameUniverseSectionContent() {
       toast({ title: "Email Required", description: "Please enter your email address.", variant: "destructive" });
       return;
     }
-    // Basic email validation
     if (!/\S+@\S+\.\S+/.test(reminderEmail)) {
       toast({ title: "Invalid Email", description: "Please enter a valid email address.", variant: "destructive" });
       return;
@@ -70,41 +72,50 @@ export default function GameUniverseSectionContent() {
     setReminderEmail('');
   };
 
-  const games = [
+  const topGames = [
     {
       icon: <SlotsCategoryIcon aria-hidden="true" />,
       title: "Dazzling Slots",
-      description: "Spin through worlds of wonder with vibrant themes, captivating stories, and exhilarating bonus features designed to thrill.",
+      description: "Spin to win with Royal Casino's Dazzling Slots! Explore a universe of online slot games, from classic fruit machines to modern video slots with thrilling bonus features and massive virtual jackpots. Your next big win awaits!",
       href: "/games/slots"
     },
     {
       icon: <PokerCategoryIcon aria-hidden="true" />,
       title: "Masterful Poker",
-      description: "Sharpen your skills and outwit opponents at our Video Poker tables. Aim for the Royal Flush!",
+      description: "Challenge yourself with Masterful Video Poker at Royal Casino. Test your poker strategy and skill in our Jacks or Better games. Aim for the coveted Royal Flush and play like a pro in a premium online poker environment.",
       href: "/lobby/poker"
     },
     {
       icon: <BingoCategoryIcon aria-hidden="true" />,
-      title: "Lively Bingo",
-      description: "Daub your way to victory in our buzzing bingo rooms. Feel the rush as your numbers are called!",
+      title: "Lovely Bingo",
+      description: "Join the fun in Royal Casino's Lovely Bingo rooms! Experience the excitement of online bingo games, daub your way to victory with classic and unique patterns, and connect with a vibrant community of players. It’s easy to play and always a great time!",
       href: "/lobby/bingo"
     },
     {
       icon: <ScratchersCategoryIcon aria-hidden="true" />,
       title: "Instant Scratchers",
-      description: "Uncover instant prizes and thrilling surprises with a quick scratch. Fast fun, big excitement!",
+      description: "Win in an instant with Royal Casino's exciting Scratchers! Discover a wide variety of online scratch cards offering quick thrills and big virtual prizes. If you love instant win lottery games, our scratch tickets are for you!",
       href: "/lobby/scratchers"
     },
     {
       icon: <CoinFlipCategoryIcon aria-hidden="true" />,
       title: "Classic Coin Flip",
-      description: "Heads or Tails? A pure game of chance for quick bets and instant gratification. Double up if you dare!",
+      description: "Take a chance with Royal Casino's Classic Coin Flip! It’s the ultimate simple bet – heads or tails? Enjoy this fast-paced 50/50 online casino game for quick decisions and instant results. Double your virtual stake if you dare!",
       href: "/lobby/coin-flip"
     },
     {
+      icon: <CrapsCategoryIcon aria-hidden="true" />,
+      title: "Rollin' Dice (Craps)",
+      description: "Experience the electrifying thrill of the dice with Rollin' Dice (Craps) at Royal Casino! Get ready for this iconic casino game, learn the pass line, and feel the rush of every roll. The excitement of online craps is coming soon!",
+      href: "#",
+      disabled: true,
+    }
+  ];
+
+  const comingSoonGame = {
       icon: <Sparkles aria-hidden="true" />,
-      title: "More Adventures Coming Soon!",
-      description: "Get ready! Craps, Roulette, Keno, and Lottery games are on their way to expand your royal playground!",
+      title: "More Adventures Incoming!",
+      description: "Get ready! Keno, Roulette, and exciting Lottery games are on their way to expand your royal playground! Enter your email to be notified.",
       footerContent: (
         <form onSubmit={handleReminderSubmit} className="w-full space-y-2">
           <Input
@@ -120,8 +131,7 @@ export default function GameUniverseSectionContent() {
           </Button>
         </form>
       )
-    }
-  ];
+    };
 
   return (
     <section className="py-12 sm:py-16 bg-background">
@@ -131,19 +141,59 @@ export default function GameUniverseSectionContent() {
         <p className="text-lg text-muted-foreground mb-10 sm:mb-12 text-center max-w-2xl mx-auto">
           From dazzling slots and strategic poker to lively bingo and instant-win scratchers, your next favorite game is here. Explore diverse themes and chase epic virtual jackpots!
         </p>
+        
+        {/* Top 6 Games in a 2x3 Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-          {games.map((game, index) => (
+          {topGames.map((game, index) => (
             <GameTypeCard
               key={index}
               icon={game.icon}
               title={game.title}
               description={game.description}
               href={game.href}
+              disabled={game.disabled}
               footerContent={game.footerContent}
             />
           ))}
         </div>
+
+        {/* "More Adventures Coming Soon!" Card - Full width below the grid */}
+        <div className="mt-10 sm:mt-12">
+            <GameTypeCard
+                icon={comingSoonGame.icon}
+                title={comingSoonGame.title}
+                description={comingSoonGame.description}
+                footerContent={comingSoonGame.footerContent}
+                className="lg:col-span-3" 
+            />
+        </div>
+
+        {/* New Welcome Card - Full width below */}
+        <div className="mt-10 sm:mt-12">
+            <Card className="bg-gradient-to-br from-primary/10 via-card to-secondary/10 border-border shadow-xl text-center">
+                <CardHeader className="items-center pt-6 sm:pt-8">
+                    <div className="p-3 sm:p-4 bg-primary/20 rounded-full mb-3 sm:mb-4 inline-block">
+                        <Crown className="h-16 w-16 sm:h-20 sm:w-20 text-primary" />
+                    </div>
+                    <CardTitle className="text-xl sm:text-2xl md:text-3xl font-headline text-primary">Welcome to the Kingdom!</CardTitle>
+                </CardHeader>
+                <CardContent className="px-4 pb-4 sm:px-6 sm:pb-6">
+                    <CardDescription className="text-lg sm:text-xl text-muted-foreground mb-6 max-w-xl mx-auto">
+                        Your royal adventure starts now! Explore our vast selection of games, connect with fellow players, and discover why Royal Casino is the ultimate social gaming destination.
+                    </CardDescription>
+                </CardContent>
+                <CardFooter className="justify-center mt-auto px-4 pb-6 sm:px-6 sm:pb-8 pt-0">
+                    <Link href="/lobby" passHref>
+                        <Button variant="default" size="lg" className="font-semibold px-8 py-3 text-lg">
+                            Explore All Games
+                        </Button>
+                    </Link>
+                </CardFooter>
+            </Card>
+        </div>
+
       </div>
     </section>
   );
 }
+
