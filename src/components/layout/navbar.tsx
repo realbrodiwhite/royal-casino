@@ -9,6 +9,8 @@ import ExperienceBar from '@/components/layout/ExperienceBar';
 import {
   Sheet,
   SheetContent,
+  SheetHeader,
+  SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
 import React from 'react';
@@ -79,15 +81,18 @@ export default function Navbar() {
                   </button>
                 </SheetTrigger>
                 <SheetContent side="left" className="w-[280px] bg-background p-0">
-                  <nav className="flex flex-col space-y-2 p-4 pt-6">
+                  <SheetHeader className="p-4 pb-2">
+                    <SheetTitle className="sr-only">Main Menu</SheetTitle>
                      <Link href="/" legacyBehavior>
-                        <a className="flex items-center text-primary hover:text-primary/90 transition-colors mb-4" onClick={() => setIsMobileMenuOpen(false)}>
+                        <a className="flex items-center text-primary hover:text-primary/90 transition-colors mb-2" onClick={() => setIsMobileMenuOpen(false)}>
                             <div className="mr-3 flex items-center justify-center w-8 h-8 border-[3px] border-primary rounded-full bg-background">
                             <Crown className="h-4 w-4 text-primary" aria-hidden="true" />
                             </div>
                             <span className="text-lg font-headline font-bold">Royal Casino</span>
                         </a>
                     </Link>
+                  </SheetHeader>
+                  <nav className="flex flex-col space-y-1 p-4 pt-0">
                     <NavLink href="/lobby" icon={<Gamepad2 />} onClick={() => setIsMobileMenuOpen(false)}>Game Lobby</NavLink>
                     <NavLink href="/profile" icon={<UserCircle />} onClick={() => setIsMobileMenuOpen(false)}>Profile</NavLink>
                     {/* <NavLink href="/leaderboards" icon={<BarChart3 />} onClick={() => setIsMobileMenuOpen(false)}>Leaderboards</NavLink> */}
