@@ -48,12 +48,14 @@ export default function SignupPage() {
     }
 
     try {
+      // User creation is Step 1.
       await createUserWithEmailAndPassword(auth, email, password);
       toast({
-        title: "Signup Successful",
-        description: `Welcome, ${email}! Your account has been created.`,
+        title: "Account Created!",
+        description: `Welcome, ${email}! Let's complete your profile.`,
       });
-      router.push('/lobby');
+      // Redirect to the next step of onboarding
+      router.push('/onboarding/profile-details');
     } catch (error: any) {
       let errorMessage = "An unexpected error occurred. Please try again.";
       if (error.code === 'auth/email-already-in-use') {
@@ -81,7 +83,7 @@ export default function SignupPage() {
         <Card className="w-full max-w-md bg-card border-border shadow-xl">
           <CardHeader className="text-center">
             <UserPlus className="mx-auto h-12 w-12 sm:h-16 sm:w-16 text-primary mb-4" />
-            <CardTitle className="text-xl sm:text-2xl md:text-3xl font-headline text-primary">Create Your Account</CardTitle>
+            <CardTitle className="text-xl sm:text-2xl md:text-3xl font-headline text-primary">Create Your Account (Step 1 of 3)</CardTitle>
             <CardDescription className="text-muted-foreground">
               Join Royal Casino today and start your winning journey!
             </CardDescription>
@@ -135,7 +137,7 @@ export default function SignupPage() {
               </div>
               <Button type="submit" variant="default" className="w-full font-semibold py-3" disabled={isLoading}>
                 {isLoading ? <RotateCw className="mr-2 h-4 w-4 animate-spin" /> : null}
-                {isLoading ? 'Signing Up...' : 'Sign Up'}
+                {isLoading ? 'Creating Account...' : 'Next: Profile Details'}
               </Button>
             </form>
           </CardContent>
@@ -155,5 +157,3 @@ export default function SignupPage() {
     </div>
   );
 }
-
-    
