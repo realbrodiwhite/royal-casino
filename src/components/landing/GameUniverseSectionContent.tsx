@@ -139,7 +139,7 @@ export default function GameUniverseSectionContent() {
         <Globe aria-hidden="true" className="mx-auto h-12 w-12 sm:h-16 sm:w-16 text-primary mb-4 sm:mb-6" />
         <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold font-headline text-primary mb-4 text-center">A Universe of Thrilling Games Awaits Your Command!</h2>
         <p className="text-lg text-muted-foreground mb-10 sm:mb-12 text-center max-w-2xl mx-auto">
-          From dazzling slots and strategic poker to lively bingo and instant-win scratchers, your next favorite game is here. Explore diverse themes and chase epic virtual jackpots!
+          From dazzling slots and strategic poker to lovely bingo and instant-win scratchers, your next favorite game is here. Explore diverse themes and chase epic virtual jackpots!
         </p>
         
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
@@ -156,13 +156,13 @@ export default function GameUniverseSectionContent() {
           ))}
         </div>
 
-        <div className="mt-10 sm:mt-12">
+        <div className="mt-10 sm:mt-12 grid grid-cols-1"> 
             <GameTypeCard
                 icon={comingSoonGame.icon}
                 title={comingSoonGame.title}
                 description={comingSoonGame.description}
                 footerContent={comingSoonGame.footerContent}
-                className="lg:col-span-3" 
+                className="w-full" 
             />
         </div>
 
