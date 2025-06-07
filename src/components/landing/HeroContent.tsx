@@ -11,22 +11,25 @@ export default function HeroContent() {
     <section className="text-center bg-gradient-to-b from-background via-purple-800/30 to-background min-h-[calc(100vh-88px)] sm:min-h-[calc(100vh-92px)] flex flex-col justify-center">
       <div className="container mx-auto px-4">
 
-        {/* Triple Coin Logo Container - Adjusted for new sizes and centering */}
-        <div className="relative mb-10 sm:mb-12 md:mb-14 h-36 sm:h-40 md:h-44"> {/* LOGO CONTAINER HEIGHT - Base height updated */}
-          {/* Left Back Coin - Positioned relative to center */}
+        {/* Triple Coin Logo Container - Adjusted heights */}
+        <div className="relative mb-10 sm:mb-12 md:mb-14 h-[145.6px] sm:h-[166.4px] md:h-[187.2px]">
+          {/* Left Back Coin - Positioning div */}
           <div className="absolute top-1/2 left-[calc(50%-78.4px)] sm:left-[calc(50%-89.6px)] md:left-[calc(50%-100.8px)] z-0 transform -translate-x-1/2 -translate-y-1/2 w-28 h-28 sm:w-32 sm:h-32 md:w-36 md:h-36">
+            {/* Visual element for left back coin */}
             <div className="border-4 border-primary rounded-full bg-transparent flex items-center justify-center w-full h-full">
               <Crown aria-hidden="true" className="h-[calc(50%)] w-[calc(50%)] text-primary" />
             </div>
           </div>
-          {/* Right Back Coin - Positioned relative to center */}
+          {/* Right Back Coin - Positioning div */}
           <div className="absolute top-1/2 left-[calc(50%+78.4px)] sm:left-[calc(50%+89.6px)] md:left-[calc(50%+100.8px)] z-0 transform -translate-x-1/2 -translate-y-1/2 w-28 h-28 sm:w-32 sm:h-32 md:w-36 md:h-36">
+            {/* Visual element for right back coin */}
             <div className="border-4 border-primary rounded-full bg-transparent flex items-center justify-center w-full h-full">
               <Crown aria-hidden="true" className="h-[calc(50%)] w-[calc(50%)] text-primary" />
             </div>
           </div>
-          {/* Central Front Coin - Centered */}
-          <div className="absolute top-1/2 left-1/2 z-10 transform -translate-x-1/2 -translate-y-1/2 w-36 h-36 sm:w-40 sm:h-40 md:w-44 md:h-44"> {/* CENTRAL COIN SIZE - Base size updated */}
+          {/* Central Front Coin - Positioning div */}
+          <div className="absolute top-1/2 left-1/2 z-10 transform -translate-x-1/2 -translate-y-1/2 w-[145.6px] h-[145.6px] sm:w-[166.4px] sm:h-[166.4px] md:w-[187.2px] md:h-[187.2px]">
+            {/* Visual element for central coin */}
             <div className="border-4 border-primary rounded-full bg-background flex items-center justify-center w-full h-full">
               <Crown aria-hidden="true" className="h-[calc(50%)] w-[calc(50%)] text-primary" />
             </div>
