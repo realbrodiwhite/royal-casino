@@ -14,20 +14,22 @@ export default function HeroContent() {
         {/* Triple Coin Logo Container - Adjusted for new sizes and centering */}
         <div className="relative mb-10 sm:mb-12 md:mb-14 h-32 sm:h-40 md:h-44">
           {/* Left Back Coin */}
-          <div className="absolute top-1/2 left-1/2 z-0 transform -translate-y-1/2 translate-x-[-78.4px] sm:translate-x-[-89.6px] md:translate-x-[-100.8px]">
-            <div className="border-4 border-primary rounded-full bg-transparent flex items-center justify-center w-28 h-28 sm:w-32 sm:h-32 md:w-36 md:h-36">
+          <div className="absolute top-1/2 left-[calc(50%-78.4px)] sm:left-[calc(50%-89.6px)] md:left-[calc(50%-100.8px)] z-0 transform -translate-x-1/2 -translate-y-1/2 w-28 h-28 sm:w-32 sm:h-32 md:w-36 md:h-36">
+            <div className="border-4 border-primary rounded-full bg-transparent flex items-center justify-center w-full h-full">
               <Crown aria-hidden="true" className="h-[calc(50%)] w-[calc(50%)] text-primary" />
             </div>
           </div>
           {/* Right Back Coin */}
-          <div className="absolute top-1/2 left-1/2 z-0 transform -translate-y-1/2 translate-x-[78.4px] sm:translate-x-[89.6px] md:translate-x-[100.8px]">
-            <div className="border-4 border-primary rounded-full bg-transparent flex items-center justify-center w-28 h-28 sm:w-32 sm:h-32 md:w-36 md:h-36">
+          <div className="absolute top-1/2 left-[calc(50%+78.4px)] sm:left-[calc(50%+89.6px)] md:left-[calc(50%+100.8px)] z-0 transform -translate-x-1/2 -translate-y-1/2 w-28 h-28 sm:w-32 sm:h-32 md:w-36 md:h-36">
+            <div className="border-4 border-primary rounded-full bg-transparent flex items-center justify-center w-full h-full">
               <Crown aria-hidden="true" className="h-[calc(50%)] w-[calc(50%)] text-primary" />
             </div>
           </div>
           {/* Central Front Coin */}
-          <div className="absolute top-1/2 left-1/2 z-10 transform -translate-x-1/2 -translate-y-1/2 border-4 border-primary rounded-full bg-background flex items-center justify-center w-32 h-32 sm:w-40 sm:h-40 md:w-44 md:h-44">
-            <Crown aria-hidden="true" className="h-[calc(50%)] w-[calc(50%)] text-primary" />
+          <div className="absolute top-1/2 left-1/2 z-10 transform -translate-x-1/2 -translate-y-1/2 w-32 h-32 sm:w-40 sm:h-40 md:w-44 md:h-44">
+            <div className="border-4 border-primary rounded-full bg-background flex items-center justify-center w-full h-full">
+              <Crown aria-hidden="true" className="h-[calc(50%)] w-[calc(50%)] text-primary" />
+            </div>
           </div>
         </div>
 
