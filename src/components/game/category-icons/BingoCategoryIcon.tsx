@@ -9,25 +9,39 @@ const BingoCategoryIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
     data-ai-hint="bingo card game"
     {...props}
   >
-    <rect x="20" y="20" width="60" height="60" rx="4" stroke="currentColor" strokeWidth="3" fill="none" />
-    {/* Simplified grid lines */}
-    <line x1="20" y1="35" x2="80" y2="35" stroke="currentColor" strokeWidth="2" />
-    <line x1="20" y1="50" x2="80" y2="50" stroke="currentColor" strokeWidth="2" />
-    <line x1="20" y1="65" x2="80" y2="65" stroke="currentColor" strokeWidth="2" />
-
-    <line x1="35" y1="20" x2="35" y2="80" stroke="currentColor" strokeWidth="2" />
-    <line x1="50" y1="20" x2="50" y2="80" stroke="currentColor" strokeWidth="2" />
-    <line x1="65" y1="20" x2="65" y2="80" stroke="currentColor" strokeWidth="2" />
+    {/* Card background and border */}
+    <rect x="20" y="20" width="60" height="60" rx="4" stroke="hsl(var(--border))" strokeWidth="2.5" fill="hsl(var(--card))" />
     
-    {/* Daubed circles */}
-    <circle cx="27.5" cy="27.5" r="5" fill="currentColor" opacity="0.8" />
-    <circle cx="72.5" cy="27.5" r="5" fill="currentColor" opacity="0.5" />
-    <circle cx="50" cy="50" r="6" fill="currentColor" opacity="0.9" /> {/* Center (Free Space) */}
-    <circle cx="27.5" cy="72.5" r="5" fill="currentColor" opacity="0.5" />
-    <circle cx="72.5" cy="72.5" r="5" fill="currentColor" opacity="0.8" />
+    {/* Grid lines */}
+    <line x1="20" y1="32" x2="80" y2="32" stroke="hsl(var(--border))" strokeWidth="1" opacity="0.6" />
+    <line x1="20" y1="44" x2="80" y2="44" stroke="hsl(var(--border))" strokeWidth="1" opacity="0.6" />
+    <line x1="20" y1="56" x2="80" y2="56" stroke="hsl(var(--border))" strokeWidth="1" opacity="0.6" />
+    <line x1="20" y1="68" x2="80" y2="68" stroke="hsl(var(--border))" strokeWidth="1" opacity="0.6" />
 
-    {/* BINGO letters - simplified */}
-    <text x="50" y="15" fontSize="10" fontWeight="bold" fill="currentColor" textAnchor="middle">BINGO</text>
+    <line x1="32" y1="20" x2="32" y2="80" stroke="hsl(var(--border))" strokeWidth="1" opacity="0.6" />
+    <line x1="44" y1="20" x2="44" y2="80" stroke="hsl(var(--border))" strokeWidth="1" opacity="0.6" />
+    <line x1="56" y1="20" x2="56" y2="80" stroke="hsl(var(--border))" strokeWidth="1" opacity="0.6" />
+    <line x1="68" y1="20" x2="68" y2="80" stroke="hsl(var(--border))" strokeWidth="1" opacity="0.6" />
+    
+    {/* BINGO letters */}
+    <text x="50" y="15" fontSize="10.5" fontWeight="bold" fill="hsl(var(--primary))" textAnchor="middle">BINGO</text>
+
+    {/* Daubed circles - using primary for most, accent for FREE space */}
+    {/* Row 1 */}
+    <circle cx="26" cy="26" r="4.5" fill="hsl(var(--primary))" opacity="0.75" />
+    <circle cx="38" cy="26" r="4.5" fill="hsl(var(--primary))" opacity="0.5" />
+    {/* Row 2 */}
+    <circle cx="26" cy="38" r="4.5" fill="hsl(var(--primary))" opacity="0.6" />
+    {/* Row 3 - Center (Free Space) */}
+    <circle cx="50" cy="50" r="6" fill="hsl(var(--accent))" opacity="1" stroke="hsl(var(--accent-foreground))" strokeWidth="0.5"/>
+    <text x="50" y="53.5" fontSize="6" fontWeight="bold" fill="hsl(var(--accent-foreground))" textAnchor="middle">FREE</text>
+    
+    {/* Other daubs */}
+    <circle cx="62" cy="38" r="4.5" fill="hsl(var(--primary))" opacity="0.8" />
+    <circle cx="74" cy="62" r="4.5" fill="hsl(var(--primary))" opacity="0.7" />
+    <circle cx="38" cy="74" r="4.5" fill="hsl(var(--primary))" opacity="0.85" />
+    <circle cx="62" cy="74" r="4.5" fill="hsl(var(--primary))" opacity="0.55" />
+
   </svg>
 );
 
