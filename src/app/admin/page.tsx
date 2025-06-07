@@ -8,8 +8,9 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { useToast } from "@/hooks/use-toast";
-import { Coins, UserCog, BarChart2, Brain, Settings, UsersRound, Percent, Search, BarChartHorizontalBig, LineChart, TrendingUp, UserPlus, Clock, Award, Gem } from 'lucide-react';
+import { Coins, UserCog, BarChart2, Brain, Settings, UsersRound, Percent, Search, BarChartHorizontalBig, LineChart, TrendingUp, UserPlus, Clock, Award, Gem, ShieldAlert, ShieldCheck, KeyRound, Eye } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Badge } from '@/components/ui/badge';
 
 import {
   SidebarProvider,
@@ -30,6 +31,16 @@ interface GameSetting {
   currentRTP: number;
 }
 
+interface FoundUserDetails {
+  id: string;
+  email: string;
+  joinDate: string;
+  lastLogin: string;
+  isBanned: boolean;
+  standardCredits: number;
+  premiumCoins: number;
+}
+
 const initialGameSettings: GameSetting[] = [
   { id: 'classic-slots', name: 'Classic Fruit Slots', currentRTP: 96.5 },
   { id: 'vegas-adventure', name: 'Vegas Adventure Slots', currentRTP: 95.8 },
@@ -40,15 +51,52 @@ const initialGameSettings: GameSetting[] = [
   { id: 'scratchers', name: 'Scratchers', currentRTP: 85.0 },
 ];
 
+// Mock user data for demonstration
+const mockUsers: Record<string, FoundUserDetails> = {
+  "player123": {
+    id: "player123",
+    email: "player@example.com",
+    joinDate: "2023-05-15",
+    lastLogin: "2024-07-28 10:30 AM",
+    isBanned: false,
+    standardCredits: 1500,
+    premiumCoins: 75,
+  },
+  "adminUser": {
+    id: "adminUser",
+    email: "admin@royalcasino.dev",
+    joinDate: "2023-01-01",
+    lastLogin: "2024-07-29 09:00 AM",
+    isBanned: false,
+    standardCredits: 99999,
+    premiumCoins: 1000,
+  },
+  "bannedUser456": {
+    id: "bannedUser456",
+    email: "trouble@example.com",
+    joinDate: "2023-10-20",
+    lastLogin: "2024-06-01 14:00 PM",
+    isBanned: true,
+    standardCredits: 50,
+    premiumCoins: 0,
+  }
+};
+
+
 export default function AdminDashboardPage() {
-  const [activeView, setActiveView] = useState<AdminView>('analytics');
-  const [userId, setUserId] = useState('');
+  const [activeView, setActiveView] = useState<AdminView>('userManagement');
+  const [currencyUserId, setCurrencyUserId] = useState('');
   const [creditAmount, setCreditAmount] = useState('');
   const [premiumCoinAmount, setPremiumCoinAmount] = useState('');
   const { toast } = useToast();
 
   const [gameSettings, setGameSettings] = useState<GameSetting[]>(initialGameSettings);
   const [rtpInputs, setRtpInputs] = useState<Record<string, string>>({});
+
+  // State for Account Actions tab
+  const [searchUserQuery, setSearchUserQuery] = useState('');
+  const [foundUserDetails, setFoundUserDetails] = useState<FoundUserDetails | null>(null);
+
 
   useEffect(() => {
     const initialRtpInputs: Record<string, string> = {};
@@ -59,8 +107,8 @@ export default function AdminDashboardPage() {
   }, [gameSettings]);
 
   const handleAddCurrency = () => {
-    if (!userId) {
-      toast({ title: "Error", description: "Please enter a User ID.", variant: "destructive" });
+    if (!currencyUserId) {
+      toast({ title: "Error", description: "Please enter a User ID for currency management.", variant: "destructive" });
       return;
     }
     const stdCredits = parseInt(creditAmount);
@@ -73,23 +121,23 @@ export default function AdminDashboardPage() {
 
     let messages = [];
     if (!isNaN(stdCredits) && stdCredits > 0) {
-      console.log(`Adding ${stdCredits} standard credits to user ${userId}`);
+      // Mock action: console.log(`Adding ${stdCredits} standard credits to user ${currencyUserId}`);
       messages.push(`${stdCredits} standard credits`);
     }
     if (!isNaN(premCoins) && premCoins > 0) {
-      console.log(`Adding ${premCoins} premium coins to user ${userId}`);
+      // Mock action: console.log(`Adding ${premCoins} premium coins to user ${currencyUserId}`);
       messages.push(`${premCoins} premium coins`);
     }
 
-    toast({ title: "Success", description: `Successfully added ${messages.join(' and ')} to user ${userId}. (Mock Action)` });
-    setUserId('');
+    toast({ title: "Success (Mock)", description: `Successfully added ${messages.join(' and ')} to user ${currencyUserId}.` });
+    setCurrencyUserId('');
     setCreditAmount('');
     setPremiumCoinAmount('');
   };
 
   const handleSetCurrency = () => {
-     if (!userId) {
-      toast({ title: "Error", description: "Please enter a User ID.", variant: "destructive" });
+     if (!currencyUserId) {
+      toast({ title: "Error", description: "Please enter a User ID for currency management.", variant: "destructive" });
       return;
     }
     const stdCredits = creditAmount !== '' ? parseInt(creditAmount) : NaN;
@@ -108,18 +156,17 @@ export default function AdminDashboardPage() {
         return;
     }
 
-
     let messages = [];
     if (!isNaN(stdCredits)) {
-      console.log(`Setting standard credits for user ${userId} to ${stdCredits}`);
+      // Mock action: console.log(`Setting standard credits for user ${currencyUserId} to ${stdCredits}`);
       messages.push(`standard credits to ${stdCredits}`);
     }
     if (!isNaN(premCoins)) {
-      console.log(`Setting premium coins for user ${userId} to ${premCoins}`);
+      // Mock action: console.log(`Setting premium coins for user ${currencyUserId} to ${premCoins}`);
       messages.push(`premium coins to ${premCoins}`);
     }
-    toast({ title: "Success", description: `Successfully set ${messages.join(' and ')} for user ${userId}. (Mock Action)` });
-    setUserId('');
+    toast({ title: "Success (Mock)", description: `Successfully set ${messages.join(' and ')} for user ${currencyUserId}.` });
+    setCurrencyUserId('');
     setCreditAmount('');
     setPremiumCoinAmount('');
   };
@@ -145,6 +192,55 @@ export default function AdminDashboardPage() {
     toast({ title: "RTP Updated (Mock)", description: `RTP for game ${gameSettings.find(g => g.id === gameId)?.name} set to ${newRtp}%.` });
   };
 
+  const handleSearchUser = () => {
+    if (!searchUserQuery.trim()) {
+      toast({ title: "Search Error", description: "Please enter a User ID or Email to search.", variant: "destructive" });
+      setFoundUserDetails(null);
+      return;
+    }
+    // Mock search logic
+    const foundUser = mockUsers[searchUserQuery.trim().toLowerCase()] || Object.values(mockUsers).find(u => u.email.toLowerCase() === searchUserQuery.trim().toLowerCase());
+
+    if (foundUser) {
+      setFoundUserDetails(foundUser);
+      toast({ title: "User Found", description: `Displaying details for ${foundUser.id}.` });
+    } else {
+      setFoundUserDetails(null);
+      toast({ title: "User Not Found", description: `No user found with query: "${searchUserQuery}".`, variant: "destructive" });
+    }
+  };
+
+  const handleToggleBanUser = () => {
+    if (foundUserDetails) {
+      const updatedStatus = !foundUserDetails.isBanned;
+      // Update mock local data for persistence during session
+      mockUsers[foundUserDetails.id].isBanned = updatedStatus;
+      setFoundUserDetails(prev => prev ? { ...prev, isBanned: updatedStatus } : null);
+      toast({
+        title: `User ${updatedStatus ? 'Banned' : 'Unbanned'} (Mock)`,
+        description: `${foundUserDetails.email} has been ${updatedStatus ? 'banned' : 'unbanned'}.`,
+      });
+    }
+  };
+
+  const handleResetPassword = () => {
+    if (foundUserDetails) {
+      toast({
+        title: "Password Reset (Mock)",
+        description: `A password reset link would be sent to ${foundUserDetails.email}.`,
+      });
+    }
+  };
+
+  const handleViewFullDetails = () => {
+     if (foundUserDetails) {
+      toast({
+        title: "View Full Details (Mock)",
+        description: `Navigating to full profile/details page for ${foundUserDetails.id}. (This is a placeholder action)`,
+      });
+    }
+  };
+
 
   const renderContent = () => {
     switch (activeView) {
@@ -162,15 +258,15 @@ export default function AdminDashboardPage() {
                       <UserCog className="mr-2 h-5 w-5 sm:h-6 sm:w-6" /> User Currency Management
                     </CardTitle>
                     <CardDescription className="text-muted-foreground text-sm sm:text-base">
-                      Add or set Standard Credits and Premium Coins for a user.
+                      Add or set Standard Credits and Premium Coins for a user. All actions are mock.
                     </CardDescription>
                   </CardHeader>
                   <CardContent className="space-y-4">
                     <div className="space-y-2">
-                      <Label htmlFor="userId" className="text-foreground">User ID</Label>
+                      <Label htmlFor="currencyUserId" className="text-foreground">User ID</Label>
                       <Input
-                        id="userId" type="text" placeholder="Enter user ID" value={userId}
-                        onChange={(e) => setUserId(e.target.value)}
+                        id="currencyUserId" type="text" placeholder="Enter user ID" value={currencyUserId}
+                        onChange={(e) => setCurrencyUserId(e.target.value)}
                         className="bg-input border-border text-foreground placeholder:text-muted-foreground"
                       />
                     </div>
@@ -208,15 +304,67 @@ export default function AdminDashboardPage() {
                       <UserCog className="mr-2 h-5 w-5 sm:h-6 sm:w-6" /> User Account Actions
                     </CardTitle>
                     <CardDescription className="text-muted-foreground text-sm sm:text-base">
-                      Manage user accounts (e.g., view details, ban, etc.). (Coming Soon)
+                      Search for users, view their status, and perform account actions. All actions are mock.
                     </CardDescription>
                   </CardHeader>
-                  <CardContent className="space-y-4">
-                    <p className="text-foreground">Functionality to view user details, ban users, reset passwords (if applicable), etc., will be available here.</p>
+                  <CardContent className="space-y-6">
                     <div className="flex items-center gap-2">
-                        <Input type="text" placeholder="Search User ID or Email..." className="bg-input border-border text-foreground placeholder:text-muted-foreground"/>
-                        <Button variant="outline"><Search className="h-4 w-4"/></Button>
+                        <Input
+                            type="text"
+                            placeholder="Search User ID or Email..."
+                            value={searchUserQuery}
+                            onChange={(e) => setSearchUserQuery(e.target.value)}
+                            className="bg-input border-border text-foreground placeholder:text-muted-foreground flex-grow"
+                        />
+                        <Button variant="outline" onClick={handleSearchUser}><Search className="h-4 w-4"/></Button>
                     </div>
+
+                    {foundUserDetails && (
+                      <Card className="bg-background/50 border-border/50 p-4">
+                        <CardHeader className="p-0 pb-3 mb-3 border-b border-border/30">
+                            <CardTitle className="text-lg text-primary flex items-center justify-between">
+                                <span>{foundUserDetails.email} ({foundUserDetails.id})</span>
+                                 <Badge variant={foundUserDetails.isBanned ? "destructive" : "secondary"} className="ml-2 text-xs">
+                                    {foundUserDetails.isBanned ? 'Banned' : 'Active'}
+                                 </Badge>
+                            </CardTitle>
+                        </CardHeader>
+                        <CardContent className="p-0 space-y-2 text-sm">
+                           <div className="flex justify-between">
+                                <span className="text-muted-foreground">Joined:</span>
+                                <span className="text-foreground">{foundUserDetails.joinDate}</span>
+                           </div>
+                           <div className="flex justify-between">
+                                <span className="text-muted-foreground">Last Login:</span>
+                                <span className="text-foreground">{foundUserDetails.lastLogin}</span>
+                           </div>
+                           <div className="flex justify-between">
+                                <span className="text-muted-foreground">Std. Credits:</span>
+                                <span className="text-foreground">{foundUserDetails.standardCredits.toLocaleString()}</span>
+                           </div>
+                           <div className="flex justify-between">
+                                <span className="text-muted-foreground">Prem. Coins:</span>
+                                <span className="text-foreground">{foundUserDetails.premiumCoins.toLocaleString()}</span>
+                           </div>
+                        </CardContent>
+                        <CardFooter className="p-0 pt-4 mt-4 border-t border-border/30 flex flex-wrap gap-2 justify-end">
+                            <Button onClick={handleViewFullDetails} variant="ghost" size="sm" className="text-primary">
+                                <Eye className="mr-1 h-4 w-4"/> View Full Details
+                            </Button>
+                            <Button onClick={handleToggleBanUser} variant={foundUserDetails.isBanned ? "secondary" : "destructive"} size="sm">
+                                {foundUserDetails.isBanned ? <ShieldCheck className="mr-1 h-4 w-4"/> : <ShieldAlert className="mr-1 h-4 w-4"/>}
+                                {foundUserDetails.isBanned ? "Unban User" : "Ban User"}
+                            </Button>
+                             <Button onClick={handleResetPassword} variant="outline" size="sm">
+                                <KeyRound className="mr-1 h-4 w-4"/> Reset Password
+                            </Button>
+                        </CardFooter>
+                      </Card>
+                    )}
+                    {!foundUserDetails && searchUserQuery && (
+                        <p className="text-muted-foreground text-center">Try searching for "player123", "adminUser", or "bannedUser456".</p>
+                    )}
+
                   </CardContent>
                 </Card>
               </TabsContent>
@@ -230,7 +378,7 @@ export default function AdminDashboardPage() {
                 <LineChart className="mr-2 h-5 w-5 sm:h-6 sm:w-6" /> Analytics Dashboard
               </CardTitle>
               <CardDescription className="text-muted-foreground text-sm sm:text-base">
-                Explore game and user performance metrics.
+                Explore game and user performance metrics. (Placeholder Data)
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -342,7 +490,7 @@ export default function AdminDashboardPage() {
                 <Settings className="mr-2 h-5 w-5 sm:h-6 sm:w-6" /> Game Settings & RTP
               </CardTitle>
               <CardDescription className="text-muted-foreground text-sm sm:text-base">
-                Modify the Return-To-Player (RTP) for each game.
+                Modify the Return-To-Player (RTP) for each game. All actions are mock.
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
@@ -471,3 +619,6 @@ export default function AdminDashboardPage() {
     </SidebarProvider>
   );
 }
+
+
+      
