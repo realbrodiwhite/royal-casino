@@ -330,10 +330,11 @@ export default function SlotsPage() {
         </div>
       </main>
 
-      <footer className="mt-12 text-center text-sm text-muted-foreground">
+      <footer className="mt-12 text-center text-sm text-muted-foreground py-2">
         <p>&copy; {new Date().getFullYear()} Royal Casino. All rights reserved.</p>
         <p>Games are for entertainment purposes only. Play responsibly.</p>
       </footer>
     </div>
   );
 }
+

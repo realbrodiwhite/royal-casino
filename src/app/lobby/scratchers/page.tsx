@@ -309,7 +309,7 @@ export default function ScratchersPage() {
         </Card>
 
       </main>
-      <footer className="text-center py-4 sm:py-6 text-xs sm:text-sm text-muted-foreground border-t border-border mt-auto">
+      <footer className="text-center py-1.5 sm:py-2 text-xs sm:text-sm text-muted-foreground border-t border-border mt-auto">
         <p>&copy; {new Date().getFullYear()} Royal Casino. All Rights Reserved.</p>
       </footer>
       <style jsx global>{`
@@ -330,3 +330,4 @@ export default function ScratchersPage() {
     </div>
   );
 }
+

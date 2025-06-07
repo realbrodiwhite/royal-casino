@@ -154,9 +154,10 @@ export default function LoginPage() {
         </Card>
 
       </main>
-      <footer className="text-center py-6 text-sm text-muted-foreground border-t border-border">
+      <footer className="text-center py-2 text-sm text-muted-foreground border-t border-border">
         <p>&copy; {new Date().getFullYear()} Royal Casino. All Rights Reserved.</p>
       </footer>
     </div>
   );
 }
+

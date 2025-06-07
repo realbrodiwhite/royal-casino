@@ -152,7 +152,7 @@ export default function UserProfilePage() {
             <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-gold mx-auto mb-4"></div>
             <p className="text-xl text-gold">Loading Profile...</p>
         </div>
-         <footer className="text-center py-6 text-sm text-silver/70 mt-12 border-t border-gold/20">
+         <footer className="text-center py-2 text-sm text-silver/70 mt-12 border-t border-gold/20">
             <p>&copy; {new Date().getFullYear()} Royal Casino. All Rights Reserved.</p>
         </footer>
       </div>
@@ -173,7 +173,7 @@ export default function UserProfilePage() {
             </Button>
           </Link>
         </main>
-        <footer className="text-center py-6 text-sm text-silver/70 mt-12 border-t border-gold/20">
+        <footer className="text-center py-2 text-sm text-silver/70 mt-12 border-t border-gold/20">
             <p>&copy; {new Date().getFullYear()} Royal Casino. All Rights Reserved.</p>
         </footer>
       </div>
@@ -297,9 +297,10 @@ export default function UserProfilePage() {
           </div>
         </div>
       </main>
-      <footer className="text-center py-6 text-sm text-silver/70 mt-12 border-t border-gold/20">
+      <footer className="text-center py-2 text-sm text-silver/70 mt-12 border-t border-gold/20">
         <p>&copy; {new Date().getFullYear()} Royal Casino. All Rights Reserved.</p>
       </footer>
     </div>
   );
 }
+
