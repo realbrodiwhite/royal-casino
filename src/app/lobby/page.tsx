@@ -37,7 +37,7 @@ const GameCard: React.FC<GameCardProps> = ({ title, description, icon, href, ima
           <Image src={imageUrl} alt={title} width={150} height={100} className="rounded-md mb-4 object-cover h-32 w-full" />
         ) : (
           <div className="p-4 bg-primary/20 rounded-full mb-4 inline-block">
-            {React.cloneElement(icon as React.ReactElement, { className: "h-10 w-10 sm:h-12 sm:w-12 text-primary" })}
+            {React.cloneElement(icon as React.ReactElement, { className: "h-20 w-20 sm:h-24 sm:w-24 text-primary" })}
           </div>
         )}
         <CardTitle className="text-xl sm:text-2xl font-headline text-primary">{title}</CardTitle>
@@ -95,7 +95,7 @@ export default function LobbyPage() {
         </div>
       </main>
       <footer className="text-center py-1.5 sm:py-2 text-xs sm:text-sm text-muted-foreground border-t border-border">
-        <p>&copy; {new Date().getFullYear()} Royal Casino. All Rights Reserved. Built By Brodi Inc.</p>
+        <p>&copy; 2025 Royal Casino. All Rights Reserved. Built By Brodi Inc.</p>
       </footer>
     </div>
   );
