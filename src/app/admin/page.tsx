@@ -247,7 +247,7 @@ export default function AdminDashboardPage() {
       case 'userManagement':
         return (
             <Tabs defaultValue="currencyManagement" className="w-full">
-              <TabsList className="grid w-full grid-cols-2 mb-4 sm:mb-6">
+              <TabsList className="grid w-full grid-cols-1 sm:grid-cols-2 mb-4 sm:mb-6">
                 <TabsTrigger value="currencyManagement">Currency Management</TabsTrigger>
                 <TabsTrigger value="accountActions">Account Actions</TabsTrigger>
               </TabsList>
@@ -383,7 +383,7 @@ export default function AdminDashboardPage() {
             </CardHeader>
             <CardContent>
               <Tabs defaultValue="gameAnalytics" className="w-full">
-                <TabsList className="grid w-full grid-cols-2 mb-4">
+                <TabsList className="grid w-full grid-cols-1 sm:grid-cols-2 mb-4">
                   <TabsTrigger value="gameAnalytics">Game Analytics</TabsTrigger>
                   <TabsTrigger value="userAnalytics">User Analytics</TabsTrigger>
                 </TabsList>
@@ -611,7 +611,7 @@ export default function AdminDashboardPage() {
               </div>
             </main>
             <footer className="text-center py-1.5 sm:py-2 text-xs sm:text-sm text-muted-foreground border-t border-border">
-              <p>&copy; {new Date().getFullYear()} Royal Casino. All Rights Reserved.</p>
+              <p>&copy; {new Date().getFullYear()} Royal Casino. All Rights Reserved. Built By Brodi Inc.</p>
             </footer>
           </SidebarInset>
         </div>
@@ -619,6 +619,3 @@ export default function AdminDashboardPage() {
     </SidebarProvider>
   );
 }
-
-
-      

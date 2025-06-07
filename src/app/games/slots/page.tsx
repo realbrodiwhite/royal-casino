@@ -334,8 +334,8 @@ export default function SlotsPage() {
             <Card key={theme.themeId} className="w-full sm:w-72 md:w-80 bg-card border-border shadow-xl hover:shadow-primary/50 transition-all duration-300 flex flex-col">
               <CardHeader className="items-center text-center">
                  <Sparkles className="h-10 w-10 text-primary mb-3" />
-                <CardTitle className="text-xl font-headline text-primary">{theme.displayName}</CardTitle>
-                <CardDescription className="text-muted-foreground h-16 overflow-hidden text-ellipsis text-sm">{theme.description}</CardDescription>
+                <CardTitle className="text-xl sm:text-2xl font-headline text-primary">{theme.displayName}</CardTitle>
+                <CardDescription className="text-muted-foreground min-h-[3.5rem] overflow-hidden text-ellipsis text-sm">{theme.description}</CardDescription>
               </CardHeader>
               <CardContent className="flex-grow flex flex-col justify-center">
                  <p className="text-xs text-muted-foreground text-center mb-1">Grid: {theme.grid.rows}x{theme.grid.cols}</p>
@@ -356,8 +356,8 @@ export default function SlotsPage() {
             </Card>
           ))}
         </main>
-         <footer className="mt-8 sm:mt-12 text-center text-sm text-muted-foreground px-2 py-2">
-            <p>&copy; {new Date().getFullYear()} Royal Casino. All Rights Reserved.</p>
+         <footer className="mt-8 sm:mt-12 text-center text-xs sm:text-sm text-muted-foreground px-2 py-1.5 sm:py-2 border-t border-border">
+            <p>&copy; {new Date().getFullYear()} Royal Casino. All Rights Reserved. Built By Brodi Inc.</p>
          </footer>
       </div>
     );
@@ -435,11 +435,10 @@ export default function SlotsPage() {
         </div>
       </main>
 
-      <footer className="mt-8 sm:mt-12 text-center text-sm text-muted-foreground px-2 py-2">
-        <p>&copy; {new Date().getFullYear()} Royal Casino. All Rights Reserved.</p>
+      <footer className="mt-8 sm:mt-12 text-center text-xs sm:text-sm text-muted-foreground px-2 py-1.5 sm:py-2 border-t border-border">
+        <p>&copy; {new Date().getFullYear()} Royal Casino. All Rights Reserved. Built By Brodi Inc.</p>
         <p>Games are for entertainment purposes only. Play responsibly.</p>
       </footer>
     </div>
   );
 }
-

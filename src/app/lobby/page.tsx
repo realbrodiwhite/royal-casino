@@ -40,8 +40,8 @@ const GameCard: React.FC<GameCardProps> = ({ title, description, icon, href, ima
             {React.cloneElement(icon as React.ReactElement, { className: "h-10 w-10 sm:h-12 sm:w-12 text-primary" })}
           </div>
         )}
-        <CardTitle className="text-2xl font-headline text-primary">{title}</CardTitle>
-        <CardDescription className="text-muted-foreground h-12 overflow-hidden text-ellipsis">{description}</CardDescription>
+        <CardTitle className="text-xl sm:text-2xl font-headline text-primary">{title}</CardTitle>
+        <CardDescription className="text-muted-foreground min-h-[3.5rem] overflow-hidden text-ellipsis">{description}</CardDescription>
       </CardHeader>
       <CardContent className="flex-grow flex flex-col justify-end">
         <Link href={disabled ? '#' : href} passHref>
@@ -94,10 +94,9 @@ export default function LobbyPage() {
           ))}
         </div>
       </main>
-      <footer className="text-center py-2 text-sm text-muted-foreground border-t border-border">
-        <p>&copy; {new Date().getFullYear()} Royal Casino. All Rights Reserved.</p>
+      <footer className="text-center py-1.5 sm:py-2 text-xs sm:text-sm text-muted-foreground border-t border-border">
+        <p>&copy; {new Date().getFullYear()} Royal Casino. All Rights Reserved. Built By Brodi Inc.</p>
       </footer>
     </div>
   );
 }
-
