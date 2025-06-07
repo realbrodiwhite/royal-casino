@@ -10,24 +10,42 @@ const ScratchersCategoryIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) 
     {...props}
   >
     {/* Ticket Body */}
-    <rect x="18" y="28" width="64" height="44" rx="4" fill="hsl(var(--muted))" stroke="currentColor" strokeWidth="2.5" />
+    <rect x="18" y="28" width="64" height="44" rx="5" fill="hsl(var(--muted))" stroke="hsl(var(--border))" strokeWidth="2" />
 
-    {/* "Scratched" area showing a win symbol (e.g., a star) */}
-    <circle cx="50" cy="50" r="18" fill="hsl(var(--background))" /> {/* Area that's "scratched off" */}
-    {/* Star Symbol */}
+    {/* Unscratched portion covering */}
     <path 
-      d="M50 40 L53 47 L60 47 L54.5 51 L56.5 58 L50 54 L43.5 58 L45.5 51 L40 47 L47 47 Z" 
-      fill="hsl(var(--primary))" 
-      stroke="hsl(var(--primary-foreground))" 
+      d="M20 30 H 70 C 75 30, 80 35, 80 50 C 80 65, 75 70, 70 70 H 20 V 30 Z"
+      fill="url(#scratchGradient)"
+      stroke="hsl(var(--border))"
       strokeWidth="0.5"
     />
+    <defs>
+        <linearGradient id="scratchGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style={{stopColor: "hsl(var(--muted-foreground))", stopOpacity:0.5}} />
+            <stop offset="100%" style={{stopColor: "hsl(var(--muted-foreground))", stopOpacity:0.3}} />
+        </linearGradient>
+    </defs>
 
-    {/* Representation of scratching tool or coin edge */}
-    <rect x="62" y="18" width="14" height="7" rx="1.5" fill="hsl(var(--foreground))" opacity="0.6" transform="rotate(15 69 21.5)" />
+    {/* "Scratched" area revealing a win symbol (e.g., a star) */}
+    {/* This part simulates a tear or scratch */}
+    <path 
+      d="M45 40 C 35 42, 30 50, 32 60 L 50 65 L 68 60 C 70 50, 65 42, 55 40 Z"
+      fill="hsl(var(--background))"
+    />
+    {/* Star Symbol */}
+    <path 
+      d="M50 46 L52.35 50.85 L57.5 51.5 L53.75 55.1 L54.7 60.3 L50 57.8 L45.3 60.3 L46.25 55.1 L42.5 51.5 L47.65 50.85 Z" 
+      fill="hsl(var(--primary))" 
+      stroke="hsl(var(--primary-foreground))" 
+      strokeWidth="0.7"
+      strokeLinejoin="round"
+    />
     
-     {/* Subtle texture on the ticket */}
-    <line x1="22" y1="33" x2="78" y2="33" stroke="currentColor" strokeWidth="0.75" opacity="0.15" strokeDasharray="2.5 2.5"/>
-    <line x1="22" y1="67" x2="78" y2="67" stroke="currentColor" strokeWidth="0.75" opacity="0.15" strokeDasharray="2.5 2.5"/>
+    {/* Representation of coin scratching */}
+    <circle cx="72" cy="25" r="8" fill="hsl(var(--foreground))" opacity="0.7"/>
+    <circle cx="72" cy="25" r="5" fill="hsl(var(--background))" opacity="0.4"/>
+    <text x="72" y="28.5" fontSize="7" fill="hsl(var(--foreground))" textAnchor="middle" fontWeight="bold" opacity="0.7">$</text>
+
   </svg>
 );
 
