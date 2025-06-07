@@ -126,6 +126,7 @@ export default function ProfileDetailsPage() {
   const onSubmit: SubmitHandler<ProfileDetailsFormData> = (data) => {
     console.log("Profile Details Data (with new fields):", data);
     // In a real app, save data and upload profilePicture if present
+    // Also, a real app would check username uniqueness against the backend here.
     toast({
       title: "Profile Details Saved!",
       description: "Next, let's verify your ID.",
@@ -180,7 +181,7 @@ export default function ProfileDetailsPage() {
                       <FormItem>
                         <FormLabel className="flex items-center"><UserCircle2 className="mr-2 h-4 w-4" /> Username</FormLabel>
                         <FormControl><Input placeholder="PlayerOne25" {...field} className="bg-input border-border text-foreground placeholder:text-muted-foreground" /></FormControl>
-                        <FormDescription>Your public display name in the casino.</FormDescription>
+                        <FormDescription>Your public display name in the casino. Usernames must be unique.</FormDescription>
                         <FormMessage />
                       </FormItem>
                     )}
@@ -357,4 +358,3 @@ export default function ProfileDetailsPage() {
   );
 }
 
-    
