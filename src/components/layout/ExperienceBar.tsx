@@ -1,17 +1,17 @@
 
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Progress } from '@/components/ui/progress';
-import { Star, ChevronUp, ChevronDown } from 'lucide-react';
+import { Star, ChevronUp, ChevronDown, Gem } from 'lucide-react'; // Added Gem
 import { cn } from '@/lib/utils';
-import { useXp } from '@/contexts/XpContext'; // Import useXp hook
+import { useXp } from '@/contexts/XpContext';
 
 const ExperienceBar: React.FC = () => {
-  const { level, currentLevelXp, xpToCompleteLevel } = useXp();
+  const { level, xpTowardsNextLevel, xpNeededForNextLevel, availableXp } = useXp(); // Added availableXp
   const [isVisible, setIsVisible] = useState(true);
 
-  const progressPercentage = xpToCompleteLevel > 0 ? (currentLevelXp / xpToCompleteLevel) * 100 : 0;
+  const progressPercentage = xpNeededForNextLevel > 0 ? (xpTowardsNextLevel / xpNeededForNextLevel) * 100 : 0;
 
   if (!isVisible) {
     return (
@@ -28,7 +28,7 @@ const ExperienceBar: React.FC = () => {
   return (
     <div className={cn(
         "fixed top-0 left-0 right-0 z-40 p-2 bg-background/90 backdrop-blur-md shadow-md border-b border-border flex items-center",
-        "h-8 sm:h-9", // Explicit responsive height
+        "h-8 sm:h-9", 
         "transition-transform duration-300 ease-in-out",
         isVisible ? "translate-y-0" : "-translate-y-full"
       )}
@@ -41,8 +41,12 @@ const ExperienceBar: React.FC = () => {
         <div className="flex-grow max-w-xs sm:max-w-sm md:max-w-md">
           <Progress value={progressPercentage} className="h-2 sm:h-3" />
         </div>
-        <div className="text-muted-foreground whitespace-nowrap">
-          {currentLevelXp.toLocaleString()} / {xpToCompleteLevel.toLocaleString()} XP
+        <div className="text-muted-foreground whitespace-nowrap hidden_ xs:block">
+          {xpTowardsNextLevel.toLocaleString()} / {xpNeededForNextLevel.toLocaleString()} XP
+        </div>
+         <div className="flex items-center gap-1 sm:gap-2" title={`Available XP for upgrades: ${availableXp.toLocaleString()}`}>
+          <Gem className="h-3 w-3 sm:h-4 sm:w-4 text-accent" />
+          <span className="font-semibold text-accent">{availableXp.toLocaleString()}</span>
         </div>
         <button
           onClick={() => setIsVisible(false)}

@@ -2,7 +2,7 @@
 "use client";
 
 import Link from 'next/link';
-import { Crown, Gamepad2, UserCircle, BarChart3, Shield, Menu, BackpackIcon } from 'lucide-react'; // Added BackpackIcon
+import { Crown, Gamepad2, UserCircle, BarChart3, Shield, Menu, BackpackIcon, Star } from 'lucide-react'; // Added BackpackIcon & Star
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import ExperienceBar from '@/components/layout/ExperienceBar';
@@ -27,7 +27,9 @@ const NavLink: React.FC<NavLinkProps> = ({ href, children, icon, onClick }) => {
   const isActive = pathname === href ||
                  (href === "/lobby" && pathname.startsWith("/games")) ||
                  (href === "/profile" && pathname.startsWith("/profile")) ||
-                 (href === "/backpack" && pathname.startsWith("/backpack")); // Added backpack active state
+                 (href === "/backpack" && pathname.startsWith("/backpack")) ||
+                 (href === "/skills" && pathname.startsWith("/skills"));
+
 
   return (
     <Link href={href} legacyBehavior>
@@ -55,7 +57,7 @@ export default function Navbar() {
       <ExperienceBar />
       <nav className={cn(
         "bg-background/80 backdrop-blur-md shadow-lg z-30 border-b border-border",
-        "sticky top-8 sm:top-9" // Sticks below the ExperienceBar
+        "sticky top-8 sm:top-9" 
       )}>
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between h-14">
@@ -71,7 +73,7 @@ export default function Navbar() {
               <NavLink href="/lobby" icon={<Gamepad2 />}>Game Lobby</NavLink>
               <NavLink href="/profile" icon={<UserCircle />}>Profile</NavLink>
               <NavLink href="/backpack" icon={<BackpackIcon />}>Backpack</NavLink> 
-              {/* <NavLink href="/leaderboards" icon={<BarChart3 />}>Leaderboards</NavLink> */}
+              <NavLink href="/skills" icon={<Star />}>Skills</NavLink>
               <NavLink href="/admin" icon={<Shield />}>Admin</NavLink>
             </div>
             <div className="md:hidden">
@@ -98,7 +100,7 @@ export default function Navbar() {
                     <NavLink href="/lobby" icon={<Gamepad2 />} onClick={() => setIsMobileMenuOpen(false)}>Game Lobby</NavLink>
                     <NavLink href="/profile" icon={<UserCircle />} onClick={() => setIsMobileMenuOpen(false)}>Profile</NavLink>
                     <NavLink href="/backpack" icon={<BackpackIcon />} onClick={() => setIsMobileMenuOpen(false)}>Backpack</NavLink>
-                    {/* <NavLink href="/leaderboards" icon={<BarChart3 />} onClick={() => setIsMobileMenuOpen(false)}>Leaderboards</NavLink> */}
+                    <NavLink href="/skills" icon={<Star />} onClick={() => setIsMobileMenuOpen(false)}>Skills</NavLink>
                     <NavLink href="/admin" icon={<Shield />} onClick={() => setIsMobileMenuOpen(false)}>Admin</NavLink>
                   </nav>
                 </SheetContent>
