@@ -12,9 +12,9 @@ import PokerCategoryIcon from '@/components/game/category-icons/PokerCategoryIco
 import BingoCategoryIcon from '@/components/game/category-icons/BingoCategoryIcon';
 import ScratchersCategoryIcon from '@/components/game/category-icons/ScratchersCategoryIcon';
 import CoinFlipCategoryIcon from '@/components/game/category-icons/CoinFlipCategoryIcon';
-import CrapsCategoryIcon from '@/components/game/category-icons/CrapsCategoryIcon'; // For Rollin' Dice
+import CrapsCategoryIcon from '@/components/game/category-icons/CrapsCategoryIcon';
 import { useToast } from "@/hooks/use-toast";
-import { cn } from '@/lib/utils'; // Added missing import
+import { cn } from '@/lib/utils';
 
 interface GameTypeCardProps {
   icon: React.ReactNode;
@@ -142,7 +142,6 @@ export default function GameUniverseSectionContent() {
           From dazzling slots and strategic poker to lively bingo and instant-win scratchers, your next favorite game is here. Explore diverse themes and chase epic virtual jackpots!
         </p>
         
-        {/* Top 6 Games in a 2x3 Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
           {topGames.map((game, index) => (
             <GameTypeCard
@@ -157,7 +156,6 @@ export default function GameUniverseSectionContent() {
           ))}
         </div>
 
-        {/* "More Adventures Coming Soon!" Card - Full width below the grid */}
         <div className="mt-10 sm:mt-12">
             <GameTypeCard
                 icon={comingSoonGame.icon}
@@ -168,7 +166,6 @@ export default function GameUniverseSectionContent() {
             />
         </div>
 
-        {/* New Welcome Card - Full width below */}
         <div className="mt-10 sm:mt-12">
             <Card className="bg-gradient-to-br from-primary/10 via-card to-secondary/10 border-border shadow-xl text-center">
                 <CardHeader className="items-center pt-6 sm:pt-8">
@@ -196,4 +193,3 @@ export default function GameUniverseSectionContent() {
     </section>
   );
 }
-
