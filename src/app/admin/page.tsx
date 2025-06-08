@@ -8,7 +8,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { useToast } from "@/hooks/use-toast";
-import { Coins, UserCog, BarChart2, Brain, Settings, UsersRound, Percent, Search, BarChartHorizontalBig, LineChart, TrendingUp, UserPlus, Clock, Award, Gem, ShieldAlert, ShieldCheck, KeyRound, Eye } from 'lucide-react';
+import { Coins, UserCog, BarChart2, Brain, Settings, UsersRound, Percent, Search, BarChartHorizontalBig, LineChart, TrendingUp, UserPlus, Clock, Award, Diamond, ShieldAlert, ShieldCheck, KeyRound, Eye } from 'lucide-react'; // Changed Gem to Diamond
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from '@/components/ui/badge';
 
@@ -37,8 +37,8 @@ interface FoundUserDetails {
   joinDate: string;
   lastLogin: string;
   isBanned: boolean;
-  standardCredits: number;
-  premiumCoins: number;
+  credits: number; // Renamed from standardCredits
+  kingsCoin: number; // Renamed from premiumCoins
 }
 
 const initialGameSettings: GameSetting[] = [
@@ -59,8 +59,8 @@ const mockUsers: Record<string, FoundUserDetails> = {
     joinDate: "2023-05-15",
     lastLogin: "2024-07-28 10:30 AM",
     isBanned: false,
-    standardCredits: 1500,
-    premiumCoins: 75,
+    credits: 1500,
+    kingsCoin: 75,
   },
   "adminUser": {
     id: "adminUser",
@@ -68,8 +68,8 @@ const mockUsers: Record<string, FoundUserDetails> = {
     joinDate: "2023-01-01",
     lastLogin: "2024-07-29 09:00 AM",
     isBanned: false,
-    standardCredits: 99999,
-    premiumCoins: 1000,
+    credits: 99999,
+    kingsCoin: 1000,
   },
   "bannedUser456": {
     id: "bannedUser456",
@@ -77,8 +77,8 @@ const mockUsers: Record<string, FoundUserDetails> = {
     joinDate: "2023-10-20",
     lastLogin: "2024-06-01 14:00 PM",
     isBanned: true,
-    standardCredits: 50,
-    premiumCoins: 0,
+    credits: 50,
+    kingsCoin: 0,
   }
 };
 
@@ -87,7 +87,7 @@ export default function AdminDashboardPage() {
   const [activeView, setActiveView] = useState<AdminView>('userManagement');
   const [currencyUserId, setCurrencyUserId] = useState('');
   const [creditAmount, setCreditAmount] = useState('');
-  const [premiumCoinAmount, setPremiumCoinAmount] = useState('');
+  const [kingsCoinAmount, setKingsCoinAmount] = useState(''); // Renamed
   const { toast } = useToast();
 
   const [gameSettings, setGameSettings] = useState<GameSetting[]>(initialGameSettings);
@@ -111,28 +111,26 @@ export default function AdminDashboardPage() {
       toast({ title: "Error", description: "Please enter a User ID for currency management.", variant: "destructive" });
       return;
     }
-    const stdCredits = parseInt(creditAmount);
-    const premCoins = parseInt(premiumCoinAmount);
+    const _credits = parseInt(creditAmount);
+    const _kingsCoin = parseInt(kingsCoinAmount); // Renamed
 
-    if ((isNaN(stdCredits) || stdCredits <= 0) && (isNaN(premCoins) || premCoins <= 0)) {
-      toast({ title: "Error", description: "Please enter a valid positive amount for Standard Credits or Premium Coins.", variant: "destructive" });
+    if ((isNaN(_credits) || _credits <= 0) && (isNaN(_kingsCoin) || _kingsCoin <= 0)) {
+      toast({ title: "Error", description: "Please enter a valid positive amount for Credits or Kings Coin.", variant: "destructive" });
       return;
     }
 
     let messages = [];
-    if (!isNaN(stdCredits) && stdCredits > 0) {
-      // Mock action: console.log(`Adding ${stdCredits} standard credits to user ${currencyUserId}`);
-      messages.push(`${stdCredits} standard credits`);
+    if (!isNaN(_credits) && _credits > 0) {
+      messages.push(`${_credits} credits`);
     }
-    if (!isNaN(premCoins) && premCoins > 0) {
-      // Mock action: console.log(`Adding ${premCoins} premium coins to user ${currencyUserId}`);
-      messages.push(`${premCoins} premium coins`);
+    if (!isNaN(_kingsCoin) && _kingsCoin > 0) {
+      messages.push(`${_kingsCoin} Kings Coin`);
     }
 
     toast({ title: "Success (Mock)", description: `Successfully added ${messages.join(' and ')} to user ${currencyUserId}.` });
     setCurrencyUserId('');
     setCreditAmount('');
-    setPremiumCoinAmount('');
+    setKingsCoinAmount('');
   };
 
   const handleSetCurrency = () => {
@@ -140,35 +138,33 @@ export default function AdminDashboardPage() {
       toast({ title: "Error", description: "Please enter a User ID for currency management.", variant: "destructive" });
       return;
     }
-    const stdCredits = creditAmount !== '' ? parseInt(creditAmount) : NaN;
-    const premCoins = premiumCoinAmount !== '' ? parseInt(premiumCoinAmount) : NaN;
+    const _credits = creditAmount !== '' ? parseInt(creditAmount) : NaN;
+    const _kingsCoin = kingsCoinAmount !== '' ? parseInt(kingsCoinAmount) : NaN; // Renamed
 
-    if (isNaN(stdCredits) && isNaN(premCoins) ) {
-       toast({ title: "Error", description: "Please enter an amount for Standard Credits or Premium Coins.", variant: "destructive" });
+    if (isNaN(_credits) && isNaN(_kingsCoin) ) {
+       toast({ title: "Error", description: "Please enter an amount for Credits or Kings Coin.", variant: "destructive" });
       return;
     }
-    if (!isNaN(stdCredits) && stdCredits < 0) {
-         toast({ title: "Error", description: "Standard Credit amount must be non-negative.", variant: "destructive" });
+    if (!isNaN(_credits) && _credits < 0) {
+         toast({ title: "Error", description: "Credit amount must be non-negative.", variant: "destructive" });
         return;
     }
-    if (!isNaN(premCoins) && premCoins < 0) {
-        toast({ title: "Error", description: "Premium Coin amount must be non-negative.", variant: "destructive" });
+    if (!isNaN(_kingsCoin) && _kingsCoin < 0) {
+        toast({ title: "Error", description: "Kings Coin amount must be non-negative.", variant: "destructive" });
         return;
     }
 
     let messages = [];
-    if (!isNaN(stdCredits)) {
-      // Mock action: console.log(`Setting standard credits for user ${currencyUserId} to ${stdCredits}`);
-      messages.push(`standard credits to ${stdCredits}`);
+    if (!isNaN(_credits)) {
+      messages.push(`credits to ${_credits}`);
     }
-    if (!isNaN(premCoins)) {
-      // Mock action: console.log(`Setting premium coins for user ${currencyUserId} to ${premCoins}`);
-      messages.push(`premium coins to ${premCoins}`);
+    if (!isNaN(_kingsCoin)) {
+      messages.push(`Kings Coin to ${_kingsCoin}`);
     }
     toast({ title: "Success (Mock)", description: `Successfully set ${messages.join(' and ')} for user ${currencyUserId}.` });
     setCurrencyUserId('');
     setCreditAmount('');
-    setPremiumCoinAmount('');
+    setKingsCoinAmount('');
   };
 
   const handleRtpInputChange = (gameId: string, value: string) => {
@@ -198,7 +194,6 @@ export default function AdminDashboardPage() {
       setFoundUserDetails(null);
       return;
     }
-    // Mock search logic
     const foundUser = mockUsers[searchUserQuery.trim().toLowerCase()] || Object.values(mockUsers).find(u => u.email.toLowerCase() === searchUserQuery.trim().toLowerCase());
 
     if (foundUser) {
@@ -213,7 +208,6 @@ export default function AdminDashboardPage() {
   const handleToggleBanUser = () => {
     if (foundUserDetails) {
       const updatedStatus = !foundUserDetails.isBanned;
-      // Update mock local data for persistence during session
       mockUsers[foundUserDetails.id].isBanned = updatedStatus;
       setFoundUserDetails(prev => prev ? { ...prev, isBanned: updatedStatus } : null);
       toast({
@@ -258,7 +252,7 @@ export default function AdminDashboardPage() {
                       <UserCog className="mr-2 h-5 w-5 sm:h-6 sm:w-6" /> User Currency Management
                     </CardTitle>
                     <CardDescription className="text-muted-foreground text-sm sm:text-base">
-                      Add or set Standard Credits and Premium Coins for a user. All actions are mock.
+                      Add or set Credits and Kings Coin for a user. All actions are mock.
                     </CardDescription>
                   </CardHeader>
                   <CardContent className="space-y-4">
@@ -271,7 +265,7 @@ export default function AdminDashboardPage() {
                       />
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="creditAmount" className="text-foreground flex items-center"><Coins className="mr-1 h-4 w-4 text-primary" /> Standard Credit Amount</Label>
+                      <Label htmlFor="creditAmount" className="text-foreground flex items-center"><Coins className="mr-1 h-4 w-4 text-primary" /> Credit Amount</Label>
                       <Input
                         id="creditAmount" type="number" placeholder="Enter amount" value={creditAmount}
                         onChange={(e) => setCreditAmount(e.target.value)}
@@ -279,10 +273,10 @@ export default function AdminDashboardPage() {
                       />
                     </div>
                      <div className="space-y-2">
-                      <Label htmlFor="premiumCoinAmount" className="text-foreground flex items-center"><Gem className="mr-1 h-4 w-4 text-accent" /> Premium Coin Amount</Label>
+                      <Label htmlFor="kingsCoinAmount" className="text-foreground flex items-center"><Diamond className="mr-1 h-4 w-4 text-accent" /> Kings Coin Amount</Label>
                       <Input
-                        id="premiumCoinAmount" type="number" placeholder="Enter amount" value={premiumCoinAmount}
-                        onChange={(e) => setPremiumCoinAmount(e.target.value)}
+                        id="kingsCoinAmount" type="number" placeholder="Enter amount" value={kingsCoinAmount}
+                        onChange={(e) => setKingsCoinAmount(e.target.value)}
                         className="bg-input border-border text-foreground placeholder:text-muted-foreground"
                       />
                     </div>
@@ -339,12 +333,12 @@ export default function AdminDashboardPage() {
                                 <span className="text-foreground">{foundUserDetails.lastLogin}</span>
                            </div>
                            <div className="flex justify-between">
-                                <span className="text-muted-foreground">Std. Credits:</span>
-                                <span className="text-foreground">{foundUserDetails.standardCredits.toLocaleString()}</span>
+                                <span className="text-muted-foreground">Credits:</span>
+                                <span className="text-foreground">{foundUserDetails.credits.toLocaleString()}</span>
                            </div>
                            <div className="flex justify-between">
-                                <span className="text-muted-foreground">Prem. Coins:</span>
-                                <span className="text-foreground">{foundUserDetails.premiumCoins.toLocaleString()}</span>
+                                <span className="text-muted-foreground">Kings Coin:</span>
+                                <span className="text-foreground">{foundUserDetails.kingsCoin.toLocaleString()}</span>
                            </div>
                         </CardContent>
                         <CardFooter className="p-0 pt-4 mt-4 border-t border-border/30 flex flex-wrap gap-2 justify-end">
@@ -468,7 +462,7 @@ export default function AdminDashboardPage() {
                                     <h4 className="text-xs sm:text-sm font-medium text-muted-foreground">Top Spender (Today)</h4>
                                     <Award className="h-4 w-4 text-primary" />
                                  </div>
-                                <p className="text-lg sm:text-xl font-semibold text-primary truncate">UID123 (500 CR)</p>
+                                <p className="text-lg sm:text-xl font-semibold text-primary truncate">UID123 (500 KC)</p> 
                             </div>
                         </div>
                          <div className="mt-6 p-4 border border-dashed border-border/70 rounded-lg bg-background/30 text-center">
@@ -619,5 +613,3 @@ export default function AdminDashboardPage() {
     </SidebarProvider>
   );
 }
-
-    

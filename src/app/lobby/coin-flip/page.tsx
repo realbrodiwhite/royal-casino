@@ -6,7 +6,7 @@ import Navbar from '@/components/layout/navbar';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import UserBalanceDisplay from '@/components/game/UserBalanceDisplay'; // Updated import
+import UserBalanceDisplay from '@/components/game/CreditDisplay';
 import ResultsDisplay from '@/components/game/ResultsDisplay';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { CircleDollarSign, Repeat, HelpCircle, TrendingUp, TrendingDown, Pocket, ChevronsUp } from 'lucide-react';
@@ -16,8 +16,8 @@ type CoinSide = 'Heads' | 'Tails';
 type DoubleOrNothingMode = 'inactive' | 'active';
 
 export default function CoinFlipPage() {
-  const [standardCredits, setStandardCredits] = useState(1000);
-  const [premiumCoins, setPremiumCoins] = useState(50); // Mock premium coins
+  const [credits, setCredits] = useState(1000); // Renamed from standardCredits
+  const [kingsCoin, setKingsCoin] = useState(50); // Renamed from premiumCoins
   const [betAmount, setBetAmount] = useState<number | string>(10);
   const [chosenSide, setChosenSide] = useState<CoinSide | null>(null);
   const [coinResult, setCoinResult] = useState<CoinSide | null>(null);
@@ -29,7 +29,7 @@ export default function CoinFlipPage() {
   const [currentWinningsForDouble, setCurrentWinningsForDouble] = useState(0);
 
   const { toast } = useToast();
-  const mockDiamondUserCount = 1234; // Mock data for new display
+  const mockDiamondUserCount = 1234; 
 
   const handleBetAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -58,12 +58,12 @@ export default function CoinFlipPage() {
         setIsFlipping(false);
         return;
       }
-      if (currentBet > standardCredits) { // Assuming bets are in standard credits
-        toast({ title: "Not Enough Credits", description: "Your bet amount exceeds your available standard credits.", variant: "destructive" });
+      if (currentBet > credits) { 
+        toast({ title: "Not Enough Credits", description: "Your bet amount exceeds your available credits.", variant: "destructive" });
         setIsFlipping(false);
         return;
       }
-      setStandardCredits(prev => prev - currentBet);
+      setCredits(prev => prev - currentBet);
     }
 
     setTimeout(() => {
@@ -115,9 +115,9 @@ export default function CoinFlipPage() {
 
   const handleTakeWinnings = () => {
     if (doubleOrNothingMode !== 'active' || currentWinningsForDouble <= 0) return;
-    setStandardCredits(prev => prev + currentWinningsForDouble); // Winnings added to standard credits
+    setCredits(prev => prev + currentWinningsForDouble); 
     setGameMessage(`You collected ${currentWinningsForDouble} credits!`);
-    toast({ title: "Winnings Collected!", description: `${currentWinningsForDouble} credits added to your standard balance.` });
+    toast({ title: "Winnings Collected!", description: `${currentWinningsForDouble} credits added to your balance.` });
     setCurrentWinningsForDouble(0);
     setDoubleOrNothingMode('inactive');
     setIsWin(null); 
@@ -147,8 +147,8 @@ export default function CoinFlipPage() {
           <p className="text-md sm:text-lg text-muted-foreground mt-1 px-2">Heads or Tails? Double your winnings!</p>
         </header>
 
-        <div className="w-full max-w-lg mx-auto mb-6 sm:mb-8"> {/* Adjusted max-width for 3 cards */}
-          <UserBalanceDisplay standardCredits={standardCredits} premiumCoins={premiumCoins} diamondUserCount={mockDiamondUserCount} />
+        <div className="w-full max-w-lg mx-auto mb-6 sm:mb-8">
+          <UserBalanceDisplay credits={credits} kingsCoin={kingsCoin} diamondUserCount={mockDiamondUserCount} />
         </div>
 
         <Card className="w-full max-w-md bg-card border-border shadow-xl">
@@ -160,7 +160,7 @@ export default function CoinFlipPage() {
           <CardContent className="space-y-4 sm:space-y-6">
             {doubleOrNothingMode === 'inactive' && (
               <div className="space-y-2">
-                <Label htmlFor="betAmount" className="text-foreground">Bet Amount (Standard Credits)</Label>
+                <Label htmlFor="betAmount" className="text-foreground">Bet Amount (Credits)</Label>
                 <Input
                   id="betAmount"
                   type="number"
@@ -194,7 +194,7 @@ export default function CoinFlipPage() {
               <>
                 <Button
                   onClick={() => handleInitialFlip('Heads')}
-                  disabled={isFlipping || standardCredits < (typeof betAmount === 'number' ? betAmount : 0) || (typeof betAmount === 'string' && parseInt(betAmount) <=0) || betAmount === ''}
+                  disabled={isFlipping || credits < (typeof betAmount === 'number' ? betAmount : 0) || (typeof betAmount === 'string' && parseInt(betAmount) <=0) || betAmount === ''}
                   variant="default"
                   className="w-full font-semibold text-md sm:text-lg py-2.5 sm:py-3"
                 >
@@ -202,7 +202,7 @@ export default function CoinFlipPage() {
                 </Button>
                 <Button
                   onClick={() => handleInitialFlip('Tails')}
-                  disabled={isFlipping || standardCredits < (typeof betAmount === 'number' ? betAmount : 0) || (typeof betAmount === 'string' && parseInt(betAmount) <=0) || betAmount === ''}
+                  disabled={isFlipping || credits < (typeof betAmount === 'number' ? betAmount : 0) || (typeof betAmount === 'string' && parseInt(betAmount) <=0) || betAmount === ''}
                   variant="outline"
                   className="w-full font-semibold text-md sm:text-lg py-2.5 sm:py-3"
                 >

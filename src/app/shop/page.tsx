@@ -6,7 +6,7 @@ import Navbar from '@/components/layout/navbar';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import UserBalanceDisplay from '@/components/game/CreditDisplay';
-import { ShoppingCart, Gem, Layers, Beer, Cigarette, Zap, Leaf, Ticket, Package } from 'lucide-react';
+import { ShoppingCart, Diamond, Layers, Beer, Cigarette, Zap, Leaf, Ticket, Package } from 'lucide-react'; // Changed Gem to Diamond
 import { allShopItems, type ShopItem, type ItemEffect } from '@/game-data/items';
 import { useToast } from "@/hooks/use-toast";
 
@@ -22,14 +22,14 @@ const itemIconMap: Record<string, React.FC<React.SVGProps<SVGSVGElement>>> = {
 const ShopItemCard: React.FC<{ 
   item: ShopItem;
   onBuy: (item: ShopItem, quantity: number, totalCost: number) => void; 
-  currentPremiumCoins: number;
-}> = ({ item, onBuy, currentPremiumCoins }) => {
+  currentKingsCoin: number; // Renamed from currentPremiumCoins
+}> = ({ item, onBuy, currentKingsCoin }) => {
   const IconComponent = itemIconMap[item.icon] || itemIconMap.Default;
   const costForOne = item.cost;
-  const costForSix = item.cost * 6; // Assuming no discount for now
+  const costForSix = item.cost * 6;
 
-  const canAffordOne = currentPremiumCoins >= costForOne;
-  const canAffordSix = currentPremiumCoins >= costForSix;
+  const canAffordOne = currentKingsCoin >= costForOne;
+  const canAffordSix = currentKingsCoin >= costForSix;
 
 
   const formatEffect = (effect: ItemEffect): string => {
@@ -92,16 +92,16 @@ const ShopItemCard: React.FC<{
             size="sm"
             disabled={!canAffordOne}
         >
-            Buy 1 <Gem className="ml-1.5 mr-0.5 h-3 w-3 text-accent" /> {costForOne}
+            Buy 1 <Diamond className="ml-1.5 mr-0.5 h-3 w-3 text-accent" /> {costForOne}
         </Button>
-        {item.isConsumable && item.stackable && ( // Only show 6-pack for stackable consumables
+        {item.isConsumable && item.stackable && (
             <Button 
                 onClick={() => onBuy(item, 6, costForSix)} 
                 variant="default"
                 size="sm"
                 disabled={!canAffordSix}
             >
-                <Package className="mr-1.5 h-4 w-4" /> Buy 6-Pack <Gem className="ml-1.5 mr-0.5 h-3 w-3 text-accent" /> {costForSix}
+                <Package className="mr-1.5 h-4 w-4" /> Buy 6-Pack <Diamond className="ml-1.5 mr-0.5 h-3 w-3 text-accent" /> {costForSix}
             </Button>
         )}
       </CardFooter>
@@ -110,25 +110,25 @@ const ShopItemCard: React.FC<{
 };
 
 export default function ShopPage() {
-  const [premiumCoins, setPremiumCoins] = useState(250); 
-  const [standardCredits, setStandardCredits] = useState(1000);
+  const [kingsCoin, setKingsCoin] = useState(250); // Renamed from premiumCoins
+  const [credits, setCredits] = useState(1000); // Renamed from standardCredits
   const { toast } = useToast();
-  const mockDiamondUserCount = 1234; // Mock data for new display
+  const mockDiamondUserCount = 1234;
 
   const handleBuyItem = (item: ShopItem, quantity: number, totalCost: number) => {
-    if (premiumCoins >= totalCost) {
-      setPremiumCoins(prevCoins => prevCoins - totalCost);
-      console.log(`Bought ${quantity}x ${item.name} for ${totalCost} premium coins.`);
+    if (kingsCoin >= totalCost) {
+      setKingsCoin(prevCoins => prevCoins - totalCost);
+      console.log(`Bought ${quantity}x ${item.name} for ${totalCost} Kings Coin.`);
       console.log(`Mock: Adding ${quantity}x ${item.name} to user's backpack.`);
       toast({
         title: "Purchase Successful!",
-        description: `You bought ${quantity}x ${item.name} for ${totalCost} premium coins. Check your backpack!`,
+        description: `You bought ${quantity}x ${item.name} for ${totalCost} Kings Coin. Check your backpack!`,
       });
     } else {
-      console.log(`Not enough premium coins to buy ${quantity}x ${item.name}.`);
+      console.log(`Not enough Kings Coin to buy ${quantity}x ${item.name}.`);
       toast({
         title: "Insufficient Funds",
-        description: `You need ${totalCost - premiumCoins} more premium coins to buy ${quantity}x ${item.name}.`,
+        description: `You need ${totalCost - kingsCoin} more Kings Coin to buy ${quantity}x ${item.name}.`,
         variant: "destructive",
       });
     }
@@ -142,12 +142,12 @@ export default function ShopPage() {
           <ShoppingCart className="mx-auto h-12 w-12 sm:h-16 sm:w-16 text-primary mb-3 sm:mb-4" />
           <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold font-headline text-primary">Item Shop</h1>
           <p className="text-md sm:text-lg text-muted-foreground mt-1 px-2">
-            Spend your Premium Coins on powerful consumables and charms!
+            Spend your Kings Coin on powerful consumables and charms!
           </p>
         </header>
         
-        <div className="w-full max-w-lg mx-auto mb-6 sm:mb-8"> {/* Adjusted max-width for 3 cards */}
-          <UserBalanceDisplay standardCredits={standardCredits} premiumCoins={premiumCoins} diamondUserCount={mockDiamondUserCount} />
+        <div className="w-full max-w-lg mx-auto mb-6 sm:mb-8">
+          <UserBalanceDisplay credits={credits} kingsCoin={kingsCoin} diamondUserCount={mockDiamondUserCount} />
         </div>
 
         {allShopItems.length === 0 ? (
@@ -166,7 +166,7 @@ export default function ShopPage() {
                 key={item.id} 
                 item={item} 
                 onBuy={handleBuyItem}
-                currentPremiumCoins={premiumCoins}
+                currentKingsCoin={kingsCoin}
               />
             ))}
           </div>

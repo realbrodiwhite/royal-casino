@@ -4,7 +4,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { Crown, Coins } from 'lucide-react';
+import { Crown, Coins, Diamond } from 'lucide-react'; // Added Diamond
 import { cn } from '@/lib/utils';
 
 export default function HeroContent() {
@@ -79,7 +79,7 @@ export default function HeroContent() {
               <Coins aria-hidden="true" className="h-7 w-7 sm:h-9 md:h-11 mr-2 sm:mr-3 text-primary" /> New Player Offer!
             </h2>
             <p className="text-lg sm:text-xl md:text-2xl text-foreground mt-2 sm:mt-3">
-              $5 Free Play or Credit Match Up To $20 on Newly Verified Accounts, plus 10 FREE Premium Coins!
+              Free Credits, plus <Diamond className="inline-block h-5 w-5 sm:h-6 md:h-7 text-accent align-text-bottom mx-1" />10 FREE Kings Coin on Newly Verified Accounts!
             </p>
           </div>
         </div>

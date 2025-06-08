@@ -3,32 +3,32 @@
 
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Coins, Gem, Diamond } from 'lucide-react'; // Added Diamond icon
+import { Coins, Diamond, UsersRound } from 'lucide-react'; // Updated Diamond to UsersRound for user count
 
 interface UserBalanceDisplayProps {
-  standardCredits: number;
-  premiumCoins?: number;
-  diamondUserCount?: number; // New prop for Diamond Users
+  credits: number; // Renamed from standardCredits
+  kingsCoin?: number; // Renamed from premiumCoins
+  diamondUserCount?: number;
 }
 
-const UserBalanceDisplay: React.FC<UserBalanceDisplayProps> = ({ standardCredits, premiumCoins, diamondUserCount }) => {
-  const [currentStandardCredits, setCurrentStandardCredits] = useState(standardCredits);
-  const [currentPremiumCoins, setCurrentPremiumCoins] = useState(premiumCoins);
+const UserBalanceDisplay: React.FC<UserBalanceDisplayProps> = ({ credits, kingsCoin, diamondUserCount }) => {
+  const [currentCredits, setCurrentCredits] = useState(credits);
+  const [currentKingsCoin, setCurrentKingsCoin] = useState(kingsCoin);
   const [currentDiamondUserCount, setCurrentDiamondUserCount] = useState(diamondUserCount);
 
   useEffect(() => {
-    setCurrentStandardCredits(standardCredits);
-  }, [standardCredits]);
+    setCurrentCredits(credits);
+  }, [credits]);
 
   useEffect(() => {
-    setCurrentPremiumCoins(premiumCoins);
-  }, [premiumCoins]);
+    setCurrentKingsCoin(kingsCoin);
+  }, [kingsCoin]);
 
   useEffect(() => {
     setCurrentDiamondUserCount(diamondUserCount);
   }, [diamondUserCount]);
 
-  const cardCount = [standardCredits, premiumCoins, diamondUserCount].filter(val => typeof val === 'number').length;
+  const cardCount = [credits, kingsCoin, diamondUserCount].filter(val => typeof val === 'number').length;
 
   return (
     <div className={`grid grid-cols-1 gap-4 ${cardCount === 3 ? 'md:grid-cols-3' : (cardCount === 2 ? 'md:grid-cols-2' : 'md:grid-cols-1')}`}>
@@ -41,28 +41,28 @@ const UserBalanceDisplay: React.FC<UserBalanceDisplayProps> = ({ standardCredits
         </CardHeader>
         <CardContent>
           <div className="text-2xl font-bold text-foreground">
-            {currentStandardCredits.toLocaleString()}
+            {currentCredits.toLocaleString()}
           </div>
           <p className="text-xs text-muted-foreground">
-            Your standard balance
+            Your standard in-game currency
           </p>
         </CardContent>
       </Card>
 
-      {typeof currentPremiumCoins === 'number' && (
+      {typeof currentKingsCoin === 'number' && (
         <Card className="bg-card border-accent shadow-lg">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium text-accent">
-              Premium Coins
+              Kings Coin
             </CardTitle>
-            <Gem className="h-5 w-5 text-accent" />
+            <Diamond className="h-5 w-5 text-accent" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-foreground">
-              {currentPremiumCoins.toLocaleString()}
+              {currentKingsCoin.toLocaleString()}
             </div>
             <p className="text-xs text-muted-foreground">
-              Your premium balance
+              Premium currency (1 KC = $1 USD)
             </p>
           </CardContent>
         </Card>
@@ -74,7 +74,7 @@ const UserBalanceDisplay: React.FC<UserBalanceDisplayProps> = ({ standardCredits
             <CardTitle className="text-sm font-medium text-muted-foreground">
               Diamond Users
             </CardTitle>
-            <Diamond className="h-5 w-5 text-muted-foreground" />
+            <UsersRound className="h-5 w-5 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-foreground">
@@ -91,3 +91,4 @@ const UserBalanceDisplay: React.FC<UserBalanceDisplayProps> = ({ standardCredits
 };
 
 export default UserBalanceDisplay;
+

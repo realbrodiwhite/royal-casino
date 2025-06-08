@@ -7,7 +7,7 @@ import Link from 'next/link';
 import { AppWindow, Ticket, Users, Play, Pause, RotateCcw, History, Volume2, Award } from 'lucide-react';
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { cn } from '@/lib/utils';
-import UserBalanceDisplay from '@/components/game/UserBalanceDisplay'; // Updated import
+import UserBalanceDisplay from '@/components/game/CreditDisplay';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useToast } from "@/hooks/use-toast";
 
@@ -70,16 +70,16 @@ export default function BingoPage() {
   const [currentCalledNumber, setCurrentCalledNumber] = useState<number | null>(null);
   const [remainingToCall, setRemainingToCall] = useState<number[]>(initialAllPossibleNumbers());
 
-  const [standardCredits, setStandardCredits] = useState(1000);
-  const [premiumCoins, setPremiumCoins] = useState(50); // Mock premium coins
+  const [credits, setCredits] = useState(1000); // Renamed from standardCredits
+  const [kingsCoin, setKingsCoin] = useState(50); // Renamed from premiumCoins
   const [isGameActive, setIsGameActive] = useState(false);
   const [isGamePaused, setIsGamePaused] = useState(false);
   const [hasPlayerWonBingo, setHasPlayerWonBingo] = useState(false);
 
   const { toast } = useToast();
   const gameIntervalRef = useRef<NodeJS.Timeout | null>(null);
-  const cardCost = 10; // Assuming card cost is in standard credits
-  const mockDiamondUserCount = 1234; // Mock data for new display
+  const cardCost = 10; // Cost in Credits
+  const mockDiamondUserCount = 1234; 
 
   const findFreeSpaceCoords = (card: BingoNumber[][]): {row: number, col: number} | null => {
     for (let r = 0; r < card.length; r++) {
@@ -168,11 +168,11 @@ export default function BingoPage() {
   const handleBuyAndStart = () => {
     if (gameIntervalRef.current) clearInterval(gameIntervalRef.current);
 
-    if (standardCredits < cardCost) {
-        toast({ title: "Not Enough Credits", description: `You need ${cardCost} standard credits to play.`, variant: "destructive" });
+    if (credits < cardCost) {
+        toast({ title: "Not Enough Credits", description: `You need ${cardCost} credits to play.`, variant: "destructive" });
         return;
     }
-    setStandardCredits(prev => prev - cardCost);
+    setCredits(prev => prev - cardCost);
 
     initializeNewCardAndDaubs();
     resetCaller();
@@ -247,7 +247,7 @@ export default function BingoPage() {
 
     if (isWin) {
         setHasPlayerWonBingo(true);
-        setStandardCredits(prev => prev + BINGO_WIN_AMOUNT); // Winnings in standard credits
+        setCredits(prev => prev + BINGO_WIN_AMOUNT); 
         if (gameIntervalRef.current) clearInterval(gameIntervalRef.current);
         setIsGameActive(false);
         toast({
@@ -277,8 +277,8 @@ export default function BingoPage() {
           </p>
         </header>
 
-        <div className="w-full max-w-lg mx-auto mb-4 sm:mb-6"> {/* Adjusted max-width for 3 cards */}
-          <UserBalanceDisplay standardCredits={standardCredits} premiumCoins={premiumCoins} diamondUserCount={mockDiamondUserCount}/>
+        <div className="w-full max-w-lg mx-auto mb-4 sm:mb-6">
+          <UserBalanceDisplay credits={credits} kingsCoin={kingsCoin} diamondUserCount={mockDiamondUserCount}/>
         </div>
 
         <div className="flex flex-wrap justify-center items-center gap-2 sm:gap-3 mb-4 sm:mb-6">

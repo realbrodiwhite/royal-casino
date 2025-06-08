@@ -3,7 +3,7 @@
 
 import React, { useState, useEffect, useCallback } from 'react';
 import { Button } from '@/components/ui/button';
-import UserBalanceDisplay from '@/components/game/UserBalanceDisplay'; // Updated import
+import UserBalanceDisplay from '@/components/game/CreditDisplay';
 // XpDisplay removed
 import GameGrid from '@/components/game/GameGrid';
 import GridBox from '@/components/game/GridBox';
@@ -14,7 +14,7 @@ import Navbar from '@/components/layout/navbar';
 import { PlayCircle, PauseCircle, Palette, Sparkles } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import Image from 'next/image';
-import { useXp } from '@/contexts/XpContext'; // Import useXp
+import { useXp } from '@/contexts/XpContext'; 
 
 import CherrySymbol from '@/components/game/symbols/CherrySymbol';
 import DiamondSymbol from '@/components/game/symbols/DiamondSymbol';
@@ -29,7 +29,7 @@ import BellSymbol from '@/components/game/symbols/BellSymbol';
 
 import { classicSlotsTheme } from '@/game-themes/classic-slots.theme';
 import { vegasAdventureTheme } from '@/game-themes/vegas-adventure.theme';
-import { horrificHalloweenTheme } from '@/game-themes/horrific-halloween.theme'; // Import the new theme
+import { horrificHalloweenTheme } from '@/game-themes/horrific-halloween.theme'; 
 import type { SlotGameThemeConfig } from '@/types/game-theme';
 
 const allSymbolComponents: Record<string, React.FC<React.SVGProps<SVGSVGElement>>> = {
@@ -37,11 +37,10 @@ const allSymbolComponents: Record<string, React.FC<React.SVGProps<SVGSVGElement>
   DiamondSymbol: DiamondSymbol,
   GoldCoinSymbol: GoldCoinSymbol,
   BellSymbol: BellSymbol,
-  // Add new symbols here once their components are created:
-  PumpkinSymbol: (props: React.SVGProps<SVGSVGElement>) => <svg viewBox="0 0 100 100" {...props} data-ai-hint="jack-o-lantern pumpkin"><text x="25" y="65" fontSize="50">🎃</text></svg>, // Placeholder
-  GhostSymbol: (props: React.SVGProps<SVGSVGElement>) => <svg viewBox="0 0 100 100" {...props} data-ai-hint="spooky ghost"><text x="25" y="65" fontSize="50">👻</text></svg>,     // Placeholder
-  BatSymbol: (props: React.SVGProps<SVGSVGElement>) => <svg viewBox="0 0 100 100" {...props} data-ai-hint="flying bat"><text x="25" y="65" fontSize="50">🦇</text></svg>,       // Placeholder
-  WitchHatSymbol: (props: React.SVGProps<SVGSVGElement>) => <svg viewBox="0 0 100 100" {...props} data-ai-hint="witch hat"><text x="25" y="65" fontSize="50">🧙</text></svg>, // Placeholder
+  PumpkinSymbol: (props: React.SVGProps<SVGSVGElement>) => <svg viewBox="0 0 100 100" {...props} data-ai-hint="jack-o-lantern pumpkin"><text x="25" y="65" fontSize="50">🎃</text></svg>, 
+  GhostSymbol: (props: React.SVGProps<SVGSVGElement>) => <svg viewBox="0 0 100 100" {...props} data-ai-hint="spooky ghost"><text x="25" y="65" fontSize="50">👻</text></svg>,     
+  BatSymbol: (props: React.SVGProps<SVGSVGElement>) => <svg viewBox="0 0 100 100" {...props} data-ai-hint="flying bat"><text x="25" y="65" fontSize="50">🦇</text></svg>,       
+  WitchHatSymbol: (props: React.SVGProps<SVGSVGElement>) => <svg viewBox="0 0 100 100" {...props} data-ai-hint="witch hat"><text x="25" y="65" fontSize="50">🧙</text></svg>, 
 };
 
 interface SymbolData {
@@ -54,7 +53,7 @@ const FALLBACK_SYMBOL: SymbolData = {
   component: (props: React.SVGProps<SVGSVGElement>) => <svg viewBox="0 0 100 100" {...props} data-ai-hint="question mark error"><text x="25" y="65" fontSize="50">?</text></svg>,
 };
 
-const availableThemes: SlotGameThemeConfig[] = [classicSlotsTheme, vegasAdventureTheme, horrificHalloweenTheme]; // Add new theme to the list
+const availableThemes: SlotGameThemeConfig[] = [classicSlotsTheme, vegasAdventureTheme, horrificHalloweenTheme]; 
 
 const themeImagePaths: Record<string, string> = {
   'classic-slots': '/images/theme-art/classic-slots-theme.svg',
@@ -65,7 +64,7 @@ const themeImagePaths: Record<string, string> = {
 type CellCoordinate = [number, number];
 
 export default function SlotsPage() {
-  const { addXp } = useXp(); // Get addXp from context
+  const { addXp } = useXp(); 
   const [selectedTheme, setSelectedTheme] = useState<SlotGameThemeConfig | null>(null);
 
   const [rows, setRows] = useState(3);
@@ -83,7 +82,7 @@ export default function SlotsPage() {
             return { id: themeSymbol.id, component, weight: themeSymbol.weight };
           }
           console.warn(`Symbol component for id '${themeSymbol.id}' not found in allSymbolComponents. Using fallback.`);
-          return { id: themeSymbol.id, component: FALLBACK_SYMBOL.component, weight: themeSymbol.weight }; // Use fallback if symbol not found
+          return { id: themeSymbol.id, component: FALLBACK_SYMBOL.component, weight: themeSymbol.weight }; 
         })
         .filter((item): item is SymbolData & { weight: number } => Boolean(item));
       setAvailableSymbolsWithData(currentSymbols);
@@ -110,7 +109,6 @@ export default function SlotsPage() {
       }
       random -= symbol.weight;
     }
-    // Fallback to the last symbol if somehow random logic fails (should not happen if weights are positive)
     const lastSymbol = availableSymbolsWithData[availableSymbolsWithData.length - 1];
     return {id: lastSymbol.id, component: lastSymbol.component};
   }, [availableSymbolsWithData]);
@@ -124,8 +122,8 @@ export default function SlotsPage() {
 
   const [reels, setReels] = useState<SymbolData[][]>(() => initialReels(rows, cols));
   const [spinning, setSpinning] = useState(false);
-  const [standardCredits, setStandardCredits] = useState(1000);
-  const [premiumCoins, setPremiumCoins] = useState(50); // Mock premium coins
+  const [credits, setCredits] = useState(1000); // Renamed from standardCredits
+  const [kingsCoin, setKingsCoin] = useState(50); // Renamed from premiumCoins
   const [isAutospin, setIsAutospin] = useState(false);
   const [resultsMessage, setResultsMessage] = useState<string | null>(null);
   const [isWin, setIsWin] = useState<boolean | null>(null);
@@ -133,8 +131,8 @@ export default function SlotsPage() {
   const [showWinAnimation, setShowWinAnimation] = useState(false);
   const [highlightedWinningCells, setHighlightedWinningCells] = useState<CellCoordinate[]>([]);
 
-  const spinCost = 10; // Assuming spin cost is in standard credits
-  const mockDiamondUserCount = 1234; // Mock data for new display
+  const spinCost = 10; // Cost in Credits
+  const mockDiamondUserCount = 1234; 
 
   useEffect(() => {
     if (selectedTheme) {
@@ -219,8 +217,8 @@ export default function SlotsPage() {
 
     if (!selectedTheme) return;
 
-    if (standardCredits < spinCost) {
-      setResultsMessage("Not enough standard credits to spin!");
+    if (credits < spinCost) {
+      setResultsMessage("Not enough credits to spin!");
       setIsWin(false);
       setIsAutospin(false);
       return;
@@ -233,7 +231,7 @@ export default function SlotsPage() {
     }
 
     setSpinning(true);
-    setStandardCredits((prev) => prev - spinCost);
+    setCredits((prev) => prev - spinCost);
     addXp(spinCost); 
     setResultsMessage(null);
     setIsWin(null);
@@ -258,7 +256,7 @@ export default function SlotsPage() {
           );
           setResultsMessage(`You won ${totalWinAmount} credits! ${winDetails.length > 1 ? 'Details: ' + winMessages.join('; ') : winMessages[0]}`);
           setIsWin(true);
-          setStandardCredits((prev) => prev + totalWinAmount); // Winnings are in standard credits
+          setCredits((prev) => prev + totalWinAmount); 
           setWinAmount(totalWinAmount);
           setShowWinAnimation(true);
 
@@ -279,19 +277,19 @@ export default function SlotsPage() {
         }
       }
     }, 100);
-  }, [standardCredits, initialReels, getRandomSymbolData, availableSymbolsWithData, calculateWins, selectedTheme, spinCost, addXp]);
+  }, [credits, initialReels, getRandomSymbolData, availableSymbolsWithData, calculateWins, selectedTheme, spinCost, addXp]);
 
   useEffect(() => {
     let autoSpinTimeout: NodeJS.Timeout;
-    if (selectedTheme && isAutospin && !spinning && standardCredits >= spinCost && availableSymbolsWithData.length > 0) {
+    if (selectedTheme && isAutospin && !spinning && credits >= spinCost && availableSymbolsWithData.length > 0) {
       autoSpinTimeout = setTimeout(handleSpin, 2000);
     }
     return () => clearTimeout(autoSpinTimeout);
-  }, [isAutospin, spinning, standardCredits, handleSpin, availableSymbolsWithData.length, selectedTheme]);
+  }, [isAutospin, spinning, credits, handleSpin, availableSymbolsWithData.length, selectedTheme]);
 
   const handleToggleAutospin = () => {
     if (!selectedTheme) return;
-    if (!isAutospin && standardCredits < spinCost) {
+    if (!isAutospin && credits < spinCost) {
         setResultsMessage("Not enough credits to start autospin!");
         setIsWin(false);
         return;
@@ -373,8 +371,8 @@ export default function SlotsPage() {
       </header>
 
       <main className="flex flex-col items-center gap-4 sm:gap-6 w-full max-w-2xl px-2">
-        <div className="w-full max-w-lg mx-auto"> {/* Adjusted max-width for 3 cards */}
-            <UserBalanceDisplay standardCredits={standardCredits} premiumCoins={premiumCoins} diamondUserCount={mockDiamondUserCount} />
+        <div className="w-full max-w-lg mx-auto">
+            <UserBalanceDisplay credits={credits} kingsCoin={kingsCoin} diamondUserCount={mockDiamondUserCount} />
         </div>
 
         <Button onClick={() => handleThemeSelect(null)} variant="outline" className="w-full sm:w-auto">
@@ -419,10 +417,10 @@ export default function SlotsPage() {
           <SpinButton
             onClick={handleSpin}
             isLoading={spinning}
-            disabled={spinning || (isAutospin && standardCredits < spinCost) || availableSymbolsWithData.length === 0}
+            disabled={spinning || (isAutospin && credits < spinCost) || availableSymbolsWithData.length === 0}
             className="w-full sm:w-auto"
           >
-            {spinning ? 'Spinning...' : 'Spin'}
+            {spinning ? 'Spinning...' : 'Spin'} ({spinCost} Credits)
           </SpinButton>
           <Button
             variant="outline"

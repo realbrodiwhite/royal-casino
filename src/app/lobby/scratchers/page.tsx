@@ -4,7 +4,7 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import Navbar from '@/components/layout/navbar';
 import { Button } from '@/components/ui/button';
-import UserBalanceDisplay from '@/components/game/UserBalanceDisplay'; // Updated import
+import UserBalanceDisplay from '@/components/game/CreditDisplay';
 import ResultsDisplay from '@/components/game/ResultsDisplay';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { Ticket, Gift, Sparkles, Palette } from 'lucide-react';
@@ -19,8 +19,8 @@ const POSSIBLE_SYMBOLS = ["💎", "💰", "🍒", "🔔", "⭐", "🍀"];
 interface TicketOption {
   id: string;
   name: string;
-  cost: number; // Assuming cost in standard credits
-  winAmount: number; // Assuming win in standard credits
+  cost: number; // Cost in Credits
+  winAmount: number; // Win in Credits
 }
 
 const TICKET_OPTIONS: TicketOption[] = [
@@ -81,8 +81,8 @@ const generateTicketSymbols = (): ScratchGrid => {
 
 
 export default function ScratchersPage() {
-  const [standardCredits, setStandardCredits] = useState(1000);
-  const [premiumCoins, setPremiumCoins] = useState(50); // Mock premium coins
+  const [credits, setCredits] = useState(1000); // Renamed from standardCredits
+  const [kingsCoin, setKingsCoin] = useState(50); // Renamed from premiumCoins
   const [scratchGrid, setScratchGrid] = useState<ScratchGrid>(generateInitialGrid());
   const [isTicketActive, setIsTicketActive] = useState(false);
   const [gameMessage, setGameMessage] = useState<string | null>(null);
@@ -91,7 +91,7 @@ export default function ScratchersPage() {
   const [hasWonThisTicket, setHasWonThisTicket] = useState(false);
   const [selectedTicketOptionId, setSelectedTicketOptionId] = useState<string>(TICKET_OPTIONS[0].id);
   const { toast } = useToast();
-  const mockDiamondUserCount = 1234; // Mock data for new display
+  const mockDiamondUserCount = 1234;
 
   const selectedTicket = TICKET_OPTIONS.find(opt => opt.id === selectedTicketOptionId) || TICKET_OPTIONS[0];
 
@@ -151,11 +151,11 @@ export default function ScratchersPage() {
 
 
   const handleBuyTicket = () => {
-    if (standardCredits < selectedTicket.cost) { // Assuming cost is in standard credits
-      toast({ title: "Not Enough Credits", description: "You don't have enough standard credits to buy this ticket.", variant: "destructive" });
+    if (credits < selectedTicket.cost) { 
+      toast({ title: "Not Enough Credits", description: "You don't have enough credits to buy this ticket.", variant: "destructive" });
       return;
     }
-    setStandardCredits(prev => prev - selectedTicket.cost);
+    setCredits(prev => prev - selectedTicket.cost);
     setScratchGrid(generateTicketSymbols());
     setIsTicketActive(true);
     setGameMessage("Scratch to reveal your prize!");
@@ -178,7 +178,7 @@ export default function ScratchersPage() {
     if (!hasWonThisTicket) {
         const { win, winningSymbol } = checkForWin(newGrid);
         if (win && winningSymbol) {
-            setStandardCredits(prev => prev + selectedTicket.winAmount); // Assuming win is in standard credits
+            setCredits(prev => prev + selectedTicket.winAmount); 
             setGameMessage(`Congratulations! You matched three ${winningSymbol}s and won ${selectedTicket.winAmount} credits!`);
             setIsWin(true);
             setHasWonThisTicket(true);
@@ -206,8 +206,8 @@ export default function ScratchersPage() {
           <p className="text-md sm:text-lg text-muted-foreground mt-1 px-2">Buy a ticket and scratch for instant prizes!</p>
         </header>
 
-        <div className="w-full max-w-lg mx-auto mb-6 sm:mb-8"> {/* Adjusted max-width for 3 cards */}
-          <UserBalanceDisplay standardCredits={standardCredits} premiumCoins={premiumCoins} diamondUserCount={mockDiamondUserCount}/>
+        <div className="w-full max-w-lg mx-auto mb-6 sm:mb-8">
+          <UserBalanceDisplay credits={credits} kingsCoin={kingsCoin} diamondUserCount={mockDiamondUserCount}/>
         </div>
 
         <Card className="w-full max-w-md bg-card border-border shadow-xl">
@@ -247,7 +247,7 @@ export default function ScratchersPage() {
                 onClick={handleBuyTicket}
                 variant="default"
                 className="w-full font-semibold text-md sm:text-lg py-2.5 sm:py-3"
-                disabled={standardCredits < selectedTicket.cost}
+                disabled={credits < selectedTicket.cost}
               >
                 <Gift className="mr-2 h-4 w-4 sm:h-5 sm:w-5" /> Buy {selectedTicket.name} ({selectedTicket.cost} Credits)
               </Button>
@@ -298,7 +298,7 @@ export default function ScratchersPage() {
                     onClick={handleBuyTicket}
                     variant="default"
                     className="w-full font-semibold text-md sm:text-lg py-2.5 sm:py-3 mt-3 sm:mt-4"
-                    disabled={standardCredits < selectedTicket.cost}
+                    disabled={credits < selectedTicket.cost}
                 >
                     <Sparkles className="mr-2 h-4 w-4 sm:h-5 sm:w-5" /> Play Again ({selectedTicket.name})?
                 </Button>
