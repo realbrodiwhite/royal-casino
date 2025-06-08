@@ -9,7 +9,7 @@ export const allSkillDefinitions: SkillDefinition[] = [
     name: 'Lucky Streak',
     description: 'Cultivate your innate luck to experience more frequent, though not necessarily larger, winning outcomes.',
     icon: Zap, // Represents quick, frequent events
-    maxLevel: 10,
+    maxLevel: 6,
     costPerLevel: (currentLevel) => (currentLevel + 1) * 120 + Math.pow(currentLevel, 2) * 5,
     effectDescription: (level) => {
       if (level === 0) return "Standard win frequency.";
@@ -23,7 +23,7 @@ export const allSkillDefinitions: SkillDefinition[] = [
     name: 'Strategic Mind (Intelligence)',
     description: 'Sharpen your cognitive abilities to better identify opportunities and improve outcomes in games involving choice or pattern recognition.',
     icon: Brain,
-    maxLevel: 5,
+    maxLevel: 6,
     costPerLevel: (currentLevel) => (currentLevel + 1) * 200,
     effectDescription: (level) => {
       if (level === 0) return "Standard bonus feature trigger rate.";
@@ -38,7 +38,7 @@ export const allSkillDefinitions: SkillDefinition[] = [
     name: 'Iron Resolve (Resilience)',
     description: 'Fortify your determination, allowing for a chance to recover from setbacks or gain minor consolations during losing streaks.',
     icon: ShieldCheck,
-    maxLevel: 5,
+    maxLevel: 6,
     costPerLevel: (currentLevel) => (currentLevel + 1) * 180,
     effectDescription: (level) => {
       if (level === 0) return "Standard play through losses.";
@@ -52,7 +52,7 @@ export const allSkillDefinitions: SkillDefinition[] = [
     name: 'Quick Reflexes',
     description: 'Hone your reaction time for games or bonus features where speed and quick decisions can lead to better results.',
     icon: Rabbit, // Represents speed
-    maxLevel: 3,
+    maxLevel: 6,
     costPerLevel: (currentLevel) => (currentLevel + 1) * 250,
     effectDescription: (level) => {
       if (level === 0) return "Standard decision speed benefits.";
@@ -67,7 +67,7 @@ export const allSkillDefinitions: SkillDefinition[] = [
     name: 'Keen Intuition',
     description: 'Trust your gut feelings. This skill subtly guides you towards more favorable outcomes in chance-based scenarios.',
     icon: Eye, // Represents insight or sixth sense
-    maxLevel: 7,
+    maxLevel: 6,
     costPerLevel: (currentLevel) => (currentLevel + 1) * 160,
     effectDescription: (level) => {
       if (level === 0) return "Standard luck in random events.";
@@ -81,7 +81,7 @@ export const allSkillDefinitions: SkillDefinition[] = [
     name: "Gambler's Wisdom",
     description: 'Gain deeper insights into game mechanics, potentially unlocking information or slightly better odds on specific, less common winning combinations.',
     icon: BarChart, // Represents analysis and understanding
-    maxLevel: 5,
+    maxLevel: 6,
     costPerLevel: (currentLevel) => (currentLevel + 1) * 300,
     effectDescription: (level) => {
       if (level === 0) return "Basic understanding of game payouts.";
@@ -91,11 +91,11 @@ export const allSkillDefinitions: SkillDefinition[] = [
     category: 'strategy',
   },
   {
-    id: 'fortune_finder',
-    name: 'Fortune Finder',
+    id: 'fortune', // Renamed from fortune_finder
+    name: 'Fortune', // Renamed from Fortune Finder
     description: 'Develop an uncanny ability to be in the right place at the right time for the casino\'s grandest prizes.',
     icon: Gem, // Or Sparkles, Award
-    maxLevel: 10, // Jackpots are rare, so more levels might be fine
+    maxLevel: 6, 
     costPerLevel: (currentLevel) => (currentLevel + 1) * 500 + Math.pow(currentLevel, 2) * 20, // Expensive
     effectDescription: (level) => {
       if (level === 0) return "Standard jackpot hit rate.";
@@ -106,11 +106,11 @@ export const allSkillDefinitions: SkillDefinition[] = [
     category: 'rewards',
   },
   {
-    id: 'xp_harvester', // Renamed from xp_boost_general
+    id: 'xp_harvester',
     name: 'XP Harvester',
     description: 'Become more efficient at learning from every play, permanently increasing all XP gains.',
     icon: TrendingUp,
-    maxLevel: 10,
+    maxLevel: 6,
     costPerLevel: (currentLevel) => (currentLevel + 1) * 75 + Math.pow(currentLevel,2)*10,
     effectDescription: (level) => {
       if (level === 0) return "Standard XP gain.";
