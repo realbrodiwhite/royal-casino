@@ -81,8 +81,8 @@ const generateTicketSymbols = (): ScratchGrid => {
 
 
 export default function ScratchersPage() {
-  const [credits, setCredits] = useState(1000); // Renamed from standardCredits
-  const [kingsCoin, setKingsCoin] = useState(50); // Renamed from premiumCoins
+  const [credits, setCredits] = useState(1000);
+  const [kingsCoin, setKingsCoin] = useState(50);
   const [scratchGrid, setScratchGrid] = useState<ScratchGrid>(generateInitialGrid());
   const [isTicketActive, setIsTicketActive] = useState(false);
   const [gameMessage, setGameMessage] = useState<string | null>(null);
@@ -94,6 +94,23 @@ export default function ScratchersPage() {
   const mockDiamondUserCount = 1234;
 
   const selectedTicket = TICKET_OPTIONS.find(opt => opt.id === selectedTicketOptionId) || TICKET_OPTIONS[0];
+
+  const handleConvertCreditsToKingsCoin = () => {
+    if (credits >= 1000) {
+      setCredits(prev => prev - 1000);
+      setKingsCoin(prev => prev + 1);
+      toast({
+        title: "Conversion Successful",
+        description: "1000 Credits converted to 1 Kings Coin.",
+      });
+    } else {
+      toast({
+        title: "Conversion Failed",
+        description: "Not enough Credits to convert.",
+        variant: "destructive",
+      });
+    }
+  };
 
   const checkForWin = useCallback((currentGrid: ScratchGrid): { win: boolean; winningSymbol: string | null } => {
     if (!currentGrid || currentGrid.length === 0) return { win: false, winningSymbol: null };
@@ -207,7 +224,13 @@ export default function ScratchersPage() {
         </header>
 
         <div className="w-full max-w-lg mx-auto mb-6 sm:mb-8">
-          <UserBalanceDisplay credits={credits} kingsCoin={kingsCoin} diamondUserCount={mockDiamondUserCount}/>
+          <UserBalanceDisplay
+            credits={credits}
+            kingsCoin={kingsCoin}
+            diamondUserCount={mockDiamondUserCount}
+            onConvertCredits={handleConvertCreditsToKingsCoin}
+            canConvert={credits >= 1000}
+          />
         </div>
 
         <Card className="w-full max-w-md bg-card border-border shadow-xl">

@@ -6,7 +6,7 @@ import Navbar from '@/components/layout/navbar';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import UserBalanceDisplay from '@/components/game/CreditDisplay';
-import { ShoppingCart, Diamond, Layers, Beer, Cigarette, Zap, Leaf, Ticket, Package } from 'lucide-react'; // Changed Gem to Diamond
+import { ShoppingCart, Diamond, Layers, Beer, Cigarette, Zap, Leaf, Ticket, Package } from 'lucide-react';
 import { allShopItems, type ShopItem, type ItemEffect } from '@/game-data/items';
 import { useToast } from "@/hooks/use-toast";
 
@@ -22,7 +22,7 @@ const itemIconMap: Record<string, React.FC<React.SVGProps<SVGSVGElement>>> = {
 const ShopItemCard: React.FC<{ 
   item: ShopItem;
   onBuy: (item: ShopItem, quantity: number, totalCost: number) => void; 
-  currentKingsCoin: number; // Renamed from currentPremiumCoins
+  currentKingsCoin: number;
 }> = ({ item, onBuy, currentKingsCoin }) => {
   const IconComponent = itemIconMap[item.icon] || itemIconMap.Default;
   const costForOne = item.cost;
@@ -110,10 +110,27 @@ const ShopItemCard: React.FC<{
 };
 
 export default function ShopPage() {
-  const [kingsCoin, setKingsCoin] = useState(250); // Renamed from premiumCoins
-  const [credits, setCredits] = useState(1000); // Renamed from standardCredits
+  const [kingsCoin, setKingsCoin] = useState(250);
+  const [credits, setCredits] = useState(1000);
   const { toast } = useToast();
   const mockDiamondUserCount = 1234;
+
+  const handleConvertCreditsToKingsCoin = () => {
+    if (credits >= 1000) {
+      setCredits(prev => prev - 1000);
+      setKingsCoin(prev => prev + 1);
+      toast({
+        title: "Conversion Successful",
+        description: "1000 Credits converted to 1 Kings Coin.",
+      });
+    } else {
+      toast({
+        title: "Conversion Failed",
+        description: "Not enough Credits to convert.",
+        variant: "destructive",
+      });
+    }
+  };
 
   const handleBuyItem = (item: ShopItem, quantity: number, totalCost: number) => {
     if (kingsCoin >= totalCost) {
@@ -147,7 +164,13 @@ export default function ShopPage() {
         </header>
         
         <div className="w-full max-w-lg mx-auto mb-6 sm:mb-8">
-          <UserBalanceDisplay credits={credits} kingsCoin={kingsCoin} diamondUserCount={mockDiamondUserCount} />
+          <UserBalanceDisplay
+            credits={credits}
+            kingsCoin={kingsCoin}
+            diamondUserCount={mockDiamondUserCount}
+            onConvertCredits={handleConvertCreditsToKingsCoin}
+            canConvert={credits >= 1000}
+          />
         </div>
 
         {allShopItems.length === 0 ? (

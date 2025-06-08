@@ -15,6 +15,7 @@ import { PlayCircle, PauseCircle, Palette, Sparkles } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import Image from 'next/image';
 import { useXp } from '@/contexts/XpContext'; 
+import { useToast } from "@/hooks/use-toast";
 
 import CherrySymbol from '@/components/game/symbols/CherrySymbol';
 import DiamondSymbol from '@/components/game/symbols/DiamondSymbol';
@@ -65,6 +66,7 @@ type CellCoordinate = [number, number];
 
 export default function SlotsPage() {
   const { addXp } = useXp(); 
+  const { toast } = useToast();
   const [selectedTheme, setSelectedTheme] = useState<SlotGameThemeConfig | null>(null);
 
   const [rows, setRows] = useState(3);
@@ -122,8 +124,8 @@ export default function SlotsPage() {
 
   const [reels, setReels] = useState<SymbolData[][]>(() => initialReels(rows, cols));
   const [spinning, setSpinning] = useState(false);
-  const [credits, setCredits] = useState(1000); // Renamed from standardCredits
-  const [kingsCoin, setKingsCoin] = useState(50); // Renamed from premiumCoins
+  const [credits, setCredits] = useState(1000);
+  const [kingsCoin, setKingsCoin] = useState(50);
   const [isAutospin, setIsAutospin] = useState(false);
   const [resultsMessage, setResultsMessage] = useState<string | null>(null);
   const [isWin, setIsWin] = useState<boolean | null>(null);
@@ -133,6 +135,23 @@ export default function SlotsPage() {
 
   const spinCost = 10; // Cost in Credits
   const mockDiamondUserCount = 1234; 
+
+  const handleConvertCreditsToKingsCoin = () => {
+    if (credits >= 1000) {
+      setCredits(prev => prev - 1000);
+      setKingsCoin(prev => prev + 1);
+      toast({
+        title: "Conversion Successful",
+        description: "1000 Credits converted to 1 Kings Coin.",
+      });
+    } else {
+      toast({
+        title: "Conversion Failed",
+        description: "Not enough Credits to convert.",
+        variant: "destructive",
+      });
+    }
+  };
 
   useEffect(() => {
     if (selectedTheme) {
@@ -372,7 +391,13 @@ export default function SlotsPage() {
 
       <main className="flex flex-col items-center gap-4 sm:gap-6 w-full max-w-2xl px-2">
         <div className="w-full max-w-lg mx-auto">
-            <UserBalanceDisplay credits={credits} kingsCoin={kingsCoin} diamondUserCount={mockDiamondUserCount} />
+            <UserBalanceDisplay
+              credits={credits}
+              kingsCoin={kingsCoin}
+              diamondUserCount={mockDiamondUserCount}
+              onConvertCredits={handleConvertCreditsToKingsCoin}
+              canConvert={credits >= 1000}
+            />
         </div>
 
         <Button onClick={() => handleThemeSelect(null)} variant="outline" className="w-full sm:w-auto">
@@ -420,7 +445,7 @@ export default function SlotsPage() {
             disabled={spinning || (isAutospin && credits < spinCost) || availableSymbolsWithData.length === 0}
             className="w-full sm:w-auto"
           >
-            {spinning ? 'Spinning...' : 'Spin'} ({spinCost} Credits)
+            {spinning ? 'Spinning...' : `Spin (${spinCost} Credits)`}
           </SpinButton>
           <Button
             variant="outline"

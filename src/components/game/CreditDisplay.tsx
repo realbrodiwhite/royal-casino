@@ -1,55 +1,61 @@
 
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Coins, Diamond, UsersRound } from 'lucide-react'; // Updated Diamond to UsersRound for user count
+import { Button } from "@/components/ui/button";
+import { Coins, Diamond, UsersRound, ArrowRightLeft } from 'lucide-react';
 
 interface UserBalanceDisplayProps {
-  credits: number; // Renamed from standardCredits
-  kingsCoin?: number; // Renamed from premiumCoins
+  credits: number;
+  kingsCoin?: number;
   diamondUserCount?: number;
+  onConvertCredits?: () => void; // Callback for conversion
+  canConvert?: boolean; // To enable/disable conversion button
 }
 
-const UserBalanceDisplay: React.FC<UserBalanceDisplayProps> = ({ credits, kingsCoin, diamondUserCount }) => {
-  const [currentCredits, setCurrentCredits] = useState(credits);
-  const [currentKingsCoin, setCurrentKingsCoin] = useState(kingsCoin);
-  const [currentDiamondUserCount, setCurrentDiamondUserCount] = useState(diamondUserCount);
-
-  useEffect(() => {
-    setCurrentCredits(credits);
-  }, [credits]);
-
-  useEffect(() => {
-    setCurrentKingsCoin(kingsCoin);
-  }, [kingsCoin]);
-
-  useEffect(() => {
-    setCurrentDiamondUserCount(diamondUserCount);
-  }, [diamondUserCount]);
-
+const UserBalanceDisplay: React.FC<UserBalanceDisplayProps> = ({
+  credits,
+  kingsCoin,
+  diamondUserCount,
+  onConvertCredits,
+  canConvert,
+}) => {
   const cardCount = [credits, kingsCoin, diamondUserCount].filter(val => typeof val === 'number').length;
 
   return (
-    <div className={`grid grid-cols-1 gap-4 ${cardCount === 3 ? 'md:grid-cols-3' : (cardCount === 2 ? 'md:grid-cols-2' : 'md:grid-cols-1')}`}>
-      <Card className="bg-card border-border shadow-lg">
+    <div className={`grid grid-cols-1 gap-4 ${cardCount === 3 ? 'md:grid-cols-3' : (cardCount === 2 ? 'sm:grid-cols-2' : 'md:grid-cols-1')}`}>
+      <Card className="bg-card border-border shadow-lg flex flex-col">
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle className="text-sm font-medium text-primary">
             Credits
           </CardTitle>
           <Coins className="h-5 w-5 text-primary" />
         </CardHeader>
-        <CardContent>
+        <CardContent className="flex-grow">
           <div className="text-2xl font-bold text-foreground">
-            {currentCredits.toLocaleString()}
+            {credits.toLocaleString()}
           </div>
-          <p className="text-xs text-muted-foreground">
-            Your standard in-game currency
+          <p className="text-xs text-muted-foreground mt-1">
+            Your standard in-game currency. Earn through play and convert to Kings Coin.
           </p>
         </CardContent>
+        {onConvertCredits && typeof kingsCoin === 'number' && ( // Only show convert if kingsCoin is also displayed/managed
+          <CardContent className="pt-0 pb-3">
+            <Button
+              onClick={onConvertCredits}
+              disabled={!canConvert}
+              variant="outline"
+              size="sm"
+              className="w-full text-xs"
+            >
+              <ArrowRightLeft className="mr-1.5 h-3.5 w-3.5" /> Convert 1000 CR to 1 KC
+            </Button>
+          </CardContent>
+        )}
       </Card>
 
-      {typeof currentKingsCoin === 'number' && (
+      {typeof kingsCoin === 'number' && (
         <Card className="bg-card border-accent shadow-lg">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium text-accent">
@@ -59,16 +65,16 @@ const UserBalanceDisplay: React.FC<UserBalanceDisplayProps> = ({ credits, kingsC
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-foreground">
-              {currentKingsCoin.toLocaleString()}
+              {kingsCoin.toLocaleString()}
             </div>
-            <p className="text-xs text-muted-foreground">
-              Premium currency (1 KC = $1 USD)
+            <p className="text-xs text-muted-foreground mt-1">
+              Premium currency (1 KC = $1 USD approx. value). Required for certain wagers & features.
             </p>
           </CardContent>
         </Card>
       )}
 
-      {typeof currentDiamondUserCount === 'number' && (
+      {typeof diamondUserCount === 'number' && (
         <Card className="bg-card border-muted shadow-lg">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium text-muted-foreground">
@@ -78,10 +84,10 @@ const UserBalanceDisplay: React.FC<UserBalanceDisplayProps> = ({ credits, kingsC
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-foreground">
-              {currentDiamondUserCount.toLocaleString()}
+              {diamondUserCount.toLocaleString()}
             </div>
-            <p className="text-xs text-muted-foreground">
-              Active elite players
+            <p className="text-xs text-muted-foreground mt-1">
+              Active elite players online.
             </p>
           </CardContent>
         </Card>
@@ -91,4 +97,3 @@ const UserBalanceDisplay: React.FC<UserBalanceDisplayProps> = ({ credits, kingsC
 };
 
 export default UserBalanceDisplay;
-

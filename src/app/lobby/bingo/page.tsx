@@ -70,8 +70,8 @@ export default function BingoPage() {
   const [currentCalledNumber, setCurrentCalledNumber] = useState<number | null>(null);
   const [remainingToCall, setRemainingToCall] = useState<number[]>(initialAllPossibleNumbers());
 
-  const [credits, setCredits] = useState(1000); // Renamed from standardCredits
-  const [kingsCoin, setKingsCoin] = useState(50); // Renamed from premiumCoins
+  const [credits, setCredits] = useState(1000);
+  const [kingsCoin, setKingsCoin] = useState(50);
   const [isGameActive, setIsGameActive] = useState(false);
   const [isGamePaused, setIsGamePaused] = useState(false);
   const [hasPlayerWonBingo, setHasPlayerWonBingo] = useState(false);
@@ -80,6 +80,23 @@ export default function BingoPage() {
   const gameIntervalRef = useRef<NodeJS.Timeout | null>(null);
   const cardCost = 10; // Cost in Credits
   const mockDiamondUserCount = 1234; 
+
+  const handleConvertCreditsToKingsCoin = () => {
+    if (credits >= 1000) {
+      setCredits(prev => prev - 1000);
+      setKingsCoin(prev => prev + 1);
+      toast({
+        title: "Conversion Successful",
+        description: "1000 Credits converted to 1 Kings Coin.",
+      });
+    } else {
+      toast({
+        title: "Conversion Failed",
+        description: "Not enough Credits to convert.",
+        variant: "destructive",
+      });
+    }
+  };
 
   const findFreeSpaceCoords = (card: BingoNumber[][]): {row: number, col: number} | null => {
     for (let r = 0; r < card.length; r++) {
@@ -278,7 +295,13 @@ export default function BingoPage() {
         </header>
 
         <div className="w-full max-w-lg mx-auto mb-4 sm:mb-6">
-          <UserBalanceDisplay credits={credits} kingsCoin={kingsCoin} diamondUserCount={mockDiamondUserCount}/>
+          <UserBalanceDisplay
+            credits={credits}
+            kingsCoin={kingsCoin}
+            diamondUserCount={mockDiamondUserCount}
+            onConvertCredits={handleConvertCreditsToKingsCoin}
+            canConvert={credits >= 1000}
+          />
         </div>
 
         <div className="flex flex-wrap justify-center items-center gap-2 sm:gap-3 mb-4 sm:mb-6">

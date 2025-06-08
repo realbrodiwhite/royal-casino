@@ -12,6 +12,7 @@ import ResultsDisplay from '@/components/game/ResultsDisplay';
 import WinAnimation from '@/components/game/WinAnimation';
 import Navbar from '@/components/layout/navbar';
 import { PlayCircle, PauseCircle } from 'lucide-react';
+import { useToast } from "@/hooks/use-toast";
 
 import CherrySymbol from '@/components/game/symbols/CherrySymbol';
 import DiamondSymbol from '@/components/game/symbols/DiamondSymbol';
@@ -39,8 +40,9 @@ const FALLBACK_SYMBOL: SymbolData = {
   component: (props: React.SVGProps<SVGSVGElement>) => <svg viewBox="0 0 100 100" {...props}><text x="10" y="50">?</text></svg>,
 };
 
-export default function SlotsPage() {
+export default function LegacySlotsPage() { // Renamed to avoid conflict if a new /app/games/slots/page.tsx is main
   const [activeThemeConfig, setActiveThemeConfig] = useState<SlotGameThemeConfig>(classicSlotsTheme);
+  const { toast } = useToast();
 
   const rows = activeThemeConfig.grid.rows;
   const cols = activeThemeConfig.grid.cols;
@@ -89,8 +91,8 @@ export default function SlotsPage() {
 
   const [reels, setReels] = useState<SymbolData[][]>(() => initialReels(rows, cols));
   const [spinning, setSpinning] = useState(false);
-  const [credits, setCredits] = useState(1000); // Renamed from standardCredits
-  const [kingsCoin, setKingsCoin] = useState(50); // Renamed from premiumCoins
+  const [credits, setCredits] = useState(1000);
+  const [kingsCoin, setKingsCoin] = useState(50);
   const [experiencePoints, setExperiencePoints] = useState(0);
   const [isAutospin, setIsAutospin] = useState(false);
   const [resultsMessage, setResultsMessage] = useState<string | null>(null);
@@ -100,6 +102,23 @@ export default function SlotsPage() {
 
   const spinCost = 10; // Cost in Credits
   const mockDiamondUserCount = 1234;
+
+  const handleConvertCreditsToKingsCoin = () => {
+    if (credits >= 1000) {
+      setCredits(prev => prev - 1000);
+      setKingsCoin(prev => prev + 1);
+      toast({
+        title: "Conversion Successful",
+        description: "1000 Credits converted to 1 Kings Coin.",
+      });
+    } else {
+      toast({
+        title: "Conversion Failed",
+        description: "Not enough Credits to convert.",
+        variant: "destructive",
+      });
+    }
+  };
 
   useEffect(() => {
     setReels(initialReels(rows, cols));
@@ -265,7 +284,7 @@ export default function SlotsPage() {
   };
 
   return (
-    <div className="min-h-screen text-foreground flex flex-col items-center p-4">
+    <div className="min-h-screen text-foreground flex flex-col items-center p-4 pt-[88px] sm:pt-[92px]"> {/* Adjusted padding top */}
       <Navbar />
       <header className="my-8 text-center">
         <h1 className="text-5xl font-bold font-headline text-primary">{activeThemeConfig.displayName}</h1>
@@ -274,7 +293,13 @@ export default function SlotsPage() {
 
       <main className="flex flex-col items-center gap-6 w-full max-w-2xl">
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 w-full max-w-lg mx-auto">
-            <UserBalanceDisplay credits={credits} kingsCoin={kingsCoin} diamondUserCount={mockDiamondUserCount} />
+            <UserBalanceDisplay
+              credits={credits}
+              kingsCoin={kingsCoin}
+              diamondUserCount={mockDiamondUserCount}
+              onConvertCredits={handleConvertCreditsToKingsCoin}
+              canConvert={credits >= 1000}
+            />
         </div>
          <div className="w-full max-w-xs sm:max-w-sm mx-auto">
             <XpDisplay experiencePoints={experiencePoints} />
@@ -330,11 +355,10 @@ export default function SlotsPage() {
         </div>
       </main>
 
-      <footer className="mt-12 text-center text-sm text-muted-foreground py-2">
+      <footer className="mt-12 text-center text-sm text-muted-foreground py-2 border-t border-border">
         <p>&copy; {new Date().getFullYear()} Royal Casino. All rights reserved.</p>
         <p>Games are for entertainment purposes only. Play responsibly.</p>
       </footer>
     </div>
   );
 }
-

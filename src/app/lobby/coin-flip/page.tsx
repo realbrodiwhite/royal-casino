@@ -16,8 +16,8 @@ type CoinSide = 'Heads' | 'Tails';
 type DoubleOrNothingMode = 'inactive' | 'active';
 
 export default function CoinFlipPage() {
-  const [credits, setCredits] = useState(1000); // Renamed from standardCredits
-  const [kingsCoin, setKingsCoin] = useState(50); // Renamed from premiumCoins
+  const [credits, setCredits] = useState(1000);
+  const [kingsCoin, setKingsCoin] = useState(50);
   const [betAmount, setBetAmount] = useState<number | string>(10);
   const [chosenSide, setChosenSide] = useState<CoinSide | null>(null);
   const [coinResult, setCoinResult] = useState<CoinSide | null>(null);
@@ -30,6 +30,23 @@ export default function CoinFlipPage() {
 
   const { toast } = useToast();
   const mockDiamondUserCount = 1234; 
+
+  const handleConvertCreditsToKingsCoin = () => {
+    if (credits >= 1000) {
+      setCredits(prev => prev - 1000);
+      setKingsCoin(prev => prev + 1);
+      toast({
+        title: "Conversion Successful",
+        description: "1000 Credits converted to 1 Kings Coin.",
+      });
+    } else {
+      toast({
+        title: "Conversion Failed",
+        description: "Not enough Credits to convert.",
+        variant: "destructive",
+      });
+    }
+  };
 
   const handleBetAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -148,7 +165,13 @@ export default function CoinFlipPage() {
         </header>
 
         <div className="w-full max-w-lg mx-auto mb-6 sm:mb-8">
-          <UserBalanceDisplay credits={credits} kingsCoin={kingsCoin} diamondUserCount={mockDiamondUserCount} />
+          <UserBalanceDisplay
+            credits={credits}
+            kingsCoin={kingsCoin}
+            diamondUserCount={mockDiamondUserCount}
+            onConvertCredits={handleConvertCreditsToKingsCoin}
+            canConvert={credits >= 1000}
+          />
         </div>
 
         <Card className="w-full max-w-md bg-card border-border shadow-xl">

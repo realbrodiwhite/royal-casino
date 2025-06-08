@@ -25,8 +25,8 @@ import {
 type GameState = "BETTING" | "DEALT" | "GAME_OVER";
 
 const PokerPage: React.FC = () => {
-  const [credits, setCredits] = useState(1000); // Renamed from standardCredits
-  const [kingsCoin, setKingsCoin] = useState(50); // Renamed from premiumCoins
+  const [credits, setCredits] = useState(1000);
+  const [kingsCoin, setKingsCoin] = useState(50);
   const [betAmount, setBetAmount] = useState<number>(5);
   const [deck, setDeck] = useState<Card[]>([]);
   const [hand, setHand] = useState<(Card | null)[]>(Array(5).fill(null));
@@ -45,6 +45,23 @@ const PokerPage: React.FC = () => {
   useEffect(() => {
     initializeDeck();
   }, [initializeDeck]);
+
+  const handleConvertCreditsToKingsCoin = () => {
+    if (credits >= 1000) {
+      setCredits(prev => prev - 1000);
+      setKingsCoin(prev => prev + 1);
+      toast({
+        title: "Conversion Successful",
+        description: "1000 Credits converted to 1 Kings Coin.",
+      });
+    } else {
+      toast({
+        title: "Conversion Failed",
+        description: "Not enough Credits to convert.",
+        variant: "destructive",
+      });
+    }
+  };
 
   const handleBetAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = parseInt(e.target.value, 10);
@@ -166,7 +183,13 @@ const PokerPage: React.FC = () => {
         </header>
 
         <div className="w-full max-w-lg mx-auto mb-6 sm:mb-8">
-          <UserBalanceDisplay credits={credits} kingsCoin={kingsCoin} diamondUserCount={mockDiamondUserCount} />
+          <UserBalanceDisplay
+            credits={credits}
+            kingsCoin={kingsCoin}
+            diamondUserCount={mockDiamondUserCount}
+            onConvertCredits={handleConvertCreditsToKingsCoin}
+            canConvert={credits >= 1000}
+          />
         </div>
 
         <UICard className="w-full max-w-lg bg-card border-border shadow-xl mb-6 sm:mb-8">
