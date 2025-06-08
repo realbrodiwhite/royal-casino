@@ -13,19 +13,20 @@ export interface SkillDefinition {
   costPerLevel: (currentLevel: number) => number;
   /**
    * Returns a string describing the effect of the skill at a given level.
+   * This should explain how the skill influences game outcomes (e.g., win frequency, bonus rates).
    * @param level The level of the skill.
    * @returns A string describing the effect.
    */
   effectDescription: (level: number) => string;
   /**
-   * Returns the numerical value of the effect at a given level, if applicable.
-   * This might be used by game logic.
+   * Returns the numerical value representing the "strength" or "influence" of the effect at a given level.
+   * This might be used by game logic to bias RNG or decision trees, rather than a direct RTP add.
    * @param level The level of the skill.
-   * @returns A number representing the effect value, or null if not applicable/purely descriptive.
+   * @returns A number representing the effect's influence value, or null if not applicable.
    */
   getEffectValue?: (level: number) => number | null;
   prerequisites?: { skillId: string; level: number }[]; // Optional: Other skills required
-  category?: 'slots' | 'poker' | 'bingo' | 'general';
+  category?: 'luck' | 'strategy' | 'endurance' | 'rewards' | 'general'; // More thematic categories
 }
 
 export interface UserSkillProgress {

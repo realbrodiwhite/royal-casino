@@ -1,64 +1,124 @@
 
 import type { SkillDefinition } from '@/types/skills';
-import { BarChart, Gauge, TrendingUp, Zap } from 'lucide-react'; // Example icons
+// Importing a wider range of icons that might fit the new skills
+import { Brain, Zap, ShieldCheck, Rabbit, Eye, BarChart, Sparkles, Award, TrendingUp, Gem } from 'lucide-react';
 
 export const allSkillDefinitions: SkillDefinition[] = [
   {
-    id: 'slots_savvy',
-    name: 'Slots Savvy',
-    description: 'Improves your general fortune on slot machines.',
-    icon: Zap,
-    maxLevel: 5,
-    costPerLevel: (currentLevel) => (currentLevel + 1) * 100, // e.g., L1: 100, L2: 200
+    id: 'lucky_streak',
+    name: 'Lucky Streak',
+    description: 'Cultivate your innate luck to experience more frequent, though not necessarily larger, winning outcomes.',
+    icon: Zap, // Represents quick, frequent events
+    maxLevel: 10,
+    costPerLevel: (currentLevel) => (currentLevel + 1) * 120 + Math.pow(currentLevel, 2) * 5,
     effectDescription: (level) => {
-      if (level === 0) return "No bonus yet.";
-      return `Slightly increases base RTP on all slot games by ${level * 0.1}%.`;
+      if (level === 0) return "Standard win frequency.";
+      return `Subtly increases the chance of forming winning combinations more often (Influence Lvl ${level}).`;
     },
-    getEffectValue: (level) => level * 0.001, // 0.1% = 0.001
-    category: 'slots',
+    getEffectValue: (level) => level * 0.001, // Small influence factor for win frequency
+    category: 'luck',
   },
   {
-    id: 'poker_patience',
-    name: 'Poker Patience',
-    description: 'Increases the chances of being dealt better starting hands in Video Poker.',
-    icon: Gauge,
+    id: 'strategic_mind',
+    name: 'Strategic Mind (Intelligence)',
+    description: 'Sharpen your cognitive abilities to better identify opportunities and improve outcomes in games involving choice or pattern recognition.',
+    icon: Brain,
+    maxLevel: 5,
+    costPerLevel: (currentLevel) => (currentLevel + 1) * 200,
+    effectDescription: (level) => {
+      if (level === 0) return "Standard bonus feature trigger rate.";
+      // Example: Could influence "BonusWinRate"
+      return `Slightly enhances your ability to trigger bonus rounds and special game features (Influence Lvl ${level}).`;
+    },
+    getEffectValue: (level) => level * 0.002, // Influence factor for bonus triggers
+    category: 'strategy',
+  },
+  {
+    id: 'iron_resolve',
+    name: 'Iron Resolve (Resilience)',
+    description: 'Fortify your determination, allowing for a chance to recover from setbacks or gain minor consolations during losing streaks.',
+    icon: ShieldCheck,
+    maxLevel: 5,
+    costPerLevel: (currentLevel) => (currentLevel + 1) * 180,
+    effectDescription: (level) => {
+      if (level === 0) return "Standard play through losses.";
+      return `Provides a small chance for a 'Consolation Credit' after a series of non-winning outcomes (Influence Lvl ${level}).`;
+    },
+    getEffectValue: (level) => level * 0.0005, // Small chance for a minor rebate
+    category: 'endurance',
+  },
+  {
+    id: 'quick_reflexes',
+    name: 'Quick Reflexes',
+    description: 'Hone your reaction time for games or bonus features where speed and quick decisions can lead to better results.',
+    icon: Rabbit, // Represents speed
     maxLevel: 3,
     costPerLevel: (currentLevel) => (currentLevel + 1) * 250,
     effectDescription: (level) => {
-      if (level === 0) return "Standard hand dealing.";
-      return `Slightly higher chance for pairs or better on initial deal (Level ${level}). Effect is subtle.`;
+      if (level === 0) return "Standard decision speed benefits.";
+      // Abstracted for casino:
+      return `Improves effectiveness in rapid decision-making moments within certain bonus games (Influence Lvl ${level}).`;
     },
-    getEffectValue: (level) => level * 0.005, // Represents a small probabilistic shift
-    category: 'poker',
+    getEffectValue: (level) => level * 0.01, // General effectiveness boost in applicable scenarios
+    category: 'strategy', // Could also be general
   },
   {
-    id: 'bingo_instinct',
-    name: 'Bingo Instinct',
-    description: 'Your keen eye helps you spot called numbers faster in Bingo.',
-    icon: BarChart,
-    maxLevel: 4,
-    costPerLevel: (currentLevel) => (currentLevel + 1) * 150,
+    id: 'keen_intuition',
+    name: 'Keen Intuition',
+    description: 'Trust your gut feelings. This skill subtly guides you towards more favorable outcomes in chance-based scenarios.',
+    icon: Eye, // Represents insight or sixth sense
+    maxLevel: 7,
+    costPerLevel: (currentLevel) => (currentLevel + 1) * 160,
     effectDescription: (level) => {
-      if (level === 0) return "Manual daubing speed.";
-      // This effect would be more about UI hints or auto-features in a real implementation
-      return `Potentially highlights called numbers on your card faster (Level ${level}).`;
+      if (level === 0) return "Standard luck in random events.";
+      return `Slightly increases your chances of favorable random events or better paths in bonus games (Influence Lvl ${level}).`;
     },
-    category: 'bingo',
+    getEffectValue: (level) => level * 0.0015, // Influence on positive random outcomes
+    category: 'luck',
   },
   {
-    id: 'xp_boost_general',
-    name: 'Learning Curve',
-    description: 'Permanently increases all XP gains from playing games.',
+    id: 'gamblers_wisdom',
+    name: "Gambler's Wisdom",
+    description: 'Gain deeper insights into game mechanics, potentially unlocking information or slightly better odds on specific, less common winning combinations.',
+    icon: BarChart, // Represents analysis and understanding
+    maxLevel: 5,
+    costPerLevel: (currentLevel) => (currentLevel + 1) * 300,
+    effectDescription: (level) => {
+      if (level === 0) return "Basic understanding of game payouts.";
+      return `May reveal subtle game hints or slightly improve payouts for very specific rare winning patterns (Influence Lvl ${level}).`;
+    },
+    getEffectValue: (level) => level * 0.0003, // Very small boost to rare specific wins
+    category: 'strategy',
+  },
+  {
+    id: 'fortune_finder',
+    name: 'Fortune Finder',
+    description: 'Develop an uncanny ability to be in the right place at the right time for the casino\'s grandest prizes.',
+    icon: Gem, // Or Sparkles, Award
+    maxLevel: 10, // Jackpots are rare, so more levels might be fine
+    costPerLevel: (currentLevel) => (currentLevel + 1) * 500 + Math.pow(currentLevel, 2) * 20, // Expensive
+    effectDescription: (level) => {
+      if (level === 0) return "Standard jackpot hit rate.";
+      // Example: Could influence "JackpotHitRate"
+      return `Slightly increases your chances of hitting a jackpot across applicable games (Influence Lvl ${level}).`;
+    },
+    getEffectValue: (level) => level * 0.0001, // Very small influence factor for jackpots
+    category: 'rewards',
+  },
+  {
+    id: 'xp_harvester', // Renamed from xp_boost_general
+    name: 'XP Harvester',
+    description: 'Become more efficient at learning from every play, permanently increasing all XP gains.',
     icon: TrendingUp,
     maxLevel: 10,
-    costPerLevel: (currentLevel) => (currentLevel + 1) * 75 + Math.pow(currentLevel,2)*10, // progressively more expensive
+    costPerLevel: (currentLevel) => (currentLevel + 1) * 75 + Math.pow(currentLevel,2)*10,
     effectDescription: (level) => {
       if (level === 0) return "Standard XP gain.";
-      return `Increases all XP earned by ${level * 2}%.`;
+      return `Increases all Experience Points earned from gameplay by ${level * 2}%.`;
     },
-    getEffectValue: (level) => level * 0.02, // 2% = 0.02
+    getEffectValue: (level) => level * 0.02, // Direct 2% XP gain per level
     category: 'general',
-  },
+  }
 ];
 
 export const getSkillDefinitionById = (id: string): SkillDefinition | undefined => {
