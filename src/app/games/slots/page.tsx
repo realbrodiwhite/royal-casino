@@ -134,6 +134,7 @@ export default function SlotsPage() {
   const [highlightedWinningCells, setHighlightedWinningCells] = useState<CellCoordinate[]>([]);
 
   const spinCost = 10; // Assuming spin cost is in standard credits
+  const mockDiamondUserCount = 1234; // Mock data for new display
 
   useEffect(() => {
     if (selectedTheme) {
@@ -372,8 +373,8 @@ export default function SlotsPage() {
       </header>
 
       <main className="flex flex-col items-center gap-4 sm:gap-6 w-full max-w-2xl px-2">
-        <div className="w-full max-w-md mx-auto">
-            <UserBalanceDisplay standardCredits={standardCredits} premiumCoins={premiumCoins} />
+        <div className="w-full max-w-lg mx-auto"> {/* Adjusted max-width for 3 cards */}
+            <UserBalanceDisplay standardCredits={standardCredits} premiumCoins={premiumCoins} diamondUserCount={mockDiamondUserCount} />
         </div>
 
         <Button onClick={() => handleThemeSelect(null)} variant="outline" className="w-full sm:w-auto">
@@ -442,5 +443,3 @@ export default function SlotsPage() {
     </div>
   );
 }
-
-    

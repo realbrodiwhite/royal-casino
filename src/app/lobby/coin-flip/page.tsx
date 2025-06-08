@@ -29,6 +29,7 @@ export default function CoinFlipPage() {
   const [currentWinningsForDouble, setCurrentWinningsForDouble] = useState(0);
 
   const { toast } = useToast();
+  const mockDiamondUserCount = 1234; // Mock data for new display
 
   const handleBetAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -146,8 +147,8 @@ export default function CoinFlipPage() {
           <p className="text-md sm:text-lg text-muted-foreground mt-1 px-2">Heads or Tails? Double your winnings!</p>
         </header>
 
-        <div className="w-full max-w-md mx-auto mb-6 sm:mb-8">
-          <UserBalanceDisplay standardCredits={standardCredits} premiumCoins={premiumCoins} />
+        <div className="w-full max-w-lg mx-auto mb-6 sm:mb-8"> {/* Adjusted max-width for 3 cards */}
+          <UserBalanceDisplay standardCredits={standardCredits} premiumCoins={premiumCoins} diamondUserCount={mockDiamondUserCount} />
         </div>
 
         <Card className="w-full max-w-md bg-card border-border shadow-xl">
@@ -245,5 +246,3 @@ export default function CoinFlipPage() {
     </div>
   );
 }
-
-    

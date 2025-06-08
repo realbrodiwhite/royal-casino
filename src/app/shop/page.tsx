@@ -113,6 +113,7 @@ export default function ShopPage() {
   const [premiumCoins, setPremiumCoins] = useState(250); 
   const [standardCredits, setStandardCredits] = useState(1000);
   const { toast } = useToast();
+  const mockDiamondUserCount = 1234; // Mock data for new display
 
   const handleBuyItem = (item: ShopItem, quantity: number, totalCost: number) => {
     if (premiumCoins >= totalCost) {
@@ -145,8 +146,8 @@ export default function ShopPage() {
           </p>
         </header>
         
-        <div className="w-full max-w-md mx-auto mb-6 sm:mb-8">
-          <UserBalanceDisplay standardCredits={standardCredits} premiumCoins={premiumCoins} />
+        <div className="w-full max-w-lg mx-auto mb-6 sm:mb-8"> {/* Adjusted max-width for 3 cards */}
+          <UserBalanceDisplay standardCredits={standardCredits} premiumCoins={premiumCoins} diamondUserCount={mockDiamondUserCount} />
         </div>
 
         {allShopItems.length === 0 ? (
@@ -177,4 +178,3 @@ export default function ShopPage() {
     </div>
   );
 }
-

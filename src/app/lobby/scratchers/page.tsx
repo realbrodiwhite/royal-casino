@@ -91,6 +91,7 @@ export default function ScratchersPage() {
   const [hasWonThisTicket, setHasWonThisTicket] = useState(false);
   const [selectedTicketOptionId, setSelectedTicketOptionId] = useState<string>(TICKET_OPTIONS[0].id);
   const { toast } = useToast();
+  const mockDiamondUserCount = 1234; // Mock data for new display
 
   const selectedTicket = TICKET_OPTIONS.find(opt => opt.id === selectedTicketOptionId) || TICKET_OPTIONS[0];
 
@@ -205,8 +206,8 @@ export default function ScratchersPage() {
           <p className="text-md sm:text-lg text-muted-foreground mt-1 px-2">Buy a ticket and scratch for instant prizes!</p>
         </header>
 
-        <div className="w-full max-w-md mx-auto mb-6 sm:mb-8">
-          <UserBalanceDisplay standardCredits={standardCredits} premiumCoins={premiumCoins} />
+        <div className="w-full max-w-lg mx-auto mb-6 sm:mb-8"> {/* Adjusted max-width for 3 cards */}
+          <UserBalanceDisplay standardCredits={standardCredits} premiumCoins={premiumCoins} diamondUserCount={mockDiamondUserCount}/>
         </div>
 
         <Card className="w-full max-w-md bg-card border-border shadow-xl">
@@ -330,5 +331,3 @@ export default function ScratchersPage() {
     </div>
   );
 }
-
-    

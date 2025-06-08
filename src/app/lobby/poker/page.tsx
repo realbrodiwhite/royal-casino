@@ -36,6 +36,7 @@ const PokerPage: React.FC = () => {
   const [evaluatedHandRank, setEvaluatedHandRank] = useState<HandRank | null>(null);
   const [isWin, setIsWin] = useState<boolean | null>(null);
   const { toast } = useToast();
+  const mockDiamondUserCount = 1234; // Mock data for new display
 
   const initializeDeck = useCallback(() => {
     setDeck(shuffleDeck(createDeck()));
@@ -164,8 +165,8 @@ const PokerPage: React.FC = () => {
           <p className="text-md sm:text-lg text-muted-foreground mt-2 px-2">Jacks or Better - Get the best hand!</p>
         </header>
 
-        <div className="w-full max-w-md mx-auto mb-6 sm:mb-8">
-          <UserBalanceDisplay standardCredits={standardCredits} premiumCoins={premiumCoins} />
+        <div className="w-full max-w-lg mx-auto mb-6 sm:mb-8"> {/* Adjusted max-width for 3 cards */}
+          <UserBalanceDisplay standardCredits={standardCredits} premiumCoins={premiumCoins} diamondUserCount={mockDiamondUserCount} />
         </div>
 
         <UICard className="w-full max-w-lg bg-card border-border shadow-xl mb-6 sm:mb-8">
@@ -258,5 +259,3 @@ const PokerPage: React.FC = () => {
 };
 
 export default PokerPage;
-
-    
