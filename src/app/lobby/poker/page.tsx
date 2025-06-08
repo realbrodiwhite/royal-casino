@@ -12,6 +12,7 @@ import PokerCardComponent from '@/components/game/PokerCard';
 import { Card as UICard, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { Hand, DollarSign, CheckCircle, Info } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
+import { useXp } from '@/contexts/XpContext';
 import {
   createDeck,
   shuffleDeck,
@@ -36,6 +37,7 @@ const PokerPage: React.FC = () => {
   const [evaluatedHandRank, setEvaluatedHandRank] = useState<HandRank | null>(null);
   const [isWin, setIsWin] = useState<boolean | null>(null);
   const { toast } = useToast();
+  const { addXp } = useXp();
   const mockDiamondUserCount = 1234;
 
   const initializeDeck = useCallback(() => {
@@ -84,6 +86,7 @@ const PokerPage: React.FC = () => {
       }
 
       setCredits(prev => prev - betAmount);
+      addXp(betAmount); // Add XP based on bet amount
 
       let currentDeck = deck;
       if (currentDeck.length < 10) { 
@@ -157,7 +160,7 @@ const PokerPage: React.FC = () => {
       }
       setGameState("GAME_OVER");
     }
-  }, [gameState, credits, betAmount, deck, hand, held, toast, initializeDeck]);
+  }, [gameState, credits, betAmount, deck, hand, held, toast, initializeDeck, addXp]);
 
   const toggleHold = (index: number) => {
     if (gameState === "DEALT") {

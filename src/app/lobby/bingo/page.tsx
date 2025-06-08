@@ -10,6 +10,7 @@ import { cn } from '@/lib/utils';
 import UserBalanceDisplay from '@/components/game/CreditDisplay';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useToast } from "@/hooks/use-toast";
+import { useXp } from '@/contexts/XpContext';
 
 const BINGO_COLS = ['B', 'I', 'N', 'G', 'O'] as const;
 const NUMBERS_PER_COL: Record<typeof BINGO_COLS[number], { min: number, max: number, count: number }> = {
@@ -77,6 +78,7 @@ export default function BingoPage() {
   const [hasPlayerWonBingo, setHasPlayerWonBingo] = useState(false);
 
   const { toast } = useToast();
+  const { addXp } = useXp();
   const gameIntervalRef = useRef<NodeJS.Timeout | null>(null);
   const cardCost = 10; // Cost in Credits
   const mockDiamondUserCount = 1234; 
@@ -190,6 +192,7 @@ export default function BingoPage() {
         return;
     }
     setCredits(prev => prev - cardCost);
+    addXp(cardCost); // Add XP for buying a card
 
     initializeNewCardAndDaubs();
     resetCaller();

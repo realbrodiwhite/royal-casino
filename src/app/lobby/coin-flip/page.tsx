@@ -11,6 +11,7 @@ import ResultsDisplay from '@/components/game/ResultsDisplay';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { CircleDollarSign, Repeat, HelpCircle, TrendingUp, TrendingDown, Pocket, ChevronsUp } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
+import { useXp } from '@/contexts/XpContext';
 
 type CoinSide = 'Heads' | 'Tails';
 type DoubleOrNothingMode = 'inactive' | 'active';
@@ -29,6 +30,7 @@ export default function CoinFlipPage() {
   const [currentWinningsForDouble, setCurrentWinningsForDouble] = useState(0);
 
   const { toast } = useToast();
+  const { addXp } = useXp();
   const mockDiamondUserCount = 1234; 
 
   const handleConvertCreditsToKingsCoin = () => {
@@ -81,6 +83,7 @@ export default function CoinFlipPage() {
         return;
       }
       setCredits(prev => prev - currentBet);
+      addXp(currentBet); // Add XP for initial bet
     }
 
     setTimeout(() => {

@@ -4,7 +4,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Button } from '@/components/ui/button';
 import UserBalanceDisplay from '@/components/game/CreditDisplay';
-import XpDisplay from '@/components/game/XpDisplay'; 
+// XpDisplay removed
 import GameGrid from '@/components/game/GameGrid';
 import GridBox from '@/components/game/GridBox';
 import SpinButton from '@/components/game/SpinButton';
@@ -13,6 +13,7 @@ import WinAnimation from '@/components/game/WinAnimation';
 import Navbar from '@/components/layout/navbar';
 import { PlayCircle, PauseCircle } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
+import { useXp } from '@/contexts/XpContext'; // Import useXp
 
 import CherrySymbol from '@/components/game/symbols/CherrySymbol';
 import DiamondSymbol from '@/components/game/symbols/DiamondSymbol';
@@ -40,9 +41,10 @@ const FALLBACK_SYMBOL: SymbolData = {
   component: (props: React.SVGProps<SVGSVGElement>) => <svg viewBox="0 0 100 100" {...props}><text x="10" y="50">?</text></svg>,
 };
 
-export default function LegacySlotsPage() { // Renamed to avoid conflict if a new /app/games/slots/page.tsx is main
+export default function LegacySlotsPage() { 
   const [activeThemeConfig, setActiveThemeConfig] = useState<SlotGameThemeConfig>(classicSlotsTheme);
   const { toast } = useToast();
+  const { addXp } = useXp(); // Get addXp from context
 
   const rows = activeThemeConfig.grid.rows;
   const cols = activeThemeConfig.grid.cols;
@@ -93,7 +95,7 @@ export default function LegacySlotsPage() { // Renamed to avoid conflict if a ne
   const [spinning, setSpinning] = useState(false);
   const [credits, setCredits] = useState(1000);
   const [kingsCoin, setKingsCoin] = useState(50);
-  const [experiencePoints, setExperiencePoints] = useState(0);
+  // experiencePoints state removed, will use XpContext
   const [isAutospin, setIsAutospin] = useState(false);
   const [resultsMessage, setResultsMessage] = useState<string | null>(null);
   const [isWin, setIsWin] = useState<boolean | null>(null);
@@ -209,7 +211,7 @@ export default function LegacySlotsPage() { // Renamed to avoid conflict if a ne
 
     setSpinning(true);
     setCredits((prev) => prev - spinCost);
-    setExperiencePoints((prevXp) => prevXp + spinCost);
+    addXp(spinCost); // Add XP using context
     setResultsMessage(null);
     setIsWin(null);
     setShowWinAnimation(false);
@@ -243,7 +245,7 @@ export default function LegacySlotsPage() { // Renamed to avoid conflict if a ne
         }
       }
     }, 100);
-  }, [credits, rows, cols, initialReels, getRandomSymbolData, availableSymbolsWithData.length, calculateWins, activeThemeConfig, spinCost]);
+  }, [credits, rows, cols, initialReels, getRandomSymbolData, availableSymbolsWithData.length, calculateWins, activeThemeConfig, spinCost, addXp]);
 
   useEffect(() => {
     let autoSpinTimeout: NodeJS.Timeout;
@@ -301,9 +303,7 @@ export default function LegacySlotsPage() { // Renamed to avoid conflict if a ne
               canConvert={credits >= 1000}
             />
         </div>
-         <div className="w-full max-w-xs sm:max-w-sm mx-auto">
-            <XpDisplay experiencePoints={experiencePoints} />
-        </div>
+        {/* XpDisplay removed */}
         
         <Button onClick={toggleTheme} variant="outline">
           Switch to {activeThemeConfig.themeId === classicSlotsTheme.themeId ? vegasAdventureTheme.displayName : classicSlotsTheme.displayName}

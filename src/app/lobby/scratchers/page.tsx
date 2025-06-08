@@ -9,6 +9,7 @@ import ResultsDisplay from '@/components/game/ResultsDisplay';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { Ticket, Gift, Sparkles, Palette } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
+import { useXp } from '@/contexts/XpContext';
 import { cn } from '@/lib/utils';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
@@ -91,6 +92,7 @@ export default function ScratchersPage() {
   const [hasWonThisTicket, setHasWonThisTicket] = useState(false);
   const [selectedTicketOptionId, setSelectedTicketOptionId] = useState<string>(TICKET_OPTIONS[0].id);
   const { toast } = useToast();
+  const { addXp } = useXp();
   const mockDiamondUserCount = 1234;
 
   const selectedTicket = TICKET_OPTIONS.find(opt => opt.id === selectedTicketOptionId) || TICKET_OPTIONS[0];
@@ -173,6 +175,7 @@ export default function ScratchersPage() {
       return;
     }
     setCredits(prev => prev - selectedTicket.cost);
+    addXp(selectedTicket.cost); // Add XP for buying a ticket
     setScratchGrid(generateTicketSymbols());
     setIsTicketActive(true);
     setGameMessage("Scratch to reveal your prize!");
