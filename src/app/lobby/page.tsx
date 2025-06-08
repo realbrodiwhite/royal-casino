@@ -37,7 +37,7 @@ const GameCard: React.FC<GameCardProps> = ({ title, description, icon, href, ima
           <Image src={imageUrl} alt={title} width={150} height={100} className="rounded-md mb-4 object-cover h-32 w-full" />
         ) : (
           <div className="p-4 bg-primary/20 rounded-full mb-4 inline-block">
-            {React.cloneElement(icon as React.ReactElement, { className: "h-20 w-20 sm:h-24 sm:w-24 text-primary" })}
+            {React.cloneElement(icon as React.ReactElement, { className: "h-28 w-28 sm:h-32 sm:w-32 text-primary" })}
           </div>
         )}
         <CardTitle className="text-xl sm:text-2xl font-headline text-primary">{title}</CardTitle>
