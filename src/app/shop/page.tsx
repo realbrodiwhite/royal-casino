@@ -6,7 +6,7 @@ import Navbar from '@/components/layout/navbar';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import UserBalanceDisplay from '@/components/game/CreditDisplay';
-import { ShoppingCart, Gem, Layers, Beer, Cigarette, Zap, Leaf, Ticket, AlertTriangle } from 'lucide-react';
+import { ShoppingCart, Gem, Layers, Beer, Cigarette, Zap, Leaf, Ticket, Package } from 'lucide-react';
 import { allShopItems, type ShopItem, type ItemEffect } from '@/game-data/items';
 import { useToast } from "@/hooks/use-toast";
 
@@ -21,10 +21,16 @@ const itemIconMap: Record<string, React.FC<React.SVGProps<SVGSVGElement>>> = {
 
 const ShopItemCard: React.FC<{ 
   item: ShopItem;
-  onBuy: (item: ShopItem) => void; 
-  canAfford: boolean;
-}> = ({ item, onBuy, canAfford }) => {
+  onBuy: (item: ShopItem, quantity: number, totalCost: number) => void; 
+  currentPremiumCoins: number;
+}> = ({ item, onBuy, currentPremiumCoins }) => {
   const IconComponent = itemIconMap[item.icon] || itemIconMap.Default;
+  const costForOne = item.cost;
+  const costForSix = item.cost * 6; // Assuming no discount for now
+
+  const canAffordOne = currentPremiumCoins >= costForOne;
+  const canAffordSix = currentPremiumCoins >= costForSix;
+
 
   const formatEffect = (effect: ItemEffect): string => {
     let effectDesc = "";
@@ -79,40 +85,49 @@ const ShopItemCard: React.FC<{
         <p className="text-xs"><strong>Type:</strong> {item.isConsumable ? 'Consumable' : 'Permanent'}</p>
         {item.stackable && <p className="text-xs"><strong>Max Stack:</strong> {item.maxStack}</p>}
       </CardContent>
-      <CardFooter className="flex flex-col items-center">
-        <div className="flex items-center justify-center mb-2">
-          <Gem className="h-4 w-4 text-accent mr-1" />
-          <span className="text-lg font-bold text-accent">{item.cost}</span>
-        </div>
-        <Button onClick={() => onBuy(item)} variant="default" className="w-full" disabled={!canAfford}>
-          {canAfford ? 'Buy Item' : 'Not Enough Coins'}
+      <CardFooter className="flex flex-col items-stretch gap-2">
+         <Button 
+            onClick={() => onBuy(item, 1, costForOne)} 
+            variant="outline" 
+            size="sm"
+            disabled={!canAffordOne}
+        >
+            Buy 1 <Gem className="ml-1.5 mr-0.5 h-3 w-3 text-accent" /> {costForOne}
         </Button>
+        {item.isConsumable && item.stackable && ( // Only show 6-pack for stackable consumables
+            <Button 
+                onClick={() => onBuy(item, 6, costForSix)} 
+                variant="default"
+                size="sm"
+                disabled={!canAffordSix}
+            >
+                <Package className="mr-1.5 h-4 w-4" /> Buy 6-Pack <Gem className="ml-1.5 mr-0.5 h-3 w-3 text-accent" /> {costForSix}
+            </Button>
+        )}
       </CardFooter>
     </Card>
   );
 };
 
 export default function ShopPage() {
-  // Mock premium currency balance for now. In a real app, this would come from user context/backend.
   const [premiumCoins, setPremiumCoins] = useState(250); 
-  const [standardCredits, setStandardCredits] = useState(1000); // Keep for UserBalanceDisplay consistency
+  const [standardCredits, setStandardCredits] = useState(1000);
   const { toast } = useToast();
 
-  const handleBuyItem = (item: ShopItem) => {
-    if (premiumCoins >= item.cost) {
-      setPremiumCoins(prevCoins => prevCoins - item.cost);
-      // In a real app, you would add this item to the user's inventory in the backend.
-      console.log(`Bought ${item.name} for ${item.cost} premium coins.`);
-      console.log(`Mock: Adding ${item.name} to user's backpack.`);
+  const handleBuyItem = (item: ShopItem, quantity: number, totalCost: number) => {
+    if (premiumCoins >= totalCost) {
+      setPremiumCoins(prevCoins => prevCoins - totalCost);
+      console.log(`Bought ${quantity}x ${item.name} for ${totalCost} premium coins.`);
+      console.log(`Mock: Adding ${quantity}x ${item.name} to user's backpack.`);
       toast({
         title: "Purchase Successful!",
-        description: `You bought ${item.name} for ${item.cost} premium coins. Check your backpack!`,
+        description: `You bought ${quantity}x ${item.name} for ${totalCost} premium coins. Check your backpack!`,
       });
     } else {
-      console.log(`Not enough premium coins to buy ${item.name}.`);
+      console.log(`Not enough premium coins to buy ${quantity}x ${item.name}.`);
       toast({
         title: "Insufficient Funds",
-        description: `You need ${item.cost - premiumCoins} more premium coins to buy ${item.name}.`,
+        description: `You need ${totalCost - premiumCoins} more premium coins to buy ${quantity}x ${item.name}.`,
         variant: "destructive",
       });
     }
@@ -149,8 +164,8 @@ export default function ShopPage() {
               <ShopItemCard 
                 key={item.id} 
                 item={item} 
-                onBuy={handleBuyItem} 
-                canAfford={premiumCoins >= item.cost}
+                onBuy={handleBuyItem}
+                currentPremiumCoins={premiumCoins}
               />
             ))}
           </div>
@@ -162,3 +177,4 @@ export default function ShopPage() {
     </div>
   );
 }
+
