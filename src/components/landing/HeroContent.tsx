@@ -12,27 +12,22 @@ export default function HeroContent({ className }: { className?: string }) {
     <section
       className={cn(
         "text-center bg-gradient-to-b from-background via-purple-800/30 to-background",
-        className // This will apply 'landing-scroll-section' making it full height and flex/center
+        className // This applies 'landing-scroll-section'
       )}
     >
-      {/* This div.container is the direct child of landing-scroll-section.
-          It should be a flex container itself to manage its children's alignment.
-          flex-1 makes it try to take up all available space in the parent flex container.
-          w-full is important for width.
-      */}
       <div className="container mx-auto px-4 py-8 sm:py-12 flex flex-col items-center justify-center flex-1 w-full">
 
-        {/* Crown Iconography - ensure it's positioned correctly within the flow */}
+        {/* Crown Iconography */}
         <div
           className={cn(
-            "relative mb-10 sm:mb-12 md:mb-14 h-[145.6px] sm:h-[166.4px] md:h-[187.2px]",
-            "opacity-0 animate-in fade-in zoom-in-95 duration-700 delay-300" // Animation for the whole group
+            "relative mb-10 sm:mb-12 md:mb-14 h-[145.6px] sm:h-[166.4px] md:h-[187.2px]"
+            // Removed animation classes
           )}
         >
           {/* Left Small Crown */}
           <div
             className={cn(
-              "absolute top-1/2 left-[calc(50%-78.4px)] sm:left-[calc(50%-89.6px)] md:left-[calc(50%-100.8px)] z-0 transform -translate-x-1/2 -translate-y-1/2 w-28 h-28 sm:w-32 sm:h-32 md:w-36 md:h-36",
+              "absolute top-1/2 left-[calc(50%-78.4px)] sm:left-[calc(50%-89.6px)] md:left-[calc(50%-100.8px)] z-0 transform -translate-x-1/2 -translate-y-1/2 w-28 h-28 sm:w-32 sm:h-32 md:w-36 md:h-36"
             )}
           >
             <div className="border-4 border-primary rounded-full bg-transparent flex items-center justify-center w-full h-full">
@@ -42,7 +37,7 @@ export default function HeroContent({ className }: { className?: string }) {
           {/* Right Small Crown */}
           <div
             className={cn(
-              "absolute top-1/2 left-[calc(50%+78.4px)] sm:left-[calc(50%+89.6px)] md:left-[calc(50%+100.8px)] z-0 transform -translate-x-1/2 -translate-y-1/2 w-28 h-28 sm:w-32 sm:h-32 md:w-36 md:h-36",
+              "absolute top-1/2 left-[calc(50%+78.4px)] sm:left-[calc(50%+89.6px)] md:left-[calc(50%+100.8px)] z-0 transform -translate-x-1/2 -translate-y-1/2 w-28 h-28 sm:w-32 sm:h-32 md:w-36 md:h-36"
             )}
           >
             <div className="border-4 border-primary rounded-full bg-transparent flex items-center justify-center w-full h-full">
@@ -52,7 +47,7 @@ export default function HeroContent({ className }: { className?: string }) {
           {/* Center Main Crown */}
           <div
             className={cn(
-              "absolute top-1/2 left-1/2 z-10 transform -translate-x-1/2 -translate-y-1/2 w-[145.6px] h-[145.6px] sm:w-[166.4px] sm:h-[166.4px] md:w-[187.2px] md:h-[187.2px]",
+              "absolute top-1/2 left-1/2 z-10 transform -translate-x-1/2 -translate-y-1/2 w-[145.6px] h-[145.6px] sm:w-[166.4px] sm:h-[166.4px] md:w-[187.2px] md:h-[187.2px]"
             )}
           >
             <div className="border-4 border-primary rounded-full bg-background flex items-center justify-center w-full h-full">
@@ -63,8 +58,8 @@ export default function HeroContent({ className }: { className?: string }) {
 
         <h1
           className={cn(
-            "text-4xl sm:text-5xl md:text-6xl font-bold font-headline text-primary mb-6 sm:mb-8 md:mb-10",
-            "opacity-0 animate-in fade-in-0 slide-in-from-bottom-5 duration-700 delay-700"
+            "text-4xl sm:text-5xl md:text-6xl font-bold font-headline text-primary mb-6 sm:mb-8 md:mb-10"
+            // Removed animation classes
           )}
         >
           Step into a Realm of Royal Entertainment!
@@ -72,16 +67,17 @@ export default function HeroContent({ className }: { className?: string }) {
 
         <p
           className={cn(
-            "text-xl sm:text-2xl md:text-3xl text-foreground mb-8 sm:mb-10 max-w-xl sm:max-w-2xl md:max-w-3xl mx-auto px-2",
-            "opacity-0 animate-in fade-in-0 slide-in-from-bottom-5 duration-700 delay-900"
+            "text-xl sm:text-2xl md:text-3xl text-foreground mb-8 sm:mb-10 max-w-xl sm:max-w-2xl md:max-w-3xl mx-auto px-2"
+            // Removed animation classes
           )}
         >
           Experience the pinnacle of social casino gaming, where every play is a new adventure. Connect, compete, and celebrate your wins!
         </p>
 
         <div className={cn(
-            "mb-10 sm:mb-12 p-5 sm:p-7 bg-primary/10 border border-primary rounded-lg inline-block",
-            "opacity-0 animate-in fade-in duration-700 delay-1100 animate-glow"
+            "mb-10 sm:mb-12 p-5 sm:p-7 bg-primary/10 border border-primary rounded-lg inline-block"
+            // Removed animation classes, kept 'animate-glow' if it's a simple CSS keyframe
+            // If 'animate-glow' is also from tailwindcss-animate, it might need to be removed too or defined in globals.css
           )}
         >
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-headline text-primary flex items-center justify-center">
@@ -94,8 +90,8 @@ export default function HeroContent({ className }: { className?: string }) {
         
         <div
           className={cn(
-            "flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 mt-auto_ sm:mt-0", // Removed mt-auto/mt-0, rely on parent flex for centering
-            "opacity-0 animate-in fade-in-0 slide-in-from-bottom-5 duration-700 delay-1300"
+            "flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4"
+            // Removed animation classes
           )}
         >
           <Link href="/signup" passHref>
