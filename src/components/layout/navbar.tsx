@@ -2,7 +2,7 @@
 "use client";
 
 import Link from 'next/link';
-import { Crown, Gamepad2, UserCircle, Shield, Menu, BackpackIcon as PageBackpackIcon, Star, ShoppingCart, Settings as SettingsIcon, Coins } from 'lucide-react'; // Added Coins
+import { Crown, Gamepad2, UserCircle, Shield, Menu, BackpackIcon as PageBackpackIcon, Star, ShoppingCart, Settings as SettingsIcon, Coins } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import ExperienceBar from '@/components/layout/ExperienceBar';
@@ -95,7 +95,7 @@ const UserAvatarMenu: React.FC<{ onLinkClick?: () => void, showAdminLink: boolea
       <DropdownMenuTrigger asChild>
         <button className={cn(
           "flex items-center justify-center rounded-full focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background",
-          "w-7 h-7 sm:w-8 sm:h-8 border-2 border-primary" 
+          "w-7 h-7 sm:w-8 sm:h-8 border border-primary" 
         )}>
           <Avatar className="h-full w-full"> 
             <AvatarImage src={currentUser?.photoURL || undefined} alt={currentUser?.displayName || currentUser?.email || "User"} />
@@ -153,7 +153,7 @@ export default function Navbar() {
           <div className="flex items-center justify-between h-12">
             <Link href="/" legacyBehavior>
               <a className="flex items-center text-primary hover:text-primary/90 transition-colors">
-                <div className="mr-2 sm:mr-3 flex items-center justify-center w-7 h-7 sm:w-8 sm:h-8 border-2 border-primary rounded-full bg-background">
+                <div className="mr-2 sm:mr-3 flex items-center justify-center w-7 h-7 sm:w-8 sm:h-8 border border-primary rounded-full bg-background">
                   <Crown className="h-3.5 w-3.5 sm:h-4 sm:h-4 text-primary" aria-hidden="true" />
                 </div>
                 <span className="text-base sm:text-lg font-headline font-bold whitespace-nowrap">Royal Casino</span>
@@ -183,7 +183,7 @@ export default function Navbar() {
                   <SheetHeader className="p-4 pb-2 border-b border-border">
                      <Link href="/" legacyBehavior>
                         <a className="flex items-center text-primary hover:text-primary/90 transition-colors mb-2" onClick={() => setIsMobileMenuOpen(false)}>
-                            <div className="mr-3 flex items-center justify-center w-8 h-8 border-2 border-primary rounded-full bg-background"> 
+                            <div className="mr-3 flex items-center justify-center w-8 h-8 border border-primary rounded-full bg-background"> 
                             <Crown className="h-4 w-4 text-primary" aria-hidden="true" />
                             </div>
                             <span className="text-lg font-headline font-bold whitespace-nowrap">Royal Casino</span>
