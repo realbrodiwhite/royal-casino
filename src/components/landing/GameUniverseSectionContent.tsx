@@ -51,7 +51,6 @@ const GameTypeCard: React.FC<GameTypeCardProps> = ({ icon, title, description, h
   </Card>
 );
 
-// This component's parent (AnimatedSection) will have 'landing-scroll-section'
 export default function GameUniverseSectionContent() {
   const [reminderEmail, setReminderEmail] = useState('');
   const { toast } = useToast();
@@ -135,59 +134,65 @@ export default function GameUniverseSectionContent() {
     };
 
   return (
-    <section className="w-full bg-background flex flex-col flex-grow items-center justify-center">
-      <div className="container mx-auto px-4 py-12 sm:py-16">
-        <Globe aria-hidden="true" className="mx-auto h-12 w-12 sm:h-16 sm:w-16 text-primary mb-4 sm:mb-6" />
-        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold font-headline text-primary mb-4 text-center">A Universe of Thrilling Games Awaits Your Command!</h2>
-        <p className="text-lg text-muted-foreground mb-10 sm:mb-12 text-center max-w-2xl mx-auto">
-          From dazzling slots and strategic poker to lovely bingo and instant-win scratchers, your next favorite game is here. Explore diverse themes and chase epic virtual jackpots!
-        </p>
+    <section className="w-full flex flex-col flex-grow items-center justify-center">
+      {/* The div.container will now also try to grow and center its content, working with the parent section's flex properties. */}
+      <div className="container mx-auto px-4 py-12 sm:py-16 flex flex-col flex-grow justify-center">
+        <header className="text-center mb-10 sm:mb-12"> {/* Added header for better structure */}
+          <Globe aria-hidden="true" className="mx-auto h-12 w-12 sm:h-16 sm:w-16 text-primary mb-4 sm:mb-6" />
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold font-headline text-primary mb-4">A Universe of Thrilling Games Awaits Your Command!</h2>
+          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+            From dazzling slots and strategic poker to lovely bingo and instant-win scratchers, your next favorite game is here. Explore diverse themes and chase epic virtual jackpots!
+          </p>
+        </header>
         
-        <div className="grid grid-cols-2 gap-6 sm:gap-8">
-          {topGames.map((game, index) => (
-            <GameTypeCard
-              key={index}
-              icon={game.icon}
-              title={game.title}
-              description={game.description}
-              href={game.href}
-              disabled={game.disabled}
-              footerContent={game.footerContent}
-            />
-          ))}
-        </div>
+        {/* Main content area that can spread out */}
+        <div className="flex-grow flex flex-col justify-center">
+            <div className="grid grid-cols-2 gap-6 sm:gap-8">
+            {topGames.map((game, index) => (
+                <GameTypeCard
+                key={index}
+                icon={game.icon}
+                title={game.title}
+                description={game.description}
+                href={game.href}
+                disabled={game.disabled}
+                footerContent={game.footerContent}
+                />
+            ))}
+            </div>
 
-        <div className="mt-10 sm:mt-12 grid grid-cols-1"> 
-            <GameTypeCard
-                icon={comingSoonGame.icon}
-                title={comingSoonGame.title}
-                description={comingSoonGame.description}
-                footerContent={comingSoonGame.footerContent}
-                className="w-full" 
-            />
-        </div>
+            <div className="mt-10 sm:mt-12 grid grid-cols-1"> 
+                <GameTypeCard
+                    icon={comingSoonGame.icon}
+                    title={comingSoonGame.title}
+                    description={comingSoonGame.description}
+                    footerContent={comingSoonGame.footerContent}
+                    className="w-full" 
+                />
+            </div>
 
-        <div className="mt-10 sm:mt-12">
-            <Card className="bg-gradient-to-br from-primary/10 via-card to-secondary/10 border-border shadow-xl text-center">
-                <CardHeader className="items-center pt-6 sm:pt-8">
-                    <div className="p-3 sm:p-4 bg-primary/20 rounded-full mb-3 sm:mb-4 inline-block">
-                        <Crown className="h-16 w-16 sm:h-20 sm:w-20 text-primary" />
-                    </div>
-                    <CardTitle className="text-xl sm:text-2xl md:text-3xl font-headline text-primary">Welcome to the Kingdom!</CardTitle>
-                </CardHeader>
-                <CardContent className="px-4 pb-4 sm:px-6 sm:pb-6">
-                    <CardDescription className="text-lg sm:text-xl text-muted-foreground mb-6 max-w-xl mx-auto">
-                        Your royal adventure starts now! Explore our vast selection of games, connect with fellow players, and discover why Royal Casino is the ultimate social gaming destination.
-                    </CardDescription>
-                </CardContent>
-                <CardFooter className="justify-center mt-auto px-4 pb-6 sm:px-6 sm:pb-8 pt-0">
-                    <Link href="/lobby" passHref>
-                        <Button variant="default" size="lg" className="font-semibold px-8 py-3 text-lg">
-                            Explore All Games
-                        </Button>
-                    </Link>
-                </CardFooter>
-            </Card>
+            <div className="mt-10 sm:mt-12">
+                <Card className="bg-gradient-to-br from-primary/10 via-card to-secondary/10 border-border shadow-xl text-center">
+                    <CardHeader className="items-center pt-6 sm:pt-8">
+                        <div className="p-3 sm:p-4 bg-primary/20 rounded-full mb-3 sm:mb-4 inline-block">
+                            <Crown className="h-16 w-16 sm:h-20 sm:w-20 text-primary" />
+                        </div>
+                        <CardTitle className="text-xl sm:text-2xl md:text-3xl font-headline text-primary">Welcome to the Kingdom!</CardTitle>
+                    </CardHeader>
+                    <CardContent className="px-4 pb-4 sm:px-6 sm:pb-6">
+                        <CardDescription className="text-lg sm:text-xl text-muted-foreground mb-6 max-w-xl mx-auto">
+                            Your royal adventure starts now! Explore our vast selection of games, connect with fellow players, and discover why Royal Casino is the ultimate social gaming destination.
+                        </CardDescription>
+                    </CardContent>
+                    <CardFooter className="justify-center mt-auto px-4 pb-6 sm:px-6 sm:pb-8 pt-0">
+                        <Link href="/lobby" passHref>
+                            <Button variant="default" size="lg" className="font-semibold px-8 py-3 text-lg">
+                                Explore All Games
+                            </Button>
+                        </Link>
+                    </CardFooter>
+                </Card>
+            </div>
         </div>
       </div>
     </section>

@@ -6,7 +6,7 @@ import dynamic from 'next/dynamic';
 import Navbar from '@/components/layout/navbar';
 import AnimatedSection from '@/components/utils/AnimatedSection'; 
 import Footer from '@/components/layout/Footer'; 
-import NewPlayerOfferBanner from '@/components/layout/NewPlayerOfferBanner'; // Import the new banner
+import NewPlayerOfferBanner from '@/components/layout/NewPlayerOfferBanner'; 
 
 import HeroContent from '@/components/landing/HeroContent';
 import { cn } from '@/lib/utils'; 
@@ -21,10 +21,15 @@ export default function LandingPage() {
   return (
     <div className="min-h-screen text-foreground flex flex-col overflow-hidden"> 
       <Navbar />
-      <NewPlayerOfferBanner /> {/* Add the banner here */}
+      {/* NewPlayerOfferBanner is rendered here, between Navbar and main scroll container */}
+      <NewPlayerOfferBanner /> 
 
       <main className={cn(
-        "flex-grow landing-scroll-container"
+        "flex-grow landing-scroll-container",
+         // Adjust top padding if banner is present and fixed/sticky, otherwise it's part of normal flow
+         // For now, assuming banner is in normal flow or its own fixed positioning handles overlap.
+         // If banner has fixed height and is part of scroll, this top margin might be needed:
+         // "pt-[BANNER_HEIGHT_HERE]" 
       )}>
         <HeroContent className="landing-scroll-section" />
 
