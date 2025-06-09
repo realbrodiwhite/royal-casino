@@ -18,7 +18,8 @@ import { useToast } from "@/hooks/use-toast";
 import { weightedRandom as b3WeightedRandom } from '@/lib/b3-engine';
 import type { ItemEffect, ActiveBuff } from '@/types/inventory';
 import { getItemById } from '@/game-data/items';
-import { getSkillDefinitionById, type SkillDefinition } from '@/game-data/skills'; // Import skill definitions
+// Removed: import { getSkillDefinitionById, type SkillDefinition } from '@/game-data/skills'; // Import skill definitions
+
 
 import CherrySymbol from '@/components/game/symbols/CherrySymbol';
 import DiamondSymbol from '@/components/game/symbols/DiamondSymbol';
@@ -94,7 +95,7 @@ export default function SlotsPage() {
   const [availableSymbolsWithData, setAvailableSymbolsWithData] = useState<Array<SymbolData & { weight: number }>>([]);
 
   const [activeBuffs, setActiveBuffs] = useState<ActiveBuff[]>(getMockActiveBuffs());
-  const [mockFortuneSkillLevel, setMockFortuneSkillLevel] = useState(5); // Mock Fortune skill level for demo
+  // Removed mockFortuneSkillLevel state
 
   useEffect(() => {
     if (selectedTheme) {
@@ -133,35 +134,8 @@ export default function SlotsPage() {
       }
     });
 
-    // Apply "Fortune" skill effect: boost weight of the highest-paying symbol
-    const fortuneSkillDef = getSkillDefinitionById('fortune');
-    if (fortuneSkillDef && fortuneSkillDef.getEffectValue && mockFortuneSkillLevel > 0) {
-      let highestPayingSymbolId: string | null = null;
-      let maxPayoutValue = 0;
-
-      selectedTheme.symbols.forEach(themeSymbol => {
-        const paytableEntry = selectedTheme.paytable[themeSymbol.id];
-        if (paytableEntry) {
-          const currentSymbolMaxPayout = Math.max(...Object.values(paytableEntry));
-          if (currentSymbolMaxPayout > maxPayoutValue) {
-            maxPayoutValue = currentSymbolMaxPayout;
-            highestPayingSymbolId = themeSymbol.id;
-          }
-        }
-      });
-
-      if (highestPayingSymbolId) {
-        const symbolIndex = symbolsToUse.findIndex(s => s.id === highestPayingSymbolId);
-        if (symbolIndex !== -1) {
-          const fortuneEffect = fortuneSkillDef.getEffectValue(mockFortuneSkillLevel);
-          if (typeof fortuneEffect === 'number') {
-            const additionalWeight = Math.round(fortuneEffect * 10000); // Scale effect value to weight
-            symbolsToUse[symbolIndex].weight += additionalWeight;
-            // console.log(`Fortune Skill (Lvl ${mockFortuneSkillLevel}): Boosted ${highestPayingSymbolId} weight by ${additionalWeight}. New weight: ${symbolsToUse[symbolIndex].weight}`);
-          }
-        }
-      }
-    }
+    // The direct skill-based symbol weight modification for "Fortune" is removed.
+    // That logic will be handled by a global win bonus if implemented later.
 
     const selectedSymbolWithWeight = b3WeightedRandom(symbolsToUse);
 
@@ -170,7 +144,7 @@ export default function SlotsPage() {
     }
     console.warn("b3WeightedRandom returned null, this shouldn't happen with positive weights. Falling back to FALLBACK_SYMBOL.");
     return FALLBACK_SYMBOL;
-  }, [availableSymbolsWithData, activeBuffs, selectedTheme, mockFortuneSkillLevel]);
+  }, [availableSymbolsWithData, activeBuffs, selectedTheme]);
 
   const initialReels = useCallback((r: number, c: number): SymbolData[][] =>
     Array(r)
@@ -261,6 +235,9 @@ export default function SlotsPage() {
                 }
             });
 
+            // Placeholder for global skill-based win bonus application
+            // const globalWinBonusFactor = getGlobalWinBonusFactor(); // This function would need to be created/imported
+            // winAmountForPayline *= (1 + globalWinBonusFactor);
 
             totalWinAmount += winAmountForPayline;
             winDetails.push({
@@ -391,11 +368,7 @@ export default function SlotsPage() {
     }
   };
 
-  // For Fortune skill demo:
-  const handleFortuneLevelChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const level = parseInt(event.target.value, 10);
-    setMockFortuneSkillLevel(isNaN(level) || level < 0 ? 0 : (level > 10 ? 10 : level));
-  };
+  // Removed handleFortuneLevelChange and the demo input field
 
   if (!selectedTheme) {
     return (
@@ -456,19 +429,7 @@ export default function SlotsPage() {
           <Palette className="mr-2 h-4 w-4" /> Change Theme
         </Button>
         
-        {/* Fortune Skill Demo Input - Remove in production */}
-        <div className="p-2 bg-muted rounded-md text-xs w-full max-w-sm">
-          <label htmlFor="fortuneLevel" className="block mb-1 text-foreground">Demo: Fortune Skill Level (0-10):</label>
-          <input
-            type="number"
-            id="fortuneLevel"
-            value={mockFortuneSkillLevel}
-            onChange={handleFortuneLevelChange}
-            min="0" max="10"
-            className="w-full p-1.5 bg-input border-border rounded text-foreground"
-          />
-           <p className="text-muted-foreground mt-1 text-[0.65rem]">Modifies weight of highest-value symbol in current theme.</p>
-        </div>
+        {/* Fortune Skill Demo Input removed */}
 
 
         {availableSymbolsWithData.length > 0 ? (

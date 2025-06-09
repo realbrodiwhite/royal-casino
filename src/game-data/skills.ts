@@ -3,6 +3,11 @@ import type { SkillDefinition } from '@/types/skills';
 // Importing a wider range of icons that might fit the new skills
 import { Brain, Zap, ShieldCheck, Rabbit, Eye, BarChart, Sparkles, Award, TrendingUp, Gem } from 'lucide-react';
 
+const TOTAL_CORE_SKILLS_FOR_BONUS_CALC = 7; // Number of skills contributing to the global win bonus
+const MAX_LEVEL_PER_SKILL = 10;
+const TOTAL_CORE_SKILL_POINTS = TOTAL_CORE_SKILLS_FOR_BONUS_CALC * MAX_LEVEL_PER_SKILL;
+const GLOBAL_WIN_BONUS_PER_POINT = 0.01 / TOTAL_CORE_SKILL_POINTS; // Each point adds this to the win multiplier factor
+
 export const allSkillDefinitions: SkillDefinition[] = [
   {
     id: 'lucky_streak',
@@ -12,10 +17,10 @@ export const allSkillDefinitions: SkillDefinition[] = [
     maxLevel: 10,
     costPerLevel: (currentLevel) => (currentLevel + 1) * 210,
     effectDescription: (level) => {
-      if (level === 0) return "Standard win frequency.";
-      return `Subtly increases the chance of forming winning combinations more often (Influence Lvl ${level}).`;
+      if (level === 0) return "Standard win rates. Upgrade to enhance your overall winnings.";
+      return `Increases overall Credit winnings. Current contribution: +${(level * GLOBAL_WIN_BONUS_PER_POINT * 100).toFixed(4)}% to win multiplier.`;
     },
-    getEffectValue: (level) => level * 0.001, 
+    getEffectValue: (level) => level * GLOBAL_WIN_BONUS_PER_POINT,
     category: 'luck',
   },
   {
@@ -26,10 +31,10 @@ export const allSkillDefinitions: SkillDefinition[] = [
     maxLevel: 10,
     costPerLevel: (currentLevel) => (currentLevel + 1) * 210,
     effectDescription: (level) => {
-      if (level === 0) return "Standard bonus feature trigger rate.";
-      return `Slightly enhances your ability to trigger bonus rounds and special game features (Influence Lvl ${level}).`;
+      if (level === 0) return "Standard game outcomes. Upgrade to enhance your overall winnings.";
+      return `Increases overall Credit winnings. Current contribution: +${(level * GLOBAL_WIN_BONUS_PER_POINT * 100).toFixed(4)}% to win multiplier.`;
     },
-    getEffectValue: (level) => level * 0.002, 
+    getEffectValue: (level) => level * GLOBAL_WIN_BONUS_PER_POINT,
     category: 'strategy',
   },
   {
@@ -40,10 +45,10 @@ export const allSkillDefinitions: SkillDefinition[] = [
     maxLevel: 10,
     costPerLevel: (currentLevel) => (currentLevel + 1) * 210,
     effectDescription: (level) => {
-      if (level === 0) return "Standard play through losses.";
-      return `Provides a small chance for a 'Consolation Credit' after a series of non-winning outcomes (Influence Lvl ${level}).`;
+      if (level === 0) return "Standard resilience. Upgrade to enhance your overall winnings.";
+      return `Increases overall Credit winnings. Current contribution: +${(level * GLOBAL_WIN_BONUS_PER_POINT * 100).toFixed(4)}% to win multiplier.`;
     },
-    getEffectValue: (level) => level * 0.0005, 
+    getEffectValue: (level) => level * GLOBAL_WIN_BONUS_PER_POINT,
     category: 'endurance',
   },
   {
@@ -54,10 +59,10 @@ export const allSkillDefinitions: SkillDefinition[] = [
     maxLevel: 10,
     costPerLevel: (currentLevel) => (currentLevel + 1) * 210,
     effectDescription: (level) => {
-      if (level === 0) return "Standard decision speed benefits.";
-      return `Improves effectiveness in rapid decision-making moments within certain bonus games (Influence Lvl ${level}).`;
+      if (level === 0) return "Standard reaction benefits. Upgrade to enhance your overall winnings.";
+      return `Increases overall Credit winnings. Current contribution: +${(level * GLOBAL_WIN_BONUS_PER_POINT * 100).toFixed(4)}% to win multiplier.`;
     },
-    getEffectValue: (level) => level * 0.01, 
+    getEffectValue: (level) => level * GLOBAL_WIN_BONUS_PER_POINT,
     category: 'strategy',
   },
   {
@@ -68,10 +73,10 @@ export const allSkillDefinitions: SkillDefinition[] = [
     maxLevel: 10,
     costPerLevel: (currentLevel) => (currentLevel + 1) * 210,
     effectDescription: (level) => {
-      if (level === 0) return "Standard luck in random events.";
-      return `Slightly increases your chances of favorable random events or better paths in bonus games (Influence Lvl ${level}).`;
+      if (level === 0) return "Standard intuition. Upgrade to enhance your overall winnings.";
+      return `Increases overall Credit winnings. Current contribution: +${(level * GLOBAL_WIN_BONUS_PER_POINT * 100).toFixed(4)}% to win multiplier.`;
     },
-    getEffectValue: (level) => level * 0.0015, 
+    getEffectValue: (level) => level * GLOBAL_WIN_BONUS_PER_POINT,
     category: 'luck',
   },
   {
@@ -82,10 +87,10 @@ export const allSkillDefinitions: SkillDefinition[] = [
     maxLevel: 10,
     costPerLevel: (currentLevel) => (currentLevel + 1) * 210,
     effectDescription: (level) => {
-      if (level === 0) return "Basic understanding of game payouts.";
-      return `May reveal subtle game hints or slightly improve payouts for very specific rare winning patterns (Influence Lvl ${level}).`;
+      if (level === 0) return "Basic game understanding. Upgrade to enhance your overall winnings.";
+      return `Increases overall Credit winnings. Current contribution: +${(level * GLOBAL_WIN_BONUS_PER_POINT * 100).toFixed(4)}% to win multiplier.`;
     },
-    getEffectValue: (level) => level * 0.0003, 
+    getEffectValue: (level) => level * GLOBAL_WIN_BONUS_PER_POINT,
     category: 'strategy',
   },
   {
@@ -93,13 +98,13 @@ export const allSkillDefinitions: SkillDefinition[] = [
     name: 'Fortune',
     description: 'Develop an uncanny ability to be in the right place at the right time for the casino\'s grandest prizes.',
     icon: Gem,
-    maxLevel: 10, 
+    maxLevel: 10,
     costPerLevel: (currentLevel) => (currentLevel + 1) * 210,
     effectDescription: (level) => {
-      if (level === 0) return "Standard jackpot hit rate.";
-      return `Slightly increases your chances of hitting a jackpot across applicable games (Influence Lvl ${level}).`;
+      if (level === 0) return "Standard luck for big prizes. Upgrade to enhance your overall winnings.";
+      return `Increases overall Credit winnings. Current contribution: +${(level * GLOBAL_WIN_BONUS_PER_POINT * 100).toFixed(4)}% to win multiplier.`;
     },
-    getEffectValue: (level) => level * 0.0001, 
+    getEffectValue: (level) => level * GLOBAL_WIN_BONUS_PER_POINT,
     category: 'rewards',
   },
   {
@@ -113,7 +118,7 @@ export const allSkillDefinitions: SkillDefinition[] = [
       if (level === 0) return "Standard XP gain.";
       return `Increases all Experience Points earned from gameplay by ${level * 2}%.`;
     },
-    getEffectValue: (level) => level * 0.02, 
+    getEffectValue: (level) => level * 0.02, // This returns the XP boost percentage (e.g., 0.02 for 2%, 0.20 for 20%)
     category: 'general',
   }
 ];
