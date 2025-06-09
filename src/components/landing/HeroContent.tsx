@@ -4,7 +4,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { Crown } from 'lucide-react';
+import { Crown, Coins } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 export default function HeroContent({ className }: { className?: string }) {
@@ -15,22 +15,21 @@ export default function HeroContent({ className }: { className?: string }) {
       <div className="container mx-auto px-4 h-full flex flex-col items-center justify-center">
         <div className="flex flex-col items-center justify-center space-y-2 sm:space-y-3 text-center">
           
-          <div className="relative mb-2 sm:mb-3 flex items-center justify-center">
-            <div className={cn(
-                "relative flex items-center justify-center border-primary rounded-full bg-background/50 shadow-lg",
-                "w-16 h-16 sm:w-20 sm:h-20 border" 
-            )}>
-              <Crown className="h-8 w-8 sm:h-10 text-primary" aria-hidden="true" />
-            </div>
+          <div className={cn(
+              "relative flex items-center justify-center border-primary rounded-full bg-background/50 shadow-lg",
+              "w-16 h-16 sm:w-20 sm:h-20 border" 
+          )}>
+            <Crown className="h-8 w-8 sm:h-10 sm:h-10 text-primary" aria-hidden="true" />
           </div>
 
           <h1
             className={cn(
-                "font-bold font-headline text-primary",
-                "text-xl sm:text-2xl md:text-3xl" 
+                "font-bold font-headline text-primary text-center",
+                "text-lg leading-tight sm:text-xl md:text-2xl lg:text-3xl sm:leading-normal"
             )}
           >
-            Welcome to <span className="text-foreground">Royal Casino</span>
+            <span className="block sm:inline">Welcome to </span>
+            <span className="block sm:inline text-foreground">Royal Casino</span>
           </h1>
 
           <p
@@ -48,15 +47,7 @@ export default function HeroContent({ className }: { className?: string }) {
                 "mt-1 sm:mt-2" 
             )}
           >
-            <Link href="/signup" passHref>
-              <Button 
-                size="sm" 
-                variant="default" 
-                className="w-full sm:w-auto font-semibold px-4 py-1.5 text-xs sm:text-sm"
-              >
-                Join Now & Claim Bonus
-              </Button>
-            </Link>
+            {/* "Join Now & Claim Bonus" button moved to NewPlayerOfferBanner */}
             <Link href="/lobby" passHref>
               <Button 
                 size="sm" 
@@ -67,7 +58,6 @@ export default function HeroContent({ className }: { className?: string }) {
               </Button>
             </Link>
           </div>
-          {/* "New Player Offer" div removed from here */}
         </div>
       </div>
     </section>
