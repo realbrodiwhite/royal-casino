@@ -1,5 +1,6 @@
 
 // src/lib/poker-logic.ts
+import { shuffleArray as b3ShuffleArray } from '@/lib/b3-engine';
 
 export type Suit = '♥' | '♦' | '♣' | '♠'; // Hearts, Diamonds, Clubs, Spades
 export type Rank = '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9' | 'T' | 'J' | 'Q' | 'K' | 'A';
@@ -25,11 +26,7 @@ export function createDeck(): Card[] {
 
 export function shuffleDeck(deck: Card[]): Card[] {
   const shuffled = [...deck];
-  for (let i = shuffled.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-  }
-  return shuffled;
+  return b3ShuffleArray(shuffled);
 }
 
 // Deals cards from the top of the deck. Modifies the deck.

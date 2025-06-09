@@ -13,6 +13,7 @@ import Navbar from '@/components/layout/navbar';
 import { PlayCircle, PauseCircle } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
 import { useXp } from '@/contexts/XpContext'; 
+import { weightedRandom as b3WeightedRandom } from '@/lib/b3-engine';
 
 import CherrySymbol from '@/components/game/symbols/CherrySymbol';
 import DiamondSymbol from '@/components/game/symbols/DiamondSymbol';
@@ -42,7 +43,7 @@ const FALLBACK_SYMBOL: SymbolData = {
 
 export default function LegacySlotsPage() { 
   const [activeThemeConfig, setActiveThemeConfig] = useState<SlotGameThemeConfig>(classicSlotsTheme);
-  const { toast } = useToast(); // Keep toast for general messages
+  const { toast } = useToast();
   const { addXp } = useXp(); 
 
   const rows = activeThemeConfig.grid.rows;
@@ -67,20 +68,15 @@ export default function LegacySlotsPage() {
 
   const getRandomSymbolData = useCallback((): SymbolData => {
     if (availableSymbolsWithData.length === 0) {
+      console.warn("No symbols available in availableSymbolsWithData (LegacySlots), returning FALLBACK_SYMBOL");
       return FALLBACK_SYMBOL;
     }
-
-    const totalWeight = availableSymbolsWithData.reduce((sum, symbol) => sum + symbol.weight, 0);
-    let random = Math.random() * totalWeight;
-
-    for (const symbol of availableSymbolsWithData) {
-      if (random < symbol.weight) {
-        return { id: symbol.id, component: symbol.component };
-      }
-      random -= symbol.weight;
+    const selectedSymbolWithWeight = b3WeightedRandom(availableSymbolsWithData);
+    if (selectedSymbolWithWeight) {
+      return { id: selectedSymbolWithWeight.id, component: selectedSymbolWithWeight.component };
     }
-    const lastSymbol = availableSymbolsWithData[availableSymbolsWithData.length - 1];
-    return {id: lastSymbol.id, component: lastSymbol.component};
+    console.warn("b3WeightedRandom returned null in LegacySlots, falling back to FALLBACK_SYMBOL.");
+    return FALLBACK_SYMBOL;
   }, [availableSymbolsWithData]);
 
   const initialReels = useCallback((r: number, c: number): SymbolData[][] =>
@@ -93,17 +89,13 @@ export default function LegacySlotsPage() {
   const [reels, setReels] = useState<SymbolData[][]>(() => initialReels(rows, cols));
   const [spinning, setSpinning] = useState(false);
   const [credits, setCredits] = useState(1000);
-  // kingsCoin state removed
   const [isAutospin, setIsAutospin] = useState(false);
   const [resultsMessage, setResultsMessage] = useState<string | null>(null);
   const [isWin, setIsWin] = useState<boolean | null>(null);
   const [winAmount, setWinAmount] = useState(0);
   const [showWinAnimation, setShowWinAnimation] = useState(false);
 
-  const spinCost = 10; // Cost in Credits
-  // mockDiamondUserCount removed
-
-  // handleConvertCreditsToKingsCoin removed
+  const spinCost = 10; 
 
   useEffect(() => {
     setReels(initialReels(rows, cols));
@@ -277,7 +269,7 @@ export default function LegacySlotsPage() {
       </header>
 
       <main className="flex flex-col items-center gap-6 w-full max-w-2xl">
-        <div className="w-full max-w-lg mx-auto"> {/* Simplified width restriction */}
+        <div className="w-full max-w-lg mx-auto">
             <UserBalanceDisplay credits={credits} />
         </div>
         

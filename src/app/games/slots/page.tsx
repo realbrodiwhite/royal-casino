@@ -15,6 +15,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import Image from 'next/image';
 import { useXp } from '@/contexts/XpContext'; 
 import { useToast } from "@/hooks/use-toast";
+import { weightedRandom as b3WeightedRandom } from '@/lib/b3-engine';
 
 import CherrySymbol from '@/components/game/symbols/CherrySymbol';
 import DiamondSymbol from '@/components/game/symbols/DiamondSymbol';
@@ -65,7 +66,7 @@ type CellCoordinate = [number, number];
 
 export default function SlotsPage() {
   const { addXp } = useXp(); 
-  const { toast } = useToast(); // Keep toast for general messages
+  const { toast } = useToast();
   const [selectedTheme, setSelectedTheme] = useState<SlotGameThemeConfig | null>(null);
 
   const [rows, setRows] = useState(3);
@@ -96,22 +97,13 @@ export default function SlotsPage() {
       console.warn("No symbols available in availableSymbolsWithData, returning FALLBACK_SYMBOL");
       return FALLBACK_SYMBOL;
     }
-
-    const totalWeight = availableSymbolsWithData.reduce((sum, symbol) => sum + symbol.weight, 0);
-    if (totalWeight === 0) {
-        console.warn("Total weight of available symbols is 0, returning FALLBACK_SYMBOL");
-        return FALLBACK_SYMBOL;
+    const selectedSymbolWithWeight = b3WeightedRandom(availableSymbolsWithData);
+    if (selectedSymbolWithWeight) {
+      return { id: selectedSymbolWithWeight.id, component: selectedSymbolWithWeight.component };
     }
-    let random = Math.random() * totalWeight;
-
-    for (const symbol of availableSymbolsWithData) {
-      if (random < symbol.weight) {
-        return { id: symbol.id, component: symbol.component };
-      }
-      random -= symbol.weight;
-    }
-    const lastSymbol = availableSymbolsWithData[availableSymbolsWithData.length - 1];
-    return {id: lastSymbol.id, component: lastSymbol.component};
+    // Fallback if weightedRandom returns null (e.g., if somehow all weights were negative or list was empty, though guarded)
+    console.warn("b3WeightedRandom returned null, this shouldn't happen with positive weights. Falling back to FALLBACK_SYMBOL.");
+    return FALLBACK_SYMBOL;
   }, [availableSymbolsWithData]);
 
   const initialReels = useCallback((r: number, c: number): SymbolData[][] =>
@@ -124,7 +116,6 @@ export default function SlotsPage() {
   const [reels, setReels] = useState<SymbolData[][]>(() => initialReels(rows, cols));
   const [spinning, setSpinning] = useState(false);
   const [credits, setCredits] = useState(1000);
-  // kingsCoin state removed
   const [isAutospin, setIsAutospin] = useState(false);
   const [resultsMessage, setResultsMessage] = useState<string | null>(null);
   const [isWin, setIsWin] = useState<boolean | null>(null);
@@ -132,10 +123,7 @@ export default function SlotsPage() {
   const [showWinAnimation, setShowWinAnimation] = useState(false);
   const [highlightedWinningCells, setHighlightedWinningCells] = useState<CellCoordinate[]>([]);
 
-  const spinCost = 10; // Cost in Credits
-  // mockDiamondUserCount removed
-
-  // handleConvertCreditsToKingsCoin removed
+  const spinCost = 10; 
 
   useEffect(() => {
     if (selectedTheme) {

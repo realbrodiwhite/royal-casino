@@ -11,6 +11,7 @@ import UserBalanceDisplay from '@/components/game/CreditDisplay';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useToast } from "@/hooks/use-toast";
 import { useXp } from '@/contexts/XpContext';
+import { nextInt, shuffleArray } from '@/lib/b3-engine';
 
 const BINGO_COLS = ['B', 'I', 'N', 'G', 'O'] as const;
 const NUMBERS_PER_COL: Record<typeof BINGO_COLS[number], { min: number, max: number, count: number }> = {
@@ -34,7 +35,7 @@ const generateBingoCard = (): BingoCardGrid => {
     const { min, max, count } = NUMBERS_PER_COL[colLetter];
     const colNumbers: Set<number> = new Set();
     while (colNumbers.size < count) {
-      colNumbers.add(Math.floor(Math.random() * (max - min + 1)) + min);
+      colNumbers.add(nextInt(min, max));
     }
     const sortedColNumbers = Array.from(colNumbers).sort((a, b) => a - b);
 
@@ -68,10 +69,9 @@ export default function BingoPage() {
   const [calledNumbersSet, setCalledNumbersSet] = useState<Set<number>>(new Set());
   const [calledNumbersHistory, setCalledNumbersHistory] = useState<number[]>([]);
   const [currentCalledNumber, setCurrentCalledNumber] = useState<number | null>(null);
-  const [remainingToCall, setRemainingToCall] = useState<number[]>(initialAllPossibleNumbers());
+  const [remainingToCall, setRemainingToCall] = useState<number[]>(shuffleArray(initialAllPossibleNumbers()));
 
   const [credits, setCredits] = useState(1000);
-  // kingsCoin state removed
   const [isGameActive, setIsGameActive] = useState(false);
   const [isGamePaused, setIsGamePaused] = useState(false);
   const [hasPlayerWonBingo, setHasPlayerWonBingo] = useState(false);
@@ -79,10 +79,7 @@ export default function BingoPage() {
   const { toast } = useToast();
   const { addXp } = useXp();
   const gameIntervalRef = useRef<NodeJS.Timeout | null>(null);
-  const cardCost = 10; // Cost in Credits
-  // mockDiamondUserCount removed
-
-  // handleConvertCreditsToKingsCoin removed
+  const cardCost = 10; 
 
   const findFreeSpaceCoords = (card: BingoNumber[][]): {row: number, col: number} | null => {
     for (let r = 0; r < card.length; r++) {
@@ -110,8 +107,7 @@ export default function BingoPage() {
     setCurrentCalledNumber(null);
     setCalledNumbersSet(new Set());
     setCalledNumbersHistory([]);
-    const shuffledNumbers = [...initialAllPossibleNumbers()].sort(() => Math.random() - 0.5);
-    setRemainingToCall(shuffledNumbers);
+    setRemainingToCall(shuffleArray([...initialAllPossibleNumbers()]));
   };
 
   useEffect(() => {

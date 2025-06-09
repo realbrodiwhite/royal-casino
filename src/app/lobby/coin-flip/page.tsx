@@ -12,13 +12,13 @@ import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/componen
 import { CircleDollarSign, Repeat, HelpCircle, TrendingUp, TrendingDown, Pocket, ChevronsUp } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
 import { useXp } from '@/contexts/XpContext';
+import { chance as b3Chance } from '@/lib/b3-engine';
 
 type CoinSide = 'Heads' | 'Tails';
 type DoubleOrNothingMode = 'inactive' | 'active';
 
 export default function CoinFlipPage() {
   const [credits, setCredits] = useState(1000);
-  // kingsCoin state removed
   const [betAmount, setBetAmount] = useState<number | string>(10);
   const [chosenSide, setChosenSide] = useState<CoinSide | null>(null);
   const [coinResult, setCoinResult] = useState<CoinSide | null>(null);
@@ -31,9 +31,6 @@ export default function CoinFlipPage() {
 
   const { toast } = useToast();
   const { addXp } = useXp();
-  // mockDiamondUserCount removed
-
-  // handleConvertCreditsToKingsCoin removed
 
   const handleBetAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -72,7 +69,7 @@ export default function CoinFlipPage() {
     }
 
     setTimeout(() => {
-      const result: CoinSide = Math.random() < 0.5 ? 'Heads' : 'Tails';
+      const result: CoinSide = b3Chance(0.5) ? 'Heads' : 'Tails';
       setCoinResult(result);
       setIsFlipping(false);
 

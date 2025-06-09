@@ -13,6 +13,7 @@ import { useXp } from '@/contexts/XpContext';
 import { cn } from '@/lib/utils';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
+import { chance as b3Chance, nextInt as b3NextInt } from '@/lib/b3-engine';
 
 const GRID_SIZE = 3;
 const POSSIBLE_SYMBOLS = ["💎", "💰", "🍒", "🔔", "⭐", "🍀"];
@@ -50,30 +51,31 @@ const generateInitialGrid = (): ScratchGrid => {
 
 const generateTicketSymbols = (): ScratchGrid => {
   const newGrid = generateInitialGrid();
-  const shouldWin = Math.random() < 0.3;
-  let winningSymbol = POSSIBLE_SYMBOLS[Math.floor(Math.random() * POSSIBLE_SYMBOLS.length)];
+  const shouldWin = b3Chance(0.3); // 30% chance to be a winning ticket
+  let winningSymbol = POSSIBLE_SYMBOLS[b3NextInt(0, POSSIBLE_SYMBOLS.length - 1)];
 
   if (shouldWin) {
-    const winType = Math.floor(Math.random() * (GRID_SIZE === 3 ? 4 : 2));
-    const winIndex = Math.floor(Math.random() * GRID_SIZE);
+    const winType = b3NextInt(0, (GRID_SIZE === 3 ? 3 : 1)); // 4 win types for 3x3, 2 for other sizes
+    const winIndex = b3NextInt(0, GRID_SIZE - 1);
 
-    if (winType === 0) {
+    if (winType === 0) { // Row win
       for (let j = 0; j < GRID_SIZE; j++) newGrid[winIndex][j].symbol = winningSymbol;
-    } else if (winType === 1) {
+    } else if (winType === 1) { // Column win
       for (let i = 0; i < GRID_SIZE; i++) newGrid[i][winIndex].symbol = winningSymbol;
-    } else if (winType === 2 && GRID_SIZE === 3) {
+    } else if (winType === 2 && GRID_SIZE === 3) { // Main diagonal win
         for (let i = 0; i < GRID_SIZE; i++) newGrid[i][i].symbol = winningSymbol;
-    } else if (winType === 3 && GRID_SIZE === 3) {
+    } else if (winType === 3 && GRID_SIZE === 3) { // Anti-diagonal win
         for (let i = 0; i < GRID_SIZE; i++) newGrid[i][GRID_SIZE - 1 - i].symbol = winningSymbol;
-    } else if (GRID_SIZE !== 3 && winType > 1) {
-        for (let j = 0; j < GRID_SIZE; j++) newGrid[winIndex][j].symbol = winningSymbol;
+    } else if (GRID_SIZE !== 3 && winType > 1) { // Fallback for non-3x3 if winType logic was different
+        for (let j = 0; j < GRID_SIZE; j++) newGrid[winIndex][j].symbol = winningSymbol; // Default to row win
     }
   }
 
+  // Fill remaining cells
   for (let i = 0; i < GRID_SIZE; i++) {
     for (let j = 0; j < GRID_SIZE; j++) {
-      if (newGrid[i][j].symbol === '?') {
-        newGrid[i][j].symbol = POSSIBLE_SYMBOLS[Math.floor(Math.random() * POSSIBLE_SYMBOLS.length)];
+      if (newGrid[i][j].symbol === '?') { // Only fill if not part of a winning line
+        newGrid[i][j].symbol = POSSIBLE_SYMBOLS[b3NextInt(0, POSSIBLE_SYMBOLS.length - 1)];
       }
     }
   }
@@ -83,7 +85,6 @@ const generateTicketSymbols = (): ScratchGrid => {
 
 export default function ScratchersPage() {
   const [credits, setCredits] = useState(1000);
-  // kingsCoin state removed
   const [scratchGrid, setScratchGrid] = useState<ScratchGrid>(generateInitialGrid());
   const [isTicketActive, setIsTicketActive] = useState(false);
   const [gameMessage, setGameMessage] = useState<string | null>(null);
@@ -93,18 +94,16 @@ export default function ScratchersPage() {
   const [selectedTicketOptionId, setSelectedTicketOptionId] = useState<string>(TICKET_OPTIONS[0].id);
   const { toast } = useToast();
   const { addXp } = useXp();
-  // mockDiamondUserCount removed
 
   const selectedTicket = TICKET_OPTIONS.find(opt => opt.id === selectedTicketOptionId) || TICKET_OPTIONS[0];
-
-  // handleConvertCreditsToKingsCoin removed
 
   const checkForWin = useCallback((currentGrid: ScratchGrid): { win: boolean; winningSymbol: string | null } => {
     if (!currentGrid || currentGrid.length === 0) return { win: false, winningSymbol: null };
     const size = currentGrid.length;
 
+    // Check rows
     for (let i = 0; i < size; i++) {
-      if (currentGrid[i].every(cell => cell.revealed)) {
+      if (currentGrid[i].every(cell => cell.revealed)) { // Only check if all cells in row are revealed
         const firstSymbol = currentGrid[i][0].symbol;
         if (currentGrid[i].every(cell => cell.symbol === firstSymbol)) {
           return { win: true, winningSymbol: firstSymbol };
@@ -112,8 +111,9 @@ export default function ScratchersPage() {
       }
     }
 
+    // Check columns
     for (let j = 0; j < size; j++) {
-      if (currentGrid.every(row => row[j].revealed)) {
+      if (currentGrid.every(row => row[j].revealed)) { // Only check if all cells in column are revealed
         const firstSymbol = currentGrid[0][j].symbol;
         let colMatch = true;
         for (let i = 0; i < size; i++) {
@@ -125,8 +125,9 @@ export default function ScratchersPage() {
         if (colMatch) return { win: true, winningSymbol: firstSymbol };
       }
     }
-
-    if (currentGrid.every((row, idx) => row[idx].revealed)) {
+    
+    // Check main diagonal (top-left to bottom-right)
+    if (GRID_SIZE === 3 && currentGrid.every((row, idx) => row[idx].revealed)) {
         const firstDiagSymbol = currentGrid[0][0].symbol;
         let mainDiagMatch = true;
         for (let i = 0; i < size; i++) {
@@ -138,7 +139,8 @@ export default function ScratchersPage() {
         if (mainDiagMatch) return { win: true, winningSymbol: firstDiagSymbol };
     }
 
-    if (currentGrid.every((row, idx) => row[size - 1 - idx].revealed)) {
+    // Check anti-diagonal (top-right to bottom-left)
+    if (GRID_SIZE === 3 && currentGrid.every((row, idx) => row[size - 1 - idx].revealed)) {
         const firstAntiDiagSymbol = currentGrid[0][size-1].symbol;
         let antiDiagMatch = true;
         for (let i = 0; i < size; i++) {
