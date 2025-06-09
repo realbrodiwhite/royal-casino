@@ -6,7 +6,7 @@ import Navbar from '@/components/layout/navbar';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import UserBalanceDisplay from '@/components/game/CreditDisplay';
-import { ShoppingCart, Coins, Layers, Beer, Cigarette, Zap, Leaf, Ticket, Package } from 'lucide-react'; // Changed Diamond to Coins
+import { ShoppingCart, Coins, Layers, Beer, Cigarette, Zap, Leaf, Ticket, Package, DollarSign } from 'lucide-react';
 import { allShopItems, type ShopItem, type ItemEffect } from '@/game-data/items';
 import { useToast } from "@/hooks/use-toast";
 
@@ -22,7 +22,7 @@ const itemIconMap: Record<string, React.FC<React.SVGProps<SVGSVGElement>>> = {
 const ShopItemCard: React.FC<{ 
   item: ShopItem;
   onBuy: (item: ShopItem, quantity: number, totalCost: number) => void; 
-  currentCredits: number; // Changed from currentKingsCoin to currentCredits
+  currentCredits: number;
 }> = ({ item, onBuy, currentCredits }) => {
   const IconComponent = itemIconMap[item.icon] || itemIconMap.Default;
   const costForOne = item.cost;
@@ -92,7 +92,7 @@ const ShopItemCard: React.FC<{
             size="sm"
             disabled={!canAffordOne}
         >
-            Buy 1 <Coins className="ml-1.5 mr-0.5 h-3 w-3 text-primary" /> {costForOne} {/* Changed Diamond to Coins */}
+            Buy 1 <Coins className="ml-1.5 mr-0.5 h-3 w-3 text-primary" /> {costForOne.toLocaleString()}
         </Button>
         {item.isConsumable && item.stackable && (
             <Button 
@@ -101,7 +101,7 @@ const ShopItemCard: React.FC<{
                 size="sm"
                 disabled={!canAffordSix}
             >
-                <Package className="mr-1.5 h-4 w-4" /> Buy 6-Pack <Coins className="ml-1.5 mr-0.5 h-3 w-3 text-primary" /> {costForSix} {/* Changed Diamond to Coins */}
+                <Package className="mr-1.5 h-4 w-4" /> Buy 6-Pack <Coins className="ml-1.5 mr-0.5 h-3 w-3 text-primary" /> {costForSix.toLocaleString()}
             </Button>
         )}
       </CardFooter>
@@ -109,31 +109,52 @@ const ShopItemCard: React.FC<{
   );
 };
 
-export default function ShopPage() {
-  // Removed kingsCoin state, only credits state is needed now
-  const [credits, setCredits] = useState(5000); // Example starting credits
-  const { toast } = useToast();
-  // mockDiamondUserCount removed as the display for it is removed from UserBalanceDisplay
+interface CreditPack {
+  id: string;
+  amount: number;
+  displayName: string;
+  priceUSD?: number; // Optional: for displaying mock price
+}
 
-  // handleConvertCreditsToKingsCoin removed as there's no Kings Coin
+const creditPacks: CreditPack[] = [
+  { id: 'pack1', amount: 5000, displayName: "5,000 Credits", priceUSD: 4.99 },
+  { id: 'pack2', amount: 12000, displayName: "12,000 Credits", priceUSD: 9.99 },
+  { id: 'pack3', amount: 30000, displayName: "30,000 Credits", priceUSD: 19.99 },
+  { id: 'pack4', amount: 75000, displayName: "75,000 Credits", priceUSD: 49.99 },
+];
+
+
+export default function ShopPage() {
+  const [credits, setCredits] = useState(5000); 
+  const { toast } = useToast();
 
   const handleBuyItem = (item: ShopItem, quantity: number, totalCost: number) => {
     if (credits >= totalCost) {
       setCredits(prevCredits => prevCredits - totalCost);
-      console.log(`Bought ${quantity}x ${item.name} for ${totalCost} Credits.`); // Updated currency name
+      console.log(`Bought ${quantity}x ${item.name} for ${totalCost} Credits.`);
       console.log(`Mock: Adding ${quantity}x ${item.name} to user's backpack.`);
       toast({
         title: "Purchase Successful!",
-        description: `You bought ${quantity}x ${item.name} for ${totalCost} Credits. Check your backpack!`, // Updated currency name
+        description: `You bought ${quantity}x ${item.name} for ${totalCost} Credits. Check your backpack!`,
       });
     } else {
       console.log(`Not enough Credits to buy ${quantity}x ${item.name}.`);
       toast({
-        title: "Insufficient Credits", // Updated title
-        description: `You need ${totalCost - credits} more Credits to buy ${quantity}x ${item.name}.`, // Updated currency name
+        title: "Insufficient Credits",
+        description: `You need ${totalCost - credits} more Credits to buy ${quantity}x ${item.name}.`,
         variant: "destructive",
       });
     }
+  };
+
+  const handleBuyCreditPack = (pack: CreditPack) => {
+    // This is a mock purchase. In a real app, this would trigger a payment flow.
+    setCredits(prevCredits => prevCredits + pack.amount);
+    toast({
+      title: "Credits Purchased! (Mock)",
+      description: `Successfully added ${pack.amount.toLocaleString()} Credits to your balance.`,
+    });
+    console.log(`Mock purchase of ${pack.displayName} for $${pack.priceUSD || 'N/A'}`);
   };
 
   return (
@@ -142,19 +163,47 @@ export default function ShopPage() {
       <main className="flex-grow container mx-auto px-4 pb-8 pt-[88px] sm:pt-[92px]">
         <header className="mb-8 sm:mb-10 text-center">
           <ShoppingCart className="mx-auto h-12 w-12 sm:h-16 sm:w-16 text-primary mb-3 sm:mb-4" />
-          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold font-headline text-primary">Item Shop</h1>
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold font-headline text-primary">The Royal Emporium</h1>
           <p className="text-md sm:text-lg text-muted-foreground mt-1 px-2">
-            Spend your Credits on powerful consumables and charms! {/* Updated currency name */}
+            Spend Credits on consumables, charms, or purchase more Credits!
           </p>
         </header>
         
         <div className="w-full max-w-lg mx-auto mb-6 sm:mb-8">
-          <UserBalanceDisplay
-            credits={credits}
-            // Removed kingsCoin, diamondUserCount, onConvertCredits, canConvert
-          />
+          <UserBalanceDisplay credits={credits} />
         </div>
 
+        {/* Purchase Credits Section */}
+        <Card className="mb-8 sm:mb-10 bg-card border-border shadow-xl">
+          <CardHeader>
+            <CardTitle className="text-xl sm:text-2xl text-primary font-headline text-center flex items-center justify-center">
+              <DollarSign className="mr-2 h-6 w-6" /> Purchase Credits
+            </CardTitle>
+            <CardDescription className="text-center text-muted-foreground text-sm">
+              Need more Credits? Get them here! (Mock real money transactions)
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
+            {creditPacks.map((pack) => (
+              <Button
+                key={pack.id}
+                variant="outline"
+                className="flex flex-col items-center justify-center h-auto p-3 sm:p-4 hover:bg-primary/10 hover:border-primary"
+                onClick={() => handleBuyCreditPack(pack)}
+              >
+                <Coins className="h-5 w-5 sm:h-6 sm:w-6 text-primary mb-1" />
+                <span className="text-sm sm:text-base font-semibold text-foreground">{pack.displayName}</span>
+                {pack.priceUSD && <span className="text-xs text-muted-foreground mt-0.5">${pack.priceUSD.toFixed(2)}</span>}
+              </Button>
+            ))}
+          </CardContent>
+           <CardFooter className="text-xs text-muted-foreground text-center pt-3">
+            Purchases are simulated and do not involve real money.
+          </CardFooter>
+        </Card>
+
+        {/* Items for Credits Section */}
+        <h2 className="text-xl sm:text-2xl font-bold font-headline text-primary mb-4 sm:mb-6 text-center">Items for Credits</h2>
         {allShopItems.length === 0 ? (
           <Card className="bg-card border-border shadow-lg text-center py-10">
             <CardHeader>
@@ -171,7 +220,7 @@ export default function ShopPage() {
                 key={item.id} 
                 item={item} 
                 onBuy={handleBuyItem}
-                currentCredits={credits} // Pass currentCredits
+                currentCredits={credits}
               />
             ))}
           </div>
