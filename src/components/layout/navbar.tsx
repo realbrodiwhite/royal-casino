@@ -2,7 +2,7 @@
 "use client";
 
 import Link from 'next/link';
-import { Crown, Gamepad2, UserCircle, Shield, Menu, BackpackIcon, Star, ShoppingCart, Settings as SettingsIcon } from 'lucide-react';
+import { Crown, Gamepad2, UserCircle, Shield, Menu, BackpackIcon as PageBackpackIcon, Star, ShoppingCart, Settings as SettingsIcon, Coins } from 'lucide-react'; // Added Coins
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import ExperienceBar from '@/components/layout/ExperienceBar';
@@ -109,7 +109,6 @@ const UserAvatarMenu: React.FC<{ onLinkClick?: () => void, showAdminLink: boolea
       <DropdownMenuContent align="end" className="w-56">
         <DropdownMenuLabel>My Account</DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <NavLink href="/backpack" icon={<BackpackIcon />} onClick={onLinkClick} isDropdownItem>Backpack</NavLink>
         <NavLink href="/settings" icon={<SettingsIcon />} onClick={onLinkClick} isDropdownItem>Settings</NavLink>
         <NavLink href="/profile" icon={<UserCircle />} onClick={onLinkClick} isDropdownItem>Profile</NavLink>
         {showAdminLink && (
@@ -151,7 +150,7 @@ export default function Navbar() {
         "sticky top-8 sm:top-9" 
       )}>
         <div className="container mx-auto px-4">
-          <div className="flex items-center justify-between h-12"> {/* Reduced height from h-14 to h-12 */}
+          <div className="flex items-center justify-between h-12">
             <Link href="/" legacyBehavior>
               <a className="flex items-center text-primary hover:text-primary/90 transition-colors">
                 <div className="mr-2 sm:mr-3 flex items-center justify-center w-7 h-7 sm:w-8 sm:h-8 border-2 border-primary rounded-full bg-background">
@@ -166,6 +165,7 @@ export default function Navbar() {
               <NavLink href="/lobby" icon={<Gamepad2 />}>Lobby</NavLink>
               <NavLink href="/shop" icon={<ShoppingCart />}>Shop</NavLink>
               <NavLink href="/skills" icon={<Star />}>Skills</NavLink>
+              <NavLink href="/backpack" icon={<PageBackpackIcon />}>Backpack</NavLink>
               <UserAvatarMenu showAdminLink={showAdminLink} currentUser={currentUser} />
             </div>
 
@@ -193,7 +193,7 @@ export default function Navbar() {
                   <nav className="flex flex-col space-y-1 p-4 pt-2">
                     <NavLink href="/lobby" icon={<Gamepad2 />} onClick={() => setIsMobileMenuOpen(false)}>Lobby</NavLink>
                     <NavLink href="/shop" icon={<ShoppingCart />} onClick={() => setIsMobileMenuOpen(false)}>Shop</NavLink>
-                    <NavLink href="/backpack" icon={<BackpackIcon />} onClick={() => setIsMobileMenuOpen(false)}>Backpack</NavLink>
+                    <NavLink href="/backpack" icon={<PageBackpackIcon />} onClick={() => setIsMobileMenuOpen(false)}>Backpack</NavLink>
                     <NavLink href="/skills" icon={<Star />} onClick={() => setIsMobileMenuOpen(false)}>Skills</NavLink>
                     <NavLink href="/settings" icon={<SettingsIcon />} onClick={() => setIsMobileMenuOpen(false)}>Settings</NavLink>
                     <NavLink href="/profile" icon={<UserCircle />} onClick={() => setIsMobileMenuOpen(false)}>Profile</NavLink>
