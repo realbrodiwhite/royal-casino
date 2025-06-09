@@ -13,11 +13,12 @@ import Navbar from '@/components/layout/navbar';
 import { PlayCircle, PauseCircle, Palette, Sparkles } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import Image from 'next/image';
-import { useXp } from '@/contexts/XpContext'; 
+import { useXp } from '@/contexts/XpContext';
 import { useToast } from "@/hooks/use-toast";
 import { weightedRandom as b3WeightedRandom } from '@/lib/b3-engine';
-import type { ItemEffect, ActiveBuff } from '@/types/inventory'; // Import ActiveBuff and ItemEffect
-import { getItemById } from '@/game-data/items'; // To get item details for mock buff
+import type { ItemEffect, ActiveBuff } from '@/types/inventory';
+import { getItemById } from '@/game-data/items';
+import { getSkillDefinitionById, type SkillDefinition } from '@/game-data/skills'; // Import skill definitions
 
 import CherrySymbol from '@/components/game/symbols/CherrySymbol';
 import DiamondSymbol from '@/components/game/symbols/DiamondSymbol';
@@ -32,7 +33,7 @@ import BellSymbol from '@/components/game/symbols/BellSymbol';
 
 import { classicSlotsTheme } from '@/game-themes/classic-slots.theme';
 import { vegasAdventureTheme } from '@/game-themes/vegas-adventure.theme';
-import { horrificHalloweenTheme } from '@/game-themes/horrific-halloween.theme'; 
+import { horrificHalloweenTheme } from '@/game-themes/horrific-halloween.theme';
 import type { SlotGameThemeConfig } from '@/types/game-theme';
 
 const allSymbolComponents: Record<string, React.FC<React.SVGProps<SVGSVGElement>>> = {
@@ -40,10 +41,10 @@ const allSymbolComponents: Record<string, React.FC<React.SVGProps<SVGSVGElement>
   DiamondSymbol: DiamondSymbol,
   GoldCoinSymbol: GoldCoinSymbol,
   BellSymbol: BellSymbol,
-  PumpkinSymbol: (props: React.SVGProps<SVGSVGElement>) => <svg viewBox="0 0 100 100" {...props} data-ai-hint="jack-o-lantern pumpkin"><text x="25" y="65" fontSize="50">🎃</text></svg>, 
-  GhostSymbol: (props: React.SVGProps<SVGSVGElement>) => <svg viewBox="0 0 100 100" {...props} data-ai-hint="spooky ghost"><text x="25" y="65" fontSize="50">👻</text></svg>,     
-  BatSymbol: (props: React.SVGProps<SVGSVGElement>) => <svg viewBox="0 0 100 100" {...props} data-ai-hint="flying bat"><text x="25" y="65" fontSize="50">🦇</text></svg>,       
-  WitchHatSymbol: (props: React.SVGProps<SVGSVGElement>) => <svg viewBox="0 0 100 100" {...props} data-ai-hint="witch hat"><text x="25" y="65" fontSize="50">🧙</text></svg>, 
+  PumpkinSymbol: (props: React.SVGProps<SVGSVGElement>) => <svg viewBox="0 0 100 100" {...props} data-ai-hint="jack-o-lantern pumpkin"><text x="25" y="65" fontSize="50">🎃</text></svg>,
+  GhostSymbol: (props: React.SVGProps<SVGSVGElement>) => <svg viewBox="0 0 100 100" {...props} data-ai-hint="spooky ghost"><text x="25" y="65" fontSize="50">👻</text></svg>,
+  BatSymbol: (props: React.SVGProps<SVGSVGElement>) => <svg viewBox="0 0 100 100" {...props} data-ai-hint="flying bat"><text x="25" y="65" fontSize="50">🦇</text></svg>,
+  WitchHatSymbol: (props: React.SVGProps<SVGSVGElement>) => <svg viewBox="0 0 100 100" {...props} data-ai-hint="witch hat"><text x="25" y="65" fontSize="50">🧙</text></svg>,
 };
 
 interface SymbolData {
@@ -56,12 +57,12 @@ const FALLBACK_SYMBOL: SymbolData = {
   component: (props: React.SVGProps<SVGSVGElement>) => <svg viewBox="0 0 100 100" {...props} data-ai-hint="question mark error"><text x="25" y="65" fontSize="50">?</text></svg>,
 };
 
-const availableThemes: SlotGameThemeConfig[] = [classicSlotsTheme, vegasAdventureTheme, horrificHalloweenTheme]; 
+const availableThemes: SlotGameThemeConfig[] = [classicSlotsTheme, vegasAdventureTheme, horrificHalloweenTheme];
 
 const themeImagePaths: Record<string, string> = {
   'classic-slots': '/images/theme-art/classic-slots-theme.svg',
   'vegas-adventure': '/images/theme-art/vegas-adventure-theme.svg',
-  'horrific-halloween': '/images/theme-art/horrific-halloween-theme.svg',
+  'horrific-halloween': '/images/theme-art/horrific-halloween.theme.svg',
 };
 
 type CellCoordinate = [number, number];
@@ -74,8 +75,8 @@ const getMockActiveBuffs = (): ActiveBuff[] => {
       {
         itemId: 'cherry_magnet_charm',
         effect: cherryMagnetItem.effects[0],
-        startTime: Date.now(), // Not used for non-consumable
-        endTime: Infinity, // Non-consumable, always active
+        startTime: Date.now(),
+        endTime: Infinity,
       }
     ];
   }
@@ -84,18 +85,16 @@ const getMockActiveBuffs = (): ActiveBuff[] => {
 
 
 export default function SlotsPage() {
-  const { addXp } = useXp(); 
+  const { addXp } = useXp();
   const { toast } = useToast();
   const [selectedTheme, setSelectedTheme] = useState<SlotGameThemeConfig | null>(null);
 
   const [rows, setRows] = useState(3);
   const [cols, setCols] = useState(3);
   const [availableSymbolsWithData, setAvailableSymbolsWithData] = useState<Array<SymbolData & { weight: number }>>([]);
-  
-  // Simulate having the "Cherry Magnet Charm" buff active
-  // In a real app, this would come from a player context or inventory system
-  const [activeBuffs, setActiveBuffs] = useState<ActiveBuff[]>(getMockActiveBuffs());
 
+  const [activeBuffs, setActiveBuffs] = useState<ActiveBuff[]>(getMockActiveBuffs());
+  const [mockFortuneSkillLevel, setMockFortuneSkillLevel] = useState(5); // Mock Fortune skill level for demo
 
   useEffect(() => {
     if (selectedTheme) {
@@ -108,7 +107,7 @@ export default function SlotsPage() {
             return { id: themeSymbol.id, component, weight: themeSymbol.weight };
           }
           console.warn(`Symbol component for id '${themeSymbol.id}' not found in allSymbolComponents. Using fallback.`);
-          return { id: themeSymbol.id, component: FALLBACK_SYMBOL.component, weight: themeSymbol.weight }; 
+          return { id: themeSymbol.id, component: FALLBACK_SYMBOL.component, weight: themeSymbol.weight };
         })
         .filter((item): item is SymbolData & { weight: number } => Boolean(item));
       setAvailableSymbolsWithData(currentSymbols);
@@ -117,24 +116,53 @@ export default function SlotsPage() {
 
 
   const getRandomSymbolData = useCallback((): SymbolData => {
-    if (availableSymbolsWithData.length === 0) {
-      console.warn("No symbols available in availableSymbolsWithData, returning FALLBACK_SYMBOL");
+    if (availableSymbolsWithData.length === 0 || !selectedTheme) {
+      console.warn("No symbols available or theme not selected, returning FALLBACK_SYMBOL");
       return FALLBACK_SYMBOL;
     }
 
-    let symbolsToUse = [...availableSymbolsWithData.map(s => ({...s}))]; // Create a mutable copy
+    let symbolsToUse = [...availableSymbolsWithData.map(s => ({ ...s }))];
 
-    // Apply SYMBOL_WEIGHT_BOOST buffs
+    // Apply SYMBOL_WEIGHT_BOOST buffs (e.g., Cherry Magnet Charm)
     activeBuffs.forEach(buff => {
       if (buff.effect.type === 'SYMBOL_WEIGHT_BOOST' && buff.effect.symbolId) {
         const symbolIndex = symbolsToUse.findIndex(s => s.id === buff.effect.symbolId);
-        if (symbolIndex !== -1) {
+        if (symbolIndex !== -1 && typeof buff.effect.value === 'number') {
           symbolsToUse[symbolIndex].weight += buff.effect.value;
-           // console.log(`Applied buff: ${buff.itemId}, boosted ${buff.effect.symbolId} weight to ${symbolsToUse[symbolIndex].weight}`);
         }
       }
     });
-    
+
+    // Apply "Fortune" skill effect: boost weight of the highest-paying symbol
+    const fortuneSkillDef = getSkillDefinitionById('fortune');
+    if (fortuneSkillDef && fortuneSkillDef.getEffectValue && mockFortuneSkillLevel > 0) {
+      let highestPayingSymbolId: string | null = null;
+      let maxPayoutValue = 0;
+
+      selectedTheme.symbols.forEach(themeSymbol => {
+        const paytableEntry = selectedTheme.paytable[themeSymbol.id];
+        if (paytableEntry) {
+          const currentSymbolMaxPayout = Math.max(...Object.values(paytableEntry));
+          if (currentSymbolMaxPayout > maxPayoutValue) {
+            maxPayoutValue = currentSymbolMaxPayout;
+            highestPayingSymbolId = themeSymbol.id;
+          }
+        }
+      });
+
+      if (highestPayingSymbolId) {
+        const symbolIndex = symbolsToUse.findIndex(s => s.id === highestPayingSymbolId);
+        if (symbolIndex !== -1) {
+          const fortuneEffect = fortuneSkillDef.getEffectValue(mockFortuneSkillLevel);
+          if (typeof fortuneEffect === 'number') {
+            const additionalWeight = Math.round(fortuneEffect * 10000); // Scale effect value to weight
+            symbolsToUse[symbolIndex].weight += additionalWeight;
+            // console.log(`Fortune Skill (Lvl ${mockFortuneSkillLevel}): Boosted ${highestPayingSymbolId} weight by ${additionalWeight}. New weight: ${symbolsToUse[symbolIndex].weight}`);
+          }
+        }
+      }
+    }
+
     const selectedSymbolWithWeight = b3WeightedRandom(symbolsToUse);
 
     if (selectedSymbolWithWeight) {
@@ -142,7 +170,7 @@ export default function SlotsPage() {
     }
     console.warn("b3WeightedRandom returned null, this shouldn't happen with positive weights. Falling back to FALLBACK_SYMBOL.");
     return FALLBACK_SYMBOL;
-  }, [availableSymbolsWithData, activeBuffs]);
+  }, [availableSymbolsWithData, activeBuffs, selectedTheme, mockFortuneSkillLevel]);
 
   const initialReels = useCallback((r: number, c: number): SymbolData[][] =>
     Array(r)
@@ -161,7 +189,7 @@ export default function SlotsPage() {
   const [showWinAnimation, setShowWinAnimation] = useState(false);
   const [highlightedWinningCells, setHighlightedWinningCells] = useState<CellCoordinate[]>([]);
 
-  const spinCost = 10; 
+  const spinCost = 10;
 
   useEffect(() => {
     if (selectedTheme) {
@@ -213,7 +241,7 @@ export default function SlotsPage() {
         if (symbolPaytableInfo) {
           let actualPayoutMultiplier = 0;
           let paidMatchCount = 0;
-          for (let count = matchCount; count >=1; count--) {
+          for (let count = matchCount; count >= 1; count--) {
             if (symbolPaytableInfo[count]) {
               actualPayoutMultiplier = symbolPaytableInfo[count];
               paidMatchCount = count;
@@ -223,13 +251,16 @@ export default function SlotsPage() {
 
           if (actualPayoutMultiplier > 0 && paidMatchCount > 0) {
             let winAmountForPayline = actualPayoutMultiplier * betAmount;
-            
-            // Placeholder for WIN_MULTIPLIER_BOOST if it were to be applied here
-            // activeBuffs.forEach(buff => {
-            //   if (buff.effect.type === 'WIN_MULTIPLIER_BOOST') {
-            //      winAmountForPayline *= buff.effect.value;
-            //   }
-            // });
+
+            // Check for WIN_MULTIPLIER_BOOST buff
+            activeBuffs.forEach(buff => {
+                if (buff.effect.type === 'WIN_MULTIPLIER_BOOST' && buff.effect.appliesToGameType?.includes('slots')) {
+                    if(Date.now() < buff.endTime) { // Check if buff is still active
+                         winAmountForPayline *= buff.effect.value;
+                    }
+                }
+            });
+
 
             totalWinAmount += winAmountForPayline;
             winDetails.push({
@@ -245,7 +276,7 @@ export default function SlotsPage() {
     });
 
     return { totalWinAmount, winDetails };
-  }, [/* activeBuffs */]); // activeBuffs would be a dependency if WIN_MULTIPLIER_BOOST was active here
+  }, [activeBuffs]);
 
 
   const handleSpin = useCallback(() => {
@@ -269,7 +300,7 @@ export default function SlotsPage() {
 
     setSpinning(true);
     setCredits((prev) => prev - spinCost);
-    addXp(spinCost); 
+    addXp(spinCost);
     setResultsMessage(null);
     setIsWin(null);
     setWinAmount(0);
@@ -289,11 +320,11 @@ export default function SlotsPage() {
 
         if (totalWinAmount > 0) {
           const winMessages = winDetails.map(detail =>
-            `${detail.count} ${detail.symbolId}(s) on line ${detail.paylineIndex + 1} for ${detail.amount}`
+            `${detail.count} ${detail.symbolId}(s) on line ${detail.paylineIndex + 1} for ${detail.amount.toFixed(0)}` // Rounded amount
           );
-          setResultsMessage(`You won ${totalWinAmount} credits! ${winDetails.length > 1 ? 'Details: ' + winMessages.join('; ') : winMessages[0]}`);
+          setResultsMessage(`You won ${totalWinAmount.toFixed(0)} credits! ${winDetails.length > 1 ? 'Details: ' + winMessages.join('; ') : winMessages[0]}`);
           setIsWin(true);
-          setCredits((prev) => prev + totalWinAmount); 
+          setCredits((prev) => prev + totalWinAmount);
           setWinAmount(totalWinAmount);
           setShowWinAnimation(true);
 
@@ -327,18 +358,18 @@ export default function SlotsPage() {
   const handleToggleAutospin = () => {
     if (!selectedTheme) return;
     if (!isAutospin && credits < spinCost) {
-        setResultsMessage("Not enough credits to start autospin!");
-        setIsWin(false);
-        return;
+      setResultsMessage("Not enough credits to start autospin!");
+      setIsWin(false);
+      return;
     }
     if (availableSymbolsWithData.length === 0 && !isAutospin) {
-        setResultsMessage("Cannot start autospin: No symbols available for this theme.");
-        setIsWin(false);
-        return;
+      setResultsMessage("Cannot start autospin: No symbols available for this theme.");
+      setIsWin(false);
+      return;
     }
     setIsAutospin(!isAutospin);
     if (isAutospin) {
-        setResultsMessage(null);
+      setResultsMessage(null);
     }
   };
 
@@ -347,16 +378,23 @@ export default function SlotsPage() {
     setHighlightedWinningCells([]);
   };
 
-  const handleThemeSelect = (theme: SlotGameThemeConfig) => {
+  const handleThemeSelect = (theme: SlotGameThemeConfig | null) => { // Allow null to go back to theme selection
     setSelectedTheme(theme);
-    setIsAutospin(false); 
+    setIsAutospin(false);
     setResultsMessage(null);
     setIsWin(null);
     setShowWinAnimation(false);
     setWinAmount(0);
     setHighlightedWinningCells([]);
-    // Optionally re-fetch/update activeBuffs if theme changes could affect them
-    setActiveBuffs(getMockActiveBuffs()); 
+    if (theme) {
+      setActiveBuffs(getMockActiveBuffs()); // Re-evaluate buffs if theme changes
+    }
+  };
+
+  // For Fortune skill demo:
+  const handleFortuneLevelChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const level = parseInt(event.target.value, 10);
+    setMockFortuneSkillLevel(isNaN(level) || level < 0 ? 0 : (level > 10 ? 10 : level));
   };
 
   if (!selectedTheme) {
@@ -371,20 +409,20 @@ export default function SlotsPage() {
           {availableThemes.map(theme => (
             <Card key={theme.themeId} className="w-full sm:w-72 md:w-80 bg-card border-border shadow-xl hover:shadow-primary/50 transition-all duration-300 flex flex-col">
               <CardHeader className="items-center text-center">
-                 <Sparkles className="h-10 w-10 text-primary mb-3" />
+                <Sparkles className="h-10 w-10 text-primary mb-3" />
                 <CardTitle className="text-xl sm:text-2xl font-headline text-primary">{theme.displayName}</CardTitle>
                 <CardDescription className="text-muted-foreground min-h-[3.5rem] overflow-hidden text-ellipsis text-sm">{theme.description}</CardDescription>
               </CardHeader>
               <CardContent className="flex-grow flex flex-col justify-center">
-                 <p className="text-xs text-muted-foreground text-center mb-1">Grid: {theme.grid.rows}x{theme.grid.cols}</p>
-                 <p className="text-xs text-muted-foreground text-center mb-3">Symbols: {theme.symbols.length}</p>
-                 <Image
-                    src={themeImagePaths[theme.themeId] || `/images/theme-art/default-theme.svg`}
-                    alt={theme.displayName}
-                    width={200}
-                    height={100}
-                    className="rounded-md mx-auto object-cover"
-                 />
+                <p className="text-xs text-muted-foreground text-center mb-1">Grid: {theme.grid.rows}x{theme.grid.cols}</p>
+                <p className="text-xs text-muted-foreground text-center mb-3">Symbols: {theme.symbols.length}</p>
+                <Image
+                  src={themeImagePaths[theme.themeId] || `/images/theme-art/default-theme.svg`}
+                  alt={theme.displayName}
+                  width={200}
+                  height={100}
+                  className="rounded-md mx-auto object-cover"
+                />
               </CardContent>
               <CardFooter className="mt-auto">
                 <Button onClick={() => handleThemeSelect(theme)} variant="default" className="w-full">
@@ -394,9 +432,9 @@ export default function SlotsPage() {
             </Card>
           ))}
         </main>
-         <footer className="mt-8 sm:mt-12 text-center text-xs sm:text-sm text-muted-foreground px-2 py-1.5 sm:py-2 border-t border-border">
-            <p>&copy; 2025 Royal Casino. All Rights Reserved. Built By Brodi Inc.</p>
-         </footer>
+        <footer className="mt-8 sm:mt-12 text-center text-xs sm:text-sm text-muted-foreground px-2 py-1.5 sm:py-2 border-t border-border">
+          <p>&copy; 2025 Royal Casino. All Rights Reserved. Built By Brodi Inc.</p>
+        </footer>
       </div>
     );
   }
@@ -411,19 +449,26 @@ export default function SlotsPage() {
 
       <main className="flex flex-col items-center gap-4 sm:gap-6 w-full max-w-2xl px-2">
         <div className="w-full max-w-lg mx-auto">
-            <UserBalanceDisplay credits={credits} />
+          <UserBalanceDisplay credits={credits} />
         </div>
 
         <Button onClick={() => handleThemeSelect(null)} variant="outline" className="w-full sm:w-auto">
           <Palette className="mr-2 h-4 w-4" /> Change Theme
         </Button>
-
-        {/* Debug display for active buffs - remove in production */}
-        {/* {activeBuffs.length > 0 && (
-          <div className="text-xs p-2 bg-muted rounded">
-            Active Buffs: {activeBuffs.map(b => `${b.itemId} (${b.effect.type}: ${b.effect.symbolId} by ${b.effect.value})`).join(', ')}
-          </div>
-        )} */}
+        
+        {/* Fortune Skill Demo Input - Remove in production */}
+        <div className="p-2 bg-muted rounded-md text-xs w-full max-w-sm">
+          <label htmlFor="fortuneLevel" className="block mb-1 text-foreground">Demo: Fortune Skill Level (0-10):</label>
+          <input
+            type="number"
+            id="fortuneLevel"
+            value={mockFortuneSkillLevel}
+            onChange={handleFortuneLevelChange}
+            min="0" max="10"
+            className="w-full p-1.5 bg-input border-border rounded text-foreground"
+          />
+           <p className="text-muted-foreground mt-1 text-[0.65rem]">Modifies weight of highest-value symbol in current theme.</p>
+        </div>
 
 
         {availableSymbolsWithData.length > 0 ? (
@@ -455,9 +500,9 @@ export default function SlotsPage() {
         {resultsMessage && <ResultsDisplay message={resultsMessage} isWin={isWin} />}
 
         <WinAnimation
-            trigger={showWinAnimation}
-            winAmount={winAmount}
-            onAnimationComplete={handleWinAnimationComplete}
+          trigger={showWinAnimation}
+          winAmount={winAmount}
+          onAnimationComplete={handleWinAnimationComplete}
         />
 
         <div className="flex flex-col sm:flex-row items-center gap-4 w-full md:w-auto">
@@ -488,3 +533,5 @@ export default function SlotsPage() {
     </div>
   );
 }
+
+    
