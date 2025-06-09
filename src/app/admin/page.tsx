@@ -8,7 +8,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { useToast } from "@/hooks/use-toast";
-import { Coins, UserCog, BarChart2, Brain, Settings, UsersRound, Percent, Search, BarChartHorizontalBig, LineChart, TrendingUp, UserPlus, Clock, Award, Diamond, ShieldAlert, ShieldCheck, KeyRound, Eye } from 'lucide-react'; // Changed Gem to Diamond
+import { Coins, UserCog, BarChart2, Brain, Settings, UsersRound, Percent, Search, BarChartHorizontalBig, LineChart, TrendingUp, UserPlus, Clock, Award, Diamond, ShieldAlert, ShieldCheck, KeyRound, Eye } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from '@/components/ui/badge';
 
@@ -23,13 +23,7 @@ import {
   SidebarMenuButton,
 } from '@/components/ui/sidebar';
 
-type AdminView = 'userManagement' | 'analytics' | 'settings' | 'aiTools';
-
-interface GameSetting {
-  id: string;
-  name: string;
-  currentRTP: number;
-}
+type AdminView = 'userManagement' | 'analytics' | 'aiTools'; // Removed 'settings' as it was only RTP
 
 interface FoundUserDetails {
   id: string;
@@ -37,19 +31,9 @@ interface FoundUserDetails {
   joinDate: string;
   lastLogin: string;
   isBanned: boolean;
-  credits: number; // Renamed from standardCredits
-  kingsCoin: number; // Renamed from premiumCoins
+  credits: number;
+  kingsCoin: number;
 }
-
-const initialGameSettings: GameSetting[] = [
-  { id: 'classic-slots', name: 'Classic Fruit Slots', currentRTP: 96.5 },
-  { id: 'vegas-adventure', name: 'Vegas Adventure Slots', currentRTP: 95.8 },
-  { id: 'horrific-halloween', name: 'Horrific Halloween Slots', currentRTP: 96.1 },
-  { id: 'video-poker', name: 'Video Poker', currentRTP: 97.2 },
-  { id: 'bingo', name: 'Bingo', currentRTP: 90.0 },
-  { id: 'coin-flip', name: 'Coin Flip', currentRTP: 99.0 },
-  { id: 'scratchers', name: 'Scratchers', currentRTP: 85.0 },
-];
 
 // Mock user data for demonstration
 const mockUsers: Record<string, FoundUserDetails> = {
@@ -84,27 +68,16 @@ const mockUsers: Record<string, FoundUserDetails> = {
 
 
 export default function AdminDashboardPage() {
-  const [activeView, setActiveView] = useState<AdminView>('userManagement');
+  const [activeView, setActiveView] = useState<AdminView>('analytics'); // Default to analytics
   const [currencyUserId, setCurrencyUserId] = useState('');
   const [creditAmount, setCreditAmount] = useState('');
-  const [kingsCoinAmount, setKingsCoinAmount] = useState(''); // Renamed
+  const [kingsCoinAmount, setKingsCoinAmount] = useState('');
   const { toast } = useToast();
-
-  const [gameSettings, setGameSettings] = useState<GameSetting[]>(initialGameSettings);
-  const [rtpInputs, setRtpInputs] = useState<Record<string, string>>({});
 
   // State for Account Actions tab
   const [searchUserQuery, setSearchUserQuery] = useState('');
   const [foundUserDetails, setFoundUserDetails] = useState<FoundUserDetails | null>(null);
 
-
-  useEffect(() => {
-    const initialRtpInputs: Record<string, string> = {};
-    gameSettings.forEach(game => {
-      initialRtpInputs[game.id] = game.currentRTP.toString();
-    });
-    setRtpInputs(initialRtpInputs);
-  }, [gameSettings]);
 
   const handleAddCurrency = () => {
     if (!currencyUserId) {
@@ -112,7 +85,7 @@ export default function AdminDashboardPage() {
       return;
     }
     const _credits = parseInt(creditAmount);
-    const _kingsCoin = parseInt(kingsCoinAmount); // Renamed
+    const _kingsCoin = parseInt(kingsCoinAmount);
 
     if ((isNaN(_credits) || _credits <= 0) && (isNaN(_kingsCoin) || _kingsCoin <= 0)) {
       toast({ title: "Error", description: "Please enter a valid positive amount for Credits or Kings Coin.", variant: "destructive" });
@@ -139,7 +112,7 @@ export default function AdminDashboardPage() {
       return;
     }
     const _credits = creditAmount !== '' ? parseInt(creditAmount) : NaN;
-    const _kingsCoin = kingsCoinAmount !== '' ? parseInt(kingsCoinAmount) : NaN; // Renamed
+    const _kingsCoin = kingsCoinAmount !== '' ? parseInt(kingsCoinAmount) : NaN;
 
     if (isNaN(_credits) && isNaN(_kingsCoin) ) {
        toast({ title: "Error", description: "Please enter an amount for Credits or Kings Coin.", variant: "destructive" });
@@ -167,27 +140,6 @@ export default function AdminDashboardPage() {
     setKingsCoinAmount('');
   };
 
-  const handleRtpInputChange = (gameId: string, value: string) => {
-    setRtpInputs(prev => ({ ...prev, [gameId]: value }));
-  };
-
-  const handleUpdateRtp = (gameId: string) => {
-    const newRtpString = rtpInputs[gameId];
-    const newRtp = parseFloat(newRtpString);
-
-    if (isNaN(newRtp) || newRtp < 0 || newRtp > 100) {
-      toast({ title: "Error", description: "Please enter a valid RTP between 0 and 100.", variant: "destructive" });
-      return;
-    }
-
-    setGameSettings(prevSettings =>
-      prevSettings.map(game =>
-        game.id === gameId ? { ...game, currentRTP: newRtp } : game
-      )
-    );
-    toast({ title: "RTP Updated (Mock)", description: `RTP for game ${gameSettings.find(g => g.id === gameId)?.name} set to ${newRtp}%.` });
-  };
-
   const handleSearchUser = () => {
     if (!searchUserQuery.trim()) {
       toast({ title: "Search Error", description: "Please enter a User ID or Email to search.", variant: "destructive" });
@@ -208,7 +160,7 @@ export default function AdminDashboardPage() {
   const handleToggleBanUser = () => {
     if (foundUserDetails) {
       const updatedStatus = !foundUserDetails.isBanned;
-      mockUsers[foundUserDetails.id].isBanned = updatedStatus;
+      mockUsers[foundUserDetails.id].isBanned = updatedStatus; // Update mock data
       setFoundUserDetails(prev => prev ? { ...prev, isBanned: updatedStatus } : null);
       toast({
         title: `User ${updatedStatus ? 'Banned' : 'Unbanned'} (Mock)`,
@@ -372,7 +324,7 @@ export default function AdminDashboardPage() {
                 <LineChart className="mr-2 h-5 w-5 sm:h-6 sm:w-6" /> Analytics Dashboard
               </CardTitle>
               <CardDescription className="text-muted-foreground text-sm sm:text-base">
-                Explore game and user performance metrics. (Placeholder Data)
+                Explore game and user performance metrics. (Placeholder Data for Social Play)
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -395,21 +347,21 @@ export default function AdminDashboardPage() {
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                             <div className="p-3 sm:p-4 bg-input/50 rounded-lg border border-border/60 shadow-sm">
                                 <div className="flex items-center justify-between mb-1">
-                                    <h4 className="text-xs sm:text-sm font-medium text-muted-foreground">Total Spins Today</h4>
+                                    <h4 className="text-xs sm:text-sm font-medium text-muted-foreground">Total Plays Today</h4>
                                     <TrendingUp className="h-4 w-4 text-green-500" />
                                 </div>
                                 <p className="text-xl sm:text-2xl font-bold text-primary">125,670</p>
                             </div>
                              <div className="p-3 sm:p-4 bg-input/50 rounded-lg border border-border/60 shadow-sm">
-                                <h4 className="text-xs sm:text-sm font-medium text-muted-foreground mb-1">Avg. RTP (Overall)</h4>
-                                <p className="text-xl sm:text-2xl font-bold text-primary">96.2%</p>
+                                <h4 className="text-xs sm:text-sm font-medium text-muted-foreground mb-1">Avg. Credits Won/Play</h4>
+                                <p className="text-xl sm:text-2xl font-bold text-primary">8.5 CR</p>
                             </div>
                             <div className="p-3 sm:p-4 bg-input/50 rounded-lg border border-border/60 shadow-sm">
                                 <h4 className="text-xs sm:text-sm font-medium text-muted-foreground mb-1">Most Popular Game</h4>
                                 <p className="text-lg sm:text-xl font-semibold text-primary truncate">Vegas Adventure</p>
                             </div>
                             <div className="p-3 sm:p-4 bg-input/50 rounded-lg border border-border/60 shadow-sm">
-                                <h4 className="text-xs sm:text-sm font-medium text-muted-foreground mb-1">Highest Win Today</h4>
+                                <h4 className="text-xs sm:text-sm font-medium text-muted-foreground mb-1">Highest Credit Win Today</h4>
                                 <p className="text-xl sm:text-2xl font-bold text-primary">5,000 CR</p>
                             </div>
                         </div>
@@ -459,7 +411,7 @@ export default function AdminDashboardPage() {
                             </div>
                             <div className="p-3 sm:p-4 bg-input/50 rounded-lg border border-border/60 shadow-sm">
                                 <div className="flex items-center justify-between mb-1">
-                                    <h4 className="text-xs sm:text-sm font-medium text-muted-foreground">Top Spender (Today)</h4>
+                                    <h4 className="text-xs sm:text-sm font-medium text-muted-foreground">Top KC Spender (Today)</h4>
                                     <Award className="h-4 w-4 text-primary" />
                                  </div>
                                 <p className="text-lg sm:text-xl font-semibold text-primary truncate">UID123 (500 KC)</p> 
@@ -476,50 +428,6 @@ export default function AdminDashboardPage() {
             </CardContent>
           </Card>
         );
-      case 'settings':
-        return (
-          <Card className="bg-card border-border">
-            <CardHeader>
-              <CardTitle className="text-primary flex items-center text-xl sm:text-2xl">
-                <Settings className="mr-2 h-5 w-5 sm:h-6 sm:w-6" /> Game Settings & RTP
-              </CardTitle>
-              <CardDescription className="text-muted-foreground text-sm sm:text-base">
-                Modify the Return-To-Player (RTP) for each game. All actions are mock.
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              {gameSettings.map(game => (
-                <div key={game.id} className="p-4 border border-border/50 rounded-md bg-background/30">
-                  <h3 className="text-lg font-semibold text-primary mb-2">{game.name}</h3>
-                  <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
-                    <div className="flex-1 space-y-1">
-                      <Label htmlFor={`rtp-${game.id}`} className="text-foreground">Current RTP: {game.currentRTP}%</Label>
-                      <div className="flex items-center">
-                        <Input
-                          id={`rtp-${game.id}`}
-                          type="number"
-                          step="0.1"
-                          min="0"
-                          max="100"
-                          value={rtpInputs[game.id] || ''}
-                          onChange={(e) => handleRtpInputChange(game.id, e.target.value)}
-                          className="bg-input border-border text-foreground placeholder:text-muted-foreground w-32"
-                        />
-                        <Percent className="ml-2 h-4 w-4 text-muted-foreground" />
-                      </div>
-                    </div>
-                    <Button onClick={() => handleUpdateRtp(game.id)} variant="secondary" size="sm" className="mt-2 sm:mt-0 self-start sm:self-center">
-                      Update RTP
-                    </Button>
-                  </div>
-                </div>
-              ))}
-            </CardContent>
-             <CardFooter>
-                <p className="text-xs text-muted-foreground">Changes are mock and not persisted.</p>
-            </CardFooter>
-          </Card>
-        );
       case 'aiTools':
         return (
           <Card className="bg-card border-border">
@@ -528,7 +436,7 @@ export default function AdminDashboardPage() {
                 <Brain className="mr-2 h-5 w-5 sm:h-6 sm:w-6" /> AI Pattern Recognition
               </CardTitle>
               <CardDescription className="text-muted-foreground text-sm sm:text-base">
-                Analyze player patterns using AI to enhance game profitability and enjoyment. (Coming Soon)
+                Analyze player patterns using AI to enhance game enjoyment and balance. (Coming Soon)
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -546,8 +454,8 @@ export default function AdminDashboardPage() {
     <SidebarProvider>
       <div className="min-h-screen bg-background text-foreground flex flex-col">
         <Navbar />
-        <div className="flex flex-1 overflow-hidden pt-[calc(32px+56px)] sm:pt-[calc(36px+56px)]"> {/* Push content below ExpBar + Navbar */}
-          <Sidebar collapsible="icon" variant="sidebar" className="border-r border-sidebar-border bg-sidebar text-sidebar-foreground fixed top-[calc(32px+56px)] sm:top-[calc(36px+56px)] h-[calc(100vh-32px-56px)] sm:h-[calc(100vh-36px-56px)]"> {/* Adjust fixed positioning and height */}
+        <div className="flex flex-1 overflow-hidden pt-[calc(32px+56px)] sm:pt-[calc(36px+56px)]">
+          <Sidebar collapsible="icon" variant="sidebar" className="border-r border-sidebar-border bg-sidebar text-sidebar-foreground fixed top-[calc(32px+56px)] sm:top-[calc(36px+56px)] h-[calc(100vh-32px-56px)] sm:h-[calc(100vh-36px-56px)]">
             <SidebarContent className="p-2">
               <SidebarMenu>
                  <SidebarMenuItem>
@@ -570,16 +478,7 @@ export default function AdminDashboardPage() {
                     <span>User Management</span>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
-                <SidebarMenuItem>
-                  <SidebarMenuButton
-                    isActive={activeView === 'settings'}
-                    onClick={() => setActiveView('settings')}
-                    tooltip="Game Settings & RTP"
-                  >
-                    <Settings />
-                    <span>Settings</span>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
+                {/* Removed Settings/RTP tab from sidebar */}
                 <SidebarMenuItem>
                   <SidebarMenuButton
                     isActive={activeView === 'aiTools'}
@@ -594,7 +493,7 @@ export default function AdminDashboardPage() {
             </SidebarContent>
           </Sidebar>
 
-          <SidebarInset className="flex-1 overflow-y-auto ml-[var(--sidebar-width-icon)] group-data-[state=expanded]:ml-[var(--sidebar-width)] transition-all duration-200 ease-linear"> {/* Adjust margin for collapsed/expanded sidebar */}
+          <SidebarInset className="flex-1 overflow-y-auto ml-[var(--sidebar-width-icon)] group-data-[state=expanded]:ml-[var(--sidebar-width)] transition-all duration-200 ease-linear">
             <main className="container mx-auto px-4 py-6 sm:py-8">
               <header className="mb-6 sm:mb-8 flex items-center justify-between">
                 <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold font-headline text-primary">Admin Dashboard</h1>
@@ -613,3 +512,5 @@ export default function AdminDashboardPage() {
     </SidebarProvider>
   );
 }
+
+    

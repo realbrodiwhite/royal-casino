@@ -10,8 +10,8 @@ interface UserBalanceDisplayProps {
   credits: number;
   kingsCoin?: number;
   diamondUserCount?: number;
-  onConvertCredits?: () => void; // Callback for conversion
-  canConvert?: boolean; // To enable/disable conversion button
+  onConvertCredits?: () => void; 
+  canConvert?: boolean; 
 }
 
 const UserBalanceDisplay: React.FC<UserBalanceDisplayProps> = ({
@@ -40,7 +40,7 @@ const UserBalanceDisplay: React.FC<UserBalanceDisplayProps> = ({
             Your standard in-game currency. Earn through play and convert to Kings Coin.
           </p>
         </CardContent>
-        {onConvertCredits && typeof kingsCoin === 'number' && ( // Only show convert if kingsCoin is also displayed/managed
+        {onConvertCredits && typeof kingsCoin === 'number' && ( 
           <CardContent className="pt-0 pb-3">
             <Button
               onClick={onConvertCredits}
@@ -68,7 +68,7 @@ const UserBalanceDisplay: React.FC<UserBalanceDisplayProps> = ({
               {kingsCoin.toLocaleString()}
             </div>
             <p className="text-xs text-muted-foreground mt-1">
-              Premium currency (1 KC = $1 USD approx. value). Required for certain wagers & features.
+              Premium currency for exclusive items and perks. Purchase consumables in the Shop.
             </p>
           </CardContent>
         </Card>
@@ -97,3 +97,5 @@ const UserBalanceDisplay: React.FC<UserBalanceDisplayProps> = ({
 };
 
 export default UserBalanceDisplay;
+
+    

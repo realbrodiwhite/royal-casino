@@ -12,7 +12,7 @@ import { useToast } from '@/hooks/use-toast';
 
 // Mock user inventory - in a real app, this would come from a backend or user context
 const mockUserBackpack: BackpackItemType[] = [
-  { itemId: 'beer_rtp_boost', quantity: 3 },
+  { itemId: 'beer_rtp_boost', quantity: 3 }, // ID kept for now, effect changed
   { itemId: 'cigar_jackpot_boost', quantity: 1 },
   { itemId: 'energy_drink_xp', quantity: 5 },
   { itemId: 'four_leaf_clover', quantity: 1 },
@@ -60,11 +60,11 @@ const ItemCard: React.FC<{ backpackItem: BackpackItemType; itemDetails: ShopItem
   const formatEffect = (effect: ItemEffect): string => {
     let effectDesc = "";
     switch (effect.type) {
-      case 'RTP_BOOST':
-        effectDesc = `+${(effect.value * 100).toFixed(1)}% RTP`;
+      case 'WIN_MULTIPLIER_BOOST': // Changed from RTP_BOOST
+        effectDesc = `+${((effect.value - 1) * 100).toFixed(0)}% Credit Wins`; // e.g., value 1.1 becomes +10%
         break;
       case 'JACKPOT_CHANCE_BOOST':
-        effectDesc = `+${(effect.value * 100).toFixed(1)}% Jackpot Chance`;
+        effectDesc = `+${(effect.value * 100).toFixed(1)}% Jackpot Chance (Credits)`;
         break;
       case 'BONUS_TRIGGER_BOOST':
         effectDesc = `+${(effect.value * 100).toFixed(1)}% Bonus Trigger`;
@@ -73,7 +73,7 @@ const ItemCard: React.FC<{ backpackItem: BackpackItemType; itemDetails: ShopItem
         effectDesc = `${effect.value}x XP`;
         break;
       case 'FREE_SPINS':
-        effectDesc = `${effect.value} Free Spins`;
+        effectDesc = `${effect.value} Free Plays (Credits)`;
         break;
       case 'BET_INSURANCE':
         effectDesc = `Bet Insurance (up to ${effect.value} credits)`;
@@ -171,7 +171,7 @@ export default function BackpackPage() {
             <CardContent>
                 <p className="text-muted-foreground mb-4">Looks like you haven't collected any items yet.</p>
                 <Button asChild variant="default">
-                    <a href="/shop"> {/* Assume /shop will be the route for the item shop */}
+                    <a href="/shop">
                         <ShoppingCart className="mr-2 h-5 w-5" /> Visit the Shop
                     </a>
                 </Button>
@@ -192,3 +192,5 @@ export default function BackpackPage() {
     </div>
   );
 }
+
+    
