@@ -37,9 +37,8 @@ export default function NewPlayerOfferBanner() {
   return (
     <div
       className={cn(
-        "bg-primary/10 text-primary-foreground py-2 px-4 border-b-2 border-primary/20 shadow-md",
-        "relative w-full z-20",
-        "mt-[10vh]" // Added top margin of 10% viewport height
+        "bg-primary/10 text-primary-foreground py-4 px-4 border-b-2 border-primary/20 shadow-md", // Changed py-2 to py-4
+        "relative w-full z-20 my-4" // Added my-4, removed mt-[10vh]
       )}
     >
       <div className={cn(
