@@ -31,14 +31,15 @@ export default function NewPlayerOfferBanner() {
   };
 
   if (!isMounted || !isVisible) {
-    return null; 
+    return null;
   }
 
   return (
     <div
       className={cn(
         "bg-primary/10 text-primary-foreground py-2 px-4 border-b-2 border-primary/20 shadow-md",
-        "relative w-full z-20" 
+        "relative w-full z-20",
+        "mt-[10vh]" // Added top margin of 10% viewport height
       )}
     >
       <div className={cn(
