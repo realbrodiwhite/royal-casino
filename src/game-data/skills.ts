@@ -3,108 +3,105 @@ import type { SkillDefinition } from '@/types/skills';
 // Importing a wider range of icons that might fit the new skills
 import { Brain, Zap, ShieldCheck, Rabbit, Eye, BarChart, Sparkles, Award, TrendingUp, Gem } from 'lucide-react';
 
-const TOTAL_CORE_SKILLS_FOR_BONUS_CALC = 7; // Number of skills contributing to the global win bonus
-const MAX_LEVEL_PER_SKILL = 10;
-const TOTAL_CORE_SKILL_POINTS = TOTAL_CORE_SKILLS_FOR_BONUS_CALC * MAX_LEVEL_PER_SKILL;
-const GLOBAL_WIN_BONUS_PER_POINT = 0.01 / TOTAL_CORE_SKILL_POINTS; // Each point adds this to the win multiplier factor
+// Constants for global win bonus calculation are removed as skills no longer affect win amounts.
 
 export const allSkillDefinitions: SkillDefinition[] = [
   {
     id: 'lucky_streak',
     name: 'Lucky Streak',
-    description: 'Cultivate your innate luck to experience more frequent, though not necessarily larger, winning outcomes.',
+    description: 'Showcase your dedication and unlock unique cosmetic perks as you level up this skill.',
     icon: Zap,
     maxLevel: 10,
     costPerLevel: (currentLevel) => (currentLevel + 1) * 210,
     effectDescription: (level) => {
-      if (level === 0) return "Standard win rates. Upgrade to enhance your overall winnings.";
-      return `Increases overall Credit winnings. Current contribution: +${(level * GLOBAL_WIN_BONUS_PER_POINT * 100).toFixed(4)}% to win multiplier.`;
+      if (level === 0) return "Standard player flair. Upgrade for enhanced prestige.";
+      return `Grants access to exclusive cosmetic option tier ${level}. Further upgrades unlock more options.`;
     },
-    getEffectValue: (level) => level * GLOBAL_WIN_BONUS_PER_POINT,
+    getEffectValue: (level) => null, // Does not directly affect game win probabilities or amounts
     category: 'luck',
   },
   {
     id: 'strategic_mind',
     name: 'Strategic Mind (Intelligence)',
-    description: 'Sharpen your cognitive abilities to better identify opportunities and improve outcomes in games involving choice or pattern recognition.',
+    description: 'Demonstrate your sharp thinking and gain recognition among fellow players.',
     icon: Brain,
     maxLevel: 10,
     costPerLevel: (currentLevel) => (currentLevel + 1) * 210,
     effectDescription: (level) => {
-      if (level === 0) return "Standard game outcomes. Upgrade to enhance your overall winnings.";
-      return `Increases overall Credit winnings. Current contribution: +${(level * GLOBAL_WIN_BONUS_PER_POINT * 100).toFixed(4)}% to win multiplier.`;
+      if (level === 0) return "Standard player profile. Upgrade to showcase your intellect.";
+      return `Unlocks intellectual-themed profile badge tier ${level}.`;
     },
-    getEffectValue: (level) => level * GLOBAL_WIN_BONUS_PER_POINT,
+    getEffectValue: (level) => null, // Does not directly affect game win probabilities or amounts
     category: 'strategy',
   },
   {
     id: 'iron_resolve',
     name: 'Iron Resolve (Resilience)',
-    description: 'Fortify your determination, allowing for a chance to recover from setbacks or gain minor consolations during losing streaks.',
+    description: 'Display your unwavering commitment to the casino community through unique profile markers.',
     icon: ShieldCheck,
     maxLevel: 10,
     costPerLevel: (currentLevel) => (currentLevel + 1) * 210,
     effectDescription: (level) => {
-      if (level === 0) return "Standard resilience. Upgrade to enhance your overall winnings.";
-      return `Increases overall Credit winnings. Current contribution: +${(level * GLOBAL_WIN_BONUS_PER_POINT * 100).toFixed(4)}% to win multiplier.`;
+      if (level === 0) return "Standard player resilience. Upgrade to display your steadfastness.";
+      return `Awards a resilience-themed profile border tier ${level}.`;
     },
-    getEffectValue: (level) => level * GLOBAL_WIN_BONUS_PER_POINT,
+    getEffectValue: (level) => null, // Does not directly affect game win probabilities or amounts
     category: 'endurance',
   },
   {
     id: 'quick_reflexes',
     name: 'Quick Reflexes',
-    description: 'Hone your reaction time for games or bonus features where speed and quick decisions can lead to better results.',
+    description: 'Highlights your agility and quick thinking with special visual flairs on your profile.',
     icon: Rabbit,
     maxLevel: 10,
     costPerLevel: (currentLevel) => (currentLevel + 1) * 210,
     effectDescription: (level) => {
-      if (level === 0) return "Standard reaction benefits. Upgrade to enhance your overall winnings.";
-      return `Increases overall Credit winnings. Current contribution: +${(level * GLOBAL_WIN_BONUS_PER_POINT * 100).toFixed(4)}% to win multiplier.`;
+      if (level === 0) return "Standard profile appearance. Upgrade for dynamic visual effects.";
+      return `Unlocks dynamic profile animation tier ${level}.`;
     },
-    getEffectValue: (level) => level * GLOBAL_WIN_BONUS_PER_POINT,
+    getEffectValue: (level) => null, // Does not directly affect game win probabilities or amounts
     category: 'strategy',
   },
   {
     id: 'keen_intuition',
     name: 'Keen Intuition',
-    description: 'Trust your gut feelings. This skill subtly guides you towards more favorable outcomes in chance-based scenarios.',
+    description: 'Develop your sixth sense and gain access to exclusive community insights or early game news.',
     icon: Eye,
     maxLevel: 10,
     costPerLevel: (currentLevel) => (currentLevel + 1) * 210,
     effectDescription: (level) => {
-      if (level === 0) return "Standard intuition. Upgrade to enhance your overall winnings.";
-      return `Increases overall Credit winnings. Current contribution: +${(level * GLOBAL_WIN_BONUS_PER_POINT * 100).toFixed(4)}% to win multiplier.`;
+      if (level === 0) return "Standard community access. Upgrade for deeper insights.";
+      return `Grants access to Tier ${level} of exclusive player insights & news.`;
     },
-    getEffectValue: (level) => level * GLOBAL_WIN_BONUS_PER_POINT,
+    getEffectValue: (level) => null, // Does not directly affect game win probabilities or amounts
     category: 'luck',
   },
   {
     id: 'gamblers_wisdom',
     name: "Gambler's Wisdom",
-    description: 'Gain deeper insights into game mechanics, potentially unlocking information or slightly better odds on specific, less common winning combinations.',
+    description: 'Become a connoisseur of the casino, unlocking detailed personal game statistics and history features.',
     icon: BarChart,
     maxLevel: 10,
     costPerLevel: (currentLevel) => (currentLevel + 1) * 210,
     effectDescription: (level) => {
-      if (level === 0) return "Basic game understanding. Upgrade to enhance your overall winnings.";
-      return `Increases overall Credit winnings. Current contribution: +${(level * GLOBAL_WIN_BONUS_PER_POINT * 100).toFixed(4)}% to win multiplier.`;
+      if (level === 0) return "Basic play tracking. Upgrade for detailed personal analytics.";
+      return `Unlocks advanced personal game statistics, viewable on your profile, tier ${level}.`;
     },
-    getEffectValue: (level) => level * GLOBAL_WIN_BONUS_PER_POINT,
+    getEffectValue: (level) => null, // Does not directly affect game win probabilities or amounts
     category: 'strategy',
   },
   {
     id: 'fortune',
     name: 'Fortune',
-    description: 'Develop an uncanny ability to be in the right place at the right time for the casino\'s grandest prizes.',
+    description: "Attract good fortune and gain recognition with exclusive 'Fortune Favored' titles and profile accolades.",
     icon: Gem,
     maxLevel: 10,
     costPerLevel: (currentLevel) => (currentLevel + 1) * 210,
     effectDescription: (level) => {
-      if (level === 0) return "Standard luck for big prizes. Upgrade to enhance your overall winnings.";
-      return `Increases overall Credit winnings. Current contribution: +${(level * GLOBAL_WIN_BONUS_PER_POINT * 100).toFixed(4)}% to win multiplier.`;
+      if (level === 0) return "Standard player status. Upgrade to be recognized as 'Fortune Favored'.";
+      return `Grants 'Fortune Favored' title tier ${level} and associated profile accolades.`;
     },
-    getEffectValue: (level) => level * GLOBAL_WIN_BONUS_PER_POINT,
+    getEffectValue: (level) => null, // Does not directly affect game win probabilities or amounts
     category: 'rewards',
   },
   {
@@ -113,7 +110,7 @@ export const allSkillDefinitions: SkillDefinition[] = [
     description: 'Become more efficient at learning from every play, permanently increasing all XP gains.',
     icon: TrendingUp,
     maxLevel: 10,
-    costPerLevel: (currentLevel) => (currentLevel + 1) * 210,
+    costPerLevel: (currentLevel) => (currentLevel + 1) * 210, // Can adjust cost if it's too valuable
     effectDescription: (level) => {
       if (level === 0) return "Standard XP gain.";
       return `Increases all Experience Points earned from gameplay by ${level * 2}%.`;
