@@ -22,7 +22,7 @@ const FeatureCard: React.FC<FeatureCardProps> = ({ icon, title, description }) =
 // This component's parent (AnimatedSection) will have 'landing-scroll-section'
 export default function RoyalTreatmentSectionContent() {
   return (
-    <section className="w-full bg-background/80 backdrop-blur-sm">
+    <section className="w-full bg-background/80 backdrop-blur-sm flex flex-col flex-grow items-center justify-center">
       <div className="container mx-auto px-4 py-12 sm:py-16">
         <div className="border-4 border-primary rounded-full bg-background flex items-center justify-center w-24 h-24 sm:w-28 sm:w-28 mb-4 sm:mb-6 mx-auto">
           <Crown aria-hidden="true" className="h-16 w-16 sm:h-20 sm:w-20 text-primary" />

@@ -135,7 +135,7 @@ export default function GameUniverseSectionContent() {
     };
 
   return (
-    <section className="w-full bg-background">
+    <section className="w-full bg-background flex flex-col flex-grow items-center justify-center">
       <div className="container mx-auto px-4 py-12 sm:py-16">
         <Globe aria-hidden="true" className="mx-auto h-12 w-12 sm:h-16 sm:w-16 text-primary mb-4 sm:mb-6" />
         <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold font-headline text-primary mb-4 text-center">A Universe of Thrilling Games Awaits Your Command!</h2>
