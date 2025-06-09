@@ -93,11 +93,14 @@ const UserAvatarMenu: React.FC<{ onLinkClick?: () => void, showAdminLink: boolea
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <button className="flex items-center justify-center rounded-full focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background">
-          <Avatar className="h-8 w-8 sm:h-9 sm:w-9 border-2 border-primary/70 hover:border-primary transition-colors">
+        <button className={cn(
+          "flex items-center justify-center rounded-full focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background",
+          "w-7 h-7 sm:w-8 sm:h-8 border-2 border-primary" // Consistent size and border with logo
+        )}>
+          <Avatar className="h-full w-full"> {/* Avatar fills the button, no separate border */}
             <AvatarImage src={currentUser?.photoURL || undefined} alt={currentUser?.displayName || currentUser?.email || "User"} />
-            <AvatarFallback className="bg-muted text-muted-foreground">
-              {currentUser?.email ? getInitials(currentUser.email) : <UserCircle className="h-5 w-5" />}
+            <AvatarFallback className="bg-muted text-muted-foreground text-xs"> {/* Smaller fallback text */}
+              {currentUser?.email ? getInitials(currentUser.email) : <UserCircle className="h-4 w-4" />}
             </AvatarFallback>
           </Avatar>
           <span className="sr-only">Open user menu</span>
@@ -151,7 +154,7 @@ export default function Navbar() {
           <div className="flex items-center justify-between h-14">
             <Link href="/" legacyBehavior>
               <a className="flex items-center text-primary hover:text-primary/90 transition-colors">
-                <div className="mr-2 sm:mr-3 flex items-center justify-center w-7 h-7 sm:w-8 sm:h-8 border-2 sm:border-[3px] border-primary rounded-full bg-background">
+                <div className="mr-2 sm:mr-3 flex items-center justify-center w-7 h-7 sm:w-8 sm:h-8 border-2 border-primary rounded-full bg-background">
                   <Crown className="h-3.5 w-3.5 sm:h-4 sm:h-4 text-primary" aria-hidden="true" />
                 </div>
                 <span className="text-base sm:text-lg font-headline font-bold whitespace-nowrap">Royal Casino</span>
@@ -167,13 +170,11 @@ export default function Navbar() {
             </div>
 
             {/* Mobile Navigation Trigger */}
-            <div className="md:hidden flex items-center">
-              <div className="mr-2"> 
-                 <UserAvatarMenu showAdminLink={showAdminLink} currentUser={currentUser} onLinkClick={() => setIsMobileMenuOpen(false)} />
-              </div>
+            <div className="md:hidden flex items-center space-x-2"> {/* Added space-x-2 for spacing */}
+              <UserAvatarMenu showAdminLink={showAdminLink} currentUser={currentUser} onLinkClick={() => setIsMobileMenuOpen(false)} />
               <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
                 <SheetTrigger asChild>
-                  <button className="text-foreground hover:text-primary focus:outline-none p-2">
+                  <button className="text-foreground hover:text-primary focus:outline-none p-1 rounded-md"> {/* Adjusted padding/rounded */}
                     <Menu className="h-6 w-6" />
                     <span className="sr-only">Open menu</span>
                   </button>
@@ -182,7 +183,7 @@ export default function Navbar() {
                   <SheetHeader className="p-4 pb-2 border-b border-border">
                      <Link href="/" legacyBehavior>
                         <a className="flex items-center text-primary hover:text-primary/90 transition-colors mb-2" onClick={() => setIsMobileMenuOpen(false)}>
-                            <div className="mr-3 flex items-center justify-center w-8 h-8 border-[3px] border-primary rounded-full bg-background">
+                            <div className="mr-3 flex items-center justify-center w-8 h-8 border-2 border-primary rounded-full bg-background"> {/* Consistent logo style */}
                             <Crown className="h-4 w-4 text-primary" aria-hidden="true" />
                             </div>
                             <span className="text-lg font-headline font-bold whitespace-nowrap">Royal Casino</span>
