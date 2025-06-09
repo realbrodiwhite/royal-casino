@@ -1,36 +1,21 @@
 
 "use client";
 
-import React, { useState } from 'react';
+import React from 'react';
 import { Progress } from '@/components/ui/progress';
-import { Star, ChevronUp, ChevronDown, Coins } from 'lucide-react'; 
+import { Star, Coins } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useXp } from '@/contexts/XpContext';
 
 const ExperienceBar: React.FC = () => {
   const { level, xpTowardsNextLevel, xpNeededForNextLevel, availableXp } = useXp();
-  const [isVisible, setIsVisible] = useState(true);
 
   const progressPercentage = xpNeededForNextLevel > 0 ? (xpTowardsNextLevel / xpNeededForNextLevel) * 100 : 0;
-
-  if (!isVisible) {
-    return (
-      <button
-        onClick={() => setIsVisible(true)}
-        className="fixed top-0 left-1/2 -translate-x-1/2 mt-1 p-2 bg-primary/80 text-primary-foreground rounded-full shadow-lg hover:bg-primary z-50 h-8 w-8 flex items-center justify-center sm:h-9 sm:w-9"
-        aria-label="Show Experience Bar"
-      >
-        <ChevronDown className="h-4 w-4 sm:h-5 sm:w-5" />
-      </button>
-    );
-  }
 
   return (
     <div className={cn(
         "fixed top-0 left-0 right-0 z-40 p-2 bg-background/90 backdrop-blur-md shadow-md border-b border-border flex items-center",
-        "h-8 sm:h-9", 
-        "transition-transform duration-300 ease-in-out",
-        isVisible ? "translate-y-0" : "-translate-y-full"
+        "h-8 sm:h-9"
       )}
     >
       <div className="container mx-auto flex items-center justify-between gap-2 sm:gap-4 text-xs sm:text-sm">
@@ -45,16 +30,10 @@ const ExperienceBar: React.FC = () => {
           {xpTowardsNextLevel.toLocaleString()} / {xpNeededForNextLevel.toLocaleString()} XP
         </div>
          <div className="flex items-center gap-1 sm:gap-2" title={`Available Credits for upgrades: ${availableXp.toLocaleString()}`}>
-          <Coins className="h-3 w-3 sm:h-4 sm:w-4 text-accent" /> 
+          <Coins className="h-3 w-3 sm:h-4 sm:w-4 text-accent" />
           <span className="font-semibold text-accent">{availableXp.toLocaleString()}</span>
         </div>
-        <button
-          onClick={() => setIsVisible(false)}
-          className="text-muted-foreground hover:text-foreground"
-          aria-label="Hide Experience Bar"
-        >
-          <ChevronUp className="h-4 w-4 sm:h-5 sm:w-5" />
-        </button>
+        {/* Removed the hide button and ChevronUp icon */}
       </div>
     </div>
   );
