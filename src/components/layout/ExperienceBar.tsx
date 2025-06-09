@@ -3,7 +3,7 @@
 
 import React, { useState } from 'react';
 import { Progress } from '@/components/ui/progress';
-import { Star, ChevronUp, ChevronDown } from 'lucide-react'; // Removed Gem
+import { Star, ChevronUp, ChevronDown, Coins } from 'lucide-react'; 
 import { cn } from '@/lib/utils';
 import { useXp } from '@/contexts/XpContext';
 
@@ -44,8 +44,8 @@ const ExperienceBar: React.FC = () => {
         <div className="text-muted-foreground whitespace-nowrap hidden_ xs:block">
           {xpTowardsNextLevel.toLocaleString()} / {xpNeededForNextLevel.toLocaleString()} XP
         </div>
-         <div className="flex items-center gap-1 sm:gap-2" title={`Available XP for upgrades: ${availableXp.toLocaleString()}`}>
-          <Star className="h-3 w-3 sm:h-4 sm:w-4 text-accent" /> {/* Changed Gem to Star */}
+         <div className="flex items-center gap-1 sm:gap-2" title={`Available Credits for upgrades: ${availableXp.toLocaleString()}`}>
+          <Coins className="h-3 w-3 sm:h-4 sm:w-4 text-accent" /> 
           <span className="font-semibold text-accent">{availableXp.toLocaleString()}</span>
         </div>
         <button
