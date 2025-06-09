@@ -6,7 +6,7 @@ import Navbar from '@/components/layout/navbar';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import UserBalanceDisplay from '@/components/game/CreditDisplay';
-import { ShoppingCart, Diamond, Layers, Beer, Cigarette, Zap, Leaf, Ticket, Package } from 'lucide-react';
+import { ShoppingCart, Coins, Layers, Beer, Cigarette, Zap, Leaf, Ticket, Package } from 'lucide-react'; // Changed Diamond to Coins
 import { allShopItems, type ShopItem, type ItemEffect } from '@/game-data/items';
 import { useToast } from "@/hooks/use-toast";
 
@@ -16,30 +16,30 @@ const itemIconMap: Record<string, React.FC<React.SVGProps<SVGSVGElement>>> = {
   Zap: Zap,
   Leaf: Leaf,
   Ticket: Ticket,
-  Default: Layers, // Fallback icon
+  Default: Layers,
 };
 
 const ShopItemCard: React.FC<{ 
   item: ShopItem;
   onBuy: (item: ShopItem, quantity: number, totalCost: number) => void; 
-  currentKingsCoin: number;
-}> = ({ item, onBuy, currentKingsCoin }) => {
+  currentCredits: number; // Changed from currentKingsCoin to currentCredits
+}> = ({ item, onBuy, currentCredits }) => {
   const IconComponent = itemIconMap[item.icon] || itemIconMap.Default;
   const costForOne = item.cost;
   const costForSix = item.cost * 6;
 
-  const canAffordOne = currentKingsCoin >= costForOne;
-  const canAffordSix = currentKingsCoin >= costForSix;
+  const canAffordOne = currentCredits >= costForOne;
+  const canAffordSix = currentCredits >= costForSix;
 
 
   const formatEffect = (effect: ItemEffect): string => {
     let effectDesc = "";
     switch (effect.type) {
-      case 'RTP_BOOST':
-        effectDesc = `+${(effect.value * 100).toFixed(1)}% RTP`;
+      case 'WIN_MULTIPLIER_BOOST':
+        effectDesc = `+${((effect.value - 1) * 100).toFixed(0)}% Credit Wins`; 
         break;
       case 'JACKPOT_CHANCE_BOOST':
-        effectDesc = `+${(effect.value * 100).toFixed(1)}% Jackpot Chance`;
+        effectDesc = `+${(effect.value * 100).toFixed(1)}% Jackpot Chance (Credits)`;
         break;
       case 'BONUS_TRIGGER_BOOST':
         effectDesc = `+${(effect.value * 100).toFixed(1)}% Bonus Trigger`;
@@ -48,7 +48,7 @@ const ShopItemCard: React.FC<{
         effectDesc = `${effect.value}x XP`;
         break;
       case 'FREE_SPINS':
-        effectDesc = `${effect.value} Free Spins`;
+        effectDesc = `${effect.value} Free Plays (Credits)`;
         break;
       case 'BET_INSURANCE':
          effectDesc = `Bet Insurance (up to ${effect.value} credits)`;
@@ -92,7 +92,7 @@ const ShopItemCard: React.FC<{
             size="sm"
             disabled={!canAffordOne}
         >
-            Buy 1 <Diamond className="ml-1.5 mr-0.5 h-3 w-3 text-accent" /> {costForOne}
+            Buy 1 <Coins className="ml-1.5 mr-0.5 h-3 w-3 text-primary" /> {costForOne} {/* Changed Diamond to Coins */}
         </Button>
         {item.isConsumable && item.stackable && (
             <Button 
@@ -101,7 +101,7 @@ const ShopItemCard: React.FC<{
                 size="sm"
                 disabled={!canAffordSix}
             >
-                <Package className="mr-1.5 h-4 w-4" /> Buy 6-Pack <Diamond className="ml-1.5 mr-0.5 h-3 w-3 text-accent" /> {costForSix}
+                <Package className="mr-1.5 h-4 w-4" /> Buy 6-Pack <Coins className="ml-1.5 mr-0.5 h-3 w-3 text-primary" /> {costForSix} {/* Changed Diamond to Coins */}
             </Button>
         )}
       </CardFooter>
@@ -110,42 +110,27 @@ const ShopItemCard: React.FC<{
 };
 
 export default function ShopPage() {
-  const [kingsCoin, setKingsCoin] = useState(250);
-  const [credits, setCredits] = useState(1000);
+  // Removed kingsCoin state, only credits state is needed now
+  const [credits, setCredits] = useState(5000); // Example starting credits
   const { toast } = useToast();
-  const mockDiamondUserCount = 1234;
+  // mockDiamondUserCount removed as the display for it is removed from UserBalanceDisplay
 
-  const handleConvertCreditsToKingsCoin = () => {
-    if (credits >= 1000) {
-      setCredits(prev => prev - 1000);
-      setKingsCoin(prev => prev + 1);
-      toast({
-        title: "Conversion Successful",
-        description: "1000 Credits converted to 1 Kings Coin.",
-      });
-    } else {
-      toast({
-        title: "Conversion Failed",
-        description: "Not enough Credits to convert.",
-        variant: "destructive",
-      });
-    }
-  };
+  // handleConvertCreditsToKingsCoin removed as there's no Kings Coin
 
   const handleBuyItem = (item: ShopItem, quantity: number, totalCost: number) => {
-    if (kingsCoin >= totalCost) {
-      setKingsCoin(prevCoins => prevCoins - totalCost);
-      console.log(`Bought ${quantity}x ${item.name} for ${totalCost} Kings Coin.`);
+    if (credits >= totalCost) {
+      setCredits(prevCredits => prevCredits - totalCost);
+      console.log(`Bought ${quantity}x ${item.name} for ${totalCost} Credits.`); // Updated currency name
       console.log(`Mock: Adding ${quantity}x ${item.name} to user's backpack.`);
       toast({
         title: "Purchase Successful!",
-        description: `You bought ${quantity}x ${item.name} for ${totalCost} Kings Coin. Check your backpack!`,
+        description: `You bought ${quantity}x ${item.name} for ${totalCost} Credits. Check your backpack!`, // Updated currency name
       });
     } else {
-      console.log(`Not enough Kings Coin to buy ${quantity}x ${item.name}.`);
+      console.log(`Not enough Credits to buy ${quantity}x ${item.name}.`);
       toast({
-        title: "Insufficient Funds",
-        description: `You need ${totalCost - kingsCoin} more Kings Coin to buy ${quantity}x ${item.name}.`,
+        title: "Insufficient Credits", // Updated title
+        description: `You need ${totalCost - credits} more Credits to buy ${quantity}x ${item.name}.`, // Updated currency name
         variant: "destructive",
       });
     }
@@ -159,17 +144,14 @@ export default function ShopPage() {
           <ShoppingCart className="mx-auto h-12 w-12 sm:h-16 sm:w-16 text-primary mb-3 sm:mb-4" />
           <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold font-headline text-primary">Item Shop</h1>
           <p className="text-md sm:text-lg text-muted-foreground mt-1 px-2">
-            Spend your Kings Coin on powerful consumables and charms!
+            Spend your Credits on powerful consumables and charms! {/* Updated currency name */}
           </p>
         </header>
         
         <div className="w-full max-w-lg mx-auto mb-6 sm:mb-8">
           <UserBalanceDisplay
             credits={credits}
-            kingsCoin={kingsCoin}
-            diamondUserCount={mockDiamondUserCount}
-            onConvertCredits={handleConvertCreditsToKingsCoin}
-            canConvert={credits >= 1000}
+            // Removed kingsCoin, diamondUserCount, onConvertCredits, canConvert
           />
         </div>
 
@@ -189,7 +171,7 @@ export default function ShopPage() {
                 key={item.id} 
                 item={item} 
                 onBuy={handleBuyItem}
-                currentKingsCoin={kingsCoin}
+                currentCredits={credits} // Pass currentCredits
               />
             ))}
           </div>

@@ -3,12 +3,12 @@
 
 import React, { useState } from 'react';
 import { Progress } from '@/components/ui/progress';
-import { Star, ChevronUp, ChevronDown, Gem } from 'lucide-react'; // Added Gem
+import { Star, ChevronUp, ChevronDown } from 'lucide-react'; // Removed Gem
 import { cn } from '@/lib/utils';
 import { useXp } from '@/contexts/XpContext';
 
 const ExperienceBar: React.FC = () => {
-  const { level, xpTowardsNextLevel, xpNeededForNextLevel, availableXp } = useXp(); // Added availableXp
+  const { level, xpTowardsNextLevel, xpNeededForNextLevel, availableXp } = useXp();
   const [isVisible, setIsVisible] = useState(true);
 
   const progressPercentage = xpNeededForNextLevel > 0 ? (xpTowardsNextLevel / xpNeededForNextLevel) * 100 : 0;
@@ -45,7 +45,7 @@ const ExperienceBar: React.FC = () => {
           {xpTowardsNextLevel.toLocaleString()} / {xpNeededForNextLevel.toLocaleString()} XP
         </div>
          <div className="flex items-center gap-1 sm:gap-2" title={`Available XP for upgrades: ${availableXp.toLocaleString()}`}>
-          <Gem className="h-3 w-3 sm:h-4 sm:w-4 text-accent" />
+          <Star className="h-3 w-3 sm:h-4 sm:w-4 text-accent" /> {/* Changed Gem to Star */}
           <span className="font-semibold text-accent">{availableXp.toLocaleString()}</span>
         </div>
         <button

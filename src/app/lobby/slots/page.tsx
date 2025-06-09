@@ -4,7 +4,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Button } from '@/components/ui/button';
 import UserBalanceDisplay from '@/components/game/CreditDisplay';
-// XpDisplay removed
 import GameGrid from '@/components/game/GameGrid';
 import GridBox from '@/components/game/GridBox';
 import SpinButton from '@/components/game/SpinButton';
@@ -13,7 +12,7 @@ import WinAnimation from '@/components/game/WinAnimation';
 import Navbar from '@/components/layout/navbar';
 import { PlayCircle, PauseCircle } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
-import { useXp } from '@/contexts/XpContext'; // Import useXp
+import { useXp } from '@/contexts/XpContext'; 
 
 import CherrySymbol from '@/components/game/symbols/CherrySymbol';
 import DiamondSymbol from '@/components/game/symbols/DiamondSymbol';
@@ -43,8 +42,8 @@ const FALLBACK_SYMBOL: SymbolData = {
 
 export default function LegacySlotsPage() { 
   const [activeThemeConfig, setActiveThemeConfig] = useState<SlotGameThemeConfig>(classicSlotsTheme);
-  const { toast } = useToast();
-  const { addXp } = useXp(); // Get addXp from context
+  const { toast } = useToast(); // Keep toast for general messages
+  const { addXp } = useXp(); 
 
   const rows = activeThemeConfig.grid.rows;
   const cols = activeThemeConfig.grid.cols;
@@ -94,8 +93,7 @@ export default function LegacySlotsPage() {
   const [reels, setReels] = useState<SymbolData[][]>(() => initialReels(rows, cols));
   const [spinning, setSpinning] = useState(false);
   const [credits, setCredits] = useState(1000);
-  const [kingsCoin, setKingsCoin] = useState(50);
-  // experiencePoints state removed, will use XpContext
+  // kingsCoin state removed
   const [isAutospin, setIsAutospin] = useState(false);
   const [resultsMessage, setResultsMessage] = useState<string | null>(null);
   const [isWin, setIsWin] = useState<boolean | null>(null);
@@ -103,24 +101,9 @@ export default function LegacySlotsPage() {
   const [showWinAnimation, setShowWinAnimation] = useState(false);
 
   const spinCost = 10; // Cost in Credits
-  const mockDiamondUserCount = 1234;
+  // mockDiamondUserCount removed
 
-  const handleConvertCreditsToKingsCoin = () => {
-    if (credits >= 1000) {
-      setCredits(prev => prev - 1000);
-      setKingsCoin(prev => prev + 1);
-      toast({
-        title: "Conversion Successful",
-        description: "1000 Credits converted to 1 Kings Coin.",
-      });
-    } else {
-      toast({
-        title: "Conversion Failed",
-        description: "Not enough Credits to convert.",
-        variant: "destructive",
-      });
-    }
-  };
+  // handleConvertCreditsToKingsCoin removed
 
   useEffect(() => {
     setReels(initialReels(rows, cols));
@@ -211,7 +194,7 @@ export default function LegacySlotsPage() {
 
     setSpinning(true);
     setCredits((prev) => prev - spinCost);
-    addXp(spinCost); // Add XP using context
+    addXp(spinCost); 
     setResultsMessage(null);
     setIsWin(null);
     setShowWinAnimation(false);
@@ -286,7 +269,7 @@ export default function LegacySlotsPage() {
   };
 
   return (
-    <div className="min-h-screen text-foreground flex flex-col items-center p-4 pt-[88px] sm:pt-[92px]"> {/* Adjusted padding top */}
+    <div className="min-h-screen text-foreground flex flex-col items-center p-4 pt-[88px] sm:pt-[92px]"> 
       <Navbar />
       <header className="my-8 text-center">
         <h1 className="text-5xl font-bold font-headline text-primary">{activeThemeConfig.displayName}</h1>
@@ -294,16 +277,9 @@ export default function LegacySlotsPage() {
       </header>
 
       <main className="flex flex-col items-center gap-6 w-full max-w-2xl">
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 w-full max-w-lg mx-auto">
-            <UserBalanceDisplay
-              credits={credits}
-              kingsCoin={kingsCoin}
-              diamondUserCount={mockDiamondUserCount}
-              onConvertCredits={handleConvertCreditsToKingsCoin}
-              canConvert={credits >= 1000}
-            />
+        <div className="w-full max-w-lg mx-auto"> {/* Simplified width restriction */}
+            <UserBalanceDisplay credits={credits} />
         </div>
-        {/* XpDisplay removed */}
         
         <Button onClick={toggleTheme} variant="outline">
           Switch to {activeThemeConfig.themeId === classicSlotsTheme.themeId ? vegasAdventureTheme.displayName : classicSlotsTheme.displayName}

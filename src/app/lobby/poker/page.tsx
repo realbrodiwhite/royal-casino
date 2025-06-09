@@ -27,7 +27,7 @@ type GameState = "BETTING" | "DEALT" | "GAME_OVER";
 
 const PokerPage: React.FC = () => {
   const [credits, setCredits] = useState(1000);
-  const [kingsCoin, setKingsCoin] = useState(50);
+  // kingsCoin state removed
   const [betAmount, setBetAmount] = useState<number>(5);
   const [deck, setDeck] = useState<Card[]>([]);
   const [hand, setHand] = useState<(Card | null)[]>(Array(5).fill(null));
@@ -38,7 +38,7 @@ const PokerPage: React.FC = () => {
   const [isWin, setIsWin] = useState<boolean | null>(null);
   const { toast } = useToast();
   const { addXp } = useXp();
-  const mockDiamondUserCount = 1234;
+  // mockDiamondUserCount removed
 
   const initializeDeck = useCallback(() => {
     setDeck(shuffleDeck(createDeck()));
@@ -48,22 +48,7 @@ const PokerPage: React.FC = () => {
     initializeDeck();
   }, [initializeDeck]);
 
-  const handleConvertCreditsToKingsCoin = () => {
-    if (credits >= 1000) {
-      setCredits(prev => prev - 1000);
-      setKingsCoin(prev => prev + 1);
-      toast({
-        title: "Conversion Successful",
-        description: "1000 Credits converted to 1 Kings Coin.",
-      });
-    } else {
-      toast({
-        title: "Conversion Failed",
-        description: "Not enough Credits to convert.",
-        variant: "destructive",
-      });
-    }
-  };
+  // handleConvertCreditsToKingsCoin removed
 
   const handleBetAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = parseInt(e.target.value, 10);
@@ -86,7 +71,7 @@ const PokerPage: React.FC = () => {
       }
 
       setCredits(prev => prev - betAmount);
-      addXp(betAmount); // Add XP based on bet amount
+      addXp(betAmount); 
 
       let currentDeck = deck;
       if (currentDeck.length < 10) { 
@@ -186,13 +171,7 @@ const PokerPage: React.FC = () => {
         </header>
 
         <div className="w-full max-w-lg mx-auto mb-6 sm:mb-8">
-          <UserBalanceDisplay
-            credits={credits}
-            kingsCoin={kingsCoin}
-            diamondUserCount={mockDiamondUserCount}
-            onConvertCredits={handleConvertCreditsToKingsCoin}
-            canConvert={credits >= 1000}
-          />
+          <UserBalanceDisplay credits={credits} />
         </div>
 
         <UICard className="w-full max-w-lg bg-card border-border shadow-xl mb-6 sm:mb-8">

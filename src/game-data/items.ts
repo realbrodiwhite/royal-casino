@@ -3,15 +3,14 @@ import type { ShopItem } from '@/types/inventory';
 
 export const allShopItems: ShopItem[] = [
   {
-    id: 'beer_rtp_boost', // id can remain for now, but effect changed
+    id: 'beer_rtp_boost',
     name: 'Craft Brew',
     description: 'A refreshing ale that seems to make your wins a bit bigger!',
     icon: 'Beer', 
     category: 'beverage',
-    cost: 20, // Kings Coin
+    cost: 200, // Cost in Credits
     effects: [
-      // Effect changed from RTP_BOOST to WIN_MULTIPLIER_BOOST
-      { type: 'WIN_MULTIPLIER_BOOST', value: 1.1, durationMinutes: 2, appliesToGameType: ['slots'] } // 10% larger Credit wins for 2 mins
+      { type: 'WIN_MULTIPLIER_BOOST', value: 1.1, durationMinutes: 2, appliesToGameType: ['slots'] } 
     ],
     isConsumable: true,
     stackable: true,
@@ -24,9 +23,9 @@ export const allShopItems: ShopItem[] = [
     description: 'A fine cigar said to attract larger Credit jackpots.',
     icon: 'Cigarette', 
     category: 'tobacco',
-    cost: 50, // Kings Coin
+    cost: 500, // Cost in Credits
     effects: [
-      { type: 'JACKPOT_CHANCE_BOOST', value: 0.01, durationMinutes: 5, appliesToGameType: ['slots'] } // 1% higher chance for social jackpots for 5 mins
+      { type: 'JACKPOT_CHANCE_BOOST', value: 0.01, durationMinutes: 5, appliesToGameType: ['slots'] } 
     ],
     isConsumable: true,
     stackable: true,
@@ -39,9 +38,9 @@ export const allShopItems: ShopItem[] = [
     description: 'Supercharge your gameplay and level up faster!',
     icon: 'Zap', 
     category: 'beverage',
-    cost: 15, // Kings Coin
+    cost: 150, // Cost in Credits
     effects: [
-      { type: 'XP_MULTIPLIER', value: 1.5, durationMinutes: 10 } // 1.5x XP for 10 minutes
+      { type: 'XP_MULTIPLIER', value: 1.5, durationMinutes: 10 } 
     ],
     isConsumable: true,
     stackable: true,
@@ -54,9 +53,9 @@ export const allShopItems: ShopItem[] = [
     description: 'A permanent charm that slightly increases your luck for bonus features.',
     icon: 'Leaf', 
     category: 'charm',
-    cost: 200, // Kings Coin
+    cost: 2000, // Cost in Credits
     effects: [
-      { type: 'BONUS_TRIGGER_BOOST', value: 0.005 } // 0.5% bonus trigger boost, permanent
+      { type: 'BONUS_TRIGGER_BOOST', value: 0.005 } 
     ],
     isConsumable: false, 
     stackable: false,
@@ -68,7 +67,7 @@ export const allShopItems: ShopItem[] = [
     description: 'Grants 5 free plays (using Credits) on any slot machine.',
     icon: 'Ticket', 
     category: 'special',
-    cost: 30, // Kings Coin
+    cost: 300, // Cost in Credits
     effects: [
       { type: 'FREE_SPINS', value: 5, appliesToGameType: ['slots'] }
     ],
@@ -82,5 +81,3 @@ export const allShopItems: ShopItem[] = [
 export const getItemById = (id: string): ShopItem | undefined => {
   return allShopItems.find(item => item.id === id);
 };
-
-    

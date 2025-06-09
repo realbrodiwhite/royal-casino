@@ -18,7 +18,7 @@ type DoubleOrNothingMode = 'inactive' | 'active';
 
 export default function CoinFlipPage() {
   const [credits, setCredits] = useState(1000);
-  const [kingsCoin, setKingsCoin] = useState(50);
+  // kingsCoin state removed
   const [betAmount, setBetAmount] = useState<number | string>(10);
   const [chosenSide, setChosenSide] = useState<CoinSide | null>(null);
   const [coinResult, setCoinResult] = useState<CoinSide | null>(null);
@@ -31,24 +31,9 @@ export default function CoinFlipPage() {
 
   const { toast } = useToast();
   const { addXp } = useXp();
-  const mockDiamondUserCount = 1234; 
+  // mockDiamondUserCount removed
 
-  const handleConvertCreditsToKingsCoin = () => {
-    if (credits >= 1000) {
-      setCredits(prev => prev - 1000);
-      setKingsCoin(prev => prev + 1);
-      toast({
-        title: "Conversion Successful",
-        description: "1000 Credits converted to 1 Kings Coin.",
-      });
-    } else {
-      toast({
-        title: "Conversion Failed",
-        description: "Not enough Credits to convert.",
-        variant: "destructive",
-      });
-    }
-  };
+  // handleConvertCreditsToKingsCoin removed
 
   const handleBetAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -83,7 +68,7 @@ export default function CoinFlipPage() {
         return;
       }
       setCredits(prev => prev - currentBet);
-      addXp(currentBet); // Add XP for initial bet
+      addXp(currentBet); 
     }
 
     setTimeout(() => {
@@ -168,13 +153,7 @@ export default function CoinFlipPage() {
         </header>
 
         <div className="w-full max-w-lg mx-auto mb-6 sm:mb-8">
-          <UserBalanceDisplay
-            credits={credits}
-            kingsCoin={kingsCoin}
-            diamondUserCount={mockDiamondUserCount}
-            onConvertCredits={handleConvertCreditsToKingsCoin}
-            canConvert={credits >= 1000}
-          />
+          <UserBalanceDisplay credits={credits} />
         </div>
 
         <Card className="w-full max-w-md bg-card border-border shadow-xl">

@@ -4,7 +4,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Button } from '@/components/ui/button';
 import UserBalanceDisplay from '@/components/game/CreditDisplay';
-// XpDisplay removed
 import GameGrid from '@/components/game/GameGrid';
 import GridBox from '@/components/game/GridBox';
 import SpinButton from '@/components/game/SpinButton';
@@ -66,7 +65,7 @@ type CellCoordinate = [number, number];
 
 export default function SlotsPage() {
   const { addXp } = useXp(); 
-  const { toast } = useToast();
+  const { toast } = useToast(); // Keep toast for general messages
   const [selectedTheme, setSelectedTheme] = useState<SlotGameThemeConfig | null>(null);
 
   const [rows, setRows] = useState(3);
@@ -125,7 +124,7 @@ export default function SlotsPage() {
   const [reels, setReels] = useState<SymbolData[][]>(() => initialReels(rows, cols));
   const [spinning, setSpinning] = useState(false);
   const [credits, setCredits] = useState(1000);
-  const [kingsCoin, setKingsCoin] = useState(50);
+  // kingsCoin state removed
   const [isAutospin, setIsAutospin] = useState(false);
   const [resultsMessage, setResultsMessage] = useState<string | null>(null);
   const [isWin, setIsWin] = useState<boolean | null>(null);
@@ -134,24 +133,9 @@ export default function SlotsPage() {
   const [highlightedWinningCells, setHighlightedWinningCells] = useState<CellCoordinate[]>([]);
 
   const spinCost = 10; // Cost in Credits
-  const mockDiamondUserCount = 1234; 
+  // mockDiamondUserCount removed
 
-  const handleConvertCreditsToKingsCoin = () => {
-    if (credits >= 1000) {
-      setCredits(prev => prev - 1000);
-      setKingsCoin(prev => prev + 1);
-      toast({
-        title: "Conversion Successful",
-        description: "1000 Credits converted to 1 Kings Coin.",
-      });
-    } else {
-      toast({
-        title: "Conversion Failed",
-        description: "Not enough Credits to convert.",
-        variant: "destructive",
-      });
-    }
-  };
+  // handleConvertCreditsToKingsCoin removed
 
   useEffect(() => {
     if (selectedTheme) {
@@ -391,13 +375,7 @@ export default function SlotsPage() {
 
       <main className="flex flex-col items-center gap-4 sm:gap-6 w-full max-w-2xl px-2">
         <div className="w-full max-w-lg mx-auto">
-            <UserBalanceDisplay
-              credits={credits}
-              kingsCoin={kingsCoin}
-              diamondUserCount={mockDiamondUserCount}
-              onConvertCredits={handleConvertCreditsToKingsCoin}
-              canConvert={credits >= 1000}
-            />
+            <UserBalanceDisplay credits={credits} />
         </div>
 
         <Button onClick={() => handleThemeSelect(null)} variant="outline" className="w-full sm:w-auto">

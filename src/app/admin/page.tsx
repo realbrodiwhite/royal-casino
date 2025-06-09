@@ -8,7 +8,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { useToast } from "@/hooks/use-toast";
-import { Coins, UserCog, BarChart2, Brain, Settings, UsersRound, Percent, Search, BarChartHorizontalBig, LineChart, TrendingUp, UserPlus, Clock, Award, Diamond, ShieldAlert, ShieldCheck, KeyRound, Eye } from 'lucide-react';
+import { Coins, UserCog, LineChart, Brain, UsersRound, Search, BarChartHorizontalBig, Eye, ShieldAlert, ShieldCheck, KeyRound } from 'lucide-react'; // Removed Percent, Settings, BarChart2, Diamond
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from '@/components/ui/badge';
 
@@ -23,7 +23,7 @@ import {
   SidebarMenuButton,
 } from '@/components/ui/sidebar';
 
-type AdminView = 'userManagement' | 'analytics' | 'aiTools'; // Removed 'settings' as it was only RTP
+type AdminView = 'userManagement' | 'analytics' | 'aiTools';
 
 interface FoundUserDetails {
   id: string;
@@ -32,7 +32,7 @@ interface FoundUserDetails {
   lastLogin: string;
   isBanned: boolean;
   credits: number;
-  kingsCoin: number;
+  // kingsCoin removed
 }
 
 // Mock user data for demonstration
@@ -44,7 +44,6 @@ const mockUsers: Record<string, FoundUserDetails> = {
     lastLogin: "2024-07-28 10:30 AM",
     isBanned: false,
     credits: 1500,
-    kingsCoin: 75,
   },
   "adminUser": {
     id: "adminUser",
@@ -53,7 +52,6 @@ const mockUsers: Record<string, FoundUserDetails> = {
     lastLogin: "2024-07-29 09:00 AM",
     isBanned: false,
     credits: 99999,
-    kingsCoin: 1000,
   },
   "bannedUser456": {
     id: "bannedUser456",
@@ -62,19 +60,17 @@ const mockUsers: Record<string, FoundUserDetails> = {
     lastLogin: "2024-06-01 14:00 PM",
     isBanned: true,
     credits: 50,
-    kingsCoin: 0,
   }
 };
 
 
 export default function AdminDashboardPage() {
-  const [activeView, setActiveView] = useState<AdminView>('analytics'); // Default to analytics
+  const [activeView, setActiveView] = useState<AdminView>('analytics');
   const [currencyUserId, setCurrencyUserId] = useState('');
   const [creditAmount, setCreditAmount] = useState('');
-  const [kingsCoinAmount, setKingsCoinAmount] = useState('');
+  // kingsCoinAmount state removed
   const { toast } = useToast();
 
-  // State for Account Actions tab
   const [searchUserQuery, setSearchUserQuery] = useState('');
   const [foundUserDetails, setFoundUserDetails] = useState<FoundUserDetails | null>(null);
 
@@ -85,25 +81,15 @@ export default function AdminDashboardPage() {
       return;
     }
     const _credits = parseInt(creditAmount);
-    const _kingsCoin = parseInt(kingsCoinAmount);
 
-    if ((isNaN(_credits) || _credits <= 0) && (isNaN(_kingsCoin) || _kingsCoin <= 0)) {
-      toast({ title: "Error", description: "Please enter a valid positive amount for Credits or Kings Coin.", variant: "destructive" });
+    if (isNaN(_credits) || _credits <= 0) {
+      toast({ title: "Error", description: "Please enter a valid positive amount for Credits.", variant: "destructive" });
       return;
     }
 
-    let messages = [];
-    if (!isNaN(_credits) && _credits > 0) {
-      messages.push(`${_credits} credits`);
-    }
-    if (!isNaN(_kingsCoin) && _kingsCoin > 0) {
-      messages.push(`${_kingsCoin} Kings Coin`);
-    }
-
-    toast({ title: "Success (Mock)", description: `Successfully added ${messages.join(' and ')} to user ${currencyUserId}.` });
+    toast({ title: "Success (Mock)", description: `Successfully added ${_credits} credits to user ${currencyUserId}.` });
     setCurrencyUserId('');
     setCreditAmount('');
-    setKingsCoinAmount('');
   };
 
   const handleSetCurrency = () => {
@@ -112,32 +98,19 @@ export default function AdminDashboardPage() {
       return;
     }
     const _credits = creditAmount !== '' ? parseInt(creditAmount) : NaN;
-    const _kingsCoin = kingsCoinAmount !== '' ? parseInt(kingsCoinAmount) : NaN;
 
-    if (isNaN(_credits) && isNaN(_kingsCoin) ) {
-       toast({ title: "Error", description: "Please enter an amount for Credits or Kings Coin.", variant: "destructive" });
+    if (isNaN(_credits)) {
+       toast({ title: "Error", description: "Please enter an amount for Credits.", variant: "destructive" });
       return;
     }
-    if (!isNaN(_credits) && _credits < 0) {
+    if (_credits < 0) {
          toast({ title: "Error", description: "Credit amount must be non-negative.", variant: "destructive" });
         return;
     }
-    if (!isNaN(_kingsCoin) && _kingsCoin < 0) {
-        toast({ title: "Error", description: "Kings Coin amount must be non-negative.", variant: "destructive" });
-        return;
-    }
-
-    let messages = [];
-    if (!isNaN(_credits)) {
-      messages.push(`credits to ${_credits}`);
-    }
-    if (!isNaN(_kingsCoin)) {
-      messages.push(`Kings Coin to ${_kingsCoin}`);
-    }
-    toast({ title: "Success (Mock)", description: `Successfully set ${messages.join(' and ')} for user ${currencyUserId}.` });
+    
+    toast({ title: "Success (Mock)", description: `Successfully set credits to ${_credits} for user ${currencyUserId}.` });
     setCurrencyUserId('');
     setCreditAmount('');
-    setKingsCoinAmount('');
   };
 
   const handleSearchUser = () => {
@@ -160,7 +133,7 @@ export default function AdminDashboardPage() {
   const handleToggleBanUser = () => {
     if (foundUserDetails) {
       const updatedStatus = !foundUserDetails.isBanned;
-      mockUsers[foundUserDetails.id].isBanned = updatedStatus; // Update mock data
+      mockUsers[foundUserDetails.id].isBanned = updatedStatus; 
       setFoundUserDetails(prev => prev ? { ...prev, isBanned: updatedStatus } : null);
       toast({
         title: `User ${updatedStatus ? 'Banned' : 'Unbanned'} (Mock)`,
@@ -204,7 +177,7 @@ export default function AdminDashboardPage() {
                       <UserCog className="mr-2 h-5 w-5 sm:h-6 sm:w-6" /> User Currency Management
                     </CardTitle>
                     <CardDescription className="text-muted-foreground text-sm sm:text-base">
-                      Add or set Credits and Kings Coin for a user. All actions are mock.
+                      Add or set Credits for a user. All actions are mock.
                     </CardDescription>
                   </CardHeader>
                   <CardContent className="space-y-4">
@@ -224,21 +197,14 @@ export default function AdminDashboardPage() {
                         className="bg-input border-border text-foreground placeholder:text-muted-foreground"
                       />
                     </div>
-                     <div className="space-y-2">
-                      <Label htmlFor="kingsCoinAmount" className="text-foreground flex items-center"><Diamond className="mr-1 h-4 w-4 text-accent" /> Kings Coin Amount</Label>
-                      <Input
-                        id="kingsCoinAmount" type="number" placeholder="Enter amount" value={kingsCoinAmount}
-                        onChange={(e) => setKingsCoinAmount(e.target.value)}
-                        className="bg-input border-border text-foreground placeholder:text-muted-foreground"
-                      />
-                    </div>
+                     {/* Kings Coin input removed */}
                   </CardContent>
                   <CardFooter className="flex flex-col sm:flex-row justify-end gap-2">
                     <Button onClick={handleAddCurrency} variant="outline" className="w-full sm:w-auto">
-                      Add Currency
+                      Add Credits
                     </Button>
                     <Button onClick={handleSetCurrency} variant="default" className="w-full sm:w-auto">
-                      Set Currency
+                      Set Credits
                     </Button>
                   </CardFooter>
                 </Card>
@@ -288,10 +254,7 @@ export default function AdminDashboardPage() {
                                 <span className="text-muted-foreground">Credits:</span>
                                 <span className="text-foreground">{foundUserDetails.credits.toLocaleString()}</span>
                            </div>
-                           <div className="flex justify-between">
-                                <span className="text-muted-foreground">Kings Coin:</span>
-                                <span className="text-foreground">{foundUserDetails.kingsCoin.toLocaleString()}</span>
-                           </div>
+                           {/* Kings Coin display removed */}
                         </CardContent>
                         <CardFooter className="p-0 pt-4 mt-4 border-t border-border/30 flex flex-wrap gap-2 justify-end">
                             <Button onClick={handleViewFullDetails} variant="ghost" size="sm" className="text-primary">
@@ -337,7 +300,7 @@ export default function AdminDashboardPage() {
                   <Card className="bg-card border-border/50">
                     <CardHeader>
                       <CardTitle className="text-primary flex items-center text-lg sm:text-xl">
-                        <BarChart2 className="mr-2 h-4 w-4 sm:h-5 sm:w-5" /> Game Performance
+                         <LineChart className="mr-2 h-4 w-4 sm:h-5 sm:w-5" /> {/* Changed icon */} Game Performance
                       </CardTitle>
                       <CardDescription className="text-muted-foreground text-xs sm:text-sm">
                         Key metrics and trends for all casino games.
@@ -348,7 +311,7 @@ export default function AdminDashboardPage() {
                             <div className="p-3 sm:p-4 bg-input/50 rounded-lg border border-border/60 shadow-sm">
                                 <div className="flex items-center justify-between mb-1">
                                     <h4 className="text-xs sm:text-sm font-medium text-muted-foreground">Total Plays Today</h4>
-                                    <TrendingUp className="h-4 w-4 text-green-500" />
+                                    <Coins className="h-4 w-4 text-green-500" /> {/* Changed icon */}
                                 </div>
                                 <p className="text-xl sm:text-2xl font-bold text-primary">125,670</p>
                             </div>
@@ -398,23 +361,23 @@ export default function AdminDashboardPage() {
                            <div className="p-3 sm:p-4 bg-input/50 rounded-lg border border-border/60 shadow-sm">
                                <div className="flex items-center justify-between mb-1">
                                     <h4 className="text-xs sm:text-sm font-medium text-muted-foreground">New Signups (Today)</h4>
-                                    <UserPlus className="h-4 w-4 text-green-500" />
+                                    <UsersRound className="h-4 w-4 text-green-500" /> {/* Changed icon */}
                                 </div>
                                 <p className="text-xl sm:text-2xl font-bold text-primary">45</p>
                             </div>
                             <div className="p-3 sm:p-4 bg-input/50 rounded-lg border border-border/60 shadow-sm">
                                 <div className="flex items-center justify-between mb-1">
                                     <h4 className="text-xs sm:text-sm font-medium text-muted-foreground">Avg. Session</h4>
-                                    <Clock className="h-4 w-4 text-yellow-500" />
+                                    <Coins className="h-4 w-4 text-yellow-500" /> {/* Changed icon */}
                                 </div>
                                 <p className="text-xl sm:text-2xl font-bold text-primary">25 min</p>
                             </div>
                             <div className="p-3 sm:p-4 bg-input/50 rounded-lg border border-border/60 shadow-sm">
                                 <div className="flex items-center justify-between mb-1">
-                                    <h4 className="text-xs sm:text-sm font-medium text-muted-foreground">Top KC Spender (Today)</h4>
-                                    <Award className="h-4 w-4 text-primary" />
+                                    <h4 className="text-xs sm:text-sm font-medium text-muted-foreground">Top Credit Earner (Today)</h4>
+                                    <Coins className="h-4 w-4 text-primary" /> {/* Changed icon */}
                                  </div>
-                                <p className="text-lg sm:text-xl font-semibold text-primary truncate">UID123 (500 KC)</p> 
+                                <p className="text-lg sm:text-xl font-semibold text-primary truncate">UID123 (500 CR)</p> {/* Changed KC to CR */}
                             </div>
                         </div>
                          <div className="mt-6 p-4 border border-dashed border-border/70 rounded-lg bg-background/30 text-center">
@@ -478,7 +441,6 @@ export default function AdminDashboardPage() {
                     <span>User Management</span>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
-                {/* Removed Settings/RTP tab from sidebar */}
                 <SidebarMenuItem>
                   <SidebarMenuButton
                     isActive={activeView === 'aiTools'}
@@ -512,5 +474,3 @@ export default function AdminDashboardPage() {
     </SidebarProvider>
   );
 }
-
-    

@@ -16,7 +16,7 @@ const BINGO_COLS = ['B', 'I', 'N', 'G', 'O'] as const;
 const NUMBERS_PER_COL: Record<typeof BINGO_COLS[number], { min: number, max: number, count: number }> = {
   B: { min: 1, max: 15, count: 5 },
   I: { min: 16, max: 30, count: 5 },
-  N: { min: 31, max: 45, count: 4 }, // N column has 4 numbers + FREE space
+  N: { min: 31, max: 45, count: 4 }, 
   G: { min: 46, max: 60, count: 5 },
   O: { min: 61, max: 75, count: 5 },
 };
@@ -26,7 +26,7 @@ const BINGO_WIN_AMOUNT = 100;
 
 
 type BingoNumber = number | 'FREE';
-type BingoCardGrid = BingoNumber[][]; // Column-major: grid[col][row]
+type BingoCardGrid = BingoNumber[][]; 
 
 const generateBingoCard = (): BingoCardGrid => {
   const card: BingoCardGrid = [];
@@ -54,7 +54,6 @@ const generateBingoCard = (): BingoCardGrid => {
   return card;
 };
 
-// Transposes from column-major (generation format) to row-major (display/daubing format)
 const transposeGrid = (grid: BingoCardGrid): BingoNumber[][] => {
   if (!grid || grid.length === 0) return [];
   return grid[0].map((_, rowIndex) => grid.map(col => col[rowIndex]));
@@ -63,8 +62,8 @@ const transposeGrid = (grid: BingoCardGrid): BingoNumber[][] => {
 const initialAllPossibleNumbers = () => Array.from({ length: TOTAL_NUMBERS }, (_, i) => i + 1);
 
 export default function BingoPage() {
-  const [bingoCard, setBingoCard] = useState<BingoNumber[][]>([]); // Row-major
-  const [daubedCells, setDaubedCells] = useState<boolean[][]>([]); // Row-major, matches bingoCard structure
+  const [bingoCard, setBingoCard] = useState<BingoNumber[][]>([]); 
+  const [daubedCells, setDaubedCells] = useState<boolean[][]>([]); 
 
   const [calledNumbersSet, setCalledNumbersSet] = useState<Set<number>>(new Set());
   const [calledNumbersHistory, setCalledNumbersHistory] = useState<number[]>([]);
@@ -72,7 +71,7 @@ export default function BingoPage() {
   const [remainingToCall, setRemainingToCall] = useState<number[]>(initialAllPossibleNumbers());
 
   const [credits, setCredits] = useState(1000);
-  const [kingsCoin, setKingsCoin] = useState(50);
+  // kingsCoin state removed
   const [isGameActive, setIsGameActive] = useState(false);
   const [isGamePaused, setIsGamePaused] = useState(false);
   const [hasPlayerWonBingo, setHasPlayerWonBingo] = useState(false);
@@ -81,24 +80,9 @@ export default function BingoPage() {
   const { addXp } = useXp();
   const gameIntervalRef = useRef<NodeJS.Timeout | null>(null);
   const cardCost = 10; // Cost in Credits
-  const mockDiamondUserCount = 1234; 
+  // mockDiamondUserCount removed
 
-  const handleConvertCreditsToKingsCoin = () => {
-    if (credits >= 1000) {
-      setCredits(prev => prev - 1000);
-      setKingsCoin(prev => prev + 1);
-      toast({
-        title: "Conversion Successful",
-        description: "1000 Credits converted to 1 Kings Coin.",
-      });
-    } else {
-      toast({
-        title: "Conversion Failed",
-        description: "Not enough Credits to convert.",
-        variant: "destructive",
-      });
-    }
-  };
+  // handleConvertCreditsToKingsCoin removed
 
   const findFreeSpaceCoords = (card: BingoNumber[][]): {row: number, col: number} | null => {
     for (let r = 0; r < card.length; r++) {
@@ -192,7 +176,7 @@ export default function BingoPage() {
         return;
     }
     setCredits(prev => prev - cardCost);
-    addXp(cardCost); // Add XP for buying a card
+    addXp(cardCost); 
 
     initializeNewCardAndDaubs();
     resetCaller();
@@ -298,13 +282,7 @@ export default function BingoPage() {
         </header>
 
         <div className="w-full max-w-lg mx-auto mb-4 sm:mb-6">
-          <UserBalanceDisplay
-            credits={credits}
-            kingsCoin={kingsCoin}
-            diamondUserCount={mockDiamondUserCount}
-            onConvertCredits={handleConvertCreditsToKingsCoin}
-            canConvert={credits >= 1000}
-          />
+          <UserBalanceDisplay credits={credits} />
         </div>
 
         <div className="flex flex-wrap justify-center items-center gap-2 sm:gap-3 mb-4 sm:mb-6">
