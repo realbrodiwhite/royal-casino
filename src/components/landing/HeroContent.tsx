@@ -10,11 +10,11 @@ import { cn } from '@/lib/utils';
 export default function HeroContent({ className }: { className?: string }) {
   return (
     <section className={cn(
-      "text-center bg-gradient-to-b from-background via-purple-800/30 to-background flex flex-col justify-center overflow-hidden",
-      // Remove min-height here as it's handled by landing-scroll-section
+      "text-center bg-gradient-to-b from-background via-purple-800/30 to-background flex flex-col overflow-hidden",
       className 
     )}>
-      <div className="container mx-auto px-4 py-8 sm:py-12">
+      {/* The inner container will now also be a flex container, set to grow and center its own children */}
+      <div className="container mx-auto px-4 py-8 sm:py-12 flex flex-col items-center justify-center flex-1 w-full">
 
         <div className="relative mb-10 sm:mb-12 md:mb-14 h-[145.6px] sm:h-[166.4px] md:h-[187.2px]">
           {/* Left Small Crown */}
