@@ -14,6 +14,7 @@ import SpinButton from '@/components/game/SpinButton';
 import ResultsDisplay from '@/components/game/ResultsDisplay';
 import WinAnimation from '@/components/game/WinAnimation';
 import Navbar from '@/components/layout/navbar';
+import Footer from '@/components/layout/Footer';
 import { PlayCircle, PauseCircle, Palette, Sparkles } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import Image from 'next/image';
@@ -398,9 +399,7 @@ export default function SlotsPage() {
             </Card>
           ))}
         </main>
-        <footer className="mt-8 sm:mt-12 text-center text-xs sm:text-sm text-muted-foreground px-2 py-1.5 sm:py-2 border-t border-border">
-          <p>&copy; 2025 Royal Casino. All Rights Reserved. Built By Brodi Inc.</p>
-        </footer>
+        <Footer />
       </div>
     );
   }
@@ -477,10 +476,7 @@ export default function SlotsPage() {
         </div>
       </main>
 
-      <footer className="text-center py-1.5 sm:py-2 text-xs sm:text-sm text-muted-foreground border-t border-border">
-        <p>&copy; 2025 Royal Casino. All Rights Reserved. Built By Brodi Inc.</p>
-        <p>Games are for entertainment purposes only. Play responsibly.</p>
-      </footer>
+      <Footer />
     </div>
   );
 }

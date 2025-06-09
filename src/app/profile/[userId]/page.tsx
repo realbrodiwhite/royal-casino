@@ -3,6 +3,7 @@
 
 import React, { useEffect, useState } from 'react';
 import Navbar from '@/components/layout/navbar';
+import Footer from '@/components/layout/Footer';
 import FriendListItem, { type Friend as FriendType } from '@/components/user/FriendListItem';
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from '@/components/ui/button';
@@ -151,9 +152,7 @@ export default function UserProfilePage() {
             </div>
           </section>
         </main>
-         <footer className="text-center py-1.5 sm:py-2 text-xs sm:text-sm text-muted-foreground border-t border-border mt-auto">
-            <p>&copy; 2025 Royal Casino. All Rights Reserved. Built By Brodi Inc.</p>
-        </footer>
+        <Footer />
       </div>
     );
   }
@@ -176,9 +175,7 @@ export default function UserProfilePage() {
              </div>
            </section>
         </main>
-        <footer className="text-center py-1.5 sm:py-2 text-xs sm:text-sm text-muted-foreground border-t border-border mt-auto">
-            <p>&copy; 2025 Royal Casino. All Rights Reserved. Built By Brodi Inc.</p>
-        </footer>
+        <Footer />
       </div>
     );
   }
@@ -306,9 +303,7 @@ export default function UserProfilePage() {
             </div>
         </section>
       </main>
-      <footer className="text-center py-1.5 sm:py-2 text-xs sm:text-sm text-muted-foreground border-t border-border mt-auto">
-        <p>&copy; 2025 Royal Casino. All Rights Reserved. Built By Brodi Inc.</p>
-      </footer>
+      <Footer />
     </div>
   );
 }

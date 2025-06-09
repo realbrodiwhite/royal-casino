@@ -3,6 +3,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Navbar from '@/components/layout/navbar';
+import Footer from '@/components/layout/Footer';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { BackpackIcon as PageBackpackIcon, Layers, AlertTriangle, ShoppingCart, Zap, Leaf, Beer, Cigarette, Ticket, Sparkles } from 'lucide-react';
@@ -152,9 +153,7 @@ export default function BackpackPage() {
             </div>
           </section>
         </main>
-         <footer className="text-center py-1.5 sm:py-2 text-xs sm:text-sm text-muted-foreground border-t border-border mt-auto">
-          <p>&copy; 2025 Royal Casino. All Rights Reserved. Built By Brodi Inc.</p>
-        </footer>
+        <Footer />
       </div>
     );
   }
@@ -200,9 +199,7 @@ export default function BackpackPage() {
           </div>
         </section>
       </main>
-      <footer className="text-center py-1.5 sm:py-2 text-xs sm:text-sm text-muted-foreground border-t border-border mt-auto">
-        <p>&copy; 2025 Royal Casino. All Rights Reserved. Built By Brodi Inc.</p>
-      </footer>
+      <Footer />
     </div>
   );
 }

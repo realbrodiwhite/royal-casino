@@ -8,10 +8,11 @@
 
 import React, { useState } from 'react';
 import Navbar from '@/components/layout/navbar';
+import Footer from '@/components/layout/Footer';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import UserBalanceDisplay from '@/components/game/CreditDisplay';
-import { ShoppingCart, Coins, Layers, Beer, Cigarette, Zap, Leaf, Ticket, Package, DollarSign } from 'lucide-react';
+import { ShoppingCart, Coins, Layers, Beer, Cigarette, Zap, Leaf, Ticket, Package, DollarSign, Sparkles } from 'lucide-react';
 import { allShopItems, type ShopItem, type ItemEffect } from '@/game-data/items';
 import { useToast } from "@/hooks/use-toast";
 import { cn } from '@/lib/utils';
@@ -22,7 +23,7 @@ const itemIconMap: Record<string, React.FC<React.SVGProps<SVGSVGElement>>> = {
   Zap: Zap,
   Leaf: Leaf,
   Ticket: Ticket,
-  Sparkles: Sparkles, // Assuming Sparkles was added for an item
+  Sparkles: Sparkles, 
   Default: Layers,
 };
 
@@ -243,9 +244,7 @@ export default function ShopPage() {
           </div>
         </section>
       </main>
-      <footer className="text-center py-1.5 sm:py-2 text-xs sm:text-sm text-muted-foreground border-t border-border mt-auto">
-        <p>&copy; 2025 Royal Casino. All Rights Reserved. Built By Brodi Inc.</p>
-      </footer>
+      <Footer />
     </div>
   );
 }

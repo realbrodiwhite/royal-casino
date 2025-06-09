@@ -7,6 +7,7 @@
 
 import React, { useState, useEffect, useMemo } from 'react';
 import Navbar from '@/components/layout/navbar';
+import Footer from '@/components/layout/Footer';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -544,11 +545,11 @@ export default function AdminDashboardPage() {
           </Sidebar>
 
           <SidebarInset className={cn(
-            "flex-1 landing-scroll-container", // Apply sectional scroll to the inset area
+            "flex-1 landing-scroll-container", 
             "ml-[var(--sidebar-width-icon)] group-data-[state=expanded]:ml-[var(--sidebar-width)] transition-all duration-200 ease-linear"
           )}>
-            <section className="landing-scroll-section"> {/* Wrap content in a scroll section */}
-                <div className="container mx-auto px-4 py-6 sm:py-8 h-full flex flex-col"> {/* Ensure container takes height for centering */}
+            <section className="landing-scroll-section"> 
+                <div className="container mx-auto px-4 py-6 sm:py-8 h-full flex flex-col"> 
                     <header className="mb-6 sm:mb-8 flex items-center justify-between">
                         <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold font-headline text-primary">Admin Dashboard</h1>
                         <SidebarTrigger className="md:hidden text-primary border-primary hover:bg-accent/10" />
@@ -556,9 +557,7 @@ export default function AdminDashboardPage() {
                     <div className="space-y-6 flex-grow">{renderContent()}</div>
                 </div>
             </section>
-            <footer className="text-center py-1.5 sm:py-2 text-xs sm:text-sm text-muted-foreground border-t border-border">
-                <p>&copy; 2025 Royal Casino. All Rights Reserved. Built By Brodi Inc.</p>
-            </footer>
+            <Footer />
           </SidebarInset>
         </div>
       </div>

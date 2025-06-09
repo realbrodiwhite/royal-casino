@@ -7,6 +7,7 @@
 
 import React, { useState, useCallback } from 'react';
 import Navbar from '@/components/layout/navbar';
+import Footer from '@/components/layout/Footer';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -246,9 +247,7 @@ export default function CoinFlipPage() {
           </CardFooter>
         </Card>
       </main>
-      <footer className="text-center py-1.5 sm:py-2 text-xs sm:text-sm text-muted-foreground border-t border-border mt-auto">
-        <p>&copy; 2025 Royal Casino. All Rights Reserved. Built By Brodi Inc.</p>
-      </footer>
+      <Footer />
     </div>
   );
 }

@@ -10,6 +10,7 @@ import SpinButton from '@/components/game/SpinButton';
 import ResultsDisplay from '@/components/game/ResultsDisplay';
 import WinAnimation from '@/components/game/WinAnimation';
 import Navbar from '@/components/layout/navbar';
+import Footer from '@/components/layout/Footer';
 import { PlayCircle, PauseCircle } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
 import { useXp } from '@/contexts/XpContext'; 
@@ -323,10 +324,7 @@ export default function LegacySlotsPage() {
         </div>
       </main>
 
-      <footer className="mt-12 text-center text-sm text-muted-foreground py-2 border-t border-border">
-        <p>&copy; {new Date().getFullYear()} Royal Casino. All rights reserved.</p>
-        <p>Games are for entertainment purposes only. Play responsibly.</p>
-      </footer>
+      <Footer />
     </div>
   );
 }

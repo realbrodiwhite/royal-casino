@@ -11,24 +11,29 @@ export default function HeroContent({ className }: { className?: string }) {
   return (
     <section
       className={cn(
-        "relative overflow-hidden", // Keep overflow-hidden here for potential inner animations
-        className // This applies 'landing-scroll-section' for full height and flex centering
+        "relative", // Ensure it doesn't introduce conflicting flex behaviors here
+        className // This applies 'landing-scroll-section' which has flex and centering
       )}
     >
-      {/* The container will handle internal padding and max-width, but allow content to be centered by parent */}
+      {/* The container handles internal padding and max-width */}
       <div className="container mx-auto px-4 h-full flex flex-col items-center justify-center text-center">
         {/* Animated Crown Icons */}
-        <div className="relative mb-6 sm:mb-8">
+        <div
+          className={cn(
+            "relative mb-6 sm:mb-8",
+            "opacity-0 animate-in fade-in zoom-in-75 duration-1000 delay-300" // Combined animation for the group
+          )}
+        >
           <Crown
-            className="absolute -top-12 -left-24 h-20 w-20 sm:h-28 sm:w-28 text-primary/30 opacity-0 animate-in fade-in zoom-in-50 duration-1000 delay-700"
+            className="absolute -top-12 -left-24 h-20 w-20 sm:h-28 sm:w-28 text-primary/30"
             aria-hidden="true"
           />
           <Crown
-            className="relative h-24 w-24 sm:h-32 sm:w-32 text-primary opacity-0 animate-in fade-in zoom-in-95 duration-1000 delay-300"
+            className="relative h-24 w-24 sm:h-32 sm:w-32 text-primary"
             aria-hidden="true"
           />
           <Crown
-            className="absolute -bottom-12 -right-24 h-20 w-20 sm:h-28 sm:w-28 text-primary/30 opacity-0 animate-in fade-in zoom-in-50 duration-1000 delay-700"
+            className="absolute -bottom-12 -right-24 h-20 w-20 sm:h-28 sm:w-28 text-primary/30"
             aria-hidden="true"
           />
         </div>

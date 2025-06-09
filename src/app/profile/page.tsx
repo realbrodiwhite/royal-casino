@@ -5,8 +5,10 @@ import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { onAuthStateChanged, User } from 'firebase/auth';
 import { auth } from '@/lib/firebase';
-import Navbar from '@/components/layout/navbar'; // Keep Navbar for consistent layout during loading
+import Navbar from '@/components/layout/navbar'; 
+import Footer from '@/components/layout/Footer';
 import { cn } from '@/lib/utils';
+import Link from 'next/link';
 
 // Simulate development mode for conditional auth bypass
 const DEV_MODE_BYPASS_AUTH = true; // In real app, use process.env.NEXT_PUBLIC_DEV_MODE_BYPASS_AUTH === 'true'
@@ -73,9 +75,7 @@ export default function ProfileRedirectPage() {
             </div>
           </section>
         </main>
-        <footer className="text-center py-1.5 sm:py-2 text-xs sm:text-sm text-muted-foreground border-t border-border mt-auto">
-          <p>&copy; 2025 Royal Casino. All Rights Reserved. Built By Brodi Inc.</p>
-        </footer>
+        <Footer />
       </div>
     );
   }
@@ -101,9 +101,7 @@ export default function ProfileRedirectPage() {
                 </div>
             </section>
         </main>
-        <footer className="text-center py-1.5 sm:py-2 text-xs sm:text-sm text-muted-foreground border-t border-border mt-auto">
-            <p>&copy; 2025 Royal Casino. All Rights Reserved. Built By Brodi Inc.</p>
-        </footer>
+        <Footer />
       </div>
     );
   }
