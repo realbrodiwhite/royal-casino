@@ -11,19 +11,25 @@ export default function HeroContent({ className }: { className?: string }) {
   return (
     <section
       className={cn(
-        "relative", // Ensure it doesn't introduce conflicting flex behaviors here
-        className // This applies 'landing-scroll-section' which has flex and centering
+        "relative", // Base class
+        className    // This applies 'landing-scroll-section'
       )}
     >
-      {/* The container handles internal padding and max-width */}
-      <div className="container mx-auto px-4 h-full flex flex-col items-center justify-center text-center">
-        {/* Animated Crown Icons */}
-        <div
-          className={cn(
-            "relative mb-6 sm:mb-8",
-            "opacity-0 animate-in fade-in zoom-in-75 duration-1000 delay-300" // Combined animation for the group
-          )}
-        >
+      {/* 
+        The 'landing-scroll-section' class (passed via className) is expected to:
+        1. Make this section fill the height of its scroll container.
+        2. Use flexbox to vertically center its direct children.
+        
+        The div.container below is the direct child that will be centered by 'landing-scroll-section'.
+      */}
+      <div 
+        className={cn(
+          "container mx-auto px-4 h-full flex flex-col items-center justify-center text-center"
+          // Removed all animation classes from this container and its children
+        )}
+      >
+        {/* Content Group */}
+        <div className="relative mb-6 sm:mb-8">
           <Crown
             className="absolute -top-12 -left-24 h-20 w-20 sm:h-28 sm:w-28 text-primary/30"
             aria-hidden="true"
@@ -41,8 +47,7 @@ export default function HeroContent({ className }: { className?: string }) {
         {/* Main Headline */}
         <h1
           className={cn(
-            "text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold font-headline text-primary mb-4 sm:mb-6",
-            "opacity-0 animate-in fade-in slide-in-from-bottom-12 duration-700 delay-500"
+            "text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold font-headline text-primary mb-4 sm:mb-6"
           )}
         >
           Welcome to <span className="text-foreground">Royal Casino</span>
@@ -51,8 +56,7 @@ export default function HeroContent({ className }: { className?: string }) {
         {/* Sub-headline */}
         <p
           className={cn(
-            "text-lg sm:text-xl md:text-2xl text-muted-foreground mb-8 sm:mb-10 max-w-xl sm:max-w-2xl mx-auto",
-            "opacity-0 animate-in fade-in slide-in-from-bottom-10 duration-700 delay-700"
+            "text-lg sm:text-xl md:text-2xl text-muted-foreground mb-8 sm:mb-10 max-w-xl sm:max-w-2xl mx-auto"
           )}
         >
           Your premier destination for social casino gaming. Experience the thrill, connect with friends, and reign supreme!
@@ -61,8 +65,7 @@ export default function HeroContent({ className }: { className?: string }) {
         {/* Call to Action Buttons */}
         <div
           className={cn(
-            "flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6",
-            "opacity-0 animate-in fade-in zoom-in-95 duration-700 delay-900"
+            "flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6"
           )}
         >
           <Link href="/signup" passHref>
@@ -80,8 +83,8 @@ export default function HeroContent({ className }: { className?: string }) {
         {/* New Player Offer Box */}
         <div
           className={cn(
-            "mt-10 sm:mt-12 p-3 sm:p-4 bg-primary/10 border-2 border-dashed border-primary rounded-lg shadow-lg",
-            "opacity-0 animate-in fade-in duration-1000 delay-1200 animate-glow"
+            "mt-10 sm:mt-12 p-3 sm:p-4 bg-primary/10 border-2 border-dashed border-primary rounded-lg shadow-lg"
+            // Removed 'animate-glow'
           )}
         >
           <p className="text-md sm:text-lg font-semibold text-primary">
