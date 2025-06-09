@@ -2,7 +2,7 @@
 "use client";
 
 import Link from 'next/link';
-import { Crown, Gamepad2, UserCircle, Shield, Menu, BackpackIcon, Star, ShoppingCart, Gift, Settings as SettingsIcon } from 'lucide-react';
+import { Crown, Gamepad2, UserCircle, Shield, Menu, BackpackIcon, Star, ShoppingCart, Settings as SettingsIcon } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import ExperienceBar from '@/components/layout/ExperienceBar';
@@ -161,17 +161,14 @@ export default function Navbar() {
             {/* Desktop Navigation */}
             <div className="hidden md:flex items-center space-x-1 lg:space-x-2">
               <NavLink href="/lobby" icon={<Gamepad2 />}>Lobby</NavLink>
-              {/* Daily Bonus link removed as per request for pop-up */}
               <NavLink href="/shop" icon={<ShoppingCart />}>Shop</NavLink>
               <NavLink href="/skills" icon={<Star />}>Skills</NavLink>
-              {/* UserAvatarMenu replaces Profile NavLink */}
               <UserAvatarMenu showAdminLink={showAdminLink} currentUser={currentUser} />
             </div>
 
             {/* Mobile Navigation Trigger */}
             <div className="md:hidden flex items-center">
-              {/* UserAvatarMenu for mobile, placed before hamburger for consistency if desired, or could be inside sheet */}
-              <div className="mr-2"> {/* Add some spacing if Avatar is before Menu icon */}
+              <div className="mr-2"> 
                  <UserAvatarMenu showAdminLink={showAdminLink} currentUser={currentUser} onLinkClick={() => setIsMobileMenuOpen(false)} />
               </div>
               <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
@@ -194,7 +191,6 @@ export default function Navbar() {
                   </SheetHeader>
                   <nav className="flex flex-col space-y-1 p-4 pt-2">
                     <NavLink href="/lobby" icon={<Gamepad2 />} onClick={() => setIsMobileMenuOpen(false)}>Lobby</NavLink>
-                    {/* Daily Bonus link removed */}
                     <NavLink href="/shop" icon={<ShoppingCart />} onClick={() => setIsMobileMenuOpen(false)}>Shop</NavLink>
                     <NavLink href="/backpack" icon={<BackpackIcon />} onClick={() => setIsMobileMenuOpen(false)}>Backpack</NavLink>
                     <NavLink href="/skills" icon={<Star />} onClick={() => setIsMobileMenuOpen(false)}>Skills</NavLink>
@@ -211,5 +207,3 @@ export default function Navbar() {
     </>
   );
 }
-
-    
