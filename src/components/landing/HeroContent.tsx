@@ -7,10 +7,14 @@ import { Button } from '@/components/ui/button';
 import { Crown, Coins } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
-export default function HeroContent() {
+export default function HeroContent({ className }: { className?: string }) {
   return (
-    <section className="text-center bg-gradient-to-b from-background via-purple-800/30 to-background min-h-[calc(100vh-88px)] sm:min-h-[calc(100vh-92px)] flex flex-col justify-center overflow-hidden">
-      <div className="container mx-auto px-4 py-8 sm:py-12"> {/* Added some padding for content spacing */}
+    <section className={cn(
+      "text-center bg-gradient-to-b from-background via-purple-800/30 to-background flex flex-col justify-center overflow-hidden",
+      // Remove min-height here as it's handled by landing-scroll-section
+      className 
+    )}>
+      <div className="container mx-auto px-4 py-8 sm:py-12">
 
         <div className="relative mb-10 sm:mb-12 md:mb-14 h-[145.6px] sm:h-[166.4px] md:h-[187.2px]">
           {/* Left Small Crown */}

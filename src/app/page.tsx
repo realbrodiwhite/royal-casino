@@ -8,6 +8,7 @@ import AnimatedSection from '@/components/utils/AnimatedSection'; // Ensure this
 
 // Static import for HeroContent as it's above the fold and critical
 import HeroContent from '@/components/landing/HeroContent';
+import { cn } from '@/lib/utils'; // Import cn
 
 // Dynamic imports for sections below the fold
 const RoyalDifferenceSectionContent = dynamic(() => import('@/components/landing/RoyalDifferenceSectionContent'));
@@ -18,29 +19,33 @@ const FinalCtaSectionContent = dynamic(() => import('@/components/landing/FinalC
 
 export default function LandingPage() {
   return (
-    <div className="min-h-screen text-foreground flex flex-col">
+    <div className="min-h-screen text-foreground flex flex-col overflow-hidden"> {/* Added overflow-hidden to main div to contain fixed height scroll area */}
       <Navbar />
 
-      <main className="flex-grow">
-        <HeroContent />
+      {/* The main element will be the scroll-snap container */}
+      <main className={cn(
+        "flex-grow landing-scroll-container"
+      )}>
+        {/* HeroContent's outermost element is a section, apply class there */}
+        <HeroContent className="landing-scroll-section" />
 
-        <AnimatedSection>
+        <AnimatedSection className="landing-scroll-section">
           <RoyalDifferenceSectionContent />
         </AnimatedSection>
 
-        <AnimatedSection delay="delay-150">
+        <AnimatedSection className="landing-scroll-section" delay="delay-150">
           <GameUniverseSectionContent />
         </AnimatedSection>
 
-        <AnimatedSection delay="delay-150">
+        <AnimatedSection className="landing-scroll-section" delay="delay-150">
           <RoyalTreatmentSectionContent />
         </AnimatedSection>
 
-        <AnimatedSection delay="delay-150">
+        <AnimatedSection className="landing-scroll-section" delay="delay-150">
           <RoyalJourneySectionContent />
         </AnimatedSection>
 
-        <AnimatedSection delay="delay-200">
+        <AnimatedSection className="landing-scroll-section" delay="delay-200">
           <FinalCtaSectionContent />
         </AnimatedSection>
       </main>
@@ -52,5 +57,3 @@ export default function LandingPage() {
     </div>
   );
 }
-
-    

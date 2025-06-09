@@ -62,3 +62,27 @@
     @apply bg-background text-foreground;
   }
 }
+
+@layer utilities {
+  .landing-scroll-container {
+    /* Height of viewport MINUS combined height of Navbar (56px) and ExperienceBar (32px on mobile) */
+    height: calc(100vh - (56px + 32px));
+    overflow-y: scroll;
+    scroll-snap-type: y mandatory;
+  }
+  @media (min-width: 640px) { /* sm breakpoint */
+    .landing-scroll-container {
+       /* Height of viewport MINUS combined height of Navbar (56px) and ExperienceBar (36px on sm+) */
+      height: calc(100vh - (56px + 36px));
+    }
+  }
+
+  .landing-scroll-section {
+    scroll-snap-align: start;
+    /* Each section should fill the height of the scroll container */
+    min-height: 100%; /* This ensures it fills the .landing-scroll-container's height */
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Vertically center content within the full-height section */
+  }
+}
