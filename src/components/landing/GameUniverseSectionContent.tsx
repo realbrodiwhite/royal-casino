@@ -51,6 +51,7 @@ const GameTypeCard: React.FC<GameTypeCardProps> = ({ icon, title, description, h
   </Card>
 );
 
+// This component's parent (AnimatedSection) will have 'landing-scroll-section'
 export default function GameUniverseSectionContent() {
   const [reminderEmail, setReminderEmail] = useState('');
   const { toast } = useToast();
@@ -134,8 +135,8 @@ export default function GameUniverseSectionContent() {
     };
 
   return (
-    <section className="py-12 sm:py-16 bg-background">
-      <div className="container mx-auto px-4">
+    <section className="w-full bg-background">
+      <div className="container mx-auto px-4 py-12 sm:py-16">
         <Globe aria-hidden="true" className="mx-auto h-12 w-12 sm:h-16 sm:w-16 text-primary mb-4 sm:mb-6" />
         <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold font-headline text-primary mb-4 text-center">A Universe of Thrilling Games Awaits Your Command!</h2>
         <p className="text-lg text-muted-foreground mb-10 sm:mb-12 text-center max-w-2xl mx-auto">
@@ -188,7 +189,6 @@ export default function GameUniverseSectionContent() {
                 </CardFooter>
             </Card>
         </div>
-
       </div>
     </section>
   );

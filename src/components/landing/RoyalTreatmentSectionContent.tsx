@@ -19,10 +19,11 @@ const FeatureCard: React.FC<FeatureCardProps> = ({ icon, title, description }) =
   </div>
 );
 
+// This component's parent (AnimatedSection) will have 'landing-scroll-section'
 export default function RoyalTreatmentSectionContent() {
   return (
-    <section className="py-12 sm:py-16 bg-background/80 backdrop-blur-sm">
-      <div className="container mx-auto px-4">
+    <section className="w-full bg-background/80 backdrop-blur-sm">
+      <div className="container mx-auto px-4 py-12 sm:py-16">
         <div className="border-4 border-primary rounded-full bg-background flex items-center justify-center w-24 h-24 sm:w-28 sm:w-28 mb-4 sm:mb-6 mx-auto">
           <Crown aria-hidden="true" className="h-16 w-16 sm:h-20 sm:w-20 text-primary" />
         </div>
@@ -62,7 +63,6 @@ export default function RoyalTreatmentSectionContent() {
           />
         </div>
 
-        {/* New Advert Banner Section */}
         <div className="mt-12 sm:mt-16 p-6 sm:p-8 bg-gradient-to-r from-primary/20 via-accent/20 to-secondary/20 rounded-lg shadow-2xl text-center border border-primary/50">
           <Award className="mx-auto h-10 w-10 sm:h-12 sm:w-12 text-primary mb-3 sm:mb-4" />
           <h3 className="text-xl sm:text-2xl md:text-3xl font-bold font-headline text-primary mb-2 sm:mb-3">
