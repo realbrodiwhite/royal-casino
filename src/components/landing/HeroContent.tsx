@@ -2,109 +2,26 @@
 "use client";
 
 import React from 'react';
-import Link from 'next/link';
-import { Button } from '@/components/ui/button';
-import { Crown, Coins } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 export default function HeroContent({ className }: { className?: string }) {
   return (
     <section
       className={cn(
-        "text-center bg-gradient-to-b from-background via-purple-800/30 to-background",
-        className // This applies 'landing-scroll-section'
+        "text-center", // Basic centering for the direct text child
+        className // This applies 'landing-scroll-section' which should provide height and flex centering
       )}
+      style={{ backgroundColor: 'red', color: 'white', border: '5px solid yellow', padding: '50px' }} // Aggressive inline styles for visibility
     >
-      <div className="container mx-auto px-4 py-8 sm:py-12 flex flex-col items-center justify-center flex-1 w-full">
-
-        {/* Crown Iconography */}
-        <div
-          className={cn(
-            "relative mb-10 sm:mb-12 md:mb-14 h-[145.6px] sm:h-[166.4px] md:h-[187.2px]"
-            // Removed animation classes
-          )}
-        >
-          {/* Left Small Crown */}
-          <div
-            className={cn(
-              "absolute top-1/2 left-[calc(50%-78.4px)] sm:left-[calc(50%-89.6px)] md:left-[calc(50%-100.8px)] z-0 transform -translate-x-1/2 -translate-y-1/2 w-28 h-28 sm:w-32 sm:h-32 md:w-36 md:h-36"
-            )}
-          >
-            <div className="border-4 border-primary rounded-full bg-transparent flex items-center justify-center w-full h-full">
-              <Crown aria-hidden="true" className="h-[calc(50%)] w-[calc(50%)] text-primary" />
-            </div>
-          </div>
-          {/* Right Small Crown */}
-          <div
-            className={cn(
-              "absolute top-1/2 left-[calc(50%+78.4px)] sm:left-[calc(50%+89.6px)] md:left-[calc(50%+100.8px)] z-0 transform -translate-x-1/2 -translate-y-1/2 w-28 h-28 sm:w-32 sm:h-32 md:w-36 md:h-36"
-            )}
-          >
-            <div className="border-4 border-primary rounded-full bg-transparent flex items-center justify-center w-full h-full">
-              <Crown aria-hidden="true" className="h-[calc(50%)] w-[calc(50%)] text-primary" />
-            </div>
-          </div>
-          {/* Center Main Crown */}
-          <div
-            className={cn(
-              "absolute top-1/2 left-1/2 z-10 transform -translate-x-1/2 -translate-y-1/2 w-[145.6px] h-[145.6px] sm:w-[166.4px] sm:h-[166.4px] md:w-[187.2px] md:h-[187.2px]"
-            )}
-          >
-            <div className="border-4 border-primary rounded-full bg-background flex items-center justify-center w-full h-full">
-              <Crown aria-hidden="true" className="h-[calc(50%)] w-[calc(50%)] text-primary" />
-            </div>
-          </div>
-        </div>
-
-        <h1
-          className={cn(
-            "text-4xl sm:text-5xl md:text-6xl font-bold font-headline text-primary mb-6 sm:mb-8 md:mb-10"
-            // Removed animation classes
-          )}
-        >
-          Step into a Realm of Royal Entertainment!
+      <div
+        // The container will primarily handle width constraints and horizontal centering of its children if needed.
+        // For this test, the section itself will directly contain the test text.
+        className="container mx-auto px-4 h-full flex flex-col items-center justify-center" // Ensure container also tries to fill and center
+      >
+        <h1 style={{ fontSize: '48px', fontWeight: 'bold' }}>
+          HERO SECTION TEST - CAN YOU SEE THIS?
         </h1>
-
-        <p
-          className={cn(
-            "text-xl sm:text-2xl md:text-3xl text-foreground mb-8 sm:mb-10 max-w-xl sm:max-w-2xl md:max-w-3xl mx-auto px-2"
-            // Removed animation classes
-          )}
-        >
-          Experience the pinnacle of social casino gaming, where every play is a new adventure. Connect, compete, and celebrate your wins!
-        </p>
-
-        <div className={cn(
-            "mb-10 sm:mb-12 p-5 sm:p-7 bg-primary/10 border border-primary rounded-lg inline-block"
-            // Removed animation classes, kept 'animate-glow' if it's a simple CSS keyframe
-            // If 'animate-glow' is also from tailwindcss-animate, it might need to be removed too or defined in globals.css
-          )}
-        >
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-headline text-primary flex items-center justify-center">
-            <Coins aria-hidden="true" className="h-7 w-7 sm:h-9 md:h-11 mr-2 sm:mr-3 text-primary" /> New Player Offer!
-          </h2>
-          <p className="text-lg sm:text-xl md:text-2xl text-foreground mt-2 sm:mt-3">
-            Get a generous starting Credit bonus when you sign up!
-          </p>
-        </div>
-        
-        <div
-          className={cn(
-            "flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4"
-            // Removed animation classes
-          )}
-        >
-          <Link href="/signup" passHref>
-            <Button size="lg" variant="default" className="font-semibold px-6 sm:px-8 py-2.5 sm:py-3 text-lg sm:text-xl w-full sm:w-auto">
-              Sign Up & Claim Offer
-            </Button>
-          </Link>
-          <Link href="/login" passHref>
-            <Button variant="outline" size="lg" className="font-semibold px-6 sm:px-8 py-2.5 sm:py-3 text-lg sm:text-xl w-full sm:w-auto">
-              Login
-            </Button>
-          </Link>
-        </div>
+        <p style={{ fontSize: '24px', marginTop: '20px' }}>If you see this, the component is rendering within its slot.</p>
       </div>
     </section>
   );
