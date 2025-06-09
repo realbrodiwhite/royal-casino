@@ -2,7 +2,7 @@
 "use client";
 
 import Link from 'next/link';
-import { Crown, Gamepad2, UserCircle, BarChart3, Shield, Menu, BackpackIcon, Star, ShoppingCart } from 'lucide-react'; // Added BackpackIcon, Star, ShoppingCart
+import { Crown, Gamepad2, UserCircle, BarChart3, Shield, Menu, BackpackIcon, Star, ShoppingCart, Gift } from 'lucide-react'; // Added Gift
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import ExperienceBar from '@/components/layout/ExperienceBar';
@@ -29,7 +29,8 @@ const NavLink: React.FC<NavLinkProps> = ({ href, children, icon, onClick }) => {
                  (href === "/profile" && pathname.startsWith("/profile")) ||
                  (href === "/backpack" && pathname.startsWith("/backpack")) ||
                  (href === "/skills" && pathname.startsWith("/skills")) ||
-                 (href === "/shop" && pathname.startsWith("/shop"));
+                 (href === "/shop" && pathname.startsWith("/shop")) ||
+                 (href === "/daily-bonus" && pathname.startsWith("/daily-bonus"));
 
 
   return (
@@ -72,6 +73,7 @@ export default function Navbar() {
             </Link>
             <div className="hidden md:flex items-center space-x-1 lg:space-x-2">
               <NavLink href="/lobby" icon={<Gamepad2 />}>Game Lobby</NavLink>
+              <NavLink href="/daily-bonus" icon={<Gift />}>Daily Bonus</NavLink>
               <NavLink href="/shop" icon={<ShoppingCart />}>Shop</NavLink>
               <NavLink href="/backpack" icon={<BackpackIcon />}>Backpack</NavLink> 
               <NavLink href="/skills" icon={<Star />}>Skills</NavLink>
@@ -100,6 +102,7 @@ export default function Navbar() {
                   </SheetHeader>
                   <nav className="flex flex-col space-y-1 p-4 pt-0">
                     <NavLink href="/lobby" icon={<Gamepad2 />} onClick={() => setIsMobileMenuOpen(false)}>Game Lobby</NavLink>
+                    <NavLink href="/daily-bonus" icon={<Gift />} onClick={() => setIsMobileMenuOpen(false)}>Daily Bonus</NavLink>
                     <NavLink href="/shop" icon={<ShoppingCart />} onClick={() => setIsMobileMenuOpen(false)}>Shop</NavLink>
                     <NavLink href="/backpack" icon={<BackpackIcon />} onClick={() => setIsMobileMenuOpen(false)}>Backpack</NavLink>
                     <NavLink href="/skills" icon={<Star />} onClick={() => setIsMobileMenuOpen(false)}>Skills</NavLink>
