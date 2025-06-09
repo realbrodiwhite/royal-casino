@@ -1,5 +1,10 @@
 
+
 "use client";
+
+// DESIGN NOTE: Each tab's content within this admin page should ideally fit
+// within a single viewport height to avoid internal scrolling of the main content area.
+// If lists (like vouchers) become very long, consider pagination within the card/table.
 
 import React, { useState, useEffect, useMemo } from 'react';
 import Navbar from '@/components/layout/navbar';
@@ -550,3 +555,4 @@ export default function AdminDashboardPage() {
     </SidebarProvider>
   );
 }
+

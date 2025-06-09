@@ -2,7 +2,7 @@
 "use client";
 
 import Link from 'next/link';
-import { Crown, Gamepad2, UserCircle, BarChart3, Shield, Menu, BackpackIcon, Star, ShoppingCart, Gift } from 'lucide-react'; // Added Gift
+import { Crown, Gamepad2, UserCircle, Shield, Menu, BackpackIcon, Star, ShoppingCart, Gift } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import ExperienceBar from '@/components/layout/ExperienceBar';
@@ -13,7 +13,9 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { auth } from '@/lib/firebase';
+import { onAuthStateChanged, type User as FirebaseUser } from 'firebase/auth';
 
 interface NavLinkProps {
   href: string;
@@ -26,6 +28,7 @@ const NavLink: React.FC<NavLinkProps> = ({ href, children, icon, onClick }) => {
   const pathname = usePathname();
   const isActive = pathname === href ||
                  (href === "/lobby" && pathname.startsWith("/games")) ||
+                 (href === "/lobby" && pathname.startsWith("/lobby/")) || // Added to cover sub-lobby pages like /lobby/poker
                  (href === "/profile" && pathname.startsWith("/profile")) ||
                  (href === "/backpack" && pathname.startsWith("/backpack")) ||
                  (href === "/skills" && pathname.startsWith("/skills")) ||
@@ -53,6 +56,18 @@ const NavLink: React.FC<NavLinkProps> = ({ href, children, icon, onClick }) => {
 
 export default function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
+  const [isAdminUser, setIsAdminUser] = useState(false);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setIsAdminUser(user.email === 'admin@royalcasino.dev');
+      } else {
+        setIsAdminUser(false);
+      }
+    });
+    return () => unsubscribe(); // Cleanup subscription on unmount
+  }, []);
 
   return (
     <>
@@ -78,7 +93,7 @@ export default function Navbar() {
               <NavLink href="/backpack" icon={<BackpackIcon />}>Backpack</NavLink> 
               <NavLink href="/skills" icon={<Star />}>Skills</NavLink>
               <NavLink href="/profile" icon={<UserCircle />}>Profile</NavLink>
-              <NavLink href="/admin" icon={<Shield />}>Admin</NavLink>
+              {isAdminUser && <NavLink href="/admin" icon={<Shield />}>Admin</NavLink>}
             </div>
             <div className="md:hidden">
               <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
@@ -107,7 +122,7 @@ export default function Navbar() {
                     <NavLink href="/backpack" icon={<BackpackIcon />} onClick={() => setIsMobileMenuOpen(false)}>Backpack</NavLink>
                     <NavLink href="/skills" icon={<Star />} onClick={() => setIsMobileMenuOpen(false)}>Skills</NavLink>
                     <NavLink href="/profile" icon={<UserCircle />} onClick={() => setIsMobileMenuOpen(false)}>Profile</NavLink>
-                    <NavLink href="/admin" icon={<Shield />} onClick={() => setIsMobileMenuOpen(false)}>Admin</NavLink>
+                    {isAdminUser && <NavLink href="/admin" icon={<Shield />} onClick={() => setIsMobileMenuOpen(false)}>Admin</NavLink>}
                   </nav>
                 </SheetContent>
               </Sheet>

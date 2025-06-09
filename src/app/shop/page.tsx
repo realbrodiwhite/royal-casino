@@ -1,6 +1,10 @@
 
 "use client";
 
+// DESIGN NOTE: This page should ideally fit within a single viewport height.
+// If the number of shop items or credit packs grows significantly,
+// consider pagination or a more compact layout for item cards.
+
 import React, { useState } from 'react';
 import Navbar from '@/components/layout/navbar';
 import { Button } from '@/components/ui/button';
@@ -52,6 +56,10 @@ const ShopItemCard: React.FC<{
         break;
       case 'BET_INSURANCE':
          effectDesc = `Bet Insurance (up to ${effect.value} credits)`;
+        break;
+      case 'SYMBOL_WEIGHT_BOOST':
+        effectDesc = `Boosts ${effect.symbolId || 'specific symbol'} appearance`;
+        if(effect.value) effectDesc += ` (weight +${effect.value})`;
         break;
       default:
         effectDesc = `Unknown Effect (${effect.type})`;
@@ -232,3 +240,4 @@ export default function ShopPage() {
     </div>
   );
 }
+

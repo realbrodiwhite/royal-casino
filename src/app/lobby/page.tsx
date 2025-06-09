@@ -2,6 +2,9 @@
 // src/app/lobby/page.tsx
 "use client";
 
+// DESIGN NOTE: This page should ideally fit within a single viewport height.
+// If the number of games grows significantly, consider pagination, a more compact layout, or horizontal scrolling for game cards.
+
 import Link from 'next/link';
 import Navbar from '@/components/layout/navbar';
 import { Button } from '@/components/ui/button';
