@@ -37,8 +37,8 @@ export default function NewPlayerOfferBanner() {
   return (
     <div
       className={cn(
-        "bg-primary/10 text-primary-foreground py-4 px-4 border-b-2 border-primary/20 shadow-md", // Changed py-2 to py-4
-        "relative w-full z-20 my-4" // Added my-4, removed mt-[10vh]
+        "bg-primary/10 text-primary-foreground py-4 px-4 border-b-2 border-primary/20 shadow-md",
+        "relative w-full z-20 my-4"
       )}
     >
       <div className={cn(
@@ -49,7 +49,8 @@ export default function NewPlayerOfferBanner() {
             <Coins className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
           </div>
           <p className="text-xs sm:text-sm font-semibold text-primary text-center sm:text-left">
-            New Player Offer! Get <span className="text-foreground font-bold">10,000 FREE Credits</span> to start!
+            <span className="block">New Player Offer!</span>
+            <span>Get <span className="text-foreground font-bold">10,000 FREE Credits</span> to start!</span>
           </p>
         </div>
         
