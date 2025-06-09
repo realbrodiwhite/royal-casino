@@ -16,6 +16,8 @@ import Image from 'next/image';
 import { useXp } from '@/contexts/XpContext'; 
 import { useToast } from "@/hooks/use-toast";
 import { weightedRandom as b3WeightedRandom } from '@/lib/b3-engine';
+import type { ItemEffect, ActiveBuff } from '@/types/inventory'; // Import ActiveBuff and ItemEffect
+import { getItemById } from '@/game-data/items'; // To get item details for mock buff
 
 import CherrySymbol from '@/components/game/symbols/CherrySymbol';
 import DiamondSymbol from '@/components/game/symbols/DiamondSymbol';
@@ -64,6 +66,23 @@ const themeImagePaths: Record<string, string> = {
 
 type CellCoordinate = [number, number];
 
+// MOCK Active Buffs for demonstration
+const getMockActiveBuffs = (): ActiveBuff[] => {
+  const cherryMagnetItem = getItemById('cherry_magnet_charm');
+  if (cherryMagnetItem && cherryMagnetItem.effects[0].type === 'SYMBOL_WEIGHT_BOOST') {
+    return [
+      {
+        itemId: 'cherry_magnet_charm',
+        effect: cherryMagnetItem.effects[0],
+        startTime: Date.now(), // Not used for non-consumable
+        endTime: Infinity, // Non-consumable, always active
+      }
+    ];
+  }
+  return [];
+};
+
+
 export default function SlotsPage() {
   const { addXp } = useXp(); 
   const { toast } = useToast();
@@ -72,6 +91,11 @@ export default function SlotsPage() {
   const [rows, setRows] = useState(3);
   const [cols, setCols] = useState(3);
   const [availableSymbolsWithData, setAvailableSymbolsWithData] = useState<Array<SymbolData & { weight: number }>>([]);
+  
+  // Simulate having the "Cherry Magnet Charm" buff active
+  // In a real app, this would come from a player context or inventory system
+  const [activeBuffs, setActiveBuffs] = useState<ActiveBuff[]>(getMockActiveBuffs());
+
 
   useEffect(() => {
     if (selectedTheme) {
@@ -97,14 +121,28 @@ export default function SlotsPage() {
       console.warn("No symbols available in availableSymbolsWithData, returning FALLBACK_SYMBOL");
       return FALLBACK_SYMBOL;
     }
-    const selectedSymbolWithWeight = b3WeightedRandom(availableSymbolsWithData);
+
+    let symbolsToUse = [...availableSymbolsWithData.map(s => ({...s}))]; // Create a mutable copy
+
+    // Apply SYMBOL_WEIGHT_BOOST buffs
+    activeBuffs.forEach(buff => {
+      if (buff.effect.type === 'SYMBOL_WEIGHT_BOOST' && buff.effect.symbolId) {
+        const symbolIndex = symbolsToUse.findIndex(s => s.id === buff.effect.symbolId);
+        if (symbolIndex !== -1) {
+          symbolsToUse[symbolIndex].weight += buff.effect.value;
+           // console.log(`Applied buff: ${buff.itemId}, boosted ${buff.effect.symbolId} weight to ${symbolsToUse[symbolIndex].weight}`);
+        }
+      }
+    });
+    
+    const selectedSymbolWithWeight = b3WeightedRandom(symbolsToUse);
+
     if (selectedSymbolWithWeight) {
       return { id: selectedSymbolWithWeight.id, component: selectedSymbolWithWeight.component };
     }
-    // Fallback if weightedRandom returns null (e.g., if somehow all weights were negative or list was empty, though guarded)
     console.warn("b3WeightedRandom returned null, this shouldn't happen with positive weights. Falling back to FALLBACK_SYMBOL.");
     return FALLBACK_SYMBOL;
-  }, [availableSymbolsWithData]);
+  }, [availableSymbolsWithData, activeBuffs]);
 
   const initialReels = useCallback((r: number, c: number): SymbolData[][] =>
     Array(r)
@@ -184,7 +222,15 @@ export default function SlotsPage() {
           }
 
           if (actualPayoutMultiplier > 0 && paidMatchCount > 0) {
-            const winAmountForPayline = actualPayoutMultiplier * betAmount;
+            let winAmountForPayline = actualPayoutMultiplier * betAmount;
+            
+            // Placeholder for WIN_MULTIPLIER_BOOST if it were to be applied here
+            // activeBuffs.forEach(buff => {
+            //   if (buff.effect.type === 'WIN_MULTIPLIER_BOOST') {
+            //      winAmountForPayline *= buff.effect.value;
+            //   }
+            // });
+
             totalWinAmount += winAmountForPayline;
             winDetails.push({
               paylineIndex,
@@ -199,7 +245,7 @@ export default function SlotsPage() {
     });
 
     return { totalWinAmount, winDetails };
-  }, []);
+  }, [/* activeBuffs */]); // activeBuffs would be a dependency if WIN_MULTIPLIER_BOOST was active here
 
 
   const handleSpin = useCallback(() => {
@@ -309,6 +355,8 @@ export default function SlotsPage() {
     setShowWinAnimation(false);
     setWinAmount(0);
     setHighlightedWinningCells([]);
+    // Optionally re-fetch/update activeBuffs if theme changes could affect them
+    setActiveBuffs(getMockActiveBuffs()); 
   };
 
   if (!selectedTheme) {
@@ -369,6 +417,14 @@ export default function SlotsPage() {
         <Button onClick={() => handleThemeSelect(null)} variant="outline" className="w-full sm:w-auto">
           <Palette className="mr-2 h-4 w-4" /> Change Theme
         </Button>
+
+        {/* Debug display for active buffs - remove in production */}
+        {/* {activeBuffs.length > 0 && (
+          <div className="text-xs p-2 bg-muted rounded">
+            Active Buffs: {activeBuffs.map(b => `${b.itemId} (${b.effect.type}: ${b.effect.symbolId} by ${b.effect.value})`).join(', ')}
+          </div>
+        )} */}
+
 
         {availableSymbolsWithData.length > 0 ? (
           <GameGrid rows={rows} cols={cols} className={selectedTheme.backgroundAsset}>

@@ -5,17 +5,18 @@ import React, { useState, useEffect } from 'react';
 import Navbar from '@/components/layout/navbar';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { BackpackIcon as PageBackpackIcon, Layers, AlertTriangle, ShoppingCart, Zap, Leaf, Beer, Cigarette, Ticket } from 'lucide-react';
+import { BackpackIcon as PageBackpackIcon, Layers, AlertTriangle, ShoppingCart, Zap, Leaf, Beer, Cigarette, Ticket, Sparkles } from 'lucide-react';
 import { allShopItems, getItemById } from '@/game-data/items';
 import type { ShopItem, BackpackItem as BackpackItemType, ItemEffect } from '@/types/inventory';
 import { useToast } from '@/hooks/use-toast';
 
 // Mock user inventory - in a real app, this would come from a backend or user context
 const mockUserBackpack: BackpackItemType[] = [
-  { itemId: 'beer_rtp_boost', quantity: 3 }, // ID kept for now, effect changed
+  { itemId: 'beer_rtp_boost', quantity: 3 }, 
   { itemId: 'cigar_jackpot_boost', quantity: 1 },
   { itemId: 'energy_drink_xp', quantity: 5 },
   { itemId: 'four_leaf_clover', quantity: 1 },
+  { itemId: 'cherry_magnet_charm', quantity: 1}, // Added new charm
 ];
 
 const itemIconMap: Record<string, React.FC<React.SVGProps<SVGSVGElement>>> = {
@@ -24,6 +25,7 @@ const itemIconMap: Record<string, React.FC<React.SVGProps<SVGSVGElement>>> = {
   Zap: Zap,
   Leaf: Leaf,
   Ticket: Ticket,
+  Sparkles: Sparkles, // Added for Cherry Magnet Charm
   Default: Layers, // Fallback icon
 };
 
@@ -60,8 +62,8 @@ const ItemCard: React.FC<{ backpackItem: BackpackItemType; itemDetails: ShopItem
   const formatEffect = (effect: ItemEffect): string => {
     let effectDesc = "";
     switch (effect.type) {
-      case 'WIN_MULTIPLIER_BOOST': // Changed from RTP_BOOST
-        effectDesc = `+${((effect.value - 1) * 100).toFixed(0)}% Credit Wins`; // e.g., value 1.1 becomes +10%
+      case 'WIN_MULTIPLIER_BOOST': 
+        effectDesc = `+${((effect.value - 1) * 100).toFixed(0)}% Credit Wins`;
         break;
       case 'JACKPOT_CHANCE_BOOST':
         effectDesc = `+${(effect.value * 100).toFixed(1)}% Jackpot Chance (Credits)`;
@@ -77,6 +79,10 @@ const ItemCard: React.FC<{ backpackItem: BackpackItemType; itemDetails: ShopItem
         break;
       case 'BET_INSURANCE':
         effectDesc = `Bet Insurance (up to ${effect.value} credits)`;
+        break;
+      case 'SYMBOL_WEIGHT_BOOST':
+        effectDesc = `Boosts ${effect.symbolId || 'specific symbol'} appearance`;
+        if(effect.value) effectDesc += ` (weight +${effect.value})`;
         break;
       default:
         effectDesc = `Unknown Effect (${effect.type})`;
@@ -192,5 +198,4 @@ export default function BackpackPage() {
     </div>
   );
 }
-
     

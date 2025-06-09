@@ -3,9 +3,9 @@ import type { ShopItem } from '@/types/inventory';
 
 export const allShopItems: ShopItem[] = [
   {
-    id: 'beer_rtp_boost',
+    id: 'beer_rtp_boost', // ID kept for now, effect changed
     name: 'Craft Brew',
-    description: 'A refreshing ale that seems to make your wins a bit bigger!',
+    description: 'A refreshing ale that temporarily increases Credit winnings from slot games by 10% for 2 minutes.',
     icon: 'Beer', 
     category: 'beverage',
     cost: 200, // Cost in Credits
@@ -20,7 +20,7 @@ export const allShopItems: ShopItem[] = [
   {
     id: 'cigar_jackpot_boost',
     name: 'Lucky Stogie',
-    description: 'A fine cigar said to attract larger Credit jackpots.',
+    description: 'A fine cigar said to slightly increase your chances of hitting a Credit jackpot in slots for 5 minutes.',
     icon: 'Cigarette', 
     category: 'tobacco',
     cost: 500, // Cost in Credits
@@ -35,7 +35,7 @@ export const allShopItems: ShopItem[] = [
   {
     id: 'energy_drink_xp',
     name: 'Zing! Energy Drink',
-    description: 'Supercharge your gameplay and level up faster!',
+    description: 'Supercharge your gameplay and level up faster! Grants 1.5x XP for 10 minutes.',
     icon: 'Zap', 
     category: 'beverage',
     cost: 150, // Cost in Credits
@@ -50,7 +50,7 @@ export const allShopItems: ShopItem[] = [
   {
     id: 'four_leaf_clover',
     name: 'Four-Leaf Clover Charm',
-    description: 'A permanent charm that slightly increases your luck for bonus features.',
+    description: 'A permanent charm that slightly increases your chances of triggering bonus features.',
     icon: 'Leaf', 
     category: 'charm',
     cost: 2000, // Cost in Credits
@@ -75,6 +75,25 @@ export const allShopItems: ShopItem[] = [
     stackable: true,
     maxStack: 3,
     flavorText: "Spin it to win Credits, on the house!"
+  },
+  {
+    id: 'cherry_magnet_charm',
+    name: 'Cherry Magnet Charm',
+    description: 'A special charm that makes Cherries slightly more likely to appear on slot reels.',
+    icon: 'Sparkles', // Using Sparkles for now, could use CherrySymbol's SVG string if preferred
+    category: 'charm',
+    cost: 1200, // Credits
+    effects: [
+      { 
+        type: 'SYMBOL_WEIGHT_BOOST', 
+        symbolId: 'CherrySymbol', // Specific to CherrySymbol
+        value: 10, // Adds 10 to the base weight of CherrySymbol
+        appliesToGameType: ['slots'] 
+      }
+    ],
+    isConsumable: false,
+    stackable: false,
+    flavorText: "Feeling fruity? This charm might help!"
   }
 ];
 

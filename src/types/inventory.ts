@@ -5,13 +5,15 @@ export type ItemEffectType =
   | 'BONUS_TRIGGER_BOOST' 
   | 'XP_MULTIPLIER' 
   | 'FREE_SPINS' 
-  | 'BET_INSURANCE';
+  | 'BET_INSURANCE'
+  | 'SYMBOL_WEIGHT_BOOST'; // New effect type
 
 export interface ItemEffect {
   type: ItemEffectType;
   value: number; 
   durationMinutes?: number; 
   appliesToGameType?: string[]; 
+  symbolId?: string; // For SYMBOL_WEIGHT_BOOST, specifies which symbol ID to affect
 }
 
 export interface ShopItem {
@@ -20,7 +22,7 @@ export interface ShopItem {
   description: string;
   icon: string; 
   category: 'snack' | 'tobacco' | 'liquor' | 'beverage' | 'charm' | 'special';
-  cost: number; // Cost is now in Credits
+  cost: number; // Cost in Credits
   effects: ItemEffect[];
   isConsumable: boolean; 
   stackable?: boolean; 
