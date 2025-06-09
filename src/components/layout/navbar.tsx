@@ -32,12 +32,12 @@ const NavLink: React.FC<NavLinkProps> = ({ href, children, icon, onClick }) => {
   const pathname = usePathname();
   const isActive = pathname === href ||
                  (href === "/lobby" && pathname.startsWith("/games")) ||
-                 (href === "/lobby" && pathname.startsWith("/lobby/")) || // Added to cover sub-lobby pages like /lobby/poker
+                 (href === "/lobby" && pathname.startsWith("/lobby/")) || 
                  (href === "/profile" && pathname.startsWith("/profile")) ||
                  (href === "/backpack" && pathname.startsWith("/backpack")) ||
                  (href === "/skills" && pathname.startsWith("/skills")) ||
                  (href === "/shop" && pathname.startsWith("/shop")) ||
-                 (href === "/admin" && pathname.startsWith("/admin")) || // Ensure admin active state
+                 (href === "/admin" && pathname.startsWith("/admin")) || 
                  (href === "/daily-bonus" && pathname.startsWith("/daily-bonus"));
 
 
@@ -92,7 +92,7 @@ export default function Navbar() {
                 <div className="mr-2 sm:mr-3 flex items-center justify-center w-7 h-7 sm:w-8 sm:h-8 border-2 sm:border-[3px] border-primary rounded-full bg-background">
                   <Crown className="h-3.5 w-3.5 sm:h-4 sm:h-4 text-primary" aria-hidden="true" />
                 </div>
-                <span className="text-base sm:text-lg font-headline font-bold">Royal Casino</span>
+                <span className="text-base sm:text-lg font-headline font-bold whitespace-nowrap">Royal Casino</span>
               </a>
             </Link>
             <div className="hidden md:flex items-center space-x-1 lg:space-x-2">
@@ -120,7 +120,7 @@ export default function Navbar() {
                             <div className="mr-3 flex items-center justify-center w-8 h-8 border-[3px] border-primary rounded-full bg-background">
                             <Crown className="h-4 w-4 text-primary" aria-hidden="true" />
                             </div>
-                            <span className="text-lg font-headline font-bold">Royal Casino</span>
+                            <span className="text-lg font-headline font-bold whitespace-nowrap">Royal Casino</span>
                         </a>
                     </Link>
                   </SheetHeader>
