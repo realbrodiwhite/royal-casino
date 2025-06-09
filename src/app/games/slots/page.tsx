@@ -1,6 +1,10 @@
 
 "use client";
 
+// DESIGN NOTE: This gameplay page should ideally fit within a single viewport height.
+// Content should be responsive and adjust automatically to different screen ratios and orientations
+// to avoid internal scrolling of the main game area.
+
 import React, { useState, useEffect, useCallback } from 'react';
 import { Button } from '@/components/ui/button';
 import UserBalanceDisplay from '@/components/game/CreditDisplay';
@@ -18,7 +22,6 @@ import { useToast } from "@/hooks/use-toast";
 import { weightedRandom as b3WeightedRandom } from '@/lib/b3-engine';
 import type { ItemEffect, ActiveBuff } from '@/types/inventory';
 import { getItemById } from '@/game-data/items';
-// Removed: import { getSkillDefinitionById, type SkillDefinition } from '@/game-data/skills'; // Import skill definitions
 
 
 import CherrySymbol from '@/components/game/symbols/CherrySymbol';
@@ -95,7 +98,6 @@ export default function SlotsPage() {
   const [availableSymbolsWithData, setAvailableSymbolsWithData] = useState<Array<SymbolData & { weight: number }>>([]);
 
   const [activeBuffs, setActiveBuffs] = useState<ActiveBuff[]>(getMockActiveBuffs());
-  // Removed mockFortuneSkillLevel state
 
   useEffect(() => {
     if (selectedTheme) {
@@ -133,9 +135,6 @@ export default function SlotsPage() {
         }
       }
     });
-
-    // The direct skill-based symbol weight modification for "Fortune" is removed.
-    // That logic will be handled by a global win bonus if implemented later.
 
     const selectedSymbolWithWeight = b3WeightedRandom(symbolsToUse);
 
@@ -234,11 +233,6 @@ export default function SlotsPage() {
                     }
                 }
             });
-
-            // Placeholder for global skill-based win bonus application
-            // const globalWinBonusFactor = getGlobalWinBonusFactor(); // This function would need to be created/imported
-            // winAmountForPayline *= (1 + globalWinBonusFactor);
-
             totalWinAmount += winAmountForPayline;
             winDetails.push({
               paylineIndex,
@@ -368,7 +362,6 @@ export default function SlotsPage() {
     }
   };
 
-  // Removed handleFortuneLevelChange and the demo input field
 
   if (!selectedTheme) {
     return (
@@ -428,9 +421,6 @@ export default function SlotsPage() {
         <Button onClick={() => handleThemeSelect(null)} variant="outline" className="w-full sm:w-auto">
           <Palette className="mr-2 h-4 w-4" /> Change Theme
         </Button>
-        
-        {/* Fortune Skill Demo Input removed */}
-
 
         {availableSymbolsWithData.length > 0 ? (
           <GameGrid rows={rows} cols={cols} className={selectedTheme.backgroundAsset}>
@@ -494,5 +484,3 @@ export default function SlotsPage() {
     </div>
   );
 }
-
-    

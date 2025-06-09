@@ -13,7 +13,8 @@ import { useToast } from "@/hooks/use-toast";
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '@/lib/firebase'; // Import Firebase auth instance
+import { auth } from '@/lib/firebase'; 
+import { cn } from '@/lib/utils';
 
 export default function SignupPage() {
   const { toast } = useToast();
@@ -48,13 +49,11 @@ export default function SignupPage() {
     }
 
     try {
-      // User creation is Step 1.
       await createUserWithEmailAndPassword(auth, email, password);
       toast({
         title: "Account Created!",
         description: `Welcome, ${email}! Let's complete your profile.`,
       });
-      // Redirect to the next step of onboarding
       router.push('/onboarding/profile-details');
     } catch (error: any) {
       let errorMessage = "An unexpected error occurred. Please try again.";
@@ -79,77 +78,83 @@ export default function SignupPage() {
   return (
     <div className="min-h-screen text-foreground flex flex-col">
       <Navbar />
-      <main className="flex-grow container mx-auto px-4 pb-16 pt-[88px] sm:pt-[92px] flex flex-col items-center justify-center">
-        <Card className="w-full max-w-md bg-card border-border shadow-xl">
-          <CardHeader className="text-center">
-            <UserPlus className="mx-auto h-12 w-12 sm:h-16 sm:w-16 text-primary mb-4" />
-            <CardTitle className="text-xl sm:text-2xl md:text-3xl font-headline text-primary">Create Your Account (Step 1 of 3)</CardTitle>
-            <CardDescription className="text-muted-foreground">
-              Join Royal Casino today and start your winning journey!
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <form onSubmit={handleSignup} className="space-y-6">
-              <div className="space-y-2">
-                <Label htmlFor="email" className="text-foreground">Email</Label>
-                <Input
-                  id="email"
-                  name="email"
-                  type="email"
-                  autoComplete="email"
-                  placeholder="you@example.com"
-                  required
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  disabled={isLoading}
-                  className="bg-input border-border text-foreground placeholder:text-muted-foreground focus:ring-ring"
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="password" className="text-foreground">Password</Label>
-                <Input
-                  id="password"
-                  name="password"
-                  type="password"
-                  autoComplete="new-password"
-                  placeholder="••••••••"
-                  required
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  disabled={isLoading}
-                  className="bg-input border-border text-foreground placeholder:text-muted-foreground focus:ring-ring"
-                />
-              </div>
-               <div className="space-y-2">
-                <Label htmlFor="confirm-password" className="text-foreground">Confirm Password</Label>
-                <Input
-                  id="confirm-password"
-                  name="confirm-password"
-                  type="password"
-                  autoComplete="new-password"
-                  placeholder="••••••••"
-                  required
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                  disabled={isLoading}
-                  className="bg-input border-border text-foreground placeholder:text-muted-foreground focus:ring-ring"
-                />
-              </div>
-              <Button type="submit" variant="default" className="w-full font-semibold py-3" disabled={isLoading}>
-                {isLoading ? <RotateCw className="mr-2 h-4 w-4 animate-spin" /> : null}
-                {isLoading ? 'Creating Account...' : 'Next: Profile Details'}
-              </Button>
-            </form>
-          </CardContent>
-          <CardFooter className="flex flex-col items-center">
-            <p className="text-sm text-muted-foreground">
-              Already have an account?{' '}
-              <Link href="/login" className="font-semibold text-primary hover:underline">
-                Login
-              </Link>
-            </p>
-          </CardFooter>
-        </Card>
+      <main className={cn(
+        "flex-grow landing-scroll-container"
+      )}>
+        <section className="landing-scroll-section"> {/* Ensure this section can center its content */}
+           <div className="container mx-auto px-4 py-8 sm:py-10 flex flex-col items-center justify-center h-full">
+            <Card className="w-full max-w-md bg-card border-border shadow-xl">
+              <CardHeader className="text-center">
+                <UserPlus className="mx-auto h-12 w-12 sm:h-16 sm:w-16 text-primary mb-4" />
+                <CardTitle className="text-xl sm:text-2xl md:text-3xl font-headline text-primary">Create Your Account (Step 1 of 3)</CardTitle>
+                <CardDescription className="text-muted-foreground">
+                  Join Royal Casino today and start your winning journey!
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <form onSubmit={handleSignup} className="space-y-6">
+                  <div className="space-y-2">
+                    <Label htmlFor="email" className="text-foreground">Email</Label>
+                    <Input
+                      id="email"
+                      name="email"
+                      type="email"
+                      autoComplete="email"
+                      placeholder="you@example.com"
+                      required
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      disabled={isLoading}
+                      className="bg-input border-border text-foreground placeholder:text-muted-foreground focus:ring-ring"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="password" className="text-foreground">Password</Label>
+                    <Input
+                      id="password"
+                      name="password"
+                      type="password"
+                      autoComplete="new-password"
+                      placeholder="••••••••"
+                      required
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      disabled={isLoading}
+                      className="bg-input border-border text-foreground placeholder:text-muted-foreground focus:ring-ring"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="confirm-password" className="text-foreground">Confirm Password</Label>
+                    <Input
+                      id="confirm-password"
+                      name="confirm-password"
+                      type="password"
+                      autoComplete="new-password"
+                      placeholder="••••••••"
+                      required
+                      value={confirmPassword}
+                      onChange={(e) => setConfirmPassword(e.target.value)}
+                      disabled={isLoading}
+                      className="bg-input border-border text-foreground placeholder:text-muted-foreground focus:ring-ring"
+                    />
+                  </div>
+                  <Button type="submit" variant="default" className="w-full font-semibold py-3" disabled={isLoading}>
+                    {isLoading ? <RotateCw className="mr-2 h-4 w-4 animate-spin" /> : null}
+                    {isLoading ? 'Creating Account...' : 'Next: Profile Details'}
+                  </Button>
+                </form>
+              </CardContent>
+              <CardFooter className="flex flex-col items-center">
+                <p className="text-sm text-muted-foreground">
+                  Already have an account?{' '}
+                  <Link href="/login" className="font-semibold text-primary hover:underline">
+                    Login
+                  </Link>
+                </p>
+              </CardFooter>
+            </Card>
+          </div>
+        </section>
       </main>
       <footer className="text-center py-1.5 sm:py-2 text-xs sm:text-sm text-muted-foreground border-t border-border">
         <p>&copy; 2025 Royal Casino. All Rights Reserved. Built By Brodi Inc.</p>

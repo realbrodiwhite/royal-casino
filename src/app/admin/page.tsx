@@ -1,9 +1,8 @@
 
-
 "use client";
 
-// DESIGN NOTE: Each tab's content within this admin page should ideally fit
-// within a single viewport height to avoid internal scrolling of the main content area.
+// DESIGN NOTE: This page's content, especially within each tab, should ideally fit
+// within a single viewport height when sectional scrolling is active to avoid internal page scrolling within a section.
 // If lists (like vouchers) become very long, consider pagination within the card/table.
 
 import React, { useState, useEffect, useMemo } from 'react';
@@ -19,6 +18,7 @@ import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Checkbox } from '@/components/ui/checkbox';
+import { cn } from '@/lib/utils';
 
 import {
   SidebarProvider,
@@ -543,16 +543,25 @@ export default function AdminDashboardPage() {
             </SidebarContent>
           </Sidebar>
 
-          <SidebarInset className="flex-1 overflow-y-auto ml-[var(--sidebar-width-icon)] group-data-[state=expanded]:ml-[var(--sidebar-width)] transition-all duration-200 ease-linear">
-            <main className="container mx-auto px-4 py-6 sm:py-8">
-              <header className="mb-6 sm:mb-8 flex items-center justify-between"><h1 className="text-2xl sm:text-3xl md:text-4xl font-bold font-headline text-primary">Admin Dashboard</h1><SidebarTrigger className="md:hidden text-primary border-primary hover:bg-accent/10" /></header>
-              <div className="space-y-6">{renderContent()}</div>
-            </main>
-            <footer className="text-center py-1.5 sm:py-2 text-xs sm:text-sm text-muted-foreground border-t border-border"><p>&copy; 2025 Royal Casino. All Rights Reserved. Built By Brodi Inc.</p></footer>
+          <SidebarInset className={cn(
+            "flex-1 landing-scroll-container", // Apply sectional scroll to the inset area
+            "ml-[var(--sidebar-width-icon)] group-data-[state=expanded]:ml-[var(--sidebar-width)] transition-all duration-200 ease-linear"
+          )}>
+            <section className="landing-scroll-section"> {/* Wrap content in a scroll section */}
+                <div className="container mx-auto px-4 py-6 sm:py-8 h-full flex flex-col"> {/* Ensure container takes height for centering */}
+                    <header className="mb-6 sm:mb-8 flex items-center justify-between">
+                        <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold font-headline text-primary">Admin Dashboard</h1>
+                        <SidebarTrigger className="md:hidden text-primary border-primary hover:bg-accent/10" />
+                    </header>
+                    <div className="space-y-6 flex-grow">{renderContent()}</div>
+                </div>
+            </section>
+            <footer className="text-center py-1.5 sm:py-2 text-xs sm:text-sm text-muted-foreground border-t border-border">
+                <p>&copy; 2025 Royal Casino. All Rights Reserved. Built By Brodi Inc.</p>
+            </footer>
           </SidebarInset>
         </div>
       </div>
     </SidebarProvider>
   );
 }
-

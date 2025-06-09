@@ -13,6 +13,7 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '@/lib/firebase';
+import { cn } from '@/lib/utils';
 
 export default function LoginPage() {
   const { toast } = useToast();
@@ -72,87 +73,92 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen text-foreground flex flex-col">
       <Navbar />
-      <main className="flex-grow container mx-auto px-4 pb-16 pt-[88px] sm:pt-[92px] flex flex-col items-center justify-center">
-        <Card className="w-full max-w-md bg-card border-border shadow-xl">
-          <CardHeader className="text-center">
-            <LogIn className="mx-auto h-12 w-12 sm:h-16 sm:w-16 text-primary mb-4" />
-            <CardTitle className="text-xl sm:text-2xl md:text-3xl font-headline text-primary">Login to Royal Casino</CardTitle>
-            <CardDescription className="text-muted-foreground">
-              Access your account to continue your gaming journey.
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <form onSubmit={handleLogin} className="space-y-6">
-              <div className="space-y-2">
-                <Label htmlFor="email" className="text-foreground">Email</Label>
-                <Input
-                  id="email"
-                  name="email"
-                  type="email"
-                  autoComplete="email"
-                  placeholder="you@example.com"
-                  required
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  disabled={isLoading}
-                  className="bg-input border-border text-foreground placeholder:text-muted-foreground focus:ring-ring"
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="password" className="text-foreground">Password</Label>
-                <Input
-                  id="password"
-                  name="password"
-                  type="password"
-                  autoComplete="current-password"
-                  placeholder="••••••••"
-                  required
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  disabled={isLoading}
-                  className="bg-input border-border text-foreground placeholder:text-muted-foreground focus:ring-ring"
-                />
-              </div>
-              <Button type="submit" variant="default" className="w-full font-semibold py-3" disabled={isLoading}>
-                {isLoading ? <RotateCw className="mr-2 h-4 w-4 animate-spin" /> : null}
-                {isLoading ? 'Logging In...' : 'Login'}
-              </Button>
-            </form>
-          </CardContent>
-          <CardFooter className="flex flex-col items-center space-y-4">
-            <p className="text-sm text-muted-foreground">
-              Don't have an account?{' '}
-              <Link href="/signup" className="font-semibold text-primary hover:underline">
-                Sign Up
-              </Link>
-            </p>
-          </CardFooter>
-        </Card>
-
-        <Card className="w-full max-w-md bg-card border-border/50 shadow-lg mt-8">
-            <CardHeader>
-                <CardTitle className="text-primary flex items-center text-lg">
-                    <ShieldAlert className="mr-2 h-5 w-5 text-yellow-400"/> Test Credentials
-                </CardTitle>
-                <CardDescription className="text-muted-foreground text-xs">
-                    For testing with your Firebase project. Ensure these users exist in your Firebase Authentication.
+      <main className={cn(
+        "flex-grow landing-scroll-container"
+      )}>
+        <section className="landing-scroll-section"> {/* Ensure this section can center its content */}
+          <div className="container mx-auto px-4 py-8 sm:py-10 flex flex-col items-center justify-center h-full">
+            <Card className="w-full max-w-md bg-card border-border shadow-xl">
+              <CardHeader className="text-center">
+                <LogIn className="mx-auto h-12 w-12 sm:h-16 sm:w-16 text-primary mb-4" />
+                <CardTitle className="text-xl sm:text-2xl md:text-3xl font-headline text-primary">Login to Royal Casino</CardTitle>
+                <CardDescription className="text-muted-foreground">
+                  Access your account to continue your gaming journey.
                 </CardDescription>
-            </CardHeader>
-            <CardContent className="text-sm space-y-3 text-foreground">
-                <div>
-                    <h4 className="font-semibold">Admin User:</h4>
-                    <p className="text-muted-foreground">Email: <code className="bg-input px-1 rounded">admin@royalcasino.dev</code></p>
-                    <p className="text-muted-foreground">Password: (Set this in Firebase)</p>
-                </div>
-                <div>
-                    <h4 className="font-semibold">Regular Player:</h4>
-                    <p className="text-muted-foreground">Email: <code className="bg-input px-1 rounded">player@royalcasino.dev</code> (or any other test email)</p>
-                    <p className="text-muted-foreground">Password: (Set this in Firebase)</p>
-                </div>
-                 <p className="text-xs text-muted-foreground pt-2 border-t border-border/20">Note: You'll manage users and passwords directly in your Firebase project's Authentication section.</p>
-            </CardContent>
-        </Card>
+              </CardHeader>
+              <CardContent>
+                <form onSubmit={handleLogin} className="space-y-6">
+                  <div className="space-y-2">
+                    <Label htmlFor="email" className="text-foreground">Email</Label>
+                    <Input
+                      id="email"
+                      name="email"
+                      type="email"
+                      autoComplete="email"
+                      placeholder="you@example.com"
+                      required
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      disabled={isLoading}
+                      className="bg-input border-border text-foreground placeholder:text-muted-foreground focus:ring-ring"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="password" className="text-foreground">Password</Label>
+                    <Input
+                      id="password"
+                      name="password"
+                      type="password"
+                      autoComplete="current-password"
+                      placeholder="••••••••"
+                      required
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      disabled={isLoading}
+                      className="bg-input border-border text-foreground placeholder:text-muted-foreground focus:ring-ring"
+                    />
+                  </div>
+                  <Button type="submit" variant="default" className="w-full font-semibold py-3" disabled={isLoading}>
+                    {isLoading ? <RotateCw className="mr-2 h-4 w-4 animate-spin" /> : null}
+                    {isLoading ? 'Logging In...' : 'Login'}
+                  </Button>
+                </form>
+              </CardContent>
+              <CardFooter className="flex flex-col items-center space-y-4">
+                <p className="text-sm text-muted-foreground">
+                  Don't have an account?{' '}
+                  <Link href="/signup" className="font-semibold text-primary hover:underline">
+                    Sign Up
+                  </Link>
+                </p>
+              </CardFooter>
+            </Card>
 
+            <Card className="w-full max-w-md bg-card border-border/50 shadow-lg mt-8">
+                <CardHeader>
+                    <CardTitle className="text-primary flex items-center text-lg">
+                        <ShieldAlert className="mr-2 h-5 w-5 text-yellow-400"/> Test Credentials
+                    </CardTitle>
+                    <CardDescription className="text-muted-foreground text-xs">
+                        For testing with your Firebase project. Ensure these users exist in your Firebase Authentication.
+                    </CardDescription>
+                </CardHeader>
+                <CardContent className="text-sm space-y-3 text-foreground">
+                    <div>
+                        <h4 className="font-semibold">Admin User:</h4>
+                        <p className="text-muted-foreground">Email: <code className="bg-input px-1 rounded">admin@royalcasino.dev</code></p>
+                        <p className="text-muted-foreground">Password: (Set this in Firebase)</p>
+                    </div>
+                    <div>
+                        <h4 className="font-semibold">Regular Player:</h4>
+                        <p className="text-muted-foreground">Email: <code className="bg-input px-1 rounded">player@royalcasino.dev</code> (or any other test email)</p>
+                        <p className="text-muted-foreground">Password: (Set this in Firebase)</p>
+                    </div>
+                    <p className="text-xs text-muted-foreground pt-2 border-t border-border/20">Note: You'll manage users and passwords directly in your Firebase project's Authentication section.</p>
+                </CardContent>
+            </Card>
+          </div>
+        </section>
       </main>
       <footer className="text-center py-1.5 sm:py-2 text-xs sm:text-sm text-muted-foreground border-t border-border">
         <p>&copy; 2025 Royal Casino. All Rights Reserved. Built By Brodi Inc.</p>
@@ -160,5 +166,3 @@ export default function LoginPage() {
     </div>
   );
 }
-
-    

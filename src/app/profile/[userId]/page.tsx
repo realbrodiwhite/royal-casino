@@ -10,6 +10,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { User, Users, Trophy, Gamepad2, Star, MessageSquare, ShieldAlert } from 'lucide-react';
 import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { cn } from '@/lib/utils';
 
 const genericAvatars = [
   "/images/avatars/avatar-generic-1.svg",
@@ -17,12 +18,11 @@ const genericAvatars = [
   "/images/avatars/avatar-generic-3.svg",
 ];
 
-// Mock data - replace with actual data fetching later
 const allMockUsers: Record<string, any> = {
-  "user123": { // This is "Player One"
+  "user123": { 
     id: "user123",
     name: "Player One",
-    avatarUrl: "/images/avatars/avatar-player-one.svg", // Specific avatar
+    avatarUrl: "/images/avatars/avatar-player-one.svg", 
     joinDate: "January 15, 2023",
     bio: "Loves playing slots and poker. Always up for a challenge!",
     level: 12,
@@ -110,9 +110,8 @@ const allMockFriendsData: FriendType[] = Object.values(allMockUsers).map(u => ({
 
 
 export default function UserProfilePage() {
-  // Explicitly type the params object and userId
-  const params = useParams<{ userId?: string }>(); // Use an optional type for userId initially
-  const userId = params.userId; // userId will be string | undefined
+  const params = useParams<{ userId?: string }>(); 
+  const userId = params.userId; 
 
   const [profileData, setProfileData] = useState<any | null>(null);
   const [friends, setFriends] = useState<FriendType[]>([]);
@@ -120,39 +119,39 @@ export default function UserProfilePage() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Ensure userId is a string before proceeding
     if (typeof userId === 'string' && userId) {
       setIsLoading(true);
-      // Simulate API call
       setTimeout(() => {
         const user = allMockUsers[userId];
         if (user) {
           setProfileData(user);
-          // Ensure userId is treated as string for comparisons/includes
           const currentUserIdStr = String(userId);
           setFriends(allMockFriendsData.filter(f => user.friendIds?.includes(f.id) && f.id !== currentUserIdStr));
           setTopFriends(allMockFriendsData.filter(f => user.topFriendIds?.includes(f.id) && f.id !== currentUserIdStr));
         } else {
-          setProfileData(null); // User not found
+          setProfileData(null); 
         }
         setIsLoading(false);
       }, 500);
-    } else if (params.userId !== undefined) { // If params.userId exists but isn't a string, or is empty after initial load
-        setIsLoading(false); // Stop loading if userId is not valid or route not fully resolved
-        setProfileData(null); // Treat as user not found
+    } else if (params.userId !== undefined) { 
+        setIsLoading(false); 
+        setProfileData(null); 
     }
-    // If params.userId is undefined initially, useEffect will re-run when it resolves.
-  }, [userId, params.userId]); // params.userId added to re-trigger if the raw param value changes
+  }, [userId, params.userId]); 
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-deep-purple text-silver flex flex-col items-center justify-center">
+      <div className="min-h-screen text-foreground flex flex-col">
         <Navbar />
-        <div className="flex-grow container mx-auto px-4 py-8 text-center pt-[88px] sm:pt-[92px]">
-            <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-gold mx-auto mb-4"></div>
-            <p className="text-xl text-gold">Loading Profile...</p>
-        </div>
-         <footer className="text-center py-1.5 sm:py-2 text-xs sm:text-sm text-silver/70 mt-12 border-t border-gold/20">
+        <main className={cn("flex-grow landing-scroll-container")}>
+           <section className="landing-scroll-section">
+            <div className="flex flex-col items-center justify-center h-full">
+              <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-primary mx-auto mb-4"></div>
+              <p className="text-xl text-primary">Loading Profile...</p>
+            </div>
+          </section>
+        </main>
+         <footer className="text-center py-1.5 sm:py-2 text-xs sm:text-sm text-muted-foreground border-t border-border mt-auto">
             <p>&copy; 2025 Royal Casino. All Rights Reserved. Built By Brodi Inc.</p>
         </footer>
       </div>
@@ -161,19 +160,23 @@ export default function UserProfilePage() {
 
   if (!profileData) {
     return (
-      <div className="min-h-screen bg-deep-purple text-silver flex flex-col">
+      <div className="min-h-screen text-foreground flex flex-col">
         <Navbar />
-        <main className="flex-grow container mx-auto px-4 text-center pt-[88px] sm:pt-[92px] pb-8">
-          <ShieldAlert className="mx-auto h-24 w-24 text-red-500 mb-6" />
-          <h1 className="text-3xl font-bold font-headline text-red-400 mb-4">Profile Not Found</h1>
-          <p className="text-xl text-silver mb-8">The user profile you are looking for does not exist or could not be loaded.</p>
-          <Link href="/lobby">
-            <Button variant="outline" className="border-gold text-gold hover:bg-gold/10">
-              Back to Lobby
-            </Button>
-          </Link>
+        <main className={cn("flex-grow landing-scroll-container")}>
+           <section className="landing-scroll-section">
+             <div className="container mx-auto px-4 py-8 sm:py-10 flex flex-col items-center justify-center h-full">
+                <ShieldAlert className="mx-auto h-24 w-24 text-red-500 mb-6" />
+                <h1 className="text-3xl font-bold font-headline text-red-400 mb-4">Profile Not Found</h1>
+                <p className="text-xl text-muted-foreground mb-8">The user profile you are looking for does not exist or could not be loaded.</p>
+                <Link href="/lobby">
+                    <Button variant="outline" className="border-primary text-primary hover:bg-primary/10">
+                    Back to Lobby
+                    </Button>
+                </Link>
+             </div>
+           </section>
         </main>
-        <footer className="text-center py-1.5 sm:py-2 text-xs sm:text-sm text-silver/70 mt-12 border-t border-gold/20">
+        <footer className="text-center py-1.5 sm:py-2 text-xs sm:text-sm text-muted-foreground border-t border-border mt-auto">
             <p>&copy; 2025 Royal Casino. All Rights Reserved. Built By Brodi Inc.</p>
         </footer>
       </div>
@@ -182,126 +185,130 @@ export default function UserProfilePage() {
 
 
   return (
-    <div className="min-h-screen bg-deep-purple text-silver flex flex-col">
+    <div className="min-h-screen text-foreground flex flex-col">
       <Navbar />
-      <main className="flex-grow container mx-auto px-4 pb-8 pt-[88px] sm:pt-[92px]">
-        <header className="mb-8 text-center">
-          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold font-headline text-gold">{profileData.name}'s Profile</h1>
-        </header>
+      <main className={cn(
+        "flex-grow landing-scroll-container"
+      )}>
+        <section className="landing-scroll-section">
+            <div className="container mx-auto px-4 py-8 sm:py-10"> {/* Adjusted padding */}
+                <header className="mb-8 text-center">
+                <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold font-headline text-primary">{profileData.name}'s Profile</h1>
+                </header>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Left Column: Profile Card & Top Friends */}
-          <div className="lg:col-span-1 space-y-8">
-            <Card className="bg-silver/10 border-gold shadow-xl">
-              <CardHeader className="items-center text-center pt-6">
-                <Avatar className="w-32 h-32 mb-4 border-4 border-gold shadow-lg">
-                  <AvatarImage src={profileData.avatarUrl} alt={profileData.name} />
-                  <AvatarFallback>{profileData.name.substring(0, 2).toUpperCase()}</AvatarFallback>
-                </Avatar>
-                <CardTitle className="text-3xl text-gold font-headline">{profileData.name}</CardTitle>
-                <p className="text-md text-silver/80">Level: {profileData.level}</p>
-                <p className="text-sm text-silver/70">Joined: {profileData.joinDate}</p>
-              </CardHeader>
-              <CardContent className="text-center">
-                <p className="text-silver/90 mb-6 text-sm">{profileData.bio}</p>
-                 <Button className="bg-gold text-deep-purple hover:bg-gold/90 w-full">
-                    <MessageSquare className="mr-2 h-4 w-4" /> Send Message
-                </Button>
-              </CardContent>
-            </Card>
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                {/* Left Column: Profile Card & Top Friends */}
+                <div className="lg:col-span-1 space-y-8">
+                    <Card className="bg-card border-border shadow-xl">
+                    <CardHeader className="items-center text-center pt-6">
+                        <Avatar className="w-32 h-32 mb-4 border-4 border-primary shadow-lg">
+                        <AvatarImage src={profileData.avatarUrl} alt={profileData.name} />
+                        <AvatarFallback>{profileData.name.substring(0, 2).toUpperCase()}</AvatarFallback>
+                        </Avatar>
+                        <CardTitle className="text-3xl text-primary font-headline">{profileData.name}</CardTitle>
+                        <p className="text-md text-muted-foreground">Level: {profileData.level}</p>
+                        <p className="text-sm text-silver/70">Joined: {profileData.joinDate}</p>
+                    </CardHeader>
+                    <CardContent className="text-center">
+                        <p className="text-muted-foreground mb-6 text-sm">{profileData.bio}</p>
+                        <Button className="bg-primary text-primary-foreground hover:bg-primary/90 w-full">
+                            <MessageSquare className="mr-2 h-4 w-4" /> Send Message
+                        </Button>
+                    </CardContent>
+                    </Card>
 
-            <Card className="bg-silver/10 border-gold shadow-xl">
-              <CardHeader>
-                <CardTitle className="text-gold flex items-center justify-center font-headline text-2xl">
-                  <Star className="mr-2 h-7 w-7 text-yellow-400" /> Top Friends
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                {topFriends.length > 0 ? (
-                  <div className="space-y-4">
-                    {topFriends.map((friend) => (
-                      <FriendListItem key={friend.id} friend={friend} />
-                    ))}
-                  </div>
-                ) : (
-                  <p className="text-silver/80 text-center">No top friends to display.</p>
-                )}
-              </CardContent>
-            </Card>
-          </div>
-
-          {/* Right Column: Stats, Achievements, Full Friends List */}
-          <div className="lg:col-span-2 space-y-8">
-            <Card className="bg-silver/10 border-gold shadow-xl">
-              <CardHeader>
-                <CardTitle className="text-gold flex items-center font-headline text-2xl">
-                  <Gamepad2 className="mr-2 h-7 w-7" /> Game Stats
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 text-silver">
-                <div className="text-center p-3 bg-silver/5 rounded-md border border-gold/20">
-                    <p className="text-xs text-silver/70">Slots Played</p>
-                    <p className="text-2xl font-bold text-gold">{profileData.gameStats.slotsPlayed}</p>
-                </div>
-                <div className="text-center p-3 bg-silver/5 rounded-md border border-gold/20">
-                    <p className="text-xs text-silver/70">Poker Hands Won</p>
-                    <p className="text-2xl font-bold text-gold">{profileData.gameStats.pokerHandsWon}</p>
-                </div>
-                <div className="text-center p-3 bg-silver/5 rounded-md border border-gold/20">
-                    <p className="text-xs text-silver/70">Total Winnings</p>
-                    <p className="text-2xl font-bold text-gold">{profileData.gameStats.totalWinnings.toLocaleString()}</p>
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card className="bg-silver/10 border-gold shadow-xl">
-              <CardHeader>
-                <CardTitle className="text-gold flex items-center font-headline text-2xl">
-                  <Trophy className="mr-2 h-7 w-7" /> Achievements
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                {profileData.achievements && profileData.achievements.length > 0 ? (
-                <ul className="space-y-3">
-                  {profileData.achievements.map((ach: any) => (
-                    <li key={ach.id} className="flex items-center text-silver p-2 bg-silver/5 rounded-md border border-gold/20">
-                      <span className="text-gold mr-3 p-1 bg-gold/10 rounded">{ach.icon}</span>
-                      {ach.name}
-                    </li>
-                  ))}
-                </ul>
-                ) : (
-                  <p className="text-silver/80 text-center">No achievements unlocked yet.</p>
-                )}
-              </CardContent>
-            </Card>
-
-            <Card className="bg-silver/10 border-gold shadow-xl">
-                <CardHeader>
-                    <CardTitle className="text-gold flex items-center font-headline text-2xl">
-                        <Users className="mr-2 h-7 w-7" /> All Friends ({friends.length})
-                    </CardTitle>
-                </CardHeader>
-                <CardContent>
-                    {friends.length > 0 ? (
-                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-                            {friends.map(friend => (
-                                <FriendListItem key={friend.id} friend={friend} />
+                    <Card className="bg-card border-border shadow-xl">
+                    <CardHeader>
+                        <CardTitle className="text-primary flex items-center justify-center font-headline text-2xl">
+                        <Star className="mr-2 h-7 w-7 text-yellow-400" /> Top Friends
+                        </CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                        {topFriends.length > 0 ? (
+                        <div className="space-y-4">
+                            {topFriends.map((friend) => (
+                            <FriendListItem key={friend.id} friend={friend} />
                             ))}
                         </div>
-                    ) : (
-                        <p className="text-silver/80 text-center">This user hasn't added any friends yet.</p>
-                    )}
-                </CardContent>
-            </Card>
-          </div>
-        </div>
+                        ) : (
+                        <p className="text-muted-foreground text-center">No top friends to display.</p>
+                        )}
+                    </CardContent>
+                    </Card>
+                </div>
+
+                {/* Right Column: Stats, Achievements, Full Friends List */}
+                <div className="lg:col-span-2 space-y-8">
+                    <Card className="bg-card border-border shadow-xl">
+                    <CardHeader>
+                        <CardTitle className="text-primary flex items-center font-headline text-2xl">
+                        <Gamepad2 className="mr-2 h-7 w-7" /> Game Stats
+                        </CardTitle>
+                    </CardHeader>
+                    <CardContent className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 text-foreground">
+                        <div className="text-center p-3 bg-muted/50 rounded-md border border-border/20">
+                            <p className="text-xs text-muted-foreground">Slots Played</p>
+                            <p className="text-2xl font-bold text-primary">{profileData.gameStats.slotsPlayed}</p>
+                        </div>
+                        <div className="text-center p-3 bg-muted/50 rounded-md border border-border/20">
+                            <p className="text-xs text-muted-foreground">Poker Hands Won</p>
+                            <p className="text-2xl font-bold text-primary">{profileData.gameStats.pokerHandsWon}</p>
+                        </div>
+                        <div className="text-center p-3 bg-muted/50 rounded-md border border-border/20">
+                            <p className="text-xs text-muted-foreground">Total Winnings</p>
+                            <p className="text-2xl font-bold text-primary">{profileData.gameStats.totalWinnings.toLocaleString()}</p>
+                        </div>
+                    </CardContent>
+                    </Card>
+
+                    <Card className="bg-card border-border shadow-xl">
+                    <CardHeader>
+                        <CardTitle className="text-primary flex items-center font-headline text-2xl">
+                        <Trophy className="mr-2 h-7 w-7" /> Achievements
+                        </CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                        {profileData.achievements && profileData.achievements.length > 0 ? (
+                        <ul className="space-y-3">
+                        {profileData.achievements.map((ach: any) => (
+                            <li key={ach.id} className="flex items-center text-foreground p-2 bg-muted/50 rounded-md border border-border/20">
+                            <span className="text-primary mr-3 p-1 bg-primary/10 rounded">{ach.icon}</span>
+                            {ach.name}
+                            </li>
+                        ))}
+                        </ul>
+                        ) : (
+                        <p className="text-muted-foreground text-center">No achievements unlocked yet.</p>
+                        )}
+                    </CardContent>
+                    </Card>
+
+                    <Card className="bg-card border-border shadow-xl">
+                        <CardHeader>
+                            <CardTitle className="text-primary flex items-center font-headline text-2xl">
+                                <Users className="mr-2 h-7 w-7" /> All Friends ({friends.length})
+                            </CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                            {friends.length > 0 ? (
+                                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                                    {friends.map(friend => (
+                                        <FriendListItem key={friend.id} friend={friend} />
+                                    ))}
+                                </div>
+                            ) : (
+                                <p className="text-muted-foreground text-center">This user hasn't added any friends yet.</p>
+                            )}
+                        </CardContent>
+                    </Card>
+                </div>
+                </div>
+            </div>
+        </section>
       </main>
-      <footer className="text-center py-1.5 sm:py-2 text-xs sm:text-sm text-silver/70 mt-12 border-t border-gold/20">
+      <footer className="text-center py-1.5 sm:py-2 text-xs sm:text-sm text-muted-foreground border-t border-border mt-auto">
         <p>&copy; 2025 Royal Casino. All Rights Reserved. Built By Brodi Inc.</p>
       </footer>
     </div>
   );
 }
-
-    

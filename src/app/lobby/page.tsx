@@ -2,14 +2,16 @@
 // src/app/lobby/page.tsx
 "use client";
 
-// DESIGN NOTE: This page should ideally fit within a single viewport height.
-// If the number of games grows significantly, consider pagination, a more compact layout, or horizontal scrolling for game cards.
+// DESIGN NOTE: This page's content should ideally fit within a single viewport height
+// when sectional scrolling is active, to avoid internal page scrolling within a section.
+// If the number of games grows significantly, consider pagination or a more compact layout for game cards.
 
 import Link from 'next/link';
 import Navbar from '@/components/layout/navbar';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import Image from 'next/image';
+import { cn } from '@/lib/utils';
 
 // Import new SVG category icons
 import SlotsCategoryIcon from '@/components/game/category-icons/SlotsCategoryIcon';
@@ -77,25 +79,31 @@ export default function LobbyPage() {
   return (
     <div className="min-h-screen text-foreground flex flex-col">
       <Navbar />
-      <main className="flex-grow container mx-auto px-4 pb-12 pt-[88px] sm:pt-[92px]">
-        <header className="mb-12 text-center">
-          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold font-headline text-primary">Game Lobby</h1>
-          <p className="text-xl text-muted-foreground mt-2">Choose your game and let the fun begin!</p>
-        </header>
+      <main className={cn(
+        "flex-grow landing-scroll-container" 
+      )}>
+        <section className="landing-scroll-section">
+          <div className="container mx-auto px-4 py-8 sm:py-10"> {/* Adjusted padding for scroll section */}
+            <header className="mb-10 sm:mb-12 text-center">
+              <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold font-headline text-primary">Game Lobby</h1>
+              <p className="text-lg sm:text-xl text-muted-foreground mt-2">Choose your game and let the fun begin!</p>
+            </header>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {games.map((game) => (
-            <GameCard
-              key={game.title}
-              title={game.title}
-              description={game.description}
-              icon={game.icon}
-              href={game.href}
-              imageUrl={game.imageUrl}
-              disabled={game.disabled}
-            />
-          ))}
-        </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+              {games.map((game) => (
+                <GameCard
+                  key={game.title}
+                  title={game.title}
+                  description={game.description}
+                  icon={game.icon}
+                  href={game.href}
+                  imageUrl={game.imageUrl}
+                  disabled={game.disabled}
+                />
+              ))}
+            </div>
+          </div>
+        </section>
       </main>
       <footer className="text-center py-1.5 sm:py-2 text-xs sm:text-sm text-muted-foreground border-t border-border">
         <p>&copy; 2025 Royal Casino. All Rights Reserved. Built By Brodi Inc.</p>
@@ -103,5 +111,3 @@ export default function LobbyPage() {
     </div>
   );
 }
-
-    

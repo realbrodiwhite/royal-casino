@@ -1,7 +1,8 @@
 
 "use client";
 
-// DESIGN NOTE: This page should ideally fit within a single viewport height.
+// DESIGN NOTE: This page's content should ideally fit within a single viewport height
+// when sectional scrolling is active, to avoid internal page scrolling within a section.
 // If the number of shop items or credit packs grows significantly,
 // consider pagination or a more compact layout for item cards.
 
@@ -13,6 +14,7 @@ import UserBalanceDisplay from '@/components/game/CreditDisplay';
 import { ShoppingCart, Coins, Layers, Beer, Cigarette, Zap, Leaf, Ticket, Package, DollarSign } from 'lucide-react';
 import { allShopItems, type ShopItem, type ItemEffect } from '@/game-data/items';
 import { useToast } from "@/hooks/use-toast";
+import { cn } from '@/lib/utils';
 
 const itemIconMap: Record<string, React.FC<React.SVGProps<SVGSVGElement>>> = {
   Beer: Beer,
@@ -20,6 +22,7 @@ const itemIconMap: Record<string, React.FC<React.SVGProps<SVGSVGElement>>> = {
   Zap: Zap,
   Leaf: Leaf,
   Ticket: Ticket,
+  Sparkles: Sparkles, // Assuming Sparkles was added for an item
   Default: Layers,
 };
 
@@ -168,71 +171,77 @@ export default function ShopPage() {
   return (
     <div className="min-h-screen text-foreground flex flex-col">
       <Navbar />
-      <main className="flex-grow container mx-auto px-4 pb-8 pt-[88px] sm:pt-[92px]">
-        <header className="mb-8 sm:mb-10 text-center">
-          <ShoppingCart className="mx-auto h-12 w-12 sm:h-16 sm:w-16 text-primary mb-3 sm:mb-4" />
-          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold font-headline text-primary">The Royal Emporium</h1>
-          <p className="text-md sm:text-lg text-muted-foreground mt-1 px-2">
-            Spend Credits on consumables, charms, or purchase more Credits!
-          </p>
-        </header>
-        
-        <div className="w-full max-w-lg mx-auto mb-6 sm:mb-8">
-          <UserBalanceDisplay credits={credits} />
-        </div>
+      <main className={cn(
+        "flex-grow landing-scroll-container"
+      )}>
+        <section className="landing-scroll-section">
+          <div className="container mx-auto px-4 py-8 sm:py-10"> {/* Adjusted padding */}
+            <header className="mb-8 sm:mb-10 text-center">
+              <ShoppingCart className="mx-auto h-12 w-12 sm:h-16 sm:w-16 text-primary mb-3 sm:mb-4" />
+              <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold font-headline text-primary">The Royal Emporium</h1>
+              <p className="text-md sm:text-lg text-muted-foreground mt-1 px-2">
+                Spend Credits on consumables, charms, or purchase more Credits!
+              </p>
+            </header>
+            
+            <div className="w-full max-w-lg mx-auto mb-6 sm:mb-8">
+              <UserBalanceDisplay credits={credits} />
+            </div>
 
-        {/* Purchase Credits Section */}
-        <Card className="mb-8 sm:mb-10 bg-card border-border shadow-xl">
-          <CardHeader>
-            <CardTitle className="text-xl sm:text-2xl text-primary font-headline text-center flex items-center justify-center">
-              <DollarSign className="mr-2 h-6 w-6" /> Purchase Credits
-            </CardTitle>
-            <CardDescription className="text-center text-muted-foreground text-sm">
-              Need more Credits? Get them here! (Mock real money transactions)
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
-            {creditPacks.map((pack) => (
-              <Button
-                key={pack.id}
-                variant="outline"
-                className="flex flex-col items-center justify-center h-auto p-3 sm:p-4 hover:bg-primary/10 hover:border-primary"
-                onClick={() => handleBuyCreditPack(pack)}
-              >
-                <Coins className="h-5 w-5 sm:h-6 sm:w-6 text-primary mb-1" />
-                <span className="text-sm sm:text-base font-semibold text-foreground">{pack.displayName}</span>
-                {pack.priceUSD && <span className="text-xs text-muted-foreground mt-0.5">${pack.priceUSD.toFixed(2)}</span>}
-              </Button>
-            ))}
-          </CardContent>
-           <CardFooter className="text-xs text-muted-foreground text-center pt-3">
-            Purchases are simulated and do not involve real money.
-          </CardFooter>
-        </Card>
+            {/* Purchase Credits Section */}
+            <Card className="mb-8 sm:mb-10 bg-card border-border shadow-xl">
+              <CardHeader>
+                <CardTitle className="text-xl sm:text-2xl text-primary font-headline text-center flex items-center justify-center">
+                  <DollarSign className="mr-2 h-6 w-6" /> Purchase Credits
+                </CardTitle>
+                <CardDescription className="text-center text-muted-foreground text-sm">
+                  Need more Credits? Get them here! (Mock real money transactions)
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
+                {creditPacks.map((pack) => (
+                  <Button
+                    key={pack.id}
+                    variant="outline"
+                    className="flex flex-col items-center justify-center h-auto p-3 sm:p-4 hover:bg-primary/10 hover:border-primary"
+                    onClick={() => handleBuyCreditPack(pack)}
+                  >
+                    <Coins className="h-5 w-5 sm:h-6 sm:w-6 text-primary mb-1" />
+                    <span className="text-sm sm:text-base font-semibold text-foreground">{pack.displayName}</span>
+                    {pack.priceUSD && <span className="text-xs text-muted-foreground mt-0.5">${pack.priceUSD.toFixed(2)}</span>}
+                  </Button>
+                ))}
+              </CardContent>
+              <CardFooter className="text-xs text-muted-foreground text-center pt-3">
+                Purchases are simulated and do not involve real money.
+              </CardFooter>
+            </Card>
 
-        {/* Items for Credits Section */}
-        <h2 className="text-xl sm:text-2xl font-bold font-headline text-primary mb-4 sm:mb-6 text-center">Items for Credits</h2>
-        {allShopItems.length === 0 ? (
-          <Card className="bg-card border-border shadow-lg text-center py-10">
-            <CardHeader>
-              <CardTitle className="text-xl text-muted-foreground">The Shop is Empty!</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-muted-foreground">No items available for purchase at the moment. Check back soon!</p>
-            </CardContent>
-          </Card>
-        ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {allShopItems.map((item) => (
-              <ShopItemCard 
-                key={item.id} 
-                item={item} 
-                onBuy={handleBuyItem}
-                currentCredits={credits}
-              />
-            ))}
+            {/* Items for Credits Section */}
+            <h2 className="text-xl sm:text-2xl font-bold font-headline text-primary mb-4 sm:mb-6 text-center">Items for Credits</h2>
+            {allShopItems.length === 0 ? (
+              <Card className="bg-card border-border shadow-lg text-center py-10">
+                <CardHeader>
+                  <CardTitle className="text-xl text-muted-foreground">The Shop is Empty!</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-muted-foreground">No items available for purchase at the moment. Check back soon!</p>
+                </CardContent>
+              </Card>
+            ) : (
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                {allShopItems.map((item) => (
+                  <ShopItemCard 
+                    key={item.id} 
+                    item={item} 
+                    onBuy={handleBuyItem}
+                    currentCredits={credits}
+                  />
+                ))}
+              </div>
+            )}
           </div>
-        )}
+        </section>
       </main>
       <footer className="text-center py-1.5 sm:py-2 text-xs sm:text-sm text-muted-foreground border-t border-border mt-auto">
         <p>&copy; 2025 Royal Casino. All Rights Reserved. Built By Brodi Inc.</p>
@@ -240,4 +249,3 @@ export default function ShopPage() {
     </div>
   );
 }
-

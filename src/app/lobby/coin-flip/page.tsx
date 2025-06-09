@@ -1,6 +1,10 @@
 
 "use client";
 
+// DESIGN NOTE: This gameplay page should ideally fit within a single viewport height.
+// Content should be responsive and adjust automatically to different screen ratios and orientations
+// to avoid internal scrolling of the main game area.
+
 import React, { useState, useCallback } from 'react';
 import Navbar from '@/components/layout/navbar';
 import { Button } from '@/components/ui/button';

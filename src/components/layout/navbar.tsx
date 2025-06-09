@@ -17,6 +17,10 @@ import React, { useState, useEffect } from 'react';
 import { auth } from '@/lib/firebase';
 import { onAuthStateChanged, type User as FirebaseUser } from 'firebase/auth';
 
+// Simulate development mode for conditional auth bypass
+const DEV_MODE_BYPASS_AUTH = true; // In real app, use process.env.NEXT_PUBLIC_DEV_MODE_BYPASS_AUTH === 'true'
+
+
 interface NavLinkProps {
   href: string;
   children: React.ReactNode;
@@ -33,6 +37,7 @@ const NavLink: React.FC<NavLinkProps> = ({ href, children, icon, onClick }) => {
                  (href === "/backpack" && pathname.startsWith("/backpack")) ||
                  (href === "/skills" && pathname.startsWith("/skills")) ||
                  (href === "/shop" && pathname.startsWith("/shop")) ||
+                 (href === "/admin" && pathname.startsWith("/admin")) || // Ensure admin active state
                  (href === "/daily-bonus" && pathname.startsWith("/daily-bonus"));
 
 
@@ -57,9 +62,11 @@ const NavLink: React.FC<NavLinkProps> = ({ href, children, icon, onClick }) => {
 export default function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
   const [isAdminUser, setIsAdminUser] = useState(false);
+  const [currentUser, setCurrentUser] = useState<FirebaseUser | null>(null);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
+      setCurrentUser(user);
       if (user) {
         setIsAdminUser(user.email === 'admin@royalcasino.dev');
       } else {
@@ -68,6 +75,8 @@ export default function Navbar() {
     });
     return () => unsubscribe(); // Cleanup subscription on unmount
   }, []);
+  
+  const showAdminLink = DEV_MODE_BYPASS_AUTH || isAdminUser;
 
   return (
     <>
@@ -93,7 +102,7 @@ export default function Navbar() {
               <NavLink href="/backpack" icon={<BackpackIcon />}>Backpack</NavLink> 
               <NavLink href="/skills" icon={<Star />}>Skills</NavLink>
               <NavLink href="/profile" icon={<UserCircle />}>Profile</NavLink>
-              {isAdminUser && <NavLink href="/admin" icon={<Shield />}>Admin</NavLink>}
+              {showAdminLink && <NavLink href="/admin" icon={<Shield />}>Admin</NavLink>}
             </div>
             <div className="md:hidden">
               <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
@@ -122,7 +131,7 @@ export default function Navbar() {
                     <NavLink href="/backpack" icon={<BackpackIcon />} onClick={() => setIsMobileMenuOpen(false)}>Backpack</NavLink>
                     <NavLink href="/skills" icon={<Star />} onClick={() => setIsMobileMenuOpen(false)}>Skills</NavLink>
                     <NavLink href="/profile" icon={<UserCircle />} onClick={() => setIsMobileMenuOpen(false)}>Profile</NavLink>
-                    {isAdminUser && <NavLink href="/admin" icon={<Shield />} onClick={() => setIsMobileMenuOpen(false)}>Admin</NavLink>}
+                    {showAdminLink && <NavLink href="/admin" icon={<Shield />} onClick={() => setIsMobileMenuOpen(false)}>Admin</NavLink>}
                   </nav>
                 </SheetContent>
               </Sheet>

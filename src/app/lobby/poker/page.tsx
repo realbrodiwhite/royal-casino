@@ -1,6 +1,10 @@
 
 "use client";
 
+// DESIGN NOTE: This gameplay page should ideally fit within a single viewport height.
+// Content should be responsive and adjust automatically to different screen ratios and orientations
+// to avoid internal scrolling of the main game area.
+
 import React, { useState, useEffect, useCallback } from 'react';
 import Navbar from '@/components/layout/navbar';
 import { Button } from '@/components/ui/button';
@@ -27,7 +31,6 @@ type GameState = "BETTING" | "DEALT" | "GAME_OVER";
 
 const PokerPage: React.FC = () => {
   const [credits, setCredits] = useState(1000);
-  // kingsCoin state removed
   const [betAmount, setBetAmount] = useState<number>(5);
   const [deck, setDeck] = useState<Card[]>([]);
   const [hand, setHand] = useState<(Card | null)[]>(Array(5).fill(null));
@@ -38,7 +41,6 @@ const PokerPage: React.FC = () => {
   const [isWin, setIsWin] = useState<boolean | null>(null);
   const { toast } = useToast();
   const { addXp } = useXp();
-  // mockDiamondUserCount removed
 
   const initializeDeck = useCallback(() => {
     setDeck(shuffleDeck(createDeck()));
@@ -47,8 +49,6 @@ const PokerPage: React.FC = () => {
   useEffect(() => {
     initializeDeck();
   }, [initializeDeck]);
-
-  // handleConvertCreditsToKingsCoin removed
 
   const handleBetAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = parseInt(e.target.value, 10);
