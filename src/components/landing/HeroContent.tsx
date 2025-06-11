@@ -16,27 +16,27 @@ export default function HeroContent({ className }: { className?: string }) {
           display: flex; flex-direction: column; justify-content: center;
           This will center the div.container vertically if it's not h-full.
       */}
-      <div className="container mx-auto px-4"> {/* Removed h-full and flex centering from here */}
+      <div className="container mx-auto px-4"> 
         <div className={cn(
-          "flex flex-col items-center text-center", // items-center for crown/button, text-center for text
-          "space-y-3 sm:space-y-1" // Reduced vertical spacing between elements
+          "flex flex-col items-center text-center", 
+          "space-y-3 sm:space-y-1" 
         )}>
           
           <div className={cn(
               "relative flex items-center justify-center border-primary rounded-full bg-background/50 shadow-lg border",
-              "w-12 h-12 sm:w-10 sm:h-10" // Portrait: larger, Landscape (sm+): smaller
+              "w-12 h-12 sm:w-10 sm:h-10" 
           )}>
             <Crown className={cn(
               "text-primary",
-              "h-6 w-6 sm:h-5 sm:h-5" // Portrait: larger, Landscape (sm+): smaller
+              "h-6 w-6 sm:h-5 sm:h-5" 
             )} aria-hidden="true" />
           </div>
 
           <h1
             className={cn(
                 "font-bold font-headline text-primary text-center",
-                "text-2xl leading-tight sm:text-xl", // Portrait: larger, Landscape (sm+): smaller
-                "sm:flex sm:flex-wrap sm:justify-center sm:items-baseline sm:gap-x-2" // For single line on sm+
+                "text-2xl leading-tight sm:text-xl", 
+                "sm:flex sm:flex-wrap sm:justify-center sm:items-baseline sm:gap-x-2" 
             )}
           >
             <span className="block sm:inline">Welcome to</span>
@@ -46,7 +46,7 @@ export default function HeroContent({ className }: { className?: string }) {
           <p
             className={cn(
                 "text-muted-foreground mx-auto",
-                "text-sm max-w-[18rem] sm:text-xs sm:max-w-sm md:max-w-md" // Portrait: larger text, smaller max-w. Landscape (sm+): smaller text, wider max-w
+                "text-sm max-w-[18rem] sm:text-xs sm:max-w-sm md:max-w-md" 
             )}
           >
             Your premier destination for social casino gaming. Experience the thrill, connect with friends, and reign supreme!
@@ -55,13 +55,13 @@ export default function HeroContent({ className }: { className?: string }) {
           <div
             className={cn(
                 "flex flex-col sm:flex-row items-center justify-center gap-2",
-                "mt-4 sm:mt-2" // Reduced top margin
+                "mt-3 sm:mt-2" 
             )}
           >
             <Link href="/lobby" passHref>
               <Button 
-                size="sm" // Portrait: md, Landscape (sm+): sm
-                variant="outline" 
+                size="sm" 
+                variant="default" // Changed from "outline" to "default"
                 className={cn(
                   "w-full sm:w-auto font-semibold",
                   "px-4 py-2 text-sm sm:px-3 sm:py-1 sm:text-xs" 
