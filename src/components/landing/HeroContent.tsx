@@ -13,19 +13,25 @@ export default function HeroContent({ className }: { className?: string }) {
       className={cn("relative", className)}
     >
       <div className="container mx-auto px-4 h-full flex flex-col items-center justify-center">
-        <div className="flex flex-col items-center justify-center space-y-2 sm:space-y-3 text-center">
+        <div className={cn(
+          "flex flex-col items-center justify-center text-center",
+          "space-y-1 sm:space-y-1.5 md:space-y-2" 
+        )}>
           
           <div className={cn(
               "relative flex items-center justify-center border-primary rounded-full bg-background/50 shadow-lg",
-              "w-16 h-16 sm:w-20 sm:h-20 border" 
+              "w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 border" 
           )}>
-            <Crown className="h-8 w-8 sm:h-10 sm:h-10 text-primary" aria-hidden="true" />
+            <Crown className={cn(
+              "text-primary",
+              "h-6 w-6 sm:h-7 sm:h-7 md:h-8 md:h-8"
+            )} aria-hidden="true" />
           </div>
 
           <h1
             className={cn(
                 "font-bold font-headline text-primary text-center",
-                "text-lg leading-tight sm:text-xl md:text-2xl lg:text-3xl sm:leading-normal"
+                "text-base leading-tight sm:text-lg md:text-xl lg:text-2xl"
             )}
           >
             <span className="block sm:inline">Welcome to </span>
@@ -34,8 +40,8 @@ export default function HeroContent({ className }: { className?: string }) {
 
           <p
             className={cn(
-                "text-muted-foreground max-w-[280px] sm:max-w-sm mx-auto",
-                "text-xs sm:text-sm md:text-base" 
+                "text-muted-foreground max-w-[280px] sm:max-w-xs md:max-w-sm mx-auto",
+                "text-xs sm:text-xs md:text-sm"
             )}
           >
             Your premier destination for social casino gaming. Experience the thrill, connect with friends, and reign supreme!
@@ -43,16 +49,18 @@ export default function HeroContent({ className }: { className?: string }) {
 
           <div
             className={cn(
-                "flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-3",
-                "mt-1 sm:mt-2" 
+                "flex flex-col sm:flex-row items-center justify-center gap-2",
+                "mt-1 sm:mt-1.5 md:mt-2"
             )}
           >
-            {/* "Join Now & Claim Bonus" button moved to NewPlayerOfferBanner */}
             <Link href="/lobby" passHref>
               <Button 
                 size="sm" 
                 variant="outline" 
-                className="w-full sm:w-auto font-semibold px-4 py-1.5 text-xs sm:text-sm"
+                className={cn(
+                  "w-full sm:w-auto font-semibold",
+                  "px-3 py-1 text-[10px] sm:text-xs md:text-sm"
+                )}
               >
                 Explore Games
               </Button>
