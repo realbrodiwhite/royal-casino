@@ -24,7 +24,7 @@ const ExperienceBar: React.FC = () => {
           <span className="font-semibold text-primary">Lvl {level}</span>
         </div>
         <div className="flex-grow max-w-xs sm:max-w-sm md:max-w-md">
-          <Progress value={progressPercentage} className="h-2 sm:h-2.5" /> {/* Adjusted progress bar height slightly */}
+          <Progress value={progressPercentage} className="h-1.5 sm:h-2" /> {/* Adjusted progress bar height */}
         </div>
         <div className="text-muted-foreground whitespace-nowrap hidden_ xs:block">
           {xpTowardsNextLevel.toLocaleString()} / {xpNeededForNextLevel.toLocaleString()} XP
