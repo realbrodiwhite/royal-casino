@@ -2,7 +2,7 @@
 "use client";
 
 import Link from 'next/link';
-import { Crown, Gamepad2, UserCircle, Shield, Menu, BackpackIcon as PageBackpackIcon, Star, ShoppingCart, Settings as SettingsIcon, Coins } from 'lucide-react';
+import { Crown, Gamepad2, UserCircle, Shield, Menu, BackpackIcon as PageBackpackIcon, Star, ShoppingCart, Settings as SettingsIcon, Coins, Gift } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import ExperienceBar from '@/components/layout/ExperienceBar';
@@ -108,12 +108,14 @@ const UserAvatarMenu: React.FC<{ onLinkClick?: () => void, showAdminLink: boolea
       <DropdownMenuContent align="end" className="w-56">
         <DropdownMenuLabel>My Account</DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <NavLink href="/settings" icon={<SettingsIcon />} onClick={onLinkClick} isDropdownItem>Settings</NavLink>
         <NavLink href="/profile" icon={<UserCircle />} onClick={onLinkClick} isDropdownItem>Profile</NavLink>
+        <NavLink href="/backpack" icon={<PageBackpackIcon />} onClick={onLinkClick} isDropdownItem>Backpack</NavLink>
+        <NavLink href="/skills" icon={<Star />} onClick={onLinkClick} isDropdownItem>Skills</NavLink>
+        <NavLink href="/settings" icon={<SettingsIcon />} onClick={onLinkClick} isDropdownItem>Settings</NavLink>
         {showAdminLink && (
           <>
             <DropdownMenuSeparator />
-            <NavLink href="/admin" icon={<Shield />} onClick={onLinkClick} isDropdownItem>Admin</NavLink>
+            <NavLink href="/admin" icon={<Shield />} onClick={onLinkClick} isDropdownItem>Admin Panel</NavLink>
           </>
         )}
       </DropdownMenuContent>
@@ -142,66 +144,62 @@ export default function Navbar() {
   const showAdminLink = DEV_MODE_BYPASS_AUTH || isAdminUser;
 
   return (
-    <>
-      <ExperienceBar />
-      <nav className={cn(
-        "bg-background/80 backdrop-blur-md shadow-lg z-30 border-b border-border",
-        "sticky top-6 sm:top-7" // Updated sticky top
-      )}>
-        <div className="container mx-auto px-4">
-          <div className="flex items-center justify-between h-10"> {/* Reduced height */}
-            <Link href="/" legacyBehavior>
-              <a className="flex items-center text-primary hover:text-primary/90 transition-colors">
-                <div className="mr-2 sm:mr-3 flex items-center justify-center w-7 h-7 sm:w-8 sm:h-8 border border-primary rounded-full bg-background">
-                  <Crown className="h-3.5 w-3.5 sm:h-4 sm:h-4 text-primary" aria-hidden="true" />
-                </div>
-                <span className="text-base sm:text-lg font-headline font-bold whitespace-nowrap">Royal Casino</span>
-              </a>
-            </Link>
-            
-            <div className="hidden md:flex items-center space-x-1 lg:space-x-2">
-              <NavLink href="/lobby" icon={<Gamepad2 />}>Lobby</NavLink>
-              <NavLink href="/shop" icon={<ShoppingCart />}>Shop</NavLink>
-              <NavLink href="/skills" icon={<Star />}>Skills</NavLink>
-              <NavLink href="/backpack" icon={<PageBackpackIcon />}>Backpack</NavLink>
-              <UserAvatarMenu showAdminLink={showAdminLink} currentUser={currentUser} />
-            </div>
+    <nav className={cn(
+      "bg-background/80 backdrop-blur-md shadow-lg z-30 border-b border-border",
+      "sticky top-0 flex flex-col" 
+    )}>
+      <div className="container mx-auto px-4">
+        <div className="flex items-center justify-between h-10">
+          <Link href="/" legacyBehavior>
+            <a className="flex items-center text-primary hover:text-primary/90 transition-colors">
+              <div className="mr-2 sm:mr-3 flex items-center justify-center w-7 h-7 sm:w-8 sm:h-8 border border-primary rounded-full bg-background">
+                <Crown className="h-3.5 w-3.5 sm:h-4 sm:h-4 text-primary" aria-hidden="true" />
+              </div>
+              <span className="text-base sm:text-lg font-headline font-bold whitespace-nowrap">Royal Casino</span>
+            </a>
+          </Link>
+          
+          <div className="hidden md:flex items-center space-x-1 lg:space-x-2">
+            <NavLink href="/lobby" icon={<Gamepad2 />}>Lobby</NavLink>
+            <NavLink href="/shop" icon={<ShoppingCart />}>Shop</NavLink>
+            <NavLink href="/daily-bonus" icon={<Gift />}>Daily Bonus</NavLink>
+            <UserAvatarMenu showAdminLink={showAdminLink} currentUser={currentUser} />
+          </div>
 
-            <div className="md:hidden flex items-center space-x-2"> 
-              <UserAvatarMenu showAdminLink={showAdminLink} currentUser={currentUser} onLinkClick={() => setIsMobileMenuOpen(false)} />
-              <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
-                <SheetTrigger asChild>
-                  <button className="text-foreground hover:text-primary focus:outline-none p-1 rounded-md"> 
-                    <Menu className="h-6 w-6" />
-                    <span className="sr-only">Open menu</span>
-                  </button>
-                </SheetTrigger>
-                <SheetContent side="left" className="w-[280px] bg-background p-0">
-                  <SheetHeader className="p-4 pb-2 border-b border-border">
-                     <Link href="/" legacyBehavior>
-                        <a className="flex items-center text-primary hover:text-primary/90 transition-colors mb-2" onClick={() => setIsMobileMenuOpen(false)}>
-                            <div className="mr-3 flex items-center justify-center w-8 h-8 border border-primary rounded-full bg-background"> 
-                            <Crown className="h-4 w-4 text-primary" aria-hidden="true" />
-                            </div>
-                            <span className="text-lg font-headline font-bold whitespace-nowrap">Royal Casino</span>
-                        </a>
-                    </Link>
-                  </SheetHeader>
-                  <nav className="flex flex-col space-y-1 p-4 pt-2">
-                    <NavLink href="/lobby" icon={<Gamepad2 />} onClick={() => setIsMobileMenuOpen(false)}>Lobby</NavLink>
-                    <NavLink href="/shop" icon={<ShoppingCart />} onClick={() => setIsMobileMenuOpen(false)}>Shop</NavLink>
-                    <NavLink href="/backpack" icon={<PageBackpackIcon />} onClick={() => setIsMobileMenuOpen(false)}>Backpack</NavLink>
-                    <NavLink href="/skills" icon={<Star />} onClick={() => setIsMobileMenuOpen(false)}>Skills</NavLink>
-                    <NavLink href="/settings" icon={<SettingsIcon />} onClick={() => setIsMobileMenuOpen(false)}>Settings</NavLink>
-                    <NavLink href="/profile" icon={<UserCircle />} onClick={() => setIsMobileMenuOpen(false)}>Profile</NavLink>
-                    {showAdminLink && <NavLink href="/admin" icon={<Shield />} onClick={() => setIsMobileMenuOpen(false)}>Admin</NavLink>}
-                  </nav>
-                </SheetContent>
-              </Sheet>
-            </div>
+          <div className="md:hidden flex items-center space-x-2"> 
+            <UserAvatarMenu showAdminLink={showAdminLink} currentUser={currentUser} onLinkClick={() => setIsMobileMenuOpen(false)} />
+            <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
+              <SheetTrigger asChild>
+                <button className="text-foreground hover:text-primary focus:outline-none p-1 rounded-md"> 
+                  <Menu className="h-6 w-6" />
+                  <span className="sr-only">Open menu</span>
+                </button>
+              </SheetTrigger>
+              <SheetContent side="left" className="w-[280px] bg-background p-0">
+                <SheetHeader className="p-4 pb-2 border-b border-border">
+                   <Link href="/" legacyBehavior>
+                      <a className="flex items-center text-primary hover:text-primary/90 transition-colors mb-2" onClick={() => setIsMobileMenuOpen(false)}>
+                          <div className="mr-3 flex items-center justify-center w-8 h-8 border border-primary rounded-full bg-background"> 
+                          <Crown className="h-4 w-4 text-primary" aria-hidden="true" />
+                          </div>
+                          <span className="text-lg font-headline font-bold whitespace-nowrap">Royal Casino</span>
+                      </a>
+                  </Link>
+                </SheetHeader>
+                <nav className="flex flex-col space-y-1 p-4 pt-2">
+                  <NavLink href="/lobby" icon={<Gamepad2 />} onClick={() => setIsMobileMenuOpen(false)}>Lobby</NavLink>
+                  <NavLink href="/shop" icon={<ShoppingCart />} onClick={() => setIsMobileMenuOpen(false)}>Shop</NavLink>
+                  <NavLink href="/daily-bonus" icon={<Gift />} onClick={() => setIsMobileMenuOpen(false)}>Daily Bonus</NavLink>
+                  {/* Backpack and Skills are now in UserAvatarMenu for mobile too */}
+                  {/* Settings and Profile are also in UserAvatarMenu */}
+                  {showAdminLink && <NavLink href="/admin" icon={<Shield />} onClick={() => setIsMobileMenuOpen(false)}>Admin Panel</NavLink>}
+                </nav>
+              </SheetContent>
+            </Sheet>
           </div>
         </div>
-      </nav>
-    </>
+      </div>
+      <ExperienceBar /> 
+    </nav>
   );
 }

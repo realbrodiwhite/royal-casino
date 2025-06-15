@@ -66,9 +66,9 @@ export default function ProfileRedirectPage() {
       <div className="min-h-screen bg-background text-foreground flex flex-col">
         <Navbar />
         <main className={cn(
-          "flex-grow landing-scroll-container" // Added for sectional scroll
+          "flex-grow landing-scroll-container pt-[64px] sm:pt-[68px]" 
         )}>
-          <section className="landing-scroll-section"> {/* Added for sectional scroll */}
+          <section className="landing-scroll-section"> 
             <div className="flex flex-col items-center justify-center h-full">
               <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-primary mb-4"></div>
               <p className="text-xl text-primary">Loading Profile...</p>
@@ -92,7 +92,7 @@ export default function ProfileRedirectPage() {
      return (
       <div className="min-h-screen bg-background text-foreground flex flex-col">
         <Navbar />
-         <main className={cn("flex-grow landing-scroll-container")}>
+         <main className={cn("flex-grow landing-scroll-container pt-[64px] sm:pt-[68px]")}>
             <section className="landing-scroll-section">
                 <div className="flex flex-col items-center justify-center h-full">
                     <p className="text-xl text-muted-foreground">Profile page. In development mode.</p>
