@@ -30,15 +30,31 @@ import DiamondSymbol from '@/components/game/symbols/DiamondSymbol';
 import GoldCoinSymbol from '@/components/game/symbols/GoldCoinSymbol';
 import BellSymbol from '@/components/game/symbols/BellSymbol';
 // Import new symbol components here when created, e.g.:
-// import PumpkinSymbol from '@/components/game/symbols/PumpkinSymbol';
-// import GhostSymbol from '@/components/game/symbols/GhostSymbol';
-// import BatSymbol from '@/components/game/symbols/BatSymbol';
-// import WitchHatSymbol from '@/components/game/symbols/WitchHatSymbol';
+import PumpkinSymbol from '@/components/game/symbols/PumpkinSymbol';
+import GhostSymbol from '@/components/game/symbols/GhostSymbol';
+import BatSymbol from '@/components/game/symbols/BatSymbol';
+import WitchHatSymbol from '@/components/game/symbols/WitchHatSymbol';
+import PearlSymbol from '@/components/game/symbols/PearlSymbol';
+import ClamSymbol from '@/components/game/symbols/ClamSymbol';
+import FishSymbol from '@/components/game/symbols/FishSymbol';
+import AnchorSymbol from '@/components/game/symbols/AnchorSymbol';
+import EmeraldSymbol from '@/components/game/symbols/EmeraldSymbol';
+import RubySymbol from '@/components/game/symbols/RubySymbol';
+import MonkeySymbol from '@/components/game/symbols/MonkeySymbol';
+import ParrotSymbol from '@/components/game/symbols/ParrotSymbol';
+import AmethystCrystalSymbol from '@/components/game/symbols/AmethystCrystalSymbol';
+import SapphireCrystalSymbol from '@/components/game/symbols/SapphireCrystalSymbol';
+import AlienCoinSymbol from '@/components/game/symbols/AlienCoinSymbol';
+import PlanetSymbol from '@/components/game/symbols/PlanetSymbol';
 
 
 import { classicSlotsTheme } from '@/game-themes/classic-slots.theme';
 import { vegasAdventureTheme } from '@/game-themes/vegas-adventure.theme';
 import { horrificHalloweenTheme } from '@/game-themes/horrific-halloween.theme';
+import { tripleDiamondTheme } from '@/game-themes/triple-diamond.theme';
+import { oceansTreasureTheme } from '@/game-themes/oceans-treasure.theme';
+import { jungleJewelsTheme } from '@/game-themes/jungle-jewels.theme';
+import { galacticGemsTheme } from '@/game-themes/galactic-gems.theme';
 import type { SlotGameThemeConfig } from '@/types/game-theme';
 
 const allSymbolComponents: Record<string, React.FC<React.SVGProps<SVGSVGElement>>> = {
@@ -46,10 +62,22 @@ const allSymbolComponents: Record<string, React.FC<React.SVGProps<SVGSVGElement>
   DiamondSymbol: DiamondSymbol,
   GoldCoinSymbol: GoldCoinSymbol,
   BellSymbol: BellSymbol,
-  PumpkinSymbol: (props: React.SVGProps<SVGSVGElement>) => <svg viewBox="0 0 100 100" {...props} data-ai-hint="jack-o-lantern pumpkin"><text x="25" y="65" fontSize="50">🎃</text></svg>,
-  GhostSymbol: (props: React.SVGProps<SVGSVGElement>) => <svg viewBox="0 0 100 100" {...props} data-ai-hint="spooky ghost"><text x="25" y="65" fontSize="50">👻</text></svg>,
-  BatSymbol: (props: React.SVGProps<SVGSVGElement>) => <svg viewBox="0 0 100 100" {...props} data-ai-hint="flying bat"><text x="25" y="65" fontSize="50">🦇</text></svg>,
-  WitchHatSymbol: (props: React.SVGProps<SVGSVGElement>) => <svg viewBox="0 0 100 100" {...props} data-ai-hint="witch hat"><text x="25" y="65" fontSize="50">🧙</text></svg>,
+  PumpkinSymbol: PumpkinSymbol,
+  GhostSymbol: GhostSymbol,
+  BatSymbol: BatSymbol,
+  WitchHatSymbol: WitchHatSymbol,
+  PearlSymbol: PearlSymbol,
+  ClamSymbol: ClamSymbol,
+  FishSymbol: FishSymbol,
+  AnchorSymbol: AnchorSymbol,
+  EmeraldSymbol: EmeraldSymbol,
+  RubySymbol: RubySymbol,
+  MonkeySymbol: MonkeySymbol,
+  ParrotSymbol: ParrotSymbol,
+  AmethystCrystalSymbol: AmethystCrystalSymbol,
+  SapphireCrystalSymbol: SapphireCrystalSymbol,
+  AlienCoinSymbol: AlienCoinSymbol,
+  PlanetSymbol: PlanetSymbol,
 };
 
 interface SymbolData {
@@ -62,12 +90,24 @@ const FALLBACK_SYMBOL: SymbolData = {
   component: (props: React.SVGProps<SVGSVGElement>) => <svg viewBox="0 0 100 100" {...props} data-ai-hint="question mark error"><text x="25" y="65" fontSize="50">?</text></svg>,
 };
 
-const availableThemes: SlotGameThemeConfig[] = [classicSlotsTheme, vegasAdventureTheme, horrificHalloweenTheme];
+const availableThemes: SlotGameThemeConfig[] = [
+  classicSlotsTheme, 
+  vegasAdventureTheme, 
+  horrificHalloweenTheme,
+  tripleDiamondTheme,
+  oceansTreasureTheme,
+  jungleJewelsTheme,
+  galacticGemsTheme,
+];
 
 const themeImagePaths: Record<string, string> = {
   'classic-slots': '/images/theme-art/classic-slots-theme.svg',
   'vegas-adventure': '/images/theme-art/vegas-adventure-theme.svg',
   'horrific-halloween': '/images/theme-art/horrific-halloween.theme.svg',
+  'triple-diamond': '/images/theme-art/triple-diamond-theme.svg',
+  'oceans-treasure': '/images/theme-art/oceans-treasure-theme.svg',
+  'jungle-jewels': '/images/theme-art/jungle-jewels-theme.svg',
+  'galactic-gems': '/images/theme-art/galactic-gems-theme.svg',
 };
 
 type CellCoordinate = [number, number];
@@ -389,6 +429,7 @@ export default function SlotsPage() {
                   width={200}
                   height={100}
                   className="rounded-md mx-auto object-cover"
+                  data-ai-hint={`${theme.displayName.toLowerCase().replace(/\s+/g, ' ')} slot machine`}
                 />
               </CardContent>
               <CardFooter className="mt-auto">
