@@ -38,7 +38,7 @@ export default function NewPlayerOfferBanner() {
     <div
       className={cn(
         "bg-primary/10 text-primary-foreground py-4 px-4 border-b-2 border-primary/20 shadow-md",
-        "relative w-full z-20 my-4"
+        "relative w-full z-20 mt-8 mb-4"
       )}
     >
       <div className={cn(
