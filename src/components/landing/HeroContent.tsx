@@ -10,39 +10,42 @@ import { cn } from '@/lib/utils';
 export default function HeroContent({ className }: { className?: string }) {
   return (
     <section
-      className={cn("relative", className)} 
+      className={cn("relative landing-scroll-section flex flex-col items-center justify-center", className)}
     >
-      <div className="container mx-auto px-4"> 
+      <div className={cn(
+        "container mx-auto px-4"
+      )}>
         <div className={cn(
-          "flex flex-col items-center text-center", 
-          "space-y-4 sm:space-y-3" // Adjusted vertical spacing
+          "flex flex-col items-center text-center",
+          "space-y-6 sm:space-y-4 md:space-y-8" // Increased vertical spacing
         )}>
-          
+
           <div className={cn(
               "relative flex items-center justify-center border border-primary rounded-full bg-background/50 shadow-lg",
-              "w-20 h-20 sm:w-12 sm:h-12" // Portrait: w/h-20, Landscape: w/h-12
+              "w-24 h-24 sm:w-16 sm:h-16" // Portrait: w/h-24, Landscape: w/h-16
           )}>
             <Crown className={cn(
               "text-primary",
-              "h-10 w-10 sm:h-6 sm:h-6" // Portrait: h/w-10, Landscape: h/w-6
+              "h-12 w-12 sm:h-8 sm:h-8" // Portrait: h/w-12, Landscape: h/w-8
             )} aria-hidden="true" />
           </div>
 
           <h1
             className={cn(
                 "font-bold font-headline text-primary text-center",
-                "text-5xl leading-tight sm:text-3xl", // Portrait: 5xl, Landscape: 3xl
-                "sm:flex sm:flex-wrap sm:justify-center sm:items-baseline sm:gap-x-2" 
+                "text-8xl leading-tight", // Default for Portrait (was text-5xl)
+                "sm:text-6xl sm:block" // Landscape: (was text-3xl)
             )}
           >
             <span className="block sm:inline">Welcome to</span>
-            <span className="block sm:inline text-foreground">Royal Casino</span>
+            <span className="block sm:inline text-foreground sm:ml-2">Royal Casino</span>
           </h1>
 
           <p
             className={cn(
-                "text-muted-foreground mx-auto",
-                "text-xl max-w-md sm:text-base sm:max-w-xl md:max-w-2xl" // Portrait: xl, Landscape: base, wider max-width for landscape
+                "text-muted-foreground mx-auto leading-normal", // Added leading-normal
+                "text-4xl max-w-md", // Default for Portrait (was text-xl)
+                "sm:text-2xl sm:max-w-xl md:max-w-2xl" // Landscape (was text-base)
             )}
           >
             Your premier destination for social casino gaming. Experience the thrill, connect with friends, and reign supreme!
@@ -51,16 +54,16 @@ export default function HeroContent({ className }: { className?: string }) {
           <div
             className={cn(
                 "flex flex-col sm:flex-row items-center justify-center gap-4",
-                "mt-4 sm:mt-3" // Adjusted top margin for button
+                "mt-8 sm:mt-5 md:mt-6" // Adjusted top margin for button
             )}
           >
             <Link href="/lobby" passHref>
-              <Button 
-                size="lg" 
+              <Button
+                size="lg"
                 variant="default"
                 className={cn(
                   "w-full sm:w-auto font-semibold",
-                  "text-xl sm:text-base" // Portrait: xl button text, Landscape: base
+                  "text-2xl sm:text-lg py-3 sm:py-2" // Portrait: (was text-xl), Landscape: (was text-base)
                 )}
               >
                 Explore Games
