@@ -10,32 +10,28 @@ import { cn } from '@/lib/utils';
 export default function HeroContent({ className }: { className?: string }) {
   return (
     <section
-      className={cn("relative", className)} // className is 'landing-scroll-section'
+      className={cn("relative", className)} 
     >
-      {/* The parent section (landing-scroll-section) already provides:
-          display: flex; flex-direction: column; justify-content: center;
-          This will center the div.container vertically if it's not h-full.
-      */}
       <div className="container mx-auto px-4"> 
         <div className={cn(
           "flex flex-col items-center text-center", 
-          "space-y-3 sm:space-y-1" 
+          "space-y-4 sm:space-y-3" // Adjusted vertical spacing
         )}>
           
           <div className={cn(
-              "relative flex items-center justify-center border-primary rounded-full bg-background/50 shadow-lg border",
-              "w-12 h-12 sm:w-10 sm:h-10" 
+              "relative flex items-center justify-center border border-primary rounded-full bg-background/50 shadow-lg",
+              "w-20 h-20 sm:w-12 sm:h-12" // Portrait: w/h-20, Landscape: w/h-12
           )}>
             <Crown className={cn(
               "text-primary",
-              "h-6 w-6 sm:h-5 sm:h-5" 
+              "h-10 w-10 sm:h-6 sm:h-6" // Portrait: h/w-10, Landscape: h/w-6
             )} aria-hidden="true" />
           </div>
 
           <h1
             className={cn(
                 "font-bold font-headline text-primary text-center",
-                "text-2xl leading-tight sm:text-xl", 
+                "text-5xl leading-tight sm:text-3xl", // Portrait: 5xl, Landscape: 3xl
                 "sm:flex sm:flex-wrap sm:justify-center sm:items-baseline sm:gap-x-2" 
             )}
           >
@@ -46,7 +42,7 @@ export default function HeroContent({ className }: { className?: string }) {
           <p
             className={cn(
                 "text-muted-foreground mx-auto",
-                "text-sm max-w-[18rem] sm:text-xs sm:max-w-sm md:max-w-md" 
+                "text-xl max-w-md sm:text-base sm:max-w-xl md:max-w-2xl" // Portrait: xl, Landscape: base, wider max-width for landscape
             )}
           >
             Your premier destination for social casino gaming. Experience the thrill, connect with friends, and reign supreme!
@@ -54,17 +50,17 @@ export default function HeroContent({ className }: { className?: string }) {
 
           <div
             className={cn(
-                "flex flex-col sm:flex-row items-center justify-center gap-2",
-                "mt-3 sm:mt-2" 
+                "flex flex-col sm:flex-row items-center justify-center gap-4",
+                "mt-4 sm:mt-3" // Adjusted top margin for button
             )}
           >
             <Link href="/lobby" passHref>
               <Button 
-                size="sm" 
-                variant="default" // Changed from "outline" to "default"
+                size="lg" 
+                variant="default"
                 className={cn(
                   "w-full sm:w-auto font-semibold",
-                  "px-4 py-2 text-sm sm:px-3 sm:py-1 sm:text-xs" 
+                  "text-xl sm:text-base" // Portrait: xl button text, Landscape: base
                 )}
               >
                 Explore Games
