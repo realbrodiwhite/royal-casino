@@ -26,7 +26,6 @@ import React, { useState, useEffect } from 'react';
 import { auth } from '@/lib/firebase';
 import { onAuthStateChanged, type User as FirebaseUser } from 'firebase/auth';
 
-// Simulate development mode for conditional auth bypass
 const DEV_MODE_BYPASS_AUTH = true; 
 
 interface NavLinkProps {
@@ -147,10 +146,10 @@ export default function Navbar() {
       <ExperienceBar />
       <nav className={cn(
         "bg-background/80 backdrop-blur-md shadow-lg z-30 border-b border-border",
-        "sticky top-8 sm:top-9" 
+        "sticky top-6 sm:top-7" // Updated sticky top
       )}>
         <div className="container mx-auto px-4">
-          <div className="flex items-center justify-between h-12">
+          <div className="flex items-center justify-between h-10"> {/* Reduced height */}
             <Link href="/" legacyBehavior>
               <a className="flex items-center text-primary hover:text-primary/90 transition-colors">
                 <div className="mr-2 sm:mr-3 flex items-center justify-center w-7 h-7 sm:w-8 sm:h-8 border border-primary rounded-full bg-background">
@@ -160,7 +159,6 @@ export default function Navbar() {
               </a>
             </Link>
             
-            {/* Desktop Navigation */}
             <div className="hidden md:flex items-center space-x-1 lg:space-x-2">
               <NavLink href="/lobby" icon={<Gamepad2 />}>Lobby</NavLink>
               <NavLink href="/shop" icon={<ShoppingCart />}>Shop</NavLink>
@@ -169,7 +167,6 @@ export default function Navbar() {
               <UserAvatarMenu showAdminLink={showAdminLink} currentUser={currentUser} />
             </div>
 
-            {/* Mobile Navigation Trigger */}
             <div className="md:hidden flex items-center space-x-2"> 
               <UserAvatarMenu showAdminLink={showAdminLink} currentUser={currentUser} onLinkClick={() => setIsMobileMenuOpen(false)} />
               <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>

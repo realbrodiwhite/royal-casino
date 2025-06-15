@@ -273,7 +273,7 @@ export default function BingoPage() {
   return (
     <div className="min-h-screen text-foreground flex flex-col">
       <Navbar />
-      <main className="flex-grow container mx-auto px-2 sm:px-4 pb-8 sm:pb-12 pt-[88px] sm:pt-[92px] flex flex-col items-center">
+      <main className="flex-grow container mx-auto px-2 sm:px-4 pb-8 sm:pb-12 pt-[64px] sm:pt-[68px] flex flex-col items-center">
         <header className="mb-6 sm:mb-8 text-center">
           <AppWindow className="h-10 w-10 sm:h-12 md:h-16 text-primary mx-auto mb-2 sm:mb-3" />
           <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold font-headline text-primary">Bingo Hall</h1>

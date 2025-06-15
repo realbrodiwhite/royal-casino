@@ -147,7 +147,7 @@ export default function CoinFlipPage() {
   return (
     <div className="min-h-screen text-foreground flex flex-col">
       <Navbar />
-      <main className="flex-grow container mx-auto px-4 pb-8 sm:pb-12 pt-[88px] sm:pt-[92px] flex flex-col items-center">
+      <main className="flex-grow container mx-auto px-4 pb-8 sm:pb-12 pt-[64px] sm:pt-[68px] flex flex-col items-center">
         <header className="mb-8 sm:mb-10 text-center">
           <CircleDollarSign className="h-12 w-12 sm:h-16 sm:w-16 text-primary mx-auto mb-2 sm:mb-3" />
           <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold font-headline text-primary">Coin Flip</h1>

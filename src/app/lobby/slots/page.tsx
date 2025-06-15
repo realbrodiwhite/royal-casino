@@ -262,7 +262,7 @@ export default function LegacySlotsPage() {
   };
 
   return (
-    <div className="min-h-screen text-foreground flex flex-col items-center p-4 pt-[88px] sm:pt-[92px]"> 
+    <div className="min-h-screen text-foreground flex flex-col items-center p-4 pt-[64px] sm:pt-[68px]"> 
       <Navbar />
       <header className="my-8 text-center">
         <h1 className="text-5xl font-bold font-headline text-primary">{activeThemeConfig.displayName}</h1>
