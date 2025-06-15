@@ -164,7 +164,7 @@ const PokerPage: React.FC = () => {
   return (
     <div className="min-h-screen text-foreground flex flex-col">
       <Navbar />
-      <main className="flex-grow container mx-auto px-2 sm:px-4 pb-8 sm:pb-12 pt-[64px] sm:pt-[68px] flex flex-col items-center">
+      <main className="flex-grow container mx-auto px-2 sm:px-4 pb-8 sm:pb-12 pt-[40px] flex flex-col items-center">
         <header className="mb-8 sm:mb-10 text-center">
           <Hand className="h-12 w-12 sm:h-16 sm:w-16 text-primary mx-auto mb-3 sm:mb-4" />
           <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold font-headline text-primary">Video Poker</h1>

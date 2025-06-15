@@ -145,7 +145,7 @@ export default function BackpackPage() {
     return (
       <div className="min-h-screen text-foreground flex flex-col">
         <Navbar />
-        <main className={cn("flex-grow landing-scroll-container pt-[64px] sm:pt-[68px]")}>
+        <main className={cn("flex-grow landing-scroll-container pt-[40px]")}>
           <section className="landing-scroll-section">
             <div className="flex flex-col items-center justify-center h-full">
               <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-primary"></div>
@@ -162,7 +162,7 @@ export default function BackpackPage() {
     <div className="min-h-screen text-foreground flex flex-col">
       <Navbar />
       <main className={cn(
-        "flex-grow landing-scroll-container pt-[64px] sm:pt-[68px]"
+        "flex-grow landing-scroll-container pt-[40px]"
       )}>
         <section className="landing-scroll-section">
           <div className="container mx-auto px-4 py-8 sm:py-10"> {/* Adjusted padding */}

@@ -146,12 +146,13 @@ export default function Navbar() {
   return (
     <nav className={cn(
       "bg-background/80 backdrop-blur-md shadow-lg z-30 border-b border-border",
-      "sticky top-0 flex flex-col" 
+      "sticky top-0" 
     )}>
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-10">
+          {/* Left: Logo */}
           <Link href="/" legacyBehavior>
-            <a className="flex items-center text-primary hover:text-primary/90 transition-colors">
+            <a className="flex-shrink-0 flex items-center text-primary hover:text-primary/90 transition-colors">
               <div className="mr-2 sm:mr-3 flex items-center justify-center w-7 h-7 sm:w-8 sm:h-8 border border-primary rounded-full bg-background">
                 <Crown className="h-3.5 w-3.5 sm:h-4 sm:h-4 text-primary" aria-hidden="true" />
               </div>
@@ -159,14 +160,23 @@ export default function Navbar() {
             </a>
           </Link>
           
-          <div className="hidden md:flex items-center space-x-1 lg:space-x-2">
+          {/* Middle: ExperienceBar - takes up available space but with a max width */}
+          <div className="flex-grow mx-2 sm:mx-4 flex justify-center items-center overflow-hidden">
+              <div className="w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl">
+                <ExperienceBar />
+              </div>
+          </div>
+          
+          {/* Right: Desktop Nav & User Menu */}
+          <div className="hidden md:flex items-center space-x-1 lg:space-x-2 flex-shrink-0">
             <NavLink href="/lobby" icon={<Gamepad2 />}>Lobby</NavLink>
             <NavLink href="/shop" icon={<ShoppingCart />}>Shop</NavLink>
             <NavLink href="/daily-bonus" icon={<Gift />}>Daily Bonus</NavLink>
             <UserAvatarMenu showAdminLink={showAdminLink} currentUser={currentUser} />
           </div>
 
-          <div className="md:hidden flex items-center space-x-2"> 
+          {/* Right: Mobile User Menu & Sheet Trigger */}
+          <div className="md:hidden flex items-center space-x-2 flex-shrink-0"> 
             <UserAvatarMenu showAdminLink={showAdminLink} currentUser={currentUser} onLinkClick={() => setIsMobileMenuOpen(false)} />
             <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
               <SheetTrigger asChild>
@@ -190,8 +200,6 @@ export default function Navbar() {
                   <NavLink href="/lobby" icon={<Gamepad2 />} onClick={() => setIsMobileMenuOpen(false)}>Lobby</NavLink>
                   <NavLink href="/shop" icon={<ShoppingCart />} onClick={() => setIsMobileMenuOpen(false)}>Shop</NavLink>
                   <NavLink href="/daily-bonus" icon={<Gift />} onClick={() => setIsMobileMenuOpen(false)}>Daily Bonus</NavLink>
-                  {/* Backpack and Skills are now in UserAvatarMenu for mobile too */}
-                  {/* Settings and Profile are also in UserAvatarMenu */}
                   {showAdminLink && <NavLink href="/admin" icon={<Shield />} onClick={() => setIsMobileMenuOpen(false)}>Admin Panel</NavLink>}
                 </nav>
               </SheetContent>
@@ -199,7 +207,6 @@ export default function Navbar() {
           </div>
         </div>
       </div>
-      <ExperienceBar /> 
     </nav>
   );
 }

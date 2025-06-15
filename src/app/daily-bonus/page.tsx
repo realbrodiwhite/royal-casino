@@ -115,7 +115,7 @@ export default function DailyBonusPage() {
     <div className="min-h-screen text-foreground flex flex-col">
       <Navbar />
       <main className={cn(
-        "flex-grow landing-scroll-container pt-[64px] sm:pt-[68px]"
+        "flex-grow landing-scroll-container pt-[40px]"
       )}>
         <section className="landing-scroll-section">
           <div className="container mx-auto px-4 py-8 sm:py-10 flex flex-col items-center"> {/* Adjusted padding & centering */}

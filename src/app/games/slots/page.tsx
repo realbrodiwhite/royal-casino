@@ -406,7 +406,7 @@ export default function SlotsPage() {
 
   if (!selectedTheme) {
     return (
-      <div className="min-h-screen text-foreground flex flex-col items-center p-4 pt-[64px] sm:pt-[68px]">
+      <div className="min-h-screen text-foreground flex flex-col items-center p-4 pt-[40px]">
         <Navbar />
         <header className="my-6 sm:my-8 text-center">
           <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold font-headline text-primary">Choose Your Slot Adventure!</h1>
@@ -446,7 +446,7 @@ export default function SlotsPage() {
   }
 
   return (
-    <div className="min-h-screen text-foreground flex flex-col items-center p-4 pt-[64px] sm:pt-[68px]">
+    <div className="min-h-screen text-foreground flex flex-col items-center p-4 pt-[40px]">
       <Navbar />
       <header className="my-6 sm:my-8 text-center">
         <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold font-headline text-primary">{selectedTheme.displayName}</h1>

@@ -524,8 +524,8 @@ export default function AdminDashboardPage() {
     <SidebarProvider>
       <div className="min-h-screen bg-background text-foreground flex flex-col">
         <Navbar />
-        <div className="flex flex-1 overflow-hidden pt-[64px] sm:pt-[68px]">
-          <Sidebar collapsible="icon" variant="sidebar" className="border-r border-sidebar-border bg-sidebar text-sidebar-foreground fixed top-[64px] sm:top-[68px] h-[calc(100vh-64px)] sm:h-[calc(100vh-68px)]">
+        <div className="flex flex-1 overflow-hidden pt-[40px]">
+          <Sidebar collapsible="icon" variant="sidebar" className="border-r border-sidebar-border bg-sidebar text-sidebar-foreground fixed top-[40px] h-[calc(100vh-40px)]">
             <SidebarContent className="p-2">
               <SidebarMenu>
                  <SidebarMenuItem>
