@@ -37,8 +37,9 @@ export default function NewPlayerOfferBanner() {
   return (
     <div
       className={cn(
-        "bg-primary/10 text-primary-foreground py-4 px-4 border-b-2 border-primary/20 shadow-md",
-        "relative w-full z-20 mt-8 mb-4"
+        "py-4 px-4 shadow-md", // Removed my-4, border-b
+        "relative w-full z-20",
+        "bg-gradient-to-b from-primary/10 to-transparent" // Added gradient
       )}
     >
       <div className={cn(
