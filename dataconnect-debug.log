@@ -1,12 +1,12 @@
-I0616 10:36:32.515037    2990 load.go:37] Reloading schema and connectors...
-I0616 10:36:32.661545    2990 control.go:73] [/emulator/studio 5de0] UpdateResources(): done
+I0616 10:58:06.889855    8196 load.go:37] Reloading schema and connectors...
+I0616 10:58:06.992142    8196 control.go:73] [/emulator/studio 5ba9] UpdateResources(): done
 Schema: sources: schema/schema.gql [2088B] 
 Connector "default": sources: connector/mutations.gql [1233B] connector/queries.gql [1802B] 
-I0616 10:36:32.803275    2990 codegen.go:82] [connector "default" kotlinSdk] Generating sources into "/home/user/studio/dataconnect/.dataconnect/dataconnect-generated/kotlin/connectors/default"
-I0616 10:36:32.826781    2990 collector.go:107] schema extensions wrote into "/home/user/studio/dataconnect/.dataconnect/schema"
+I0616 10:58:07.149441    8196 codegen.go:82] [connector "default" kotlinSdk] Generating sources into "/home/user/studio/dataconnect/.dataconnect/dataconnect-generated/kotlin/connectors/default"
+I0616 10:58:07.154747    8196 collector.go:107] schema extensions wrote into "/home/user/studio/dataconnect/.dataconnect/schema"
 Generated sources: prelude.gql [71531B] 
-I0616 10:36:32.829558    2990 collector.go:107] connector "default" kotlinSdk wrote into "/home/user/studio/dataconnect/.dataconnect/dataconnect-generated/kotlin/connectors/default"
+I0616 10:58:07.156506    8196 collector.go:107] connector "default" kotlinSdk wrote into "/home/user/studio/dataconnect/.dataconnect/dataconnect-generated/kotlin/connectors/default"
 Generated sources: DefaultConnector.kt [8301B] DefaultConnectorKeys.kt [799B] DefaultConnectorEnums.kt [797B] 
-I0616 10:36:32.829731    2990 load.go:115] Finished reloading
-I0616 10:36:32.836127    2990 dev.go:95] Listening on address (HTTP + gRPC): 127.0.0.1:50001
-I0616 10:36:33.119828    2990 engine.go:170] [/emulator/studio 5de0] ExecuteGraphqlRead IntrospectionQuery: succeeded. 
+I0616 10:58:07.156591    8196 load.go:115] Finished reloading
+I0616 10:58:07.159720    8196 dev.go:95] Listening on address (HTTP + gRPC): 127.0.0.1:50003
+I0616 10:58:07.463461    8196 engine.go:170] [/emulator/studio 5ba9] ExecuteGraphqlRead IntrospectionQuery: succeeded. 
